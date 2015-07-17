@@ -9,7 +9,7 @@ userbar.tpl.inc:
    *  
    */
 
-   
+   kghghghg
 simple_header.tpl.inc:
 
  Plantilla para el navbar que no muestra el login, se utiliza al errar en login, y reset password y register 
