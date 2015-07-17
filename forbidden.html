@@ -1,0 +1,46 @@
+<html>
+<head>
+<style>
+.drop-shadow {   margin:2em 35% 4em; }
+</style>
+<link rel="stylesheet" href="live_examples.css" type="text/css"></link>
+<link href='http://fonts.googleapis.com/css?family=Reenie+Beanie&amp;subset=latin' rel='stylesheet' type='text/css'>
+<title>Canvas con HTML5</title>
+</head>
+<body onload="paint();">
+<div class="logo"><img src="http://www.elclubdelprogramador.com/wp-content/uploads/2011/08/logo_Ext1.png" /></div>
+<div class="drop-shadow curved curved-hz-1">
+	<canvas id="ejemplo" width="400" height="300">
+	</canvas>
+	</div>
+<script type="text/javascript" >
+function paint(){
+ 
+var canvas = document.getElementById('ejemplo');
+var context = canvas.getContext("2d");
+
+var startX = 120;
+var startY = 70;
+
+context.beginPath();
+context.moveTo(startX, startY);
+context.bezierCurveTo(startX - 40, startY + 20, startX - 40, startY + 70, startX + 60, startY + 70);
+context.bezierCurveTo(startX + 80, startY + 100, startX + 150, startY + 100, startX + 170, startY + 70);
+context.bezierCurveTo(startX + 250, startY + 70, startX + 250, startY + 40, startX + 220, startY + 20);
+context.bezierCurveTo(startX + 260, startY - 40, startX + 200, startY - 50, startX + 170, startY - 30);
+context.bezierCurveTo(startX + 150, startY - 75, startX + 80, startY - 60, startX + 80, startY - 30);
+context.bezierCurveTo(startX + 30, startY - 75, startX - 20, startY - 60, startX, startY);
+//add a radial gradient
+var grdCenterX = 260;
+var grdCenterY = 80;
+var grd = context.createRadialGradient(grdCenterX, grdCenterY, 10, grdCenterX, grdCenterY, 200);
+grd.addColorStop(0, "#8ED6FF"); 
+grd.addColorStop(1, "#004CB3"); 
+context.fillStyle = grd;
+context.fill();
+context.closePath();
+
+}
+</script>
+</body>
+</html>

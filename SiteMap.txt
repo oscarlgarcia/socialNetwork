@@ -1,0 +1,52 @@
+socialNetwork\views\default\templates\main.tpl.inc:
+   Plantilla principal del site, muestra toda la info de entrada al site
+ 
+
+userbar.tpl.inc:
+   // userbar.tpl.inc
+   /*
+   * Plantilla para mostrar la barra de navegacion con opcion de login
+   *  
+   */
+
+   
+simple_header.tpl.inc:
+
+ Plantilla para el navbar que no muestra el login, se utiliza al errar en login, y reset password y register 
+
+
+redirect.tpl.inc:
+
+ Pagina para redireccionar y colocar un mensaje 
+ 
+ 
+ socialNetwork\views\default\templates\authenticate\reset\reset.tpl.inc:
+  
+   Plantilla para enviar al correo la peticion de reset de password
+   
+ 
+socialNetwork\views\default\templates\authenticate\reset\sent.tpl.inc:
+
+   Plantilla que muestra el texto de correo enviado 
+   
+socialNetwork\views\default\templates\authenticate\reset\main.tpl.inc:
+
+  Plantilla con el formulario para cambiar el password.
+
+ message.tpl.inc:
+   
+    Plantilla para mostrar mensajes
+	
+	
+socialNetwork\views\default\templates\authenticate\login\main.tpl.inc:
+
+  Plantilla que muestra el formulario de login cuando nos equivocamos
+
+
+
+
+http://www.tutorialrepublic.com/twitter-bootstrap-tutorial/bootstrap-alerts.php
+http://bootsnipp.com/
+http://bootsnipp.com/search?q=list
+http://bootsnipp.com/snippets/featured/a-list-of-blog-posts   - lista de snippets debe estar dentro de un tab
+http://bootsnipp.com/snippets/featured/bookmarks-reading-list  - para los favoritos

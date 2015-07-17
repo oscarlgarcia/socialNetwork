@@ -1,0 +1,11 @@
+.CodeMirror {
+  height: auto;
+}
+
+.list-group{
+  width: 400px;
+}
+
+.list-group-item{
+background-color: #EBE8E9;
+}

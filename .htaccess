@@ -1,0 +1,23 @@
+#Definimos la pagina de error
+ErrorDocument 404 /index.php
+
+#Definimos la pagina de forbidden
+ErrorDocument 403 /socialNetwork/index.php
+
+#cualquier intento de listar un directorio 
+DirectoryIndex index.php
+Options -Indexes
+
+#Reescribimos la url para hacerla RESTfull
+<IfModule mod_rewrite.c>
+  	RewriteEngine on
+  	RewriteCond %{REQUEST_FILENAME} !-f
+  	RewriteCond %{REQUEST_FILENAME} !-d
+  	RewriteRule ^(.*)$ index.php?page=$1 [L,QSA]
+</IfModule>
+
+#No permitimos ejecutar ficheros .inc
+<Files "*.inc">
+  Order Deny,Allow
+  Deny from all
+</Files>
