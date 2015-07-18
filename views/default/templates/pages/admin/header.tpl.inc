@@ -11,7 +11,7 @@
 	<link rel="stylesheet" type="text/css" href="views/default/css/bootstrap-theme.min.css" />
 	<link rel="stylesheet" type="text/css" href="views/default/css/site.css" />
 	<script type="text/javascript" src="lib/jquery/jquery-2.1.0.min.js" ></script>
-</head> 
+</head>  
 <body>
 <div id="wrap" class="ecpGlobal-bg">
   <div class="container-fluid">
@@ -41,11 +41,6 @@
                     </td>
                    </tr>
                    <tr>
-                    <td>
-                      <a href="admin_comments/browse">Comentarios</a>
-                    </td>
-                   </tr>
-                   <tr>
                      <td>
                        <a href="admin_snippets/browse">Snippets</a>
                      </td>
@@ -55,6 +50,11 @@
                        <a href="admin_links/browse">Links</a>
                      </td>
                    </tr>
+                    <tr>
+                    <td>
+                      <a href="admin_comments/browse">Comentarios</a>
+                    </td>
+                   </tr>
                  </table>
                </div>
              </div>
@@ -63,7 +63,7 @@
            <div class="panel panel-primary">
             <div class="panel-heading">
               <h4 class="panel-title">
-                <span class="fa fa-wordpress">&nbsp;</span><a data-toggle="collapse" data-parent="#accordion" href="#collapseCMS">CMS</a>
+                <span class="fa fa-wordpress">&nbsp;</span><a data-toggle="collapse" data-parent="#accordion" href="#collapseCMS">Tutoriales</a>
               </h4>
             </div>
             <div id="collapseCMS" class="panel-collapse collapse">
