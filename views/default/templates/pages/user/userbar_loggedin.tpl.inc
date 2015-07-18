@@ -8,7 +8,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
-        </button>
+        </button> 
         <a href="home" class="navbar-brand"><img src="views/default/images/site/titulo.png"></a>
       </div>
 	  <!-- Nav Links-->
@@ -30,28 +30,25 @@
 					<li class="col-sm-3">
 						<ul>
 							<li class="dropdown-header"><span class="fa fa-code pull-right"></span> Snippets</li>
-							<li><a href="snippets/browse">Repositorio</a></li>
+							<li><a href="snippets">Repositorio</a></li>
 							<li><a href="snippets/add">Agrega tu Snippet</a></li>
 							<li class="divider"></li>
-							<li class="dropdown-header"><span class="fa fa-link pull-right"></span> Links</li>
+							<li class="dropdown-header"><span class="fa fa-bookmark pull-right"></span> Bookmarks</li>
 							<li><a href="links">Explora</a></li>
+							<li><a href="links/add">Agrega tu Enlace</a></li>
 							<li class="divider"></li>
-							<li class="dropdown-header"><span class="fa fa-bookmark pull-right"></span> Feeder</li>
-							<li><a href="#">Explora</a></li>
-							<li class="divider"></li>
-							<li class="dropdown-header"><span class="fa fa-archive pull-right"></span> Resources</li>
-							<li><a href="#">Disabled menu items</a></li>
+							<li class="dropdown-header"><span class="fa fa-rss pull-right"></span> Feeds RSS</li>
+							<li><a href="#">Mis RSS</a></li>
+							<li><a href="#">Buscar Canales</a></li>
 						</ul>
 					</li>
 					<li class="col-sm-3">
 						<ul>
-							<li class="dropdown-header">Tutoriales </li>
-							<li><a href="tuts">Aprende de todo</a></li>
-							<li><a href="#">API's</a></li>
-							<li><a href="#">Mashups</a></li>
-							<li class="divider"></li>
-							<li class="dropdown-header"><span class="fa fa-compass pull-right"></span> How To</li>
-							<li><a href="http://www.roesler-ac.de/wolfram/hello.htm">Hello</a></li>
+							<li class="dropdown-header"><span class="fa fa-book pull-right"></span> Tutoriales </li>
+							<li><a href="tuts">Aprende un lenguaje</a></li>
+							<li><a href="http://www.roesler-ac.de/wolfram/hello.htm">How-to</a></li>
+							<li><a href="resources">Recursos</a></li>
+							<li><a href="apis">API's</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header"><span class="fa fa-graduation-cap pull-right"></span> Courses</li>
 							<li><a href="#">Single button dropdowns</a></li>
@@ -80,7 +77,7 @@
 							<li class="dropdown-header"><span class="fa fa-question-circle pull-right"></span> Q&A</li>
 							<li><a href="#">Vertical variation</a></li>
 							<li class="divider"></li>
-							<li class="dropdown-header"><span class="fa fa-credit-card pull-right"></span> Store</li>
+							<li class="dropdown-header"><span class="fa fa-shopping-cart pull-right"></span> Store</li>
 							<li><a href="#">Single button dropdowns</a></li>
 						</ul>
 					</li>
