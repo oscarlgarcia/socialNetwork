@@ -19,9 +19,9 @@
             <th>Autor</th>
             <th>Categor&iacute;a</th>
             <th>Publicado</th>
-            <th># Comentarios</th>
+            <th>Comentarios</th>
             <th>Rating</th>
-            <th># Favorito</th>
+            <th>Favorito</th>
 			    </tr>
 		    </thead>
 		    <tbody>
@@ -41,7 +41,7 @@
 		  	    <td class="col-md-3">{title}</td>
             <td class="col-md-1">{author}</td>
             <td class="col-md-1">{category}</td>
-            <td class="col-md-1">{fecha}</td>
+            <td class="col-md-2">{fecha}</td>
             <td class="col-md-1">{comments}</td>
             <td class="col-md-1">{rating}</td>
             <td class="col-md-1">{faved}</td>

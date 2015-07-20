@@ -32,7 +32,7 @@ class Snippets extends Object{
 	
 	//TODO poner el link a busqueda por  tags
 	$query="SELECT tbl.*, GROUP_CONCAT(DISTINCT tag_name SEPARATOR '') 
-		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%b %d %Y') as fecha , s.added as rawDate,
+		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha , s.added as rawDate,                                           
 		s.rating,s.totalFav as faved,s.totalComments as comments, c.name as category,c.image_category as image_category, u.user_login as author, u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
 		FROM snippets s inner join category c on s.ID_category=c.ID inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
 		inner join tags t on l.ID_Tag=t.ID ) tbl GROUP BY tbl.id order by rawDate desc";
@@ -52,7 +52,7 @@ class Snippets extends Object{
     $this->paginatedResult->setLimit($this->limit);
 	$this->paginatedResult->setOffset( $offset-1 );
 	$query="SELECT tbl.*, GROUP_CONCAT(DISTINCT tag_name SEPARATOR '') 
-		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%b %d %Y') as fecha , 
+		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha , 
 		s.rating as rating,s.totalFav as faved,s.totalComments as comments, c.name as category, c.image_category as image_category, u.user_login as author,u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
 		FROM snippets s inner join category c on s.ID_category=c.ID inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
 		inner join tags t on l.ID_Tag=t.ID ) tbl GROUP BY tbl.id order by rating desc ";
@@ -72,7 +72,7 @@ class Snippets extends Object{
 	$this->paginatedResult->setLimit($this->limit);
 	$this->paginatedResult->setOffset( $offset-1 );
 	$query="SELECT tbl.*, GROUP_CONCAT(DISTINCT tag_name SEPARATOR '') 
-		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%b %d %Y') as fecha , 
+		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha , 
 		s.rating as rating,s.totalFav as faved,s.totalComments as comments, c.name as category, c.image_category as image_category, u.user_login as author,u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
 		FROM snippets s inner join category c on s.ID_category=c.ID inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
 		inner join tags t on l.ID_Tag=t.ID ) tbl GROUP BY tbl.id order by faved desc ";
@@ -94,7 +94,7 @@ class Snippets extends Object{
 	$this->paginatedResult->setOffset( $offset-1);
 	//TODO poner el link a busqueda por  tags
 	$query="SELECT tbl.*, GROUP_CONCAT(DISTINCT tag_name SEPARATOR '') 
-		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%b %d %Y') as fecha , s.added as rawDate,
+		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha , s.added as rawDate,
 		s.rating,s.totalFav as faved,s.totalComments as comments, c.name as category,c.image_category as image_category, u.user_login as author,u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
 		FROM snippets s inner join category c on s.ID_category=c.ID inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
 		inner join tags t on l.ID_Tag=t.ID ) tbl GROUP BY tbl.id order by comments DESC";
@@ -114,7 +114,7 @@ class Snippets extends Object{
 	$this->paginatedResult->setLimit($this->limit);
 	$this->paginatedResult->setOffset( $offset-1 );
 	$query="SELECT tbl.*, GROUP_CONCAT(DISTINCT tag_name SEPARATOR '') 
-		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%b %d %Y') as fecha , 
+		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha , 
 		s.rating as rating,s.totalFav as faved,s.totalComments as comments, c.name as category, c.image_category as image_category, u.user_login as author,u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
 		FROM snippets s inner join category c on s.ID_category=c.ID inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
 		inner join tags t on l.ID_Tag=t.ID where c.name='".$category."' ) tbl GROUP BY tbl.id ";
@@ -134,7 +134,7 @@ class Snippets extends Object{
 	$this->paginatedResult->setLimit($this->limit);
 	$this->paginatedResult->setOffset( $offset-1 );
 	$query="SELECT tbl.*, GROUP_CONCAT(DISTINCT tag_name SEPARATOR '') 
-		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%b %d %Y') as fecha , 
+		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha , 
 		s.rating as rating,s.totalFav as faved,s.totalComments as comments, c.name as category, c.image_category as image_category, u.user_login as author,u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
 		FROM snippets s inner join category c on s.ID_category=c.ID inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
 		inner join tags t on l.ID_Tag=t.ID where u.user_login='".$username."' ) tbl GROUP BY tbl.id ";
@@ -154,7 +154,7 @@ class Snippets extends Object{
  	$this->paginatedResult->setLimit($this->limit);
 	$this->paginatedResult->setOffset( $offset -1);
 	$query="SELECT tbl.*, GROUP_CONCAT(DISTINCT tag_name SEPARATOR '') 
-		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%b %d %Y') as fecha , 
+		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha , 
 		s.rating as rating,s.totalFav as faved,s.totalComments as comments, c.name as category, c.image_category as image_category, u.user_login as author,u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
 		FROM snippets s inner join category c on s.ID_category=c.ID inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
 		inner join tags t on l.ID_Tag=t.ID where t.tag_name='".$tag."' ) tbl GROUP BY tbl.id ";
@@ -173,7 +173,7 @@ class Snippets extends Object{
   {
     $this->paginatedResult->setLimit(100);
 	$this->paginatedResult->setOffset(0);
-	$query="SELECT ID, title, DATE_FORMAT( added,'%b %d %Y') as fecha FROM snippets  where (title like '%".$criteria."%' ) order by fecha desc";
+	$query="SELECT ID, title, DATE_FORMAT( added,'%d %b %Y %T') as fecha FROM snippets  where (title like '%".$criteria."%' ) order by fecha desc";
 	$this->paginatedResult->setQuery( $query );
 	$this->paginatedResult->setMethod( 'cache' );
 	$this->paginatedResult->generatePagination();
