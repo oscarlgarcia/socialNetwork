@@ -17,12 +17,7 @@
         <!-- START tuts -->
         <a href="tuts/{tut_url}" class="list-group-item">
           <h4 class="list-group-item-heading"><span class="fa fa-angle-double-right"></span> {tut_title}
-          <form id="favForm" name="favForm" method="POST" action="snippets/">
-              <input type="hidden" value="1" id="ajaxRequest"  name="ajaxRequest" />
-                <input type="hidden" value="{action}" id="favAction" name="favAction" />
-                <button type="button" id="favBtn" class="btn btn-primary btn-sm pull-right" data-loading-text="Guardando..." data-toggle="button"><span id="fav_star" class="fa fa-heart-o"></span></button>
-              </form>
-              </h4>
+          </h4>
           <p class="list-group-item-text">{tut_description}.</p>
         </a>
         <!-- END tuts -->

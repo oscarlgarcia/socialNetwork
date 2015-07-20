@@ -55,7 +55,14 @@ class UserModel extends Object{
   
   
   /**
-  * Genera lista de snippets paginados
+  * Genera lista de usuarios paginados
+  * El objeto retornado poseerá los siguientes atributos
+  *  - Id del Usuario
+  *  - Username
+  *  - Email
+  *  - Fecha de alta
+  *  - # veces loggeado
+  *  - Ultimo login
   * @param int $offset 
   * @return Object pagination object
   */
@@ -63,7 +70,7 @@ class UserModel extends Object{
   {
     $this->paginatedResult->setLimit($this->limit);
     $this->paginatedResult->setOffset( $offset-1);
-    $query="SELECT id, user_login as login, user_registered as date, user_email as email FROM users where user_level!=10 order by user_registered desc";
+    $query="SELECT ( select count(ID_User) from user_event where eventName='user.login' and id_user = u.id ) as total_login, DATE_FORMAT((select max(dateExecuted) from user_event where eventName='user.login' and id_user = u.id ),'%d %b %Y %T') as last_login, u.id, u.user_login as login, DATE_FORMAT(u.user_registered,'%d %b %Y %T') as date, u.user_email as email FROM users u left join user_event  e on u.id = e.ID_user where  u.user_level!=10 group by u.id order by u.user_registered desc , e.dateExecuted asc";
     $this->paginatedResult->setQuery( $query );
     $this->paginatedResult->setMethod( 'cache' );
     $this->paginatedResult->generatePagination();
