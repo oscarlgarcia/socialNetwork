@@ -29,9 +29,10 @@
                 <div class="btn-group">
 	              <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span class="caret"></span> {id}</button>
                   <ul class="dropdown-menu"> 
-                    <li><a href="#"><span class="glyphicon glyphicon-calendar"></span> Historial</a>
-                    <li><a href="#"><span class="glyphicon glyphicon-ban-circle"></span> Bloquear</a>
-                    <li><a href="#"><span class="glyphicon glyphicon-trash"></span> Eliminar</a>
+                  	<li><a href="#"><span class="fa fa-wechat"></span> Mensaje</a>
+                    <li><a href="#"><span class="fa fa-calendar"></span> Historial</a>
+                    <li><a href="#"><span class="fa fa-ban"></span> Bloquear</a>
+                    <li><a href="#"><span class="fa fa-trash"></span> Eliminar</a>
 			      </ul>
 		        </td>
 		  	     <td>{login}</td>
