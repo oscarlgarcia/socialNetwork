@@ -17,11 +17,28 @@ class Snippets extends Object{
   private $rating;
   private $totalVotes;
   private $added;
+  private $operational_status;
+
   private $limit = 5; //TODO poner en configs
-  private $saveable_fields = array( 'title', 'description', 'code', 'ID_category', 'ID_User','rating','totalVotes','added');
-	
+  private $saveable_fields = array( 'title', 'description', 'code', 'ID_category', 'ID_User','rating','totalVotes','added','operational_status');
   /**
-   * Genera lista de snippets paginados
+   * Genera lista de snippets aprobados para publicación ( Id_status = 4) paginados 
+   * Devuelve un ResulSet con la siguiente informacion en caché:
+   * - ID
+   * - Title
+   * - Code
+   * - descripcion
+   * - Fecha ( Friendly format)
+   * - Fecha ( raw para ordenacion)
+   * - rating
+   * - faved
+   * - Comments
+   * - category
+   * - image category
+   * - autor
+   * - profile_image
+   * - tag name
+   * - All tags
    * @param int $offset 
    * @return Object pagination object
    */
@@ -32,10 +49,10 @@ class Snippets extends Object{
 	
 	//TODO poner el link a busqueda por  tags
 	$query="SELECT tbl.*, GROUP_CONCAT(DISTINCT tag_name SEPARATOR '') 
-		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha , s.added as rawDate,                                           
+		As all_tags FROM( SELECT s.ID,s.title, s.description, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha , s.added as rawDate,                                          
 		s.rating,s.totalFav as faved,s.totalComments as comments, c.name as category,c.image_category as image_category, u.user_login as author, u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
 		FROM snippets s inner join category c on s.ID_category=c.ID inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
-		inner join tags t on l.ID_Tag=t.ID ) tbl GROUP BY tbl.id order by rawDate desc";
+		inner join tags t on l.ID_Tag=t.ID where s.id_status = 4 ) tbl GROUP BY tbl.id order by rawDate desc";
 	$this->paginatedResult->setQuery( $query );
 	$this->paginatedResult->setMethod( 'cache' );
 	$this->paginatedResult->generatePagination();
@@ -43,7 +60,23 @@ class Snippets extends Object{
   }
 	
   /**
-   * Genera lista de snippets populares paginados
+   * Genera lista de snippets populares aprobados para publicación ( Id_status = 4) paginados 
+   * Devuelve un ResulSet con la siguiente informacion en caché:
+   * - ID
+   * - Title
+   * - Code
+   * - descripcion
+   * - Fecha ( Friendly format)
+   * - Fecha ( raw para ordenacion)
+   * - rating
+   * - faved
+   * - Comments
+   * - category
+   * - image category
+   * - autor
+   * - profile_image
+   * - tag name
+   * - All tags
    * @param int $offset 
    * @return Object pagination object
    */
@@ -55,7 +88,7 @@ class Snippets extends Object{
 		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha , 
 		s.rating as rating,s.totalFav as faved,s.totalComments as comments, c.name as category, c.image_category as image_category, u.user_login as author,u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
 		FROM snippets s inner join category c on s.ID_category=c.ID inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
-		inner join tags t on l.ID_Tag=t.ID ) tbl GROUP BY tbl.id order by rating desc ";
+		inner join tags t on l.ID_Tag=t.ID where s.id_status = 4 ) tbl GROUP BY tbl.id order by rating desc ";
 	$this->paginatedResult->setQuery( $query );
 	$this->paginatedResult->setMethod( 'cache' );
 	$this->paginatedResult->generatePagination();
@@ -63,7 +96,23 @@ class Snippets extends Object{
   }
 	
   /**
-  * Genera lista de snippets favoritos paginados
+   * Genera lista de snippets favoritos aprobados para publicación ( Id_status = 4) paginados 
+   * Devuelve un ResulSet con la siguiente informacion en caché:
+   * - ID
+   * - Title
+   * - Code
+   * - descripcion
+   * - Fecha ( Friendly format)
+   * - Fecha ( raw para ordenacion)
+   * - rating
+   * - faved
+   * - Comments
+   * - category
+   * - image category
+   * - autor
+   * - profile_image
+   * - tag name
+   * - All tags
   * @param int $offset 
   * @return Object pagination object
   */
@@ -75,7 +124,7 @@ class Snippets extends Object{
 		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha , 
 		s.rating as rating,s.totalFav as faved,s.totalComments as comments, c.name as category, c.image_category as image_category, u.user_login as author,u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
 		FROM snippets s inner join category c on s.ID_category=c.ID inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
-		inner join tags t on l.ID_Tag=t.ID ) tbl GROUP BY tbl.id order by faved desc ";
+		inner join tags t on l.ID_Tag=t.ID where s.id_status = 4 ) tbl GROUP BY tbl.id order by faved desc ";
 	$this->paginatedResult->setQuery( $query );
 	$this->paginatedResult->setMethod( 'cache' );
 	$this->paginatedResult->generatePagination();
@@ -84,7 +133,23 @@ class Snippets extends Object{
 	
 	
   /**
-  * Genera lista de snippets mas comentados paginados
+   * Genera lista de snippets mas comentados aprobados para publicación ( Id_status = 4) paginados 
+   * Devuelve un ResulSet con la siguiente informacion en caché:
+   * - ID
+   * - Title
+   * - Code
+   * - descripcion
+   * - Fecha ( Friendly format)
+   * - Fecha ( raw para ordenacion)
+   * - rating
+   * - faved
+   * - Comments
+   * - category
+   * - image category
+   * - autor
+   * - profile_image
+   * - tag name
+   * - All tags
   * @param int $offset 
   * @return Object pagination object
   */
@@ -97,7 +162,7 @@ class Snippets extends Object{
 		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha , s.added as rawDate,
 		s.rating,s.totalFav as faved,s.totalComments as comments, c.name as category,c.image_category as image_category, u.user_login as author,u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
 		FROM snippets s inner join category c on s.ID_category=c.ID inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
-		inner join tags t on l.ID_Tag=t.ID ) tbl GROUP BY tbl.id order by comments DESC";
+		inner join tags t on l.ID_Tag=t.ID  where s.id_status = 4 ) tbl GROUP BY tbl.id order by comments DESC";
 	$this->paginatedResult->setQuery( $query );
 	$this->paginatedResult->setMethod( 'cache' );
 	$this->paginatedResult->generatePagination();
@@ -105,8 +170,25 @@ class Snippets extends Object{
   }
 	
   /**
-  * Genera lista de snippets por categoria paginados
-  * @param string categoria, int $offset 
+   * Genera lista de snippets por la categoria aprobados para publicación ( Id_status = 4) paginados 
+   * Devuelve un ResulSet con la siguiente informacion en caché:
+   * - ID
+   * - Title
+   * - Code
+   * - descripcion
+   * - Fecha ( Friendly format)
+   * - Fecha ( raw para ordenacion)
+   * - rating
+   * - faved
+   * - Comments
+   * - category
+   * - image category
+   * - autor
+   * - profile_image
+   * - tag name
+   * - All tags
+  * @param string categoria
+  * @param int $offset 
   * @return Object pagination object
   */
   public function listByCategory( $category,$offset=1 )
@@ -117,7 +199,7 @@ class Snippets extends Object{
 		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha , 
 		s.rating as rating,s.totalFav as faved,s.totalComments as comments, c.name as category, c.image_category as image_category, u.user_login as author,u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
 		FROM snippets s inner join category c on s.ID_category=c.ID inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
-		inner join tags t on l.ID_Tag=t.ID where c.name='".$category."' ) tbl GROUP BY tbl.id ";
+		inner join tags t on l.ID_Tag=t.ID where c.name='".$category."' and s.id_status = 4 ) tbl GROUP BY tbl.id ";
 	$this->paginatedResult->setQuery( $query );
 	$this->paginatedResult->setMethod( 'cache' );
 	$this->paginatedResult->generatePagination();
@@ -125,8 +207,25 @@ class Snippets extends Object{
   }
 	
   /**
-  * Genera lista de snippets por usuario paginados
-  * @param string username, int $offset 
+   * Genera lista de snippets por el usuario aprobados para publicación ( Id_status = 4) paginados 
+   * Devuelve un ResulSet con la siguiente informacion en caché:
+   * - ID
+   * - Title
+   * - Code
+   * - descripcion
+   * - Fecha ( Friendly format)
+   * - Fecha ( raw para ordenacion)
+   * - rating
+   * - faved
+   * - Comments
+   * - category
+   * - image category
+   * - autor
+   * - profile_image
+   * - tag name
+   * - All tags
+  * @param string username
+  * @param int $offset 
   * @return Object pagination object
   */
   public function listByUsername( $username,$offset=1 )
@@ -137,7 +236,7 @@ class Snippets extends Object{
 		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha , 
 		s.rating as rating,s.totalFav as faved,s.totalComments as comments, c.name as category, c.image_category as image_category, u.user_login as author,u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
 		FROM snippets s inner join category c on s.ID_category=c.ID inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
-		inner join tags t on l.ID_Tag=t.ID where u.user_login='".$username."' ) tbl GROUP BY tbl.id ";
+		inner join tags t on l.ID_Tag=t.ID where u.user_login='".$username."' and s.id_status = 4) tbl GROUP BY tbl.id ";
     $this->paginatedResult->setQuery( $query );
 	$this->paginatedResult->setMethod( 'cache' );
 	$this->paginatedResult->generatePagination();
@@ -145,11 +244,28 @@ class Snippets extends Object{
   }
 	
   /**
-  * Genera lista de snippets por tag paginados
-  * @param string tag, int $offset 
+   * Genera lista de snippets por tag aprobados para publicación ( Id_status = 4) paginados 
+   * Devuelve un ResulSet con la siguiente informacion en caché:
+   * - ID
+   * - Title
+   * - Code
+   * - descripcion
+   * - Fecha ( Friendly format)
+   * - Fecha ( raw para ordenacion)
+   * - rating
+   * - faved
+   * - Comments
+   * - category
+   * - image category
+   * - autor
+   * - profile_image
+   * - tag name
+   * - All tags
+  * @param string tag
+  * @param int $offset 
   * @return Object pagination object
   */
-  public function listByTag( $tag,$offset=1 )
+  public function listByTag( $tag, $offset = 1 )
   {
  	$this->paginatedResult->setLimit($this->limit);
 	$this->paginatedResult->setOffset( $offset -1);
@@ -157,23 +273,24 @@ class Snippets extends Object{
 		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha , 
 		s.rating as rating,s.totalFav as faved,s.totalComments as comments, c.name as category, c.image_category as image_category, u.user_login as author,u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
 		FROM snippets s inner join category c on s.ID_category=c.ID inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
-		inner join tags t on l.ID_Tag=t.ID where t.tag_name='".$tag."' ) tbl GROUP BY tbl.id ";
+		inner join tags t on l.ID_Tag=t.ID where t.tag_name='".$tag."' and s.id_status = 4 ) tbl GROUP BY tbl.id ";
 	$this->paginatedResult->setQuery( $query );
 	$this->paginatedResult->setMethod( 'cache' );
 	$this->paginatedResult->generatePagination();
 	return $this->paginatedResult;
   }
-	
+
+
   /**
   * Genera lista de snippets paginados
   * @param int $criterio 
   * @return Object pagination object
   */
-  public function search($criteria )
+  public function search($offset = 1, $criteria = "")
   {
-    $this->paginatedResult->setLimit(100);
-	$this->paginatedResult->setOffset(0);
-	$query="SELECT ID, title, DATE_FORMAT( added,'%d %b %Y %T') as fecha FROM snippets  where (title like '%".$criteria."%' ) order by fecha desc";
+    $this->paginatedResult->setLimit(10);
+	$this->paginatedResult->setOffset($offset - 1);
+	$query="SELECT s.ID,s.title, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha, s.rating, s.totalFav as faved, s.totalComments as comments, c.name as category, u.user_login as author	FROM snippets s inner join category c on s.ID_category = c.ID inner join users u on s.ID_USER = u.ID inner join lista_tag_snippet l on s.ID = l.ID_Snippets where s.id_status = 4 and s.title like '%".$criteria."%'  group by ID order by added desc";
 	$this->paginatedResult->setQuery( $query );
 	$this->paginatedResult->setMethod( 'cache' );
 	$this->paginatedResult->generatePagination();
@@ -308,6 +425,16 @@ class Snippets extends Object{
   public function setAdded($added){
     $this->added=$added;
   } 
+
+  public function setOperationalStatus($operational_status){
+    $this->operational_status=$operational_status;
+  }
+   
+  public function getOperationalStatus(){
+    return $this->operational_status;
+  } 
+
+  
 	
 }
 ?>

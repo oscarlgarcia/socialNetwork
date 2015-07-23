@@ -56,25 +56,21 @@ class Admin_snippetscontroller{
 			  
 			   switch( $urlBits[1] )
 				{
-					case 'browse':
-					  $this->browse(intval($this->parameter1));
-					  break;
+				  case 'search':
+  				    $this->search(intval($this->parameter1));
+					break;
+                  
+                  case 'view':
+				    $this->view(intval($this->parameter1));
+					break;
+				  
+				  case 'history':
+				    $this->history(intval($this->parameter1));
+				    break;
 					  
-				   case 'search':
-  				     $this->search(intval($this->parameter1));
-					  break;
-
-					case 'view':
-					  $this->view(intval($this->parameter1));
-					  break;
-					  
-				   case 'history':
-					  $this->history(intval($this->parameter1));
-					  break;
-					  
-					case 'delete':
-					  $this->delete(intval($this->parameter1));
-					  break;
+				  case 'delete':
+				    $this->delete(intval($this->parameter1));
+				    break;
 				}
 				
 			}else
@@ -97,80 +93,46 @@ class Admin_snippetscontroller{
 	
 	
    /*
-	* Metodo para buscar snippets
+	* Metodo para buscar snippets desde la pantalla de admin
 	*
 	*
 	*/
-    private function browse($offset=1)
+    private function search($offset)
     {   
-      $offset=($offset<=0)?1:$offset;
-  	   require_once( FRAMEWORK_PATH . 'models/snippets.inc');
-	   $snippets = new Snippets( $this->registry );
-	   $pagination = $snippets->listSnippets( $offset );
+      $offset = ($offset<=0)?1:$offset;
+      if (isset($_POST['search'])){
+      	$this->registry->getObject('util')->storeToSession('criteria',$_POST['search']);
+      }
+      
+      require_once( FRAMEWORK_PATH . 'models/snippets.inc');
+	  $snippets = new Snippets( $this->registry );
+	  $pagination = $snippets->search($offset,$_SESSION['criteria']);
 	 
       if(!$pagination->checkOffset($offset) )
         $this->registry->getObject('template')->buildFromTemplates(
-        	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-        	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getInvalidTpl(),
-        	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-        	);
-	   else
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getInvalidTpl(),
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+        );
+	  else
 	  { 
-
-	    $this->registry->getObject('template')->buildFromTemplates(
-	    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getListTpl(),
-	    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	    	);
-		 //cargamos la info de cada snippet
-		 $this->registry->getObject('template')->getPage()->addTag( 'snippets', array( 'SQL', $pagination->getCache() ) );
-         
-		 //Cargamos la busqueda
-	     $this->registry->getObject('template')->getPage()->addTag( 'snippet.search',"");	
-         // cargamos el total de snippets
-		 $this->registry->getObject('template')->getPage()->addTag( 'snippets_count', $pagination->getTotalRows() );		
-		 $pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
-	  }		
-	 
-  }	
-   
-   /*
-	* Metodo para buscar snippets con query
-	*
-	*
-	*/
-    private function search()
-    {   
-  	   require_once( FRAMEWORK_PATH . 'models/snippets.inc');
-	   $snippet = new Snippets($this->registry );
-	   $pagination = $snippet->search($_POST['search']);
-	 
-      if($pagination->getTotalRows()<=0)
         $this->registry->getObject('template')->buildFromTemplates(
-        	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-        	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getNoResultsTpl(),
-        	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-        	);
-	   else
-	  { 
-
-	    $this->registry->getObject('template')->buildFromTemplates(
-	    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getListTpl(),
-	    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	    	);
-		 //cargamos la info de cada usuario
-		 $this->registry->getObject('template')->getPage()->addTag( 'snippets', array( 'SQL', $pagination->getCache() ) );
-         //Cargamos la busqueda
-	     $this->registry->getObject('template')->getPage()->addTag( 'snippet.search',$_POST['search']);	
-		 
-         // cargamos el total de usuarios
-		 $this->registry->getObject('template')->getPage()->addTag( 'snippets_count', $pagination->getTotalRows() );		
-		 $pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
+	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getListTpl(),
+	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+	    );
+		//cargamos la info de cada snippet
+		$this->registry->getObject('template')->getPage()->addTag( 'snippets', array( 'SQL', $pagination->getCache() ) );
+         
+		//Cargamos la busqueda
+	    $this->registry->getObject('template')->getPage()->addTag( 'snippet.search',$_SESSION['criteria']);	
+        // cargamos el total de snippets
+		$this->registry->getObject('template')->getPage()->addTag( 'snippets_count', $pagination->getTotalRows() );		
+		$pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
 	  }		
-	 
-  }	
-  
+    }
+
+ 
   
   
   /*

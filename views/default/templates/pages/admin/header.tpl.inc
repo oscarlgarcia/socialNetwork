@@ -42,7 +42,7 @@
                    </tr>
                    <tr>
                      <td>
-                       <a href="admin_snippets/browse">Snippets</a>
+                       <a href="admin_snippets/search">Snippets</a>
                      </td>
                    </tr>
                    <tr>
