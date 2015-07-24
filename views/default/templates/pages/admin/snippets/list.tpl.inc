@@ -26,15 +26,19 @@
 		    </thead>
 		    <tbody>
 		    <!-- START snippets -->
-		      <tr>
+		      <tr class="{class}">
 		        <td class="col-md-1">
               <div class="btn-group">
-                <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span class="caret"></span> {ID}</button>
+                <button type="button" class="btn btn-{class}">{ID}</button>
+                <button type="button" data-toggle="dropdown" class="btn btn-{class} dropdown-toggle"> <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><a href="admin_snippets/view/{ID}"><span class="glyphicon glyphicon-eye-open"></span> Ver </a></li>
-                  <li><a href="admin_snippets/history/{ID}"><span class="glyphicon glyphicon-calendar"></span> Historial</a></li>
+                  <li><a href="admin_snippets/view/{ID}"><span class="fa fa-eye"></span> Ver </a></li>
+                  <li><a href="admin_snippets/history/{ID}"><span class="fa fa-calendar"></span> Historial</a></li>
                   <li class="divider"></li>
-                  <li ><a id="delete" data-deleteurl="admin_snippets/delete/{ID}" data-toggle="modal" data-target="#delete_modal"><span class="glyphicon glyphicon-trash"></span> Eliminar</a></li>
+                  <li><a href="admin_snippets/publish/{ID}"><span class="fa fa-check"></span> Publicar</a></li>
+                  <li><a href="admin_snippets/ban/{ID}"><span class="fa fa-ban"></span> Retirar</a></li>
+                  <li class="divider"></li>
+                  <li ><a id="delete" data-deleteurl="admin_snippets/delete/{ID}" data-toggle="modal" data-target="#delete_modal"><span class="fa fa-trash"></span> Eliminar</a></li>
                 </ul>
               </div>
             </td>
@@ -62,13 +66,13 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Se va a eliminar este recurso</h4>
+            <h4 class="modal-title">Se va a eliminar este Snippet</h4>
           </div>
           <div class="modal-body">
             <p class="text-warning">Est&aacute;s seguro? Esta operaci&oacute;n no podr&aacute; deshacerse</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
             <a id="delete_link" type="button" class="btn btn-danger">Confirmar eliminaci&oacute;n</a>
           </div>
         </div>

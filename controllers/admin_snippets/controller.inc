@@ -71,6 +71,14 @@ class Admin_snippetscontroller{
 				  case 'delete':
 				    $this->delete(intval($this->parameter1));
 				    break;
+
+				  case 'publish':
+				    $this->publish(intval($this->parameter1));
+				    break;
+
+				  case 'ban':
+				    $this->ban(intval($this->parameter1));
+				    break;
 				}
 				
 			}else
@@ -94,26 +102,37 @@ class Admin_snippetscontroller{
 	
    /*
 	* Metodo para buscar snippets desde la pantalla de admin
-	*
-	*
 	*/
     private function search($offset)
     {   
       $offset = ($offset<=0)?1:$offset;
+      
+      if (!isset($_SESSION['criteria'])){
+      	$this->registry->getObject('util')->storeToSession('criteria',"");
+      }
+
       if (isset($_POST['search'])){
       	$this->registry->getObject('util')->storeToSession('criteria',$_POST['search']);
       }
-      
+
       require_once( FRAMEWORK_PATH . 'models/snippets.inc');
 	  $snippets = new Snippets( $this->registry );
 	  $pagination = $snippets->search($offset,$_SESSION['criteria']);
 	 
       if(!$pagination->checkOffset($offset) )
+      {
         $this->registry->getObject('template')->buildFromTemplates(
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getInvalidTpl(),
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
         );
+        
+        //Cargamos la busqueda
+	    $this->registry->getObject('template')->getPage()->addTag('snippet.search',$_SESSION['criteria']);	
+        // cargamos el total de snippets
+		$this->registry->getObject('template')->getPage()->addTag( 'snippets_count', $pagination->getTotalRows() );	
+
+      }
 	  else
 	  { 
         $this->registry->getObject('template')->buildFromTemplates(
@@ -225,9 +244,6 @@ class Admin_snippetscontroller{
    }		
   }
  
-
-
-
  
   /*
   * Metodo que borra el snippet
@@ -238,10 +254,32 @@ class Admin_snippetscontroller{
   	require_once( FRAMEWORK_PATH . 'models/snippets.inc');
 	$snippets = new Snippets( $this->registry );
 	$deleted = $snippets->delete( $snippetID );
-	header('Location: /socialNetwork/admin_snippets/browse');  	
+	header('Location: /socialNetwork/admin_snippets/search');  	
   } 
  
- 
+
+  /*
+  * Metodo para publicar los snippets
+  *  TODO asignar los puntos por gamificacion solo cuando sean publicados no cuando 
+  *  el usuario lo postee
+  */
+  public function publish($snippetID){
+    require_once( FRAMEWORK_PATH . 'models/snippets.inc');
+	$snippets = new Snippets( $this->registry );
+	$deleted = $snippets->updateStatus( $snippetID, 4);
+	header('Location: /socialNetwork/admin_snippets/search');
+  }
+
+  /*
+  * Metodo para banear los snippets
+  *  TODO quitar los puntos por gamificacion solo cuando sean baneado 
+  */
+  public function ban($snippetID){
+    require_once( FRAMEWORK_PATH . 'models/snippets.inc');
+	$snippets = new Snippets( $this->registry );
+	$deleted = $snippets->updateStatus( $snippetID,5);
+	header('Location: /socialNetwork/admin_snippets/search');
+  }
  
  
 	

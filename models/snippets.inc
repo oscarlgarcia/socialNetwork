@@ -17,10 +17,10 @@ class Snippets extends Object{
   private $rating;
   private $totalVotes;
   private $added;
-  private $operational_status;
+  private $ID_status;
 
   private $limit = 5; //TODO poner en configs
-  private $saveable_fields = array( 'title', 'description', 'code', 'ID_category', 'ID_User','rating','totalVotes','added','operational_status');
+  private $saveable_fields = array( 'title', 'description', 'code', 'ID_category', 'ID_User','rating','totalVotes','added','ID_status');
   /**
    * Genera lista de snippets aprobados para publicación ( Id_status = 4) paginados 
    * Devuelve un ResulSet con la siguiente informacion en caché:
@@ -282,15 +282,26 @@ class Snippets extends Object{
 
 
   /**
-  * Genera lista de snippets paginados
-  * @param int $criterio 
-  * @return Object pagination object
-  */
+   * Genera lista de snippets que coinciden con el criterio pasado paginados 
+   * Devuelve un ResulSet con la siguiente informacion en caché:
+   * - ID
+   * - Title
+   * - Fecha ( Friendly format)
+   * - rating
+   * - Status
+   * - faved
+   * - Comments
+   * - category
+   * - autor
+   * - class. La CSS class del snippet ( dependiendo de su estatus)
+   * @param int $criterio 
+   * @return Object pagination object
+   */
   public function search($offset = 1, $criteria = "")
   {
     $this->paginatedResult->setLimit(10);
 	$this->paginatedResult->setOffset($offset - 1);
-	$query="SELECT s.ID,s.title, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha, s.rating, s.totalFav as faved, s.totalComments as comments, c.name as category, u.user_login as author	FROM snippets s inner join category c on s.ID_category = c.ID inner join users u on s.ID_USER = u.ID inner join lista_tag_snippet l on s.ID = l.ID_Snippets where s.id_status = 4 and s.title like '%".$criteria."%'  group by ID order by added desc";
+	$query="SELECT s.ID,s.title, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha, s.rating, s.id_status, s.totalFav as faved, s.totalComments as comments, c.name as category, u.user_login as author, o.status_class as class	FROM snippets s inner join category c on s.ID_category = c.ID inner join users u on s.ID_USER = u.ID inner join operational_status o on s.ID_Status = o.ID where s.title like '%".$criteria."%'  group by ID order by added desc";
 	$this->paginatedResult->setQuery( $query );
 	$this->paginatedResult->setMethod( 'cache' );
 	$this->paginatedResult->generatePagination();
@@ -347,6 +358,19 @@ class Snippets extends Object{
 	$uid = $this->registry->getObject('db')->lastInsertID();
 	return $uid;  
   }
+
+  /**
+  * actualiza el estatus del snippet a partir de su ID
+  * @param int $snippetID 
+  */
+  public function updateStatus($id, $status)
+  {
+  	$changes = array();
+  	$changes['ID_Status'] = $status;
+    $this->registry->getObject('db')->updateRecords('snippets', $changes," id = ".$id );
+    $uid = $this->registry->getObject('db')->lastInsertID();
+    return $uid;  
+  }
 	
   /*
   * Metodo que detemina si el usuario ha marcado como favorito el snippet
@@ -391,7 +415,7 @@ class Snippets extends Object{
   }
    
   public function setTitle($title){
-    $this->title=$title;
+    $this->title = $title;
   }
    
   public function getTitle(){
@@ -399,39 +423,39 @@ class Snippets extends Object{
   }
    
   public function setDescription($description){
-    $this->description=$description;
+    $this->description = $description;
   }
    
   public function setCode($code){
-    $this->code=$code;
+    $this->code = $code;
   }  
 	
   public function setCategory($category){
-    $this->ID_category=$category;
+    $this->ID_category = $category;
   }
 	
   public function setIdUser($idUser){
-    $this->ID_User=$idUser;
+    $this->ID_User = $idUser;
   }	
    
   public function setTotalVotes($total){
-    $this->totalVotes=$total;
+    $this->totalVotes = $total;
   }
    
   public function setRating($rating){
-    $this->rating=$rating;
+    $this->rating = $rating;
   }
    
   public function setAdded($added){
-    $this->added=$added;
+    $this->added = $added;
   } 
 
-  public function setOperationalStatus($operational_status){
-    $this->operational_status=$operational_status;
+  public function setOperationalStatus($ID_status){
+    $this->ID_status = $ID_status;
   }
    
   public function getOperationalStatus(){
-    return $this->operational_status;
+    return $this->ID_status;
   } 
 
   

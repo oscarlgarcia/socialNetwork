@@ -56,7 +56,8 @@ class Registrationcontroller{
 			$snippet->setCategory( $this->registry->getObject('db')->sanitizeData( $_POST['category'] ) );
 			$snippet->setIdUser( $this->registry->getObject('db')->sanitizeData($user));
 			$snippet->setRating(0);
-			$snippet->setTotalVotes(0);			
+			$snippet->setTotalVotes(0);	
+			$snippet->setOperationalStatus(3); // Pendiente de aprobar		
 			$snippet->setAdded(date("Y-m-d H:i:s")); // fecha de ahora	
 			$idSnippet=$snippet->save();		
 		
