@@ -36,9 +36,9 @@ class Registrationcontroller{
 	private $sanitizedValues = array();
 	
 	/**
-	 * 1 si el usuario se activa de una vez sino se enviará un email
+	 * 4 si el usuario se activa de una vez sino se enviará un email
 	 */
-	private $activeValue = 0;
+	private $activeValue = 3;
 	
 	
 	/*
@@ -53,7 +53,7 @@ class Registrationcontroller{
 			if( $this->checkRegistration() == true )
 			{
 				$userId = $this->processRegistration();
-				if( $this->activeValue == 1 )
+				if( $this->activeValue == 4 )
 				{
 					$this->registry->getObject('authenticate')->forceLogin( $this->submittedValues['register_user'], md5( $this->submittedValues['register_password'] ) );
 				}

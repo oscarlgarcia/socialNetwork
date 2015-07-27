@@ -55,11 +55,7 @@ class Admin_userscontroller{
   		  	   }
 			  
 			   switch( $urlBits[1] )
-				{
-					case 'browse':
-					  $this->browse(intval($this->parameter1));
-					  break;
-					  
+				{				  
 				   case 'search':
   				     $this->search(intval($this->parameter1));
 					  break;
@@ -93,13 +89,22 @@ class Admin_userscontroller{
 	*
 	*
 	*/
-    private function browse($offset=1)
+    private function search($offset=1)
     {   
       $offset=($offset<=0)?1:$offset;
+      if (!isset($_SESSION['user_criteria'])){
+      	$this->registry->getObject('util')->storeToSession('user_criteria',"");
+      }
+
+      if (isset($_POST['search'])){
+      	$this->registry->getObject('util')->storeToSession('user_criteria',$_POST['search']);
+      }
+
+
   	   require_once( FRAMEWORK_PATH . 'models/user.inc');
 	   $users = new UserModel( $this->registry );
-	   $pagination = $users->listUsers( $offset );
-	 
+	   $pagination = $users->search($offset,$_SESSION['user_criteria']);
+
       if(!$pagination->checkOffset($offset) )
         $this->registry->getObject('template')->buildFromTemplates(
         	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base')).$this->registry->getObject('constants')->getHeaderTpl(), 
@@ -118,51 +123,12 @@ class Admin_userscontroller{
 		 $this->registry->getObject('template')->getPage()->addTag( 'users', array( 'SQL', $pagination->getCache() ) );
          
 		 //Cargamos la busqueda
-	     $this->registry->getObject('template')->getPage()->addTag( 'user.search',"");	
+	     $this->registry->getObject('template')->getPage()->addTag( 'user.search',$_SESSION['user_criteria']);	
          // cargamos el total de usuarios
 		 $this->registry->getObject('template')->getPage()->addTag( 'users_count', $pagination->getTotalRows() );		
 		 $pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
-	  }		
-	 
-  }	
-   
-   /*
-	* Metodo para buscar usuarios con query
-	*
-	*
-	*/
-    private function search()
-    {   
-  	   require_once( FRAMEWORK_PATH . 'models/user.inc');
-	   $users = new UserModel($this->registry );
-	   $pagination = $users->search($_POST['user_search']);
-	 
-      if($pagination->getTotalRows()<=0)
-        $this->registry->getObject('template')->buildFromTemplates(
-        	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-        	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'users/'.$this->registry->getObject('constants')->getNoResultsTpl(),
-        	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-        	);
-	   else
-	  { 
-
-	    $this->registry->getObject('template')->buildFromTemplates(
-	    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'users/'.$this->registry->getObject('constants')->getListTpl(),
-	    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	    	);
-		 //cargamos la info de cada usuario
-		 $this->registry->getObject('template')->getPage()->addTag( 'users', array( 'SQL', $pagination->getCache() ) );
-         //Cargamos la busqueda
-	     $this->registry->getObject('template')->getPage()->addTag( 'user.search',$_POST['user_search']);	
-		 
-         // cargamos el total de usuarios
-		 $this->registry->getObject('template')->getPage()->addTag( 'users_count', $pagination->getTotalRows() );		
-		 $pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
-	  }		
-	 
-  }	
-  
+	  } 
+  }
   
   
   /*

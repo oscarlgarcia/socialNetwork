@@ -5,7 +5,7 @@
 		<div class="panel-body">
         <form class="navbar-form" role="search" method="post" action="admin_users/search">
            <div class="input-group">
-             <input type="text" class="form-control" placeholder="Busca usuarios" id="search" name="user_search" value="{user.search}">
+             <input type="text" class="form-control" placeholder="Busca usuarios" id="search" name="search" value="{user.search}">
              <div class="input-group-btn">
                <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
              </div>
@@ -24,10 +24,10 @@
 		    </thead>
 		    <tbody>
 		    <!-- START users -->
-		      <tr>
+		      <tr class="{class}">
 		        <td>
                 <div class="btn-group">
-	              <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span class="caret"></span> {id}</button>
+	              <button type="button" data-toggle="dropdown" class="btn btn-{class} dropdown-toggle"><span class="caret"></span> {id}</button>
                   <ul class="dropdown-menu"> 
                   	<li><a href="#"><span class="fa fa-wechat"></span> Mensaje</a>
                     <li><a href="#"><span class="fa fa-calendar"></span> Historial</a>
@@ -35,7 +35,7 @@
                     <li><a href="#"><span class="fa fa-trash"></span> Eliminar</a>
 			      </ul>
 		        </td>
-		  	     <td>{login}</td>
+		  	     <td><a href="#">{login}</a></td>
 			     <td>{email}</td>
 			     <td>{date}</td>
 			     <td>{total_login}</td>

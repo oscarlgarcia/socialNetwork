@@ -26,6 +26,27 @@
     <div class="row">
       <div class="col-sm-2 col-md-2">
         <div class="panel-group" id="accordion">
+          <!-- Funciones historial -->
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <span class="fa fa-calendar">&nbsp;</span><a data-toggle="collapse" data-parent="#accordion" href="#collapseSite">Historial</a>
+              </h4>
+            </div>
+            <div id="collapseSite" class="panel-collapse collapse">
+              <div class="panel-body">
+                <table class="table">
+                  <tr><td><span class="fa fa-random">&nbsp;</span><a href="admin_users/browse">Rutas</a></td></tr>
+                   <tr><td><a href="admin_snippets/search">cccc</a></td></tr>
+                   <tr><td><a href="admin_links/browse">xxxxxx</a></td></tr>
+                   <tr><td><a href="admin_comments/browse">ccccc</a></td></tr>
+                   <tr><td><a href="admin_tags/browse">ssssss</a></td></tr>
+                 </table>
+               </div>
+             </div>
+           </div>
+           <!-- fin historial  -->
+          <!-- Funciones Comunidad -->
           <div class="panel panel-primary">
             <div class="panel-heading">
               <h4 class="panel-title">
@@ -35,31 +56,17 @@
             <div id="collapseOne" class="panel-collapse collapse">
               <div class="panel-body">
                 <table class="table">
-                  <tr>
-                    <td>
-                      <a href="admin_users/browse">Usuarios</a>
-                    </td>
-                   </tr>
-                   <tr>
-                     <td>
-                       <a href="admin_snippets/search">Snippets</a>
-                     </td>
-                   </tr>
-                   <tr>
-                     <td>
-                       <a href="admin_links/browse">Links</a>
-                     </td>
-                   </tr>
-                    <tr>
-                    <td>
-                      <a href="admin_comments/browse">Comentarios</a>
-                    </td>
-                   </tr>
+                  <tr><td><a href="admin_users/search">Usuarios</a></td></tr>
+                   <tr><td><a href="admin_snippets/search">Snippets</a></td></tr>
+                   <tr><td><a href="admin_links/browse">Links</a></td></tr>
+                   <tr><td><a href="admin_comments/browse">Comentarios</a></td></tr>
+                   <tr><td><a href="admin_tags/browse">Tags</a></td></tr>
                  </table>
                </div>
              </div>
            </div>
-           <!--   -->
+           <!-- fin comunidad  -->
+           <!-- Funciones  -->
            <div class="panel panel-primary">
             <div class="panel-heading">
               <h4 class="panel-title">
@@ -69,20 +76,13 @@
             <div id="collapseCMS" class="panel-collapse collapse">
               <div class="panel-body">
                 <table class="table">
-                  <tr>
-                    <td>
-                      <a href="admin_cms/add">Nueva pagina</a>
-                    </td>
-                   </tr>
-                  <tr>
-                    <td>
-                      <a href="admin_cms/browse">Paginas</a>
-                    </td>
-                   </tr>
+                  <tr><td><a href="admin_cms/add">Nueva pagina</a></td></tr>
+                  <tr><td><a href="admin_cms/browse">Paginas</a></td></tr>
                  </table>
                </div>
              </div>
            </div>
+            <!-- Fin Tutoriales  -->
            <div class="panel panel-primary">
                   <div class="panel-heading">
                         <h4 class="panel-title">

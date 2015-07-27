@@ -66,28 +66,11 @@ class UserModel extends Object{
   * @param int $offset 
   * @return Object pagination object
   */
-  public function listUsers( $offset=1 )
+  public function search( $offset=1, $criteria = "" )
   {
     $this->paginatedResult->setLimit($this->limit);
     $this->paginatedResult->setOffset( $offset-1);
-    $query="SELECT ( select count(ID_User) from user_event where eventName='user.login' and id_user = u.id ) as total_login, DATE_FORMAT((select max(dateExecuted) from user_event where eventName='user.login' and id_user = u.id ),'%d %b %Y %T') as last_login, u.id, u.user_login as login, DATE_FORMAT(u.user_registered,'%d %b %Y %T') as date, u.user_email as email FROM users u left join user_event  e on u.id = e.ID_user where  u.user_level!=10 group by u.id order by u.user_registered desc , e.dateExecuted asc";
-    $this->paginatedResult->setQuery( $query );
-    $this->paginatedResult->setMethod( 'cache' );
-    $this->paginatedResult->generatePagination();
-    return $this->paginatedResult;
-  }
-	
-  /**
-  * Genera lista de usuarios paginados
-  * @param criterio
-  * @return Object pagination object
-  */
-  public function search($criteria )
-  {
-    //Solo se mostraran los primeros 100 para no hacer paginación
-    $this->paginatedResult->setLimit(100);
-    $this->paginatedResult->setOffset(0);
-    $query="SELECT id, user_login as login, user_registered as date, user_email as email FROM users where user_level!=10 and (user_login like '%".$criteria."%' or user_email like '%".$criteria."%' ) order by user_registered desc";
+    $query="SELECT ( select count(ID_User) from user_event where eventName='user.login' and id_user = u.id ) as total_login, DATE_FORMAT((select max(dateExecuted) from user_event where eventName='user.login' and id_user = u.id ),'%d %b %Y %T') as last_login, u.id, u.user_login as login, s.status_class as class , DATE_FORMAT(u.user_registered,'%d %b %Y %T') as date, u.user_email as email FROM users u left join user_event  e on u.id = e.ID_user inner join operational_status s on s.id = u.user_status where  u.user_level!=10 and (user_login like '%".$criteria."%' or user_email like '%".$criteria."%' ) group by u.id order by e.dateExecuted asc";
     $this->paginatedResult->setQuery( $query );
     $this->paginatedResult->setMethod( 'cache' );
     $this->paginatedResult->generatePagination();

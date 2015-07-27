@@ -32,7 +32,7 @@
                 <button type="button" class="btn btn-{class}">{ID}</button>
                 <button type="button" data-toggle="dropdown" class="btn btn-{class} dropdown-toggle"> <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><a href="admin_snippets/view/{ID}"><span class="fa fa-eye"></span> Ver </a></li>
+                  <li><a href="admin_snippets/view/{ID}"><span class="fa fa-eye"></span> Ver</a></li>
                   <li><a href="admin_snippets/history/{ID}"><span class="fa fa-calendar"></span> Historial</a></li>
                   <li class="divider"></li>
                   <li><a href="admin_snippets/publish/{ID}"><span class="fa fa-check"></span> Publicar</a></li>
@@ -42,7 +42,7 @@
                 </ul>
               </div>
             </td>
-		  	    <td class="col-md-3">{title}</td>
+		  	    <td class="col-md-3"><a href="admin_snippets/view/{ID}">{title}</a></td>
             <td class="col-md-1">{author}</td>
             <td class="col-md-1">{category}</td>
             <td class="col-md-2">{fecha}</td>

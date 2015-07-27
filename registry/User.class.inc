@@ -125,7 +125,7 @@ class User{
 	
 	public function isActive()
 	{
-		return ( $this->userStatus == 1 ) ? true : false;
+		return ( $this->userStatus == 4 ) ? true : false;
 	}
 	
 	
@@ -136,7 +136,7 @@ class User{
 	
 	public function isBanned()
 	{
-		return ( $this->userStatus == 2 ) ? true : false;
+		return ( $this->userStatus == 5 ) ? true : false;
 	}
 	
 	public function isValid()
