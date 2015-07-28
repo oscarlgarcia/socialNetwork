@@ -57,19 +57,15 @@ class Admin_userscontroller{
 			   switch( $urlBits[1] )
 				{				  
 				   case 'search':
-  				     $this->search(intval($this->parameter1));
+  				      $this->search(intval($this->parameter1));
 					  break;
 
 					case 'view':
-					  //$this->view(intval($this->parameter1));
+					  $this->view(intval($this->parameter1));
 					  break;
 				}
 				
-			}else
-		   {
-		     //$this->action="browse";
-			  //$this->browse(1);
-		   }
+			}
 		   
 		}else 
 		{
@@ -85,7 +81,7 @@ class Admin_userscontroller{
 	
 	
    /*
-	* Metodo para buscar usuarios
+	* Metodo para buscar usuarios 
 	*
 	*
 	*/
@@ -135,78 +131,37 @@ class Admin_userscontroller{
   * Metodo que redirecciona a la plantilla de ver
   *
   **/
-  private function view($snippetID)
+  private function view($userID)
   {
-  	require_once( FRAMEWORK_PATH . 'models/snippets.inc');
-  	require_once( FRAMEWORK_PATH . 'models/tags_snippet.inc');
-	require_once( FRAMEWORK_PATH . 'models/rating_snippet.inc');
-	$snippets = new Snippets( $this->registry );
-	$snippetData = $snippets->getSnippet( $snippetID );
-	// Si no encontramos el snippet
-    if( $snippetData==null )
+  	require_once( FRAMEWORK_PATH . 'models/user.inc');
+	$user = new UserModel( $this->registry );
+	$data = $user->getUser( $userID );
+	// Si no encontramos el user
+    if( $data == null )
 	{
 	  //pantalla de error
 	  $this->registry->getObject('template')->buildFromTemplates(
-	  	$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_logged_base')).'snippets/'.$this->registry->getObject('constants')->getInvalidTpl(), 
-	  	$this->registry->getObject('constants')->getFooterTpl()
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base')).$this->registry->getObject('constants')->getHeaderTpl(),
+        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'users/'.$this->registry->getObject('constants')->getInvalidTpl(),
+        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
 	  	);
-	  //cargamos el total de snippets por categoria
-	  require_once( FRAMEWORK_PATH . 'models/category.inc');
-	  $category = new Category( $this->registry );
-	  $pagination =$category->countSnippetByCategory();
-	  $this->registry->getObject('template')->getPage()->addTag( 'langs', array( 'SQL', $pagination->getCache() ) );  
 	}
 	else
 	{ 
 	  //Si lo encontramos 
-	  // Definimos la pagina de view 
+	  // Definimos la pagina de view
 	  $this->registry->getObject('template')->buildFromTemplates(
-	  	$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_logged_base')).'snippets/'.$this->registry->getObject('constants')->getViewTpl(), 
-	  	$this->registry->getObject('constants')->getFooterTpl()
-	  	);
-	  // Cargamos los datos
-	  $this->registry->getObject('template')->getPage()->addTag('title',$snippetData['title']);
-	  $this->registry->getObject('template')->getPage()->addTag('description',$snippetData['description']);
-	  $this->registry->getObject('template')->getPage()->addTag('code',$snippetData['code']);
-	  $this->registry->getObject('template')->getPage()->addTag('rating',$snippetData['rating']);
-	  $this->registry->getObject('template')->getPage()->addTag('category',$snippetData['category']);
+        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base')).$this->registry->getObject('constants')->getHeaderTpl(),
+        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'users/'.$this->registry->getObject('constants')->getViewTpl(),
+        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+	  );
 	  
-	  // Comprobamos si el usuario lo ha guardado como favorito
-	  // Si es asi colocamos la action y el icono correspondiente
-	  if($snippets->isFavorited($snippetID,$this->registry->getObject('authenticate')->getUser()->getUserID())){
-	    $this->registry->getObject('template')->getPage()->addTag( 'action', "unfav" );
-		$this->registry->getObject('template')->getPage()->addTag( 'fav_msg', "glyphicon-heart" );  
-	  }else
-	  {
-	    $this->registry->getObject('template')->getPage()->addTag( 'action',"fav"); 
-		$this->registry->getObject('template')->getPage()->addTag( 'fav_msg', "glyphicon-heart-empty" ); 
-	  }
-	  
-	  
-	  // Cargamos los tags
-      $tags= new Tags_Snippet( $this->registry );
-      $pagination = $tags->listTagsBySnippet($snippetID);
-      if( $pagination->getNumRowsPage() > 0 )
-	  {
-        $this->registry->getObject('template')->getPage()->addTag( 'tags', array( 'SQL', $pagination->getCache() ) );    	  
-      }
-	
-	  // Validamos el rating
-	  // Si puede o no hacer rating
-	  $rated= new Rating_Snippet( $this->registry );
-      $this->registry->getObject('template')->getPage()->addTag( 'rating_readonly',$rated->isRatedByUser($snippetID,$this->registry->getObject('authenticate')->getUser()->getUserID()) );  
-      
-	  // cargamos los related
-	  $pagination =$tags->getRelatedSnippets($snippetID);
-      if( $pagination->getNumRowsPage() > 0 )
-	  {
-        $this->registry->getObject('template')->getPage()->addTag( 'related', array( 'SQL', $pagination->getCache() ) );    	  
-      }	
-	  
-	  //Guardamos la info en session para los metodos AJAX
-	  $this->registry->getObject('util')->storeToSession('snippet',$snippets->getSnippet($snippetID));
+	  /* Cargamos los datos
+	  $this->registry->getObject('template')->getPage()->addTag('title',$data['title']);
+	  $this->registry->getObject('template')->getPage()->addTag('description',$data['description']);
+	  $this->registry->getObject('template')->getPage()->addTag('code',$data['code']);
+	  $this->registry->getObject('template')->getPage()->addTag('rating',$data['rating']);
+	  $this->registry->getObject('template')->getPage()->addTag('category',$data['category']);*/
     }		
   }
  

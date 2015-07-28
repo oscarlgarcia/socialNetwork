@@ -327,6 +327,14 @@ class Snippets extends Object{
 	* Obtiene un snippet a partir de su ID
 	* @param int $snippetID 
 	* @return Object 
+	* - ID del snippet
+	* - Id del user
+	* - Titulo
+	* - Codigo
+	* - Descripcion
+	* - fecha en que se agrego
+	* - rating
+	* - categoria
 	*/
 	public function getSnippet($snippetId)
 	{

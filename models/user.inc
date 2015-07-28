@@ -70,13 +70,41 @@ class UserModel extends Object{
   {
     $this->paginatedResult->setLimit($this->limit);
     $this->paginatedResult->setOffset( $offset-1);
-    $query="SELECT ( select count(ID_User) from user_event where eventName='user.login' and id_user = u.id ) as total_login, DATE_FORMAT((select max(dateExecuted) from user_event where eventName='user.login' and id_user = u.id ),'%d %b %Y %T') as last_login, u.id, u.user_login as login, s.status_class as class , DATE_FORMAT(u.user_registered,'%d %b %Y %T') as date, u.user_email as email FROM users u left join user_event  e on u.id = e.ID_user inner join operational_status s on s.id = u.user_status where  u.user_level!=10 and (user_login like '%".$criteria."%' or user_email like '%".$criteria."%' ) group by u.id order by e.dateExecuted asc";
+    $query="SELECT ( select count(ID_User) from user_event where eventName='user.login' and id_user = u.id ) as total_login, DATE_FORMAT((select max(dateExecuted) from user_event where eventName='user.login' and id_user = u.id ),'%d %b %Y %T') as last_login, u.id, u.user_login as login, s.status_class as class , DATE_FORMAT(u.user_registered,'%d %b %Y %T') as date, u.user_email as email FROM users u left join user_event  e on u.id = e.ID_user left join operational_status s on s.id = u.user_status where  u.user_level!=10 and (user_login like '%".$criteria."%' or user_email like '%".$criteria."%' ) group by u.id order by e.dateExecuted asc";
     $this->paginatedResult->setQuery( $query );
     $this->paginatedResult->setMethod( 'cache' );
     $this->paginatedResult->generatePagination();
     return $this->paginatedResult;
   }
+
+
+  /*
+  * 
+  */
+  public function getUser($userID){
+    
+    $query = "SELECT u.ID as ID, u.user_login as login, u.twitter_name as twitter, u.user_email as email, u.user_url as url, u.display_name as display, u.experience_points as experience, u.reputation_points as reputation , u.level_points as level, u.user_level as granted , u.profile_image as image from users u where u.ID = ".$userID ;
+    $this->registry->getObject('db')->executeQuery( $query );
+    if( $this->registry->getObject('db')->numRows() > 0 )
+    {
+      $data = $this->registry->getObject('db')->getRows();
+      $tempo['ID'] = $data['ID'];
+      $tempo['login'] = $data['login'];
+      $tempo['twitter'] = $data['twitter'];
+      $tempo['email'] = $data['email'];
+      $tempo['url'] = $data['url'];
+      $tempo['display'] = $data['display'];
+      $tempo['experience'] = $data['experience'];
+      $tempo['reputation'] = $data['reputation'];
+      $tempo['level'] = $data['level'];
+      $tempo['granted'] = $data['granted'];
+      $tempo['image'] = $data['image'];
+      return $tempo;
+    }
+    return null;
+
+  }
+
 	
 }
-
 ?>

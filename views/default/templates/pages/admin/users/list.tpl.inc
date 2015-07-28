@@ -27,7 +27,8 @@
 		      <tr class="{class}">
 		        <td>
                 <div class="btn-group">
-	              <button type="button" data-toggle="dropdown" class="btn btn-{class} dropdown-toggle"><span class="caret"></span> {id}</button>
+	              <button type="button" class="btn btn-{class}">{id}</button>
+                <button type="button" data-toggle="dropdown" class="btn btn-{class} dropdown-toggle"> <span class="caret"></span></button>
                   <ul class="dropdown-menu"> 
                   	<li><a href="#"><span class="fa fa-wechat"></span> Mensaje</a>
                     <li><a href="#"><span class="fa fa-calendar"></span> Historial</a>
@@ -35,7 +36,7 @@
                     <li><a href="#"><span class="fa fa-trash"></span> Eliminar</a>
 			      </ul>
 		        </td>
-		  	     <td><a href="#">{login}</a></td>
+		  	     <td><a href="admin_users/view/{id}">{login}</a></td>
 			     <td>{email}</td>
 			     <td>{date}</td>
 			     <td>{total_login}</td>
