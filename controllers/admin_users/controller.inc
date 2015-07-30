@@ -156,11 +156,18 @@ class Admin_userscontroller{
         $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
 	  );
 	  
-	  /* Cargamos los datos
-	  $this->registry->getObject('template')->getPage()->addTag('title',$data['title']);
-	  $this->registry->getObject('template')->getPage()->addTag('description',$data['description']);
-	  $this->registry->getObject('template')->getPage()->addTag('code',$data['code']);
-	  $this->registry->getObject('template')->getPage()->addTag('rating',$data['rating']);
+	 //Cargamos los datos
+	  $this->registry->getObject('template')->getPage()->addTag('login',$data['login']);
+	  $this->registry->getObject('template')->getPage()->addTag( 'topUserURL', $this->registry->getSetting('avatar_path')); 
+	  $this->registry->getObject('template')->getPage()->addTag('image',$data['image']);
+	  $this->registry->getObject('template')->getPage()->addTag('twitter',$data['twitter']);
+	  $this->registry->getObject('template')->getPage()->addTag('url',$data['url']);
+	  $this->registry->getObject('template')->getPage()->addTag('total_snippets',$data['total_snippets']);
+	  $this->registry->getObject('template')->getPage()->addTag('total_links',$data['total_links']);
+	  $this->registry->getObject('template')->getPage()->addTag('total_comments_snippets',$data['total_comments_snippets']);
+	  
+	  
+	  /*$this->registry->getObject('template')->getPage()->addTag('rating',$data['rating']);
 	  $this->registry->getObject('template')->getPage()->addTag('category',$data['category']);*/
     }		
   }

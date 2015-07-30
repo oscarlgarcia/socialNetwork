@@ -15,7 +15,7 @@
 		    <thead>
 		      <tr>
 			     <th>ID</th>
-				  <th>Login</th>
+				  <th>Username</th>
 				  <th>Email</th>
 				  <th>Registrado</th>
 				  <th>#Veces Loggeado</th>

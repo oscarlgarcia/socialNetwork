@@ -1,0 +1,30 @@
+.profile 
+{
+    border: 1px solid #b6c5da;
+    border-top: 2px solid #b6c5da;
+    display: inline-block;
+    background-color: #ffffff;
+    padding: 15px 20px 20px 20px;
+ }
+
+.widget {
+    border-radius: 5px;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.navy-bg {
+    background-color: #1ab394;
+    color: #ffffff;
+}
+
+.lazur-bg {
+    background-color: #23c6c8;
+    color: #ffffff;
+}
+
+h2{
+	margin-top: 0px;
+    margin-bottom: 0px;
+}
