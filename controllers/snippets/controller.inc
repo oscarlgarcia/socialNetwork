@@ -484,6 +484,7 @@ class Snippetscontroller{
         $this->registry->getObject('template')->getPage()->addTag( 'ordered_by', ' creados por '.$username);		
 		// cargamos el total de snippets
 		$this->registry->getObject('template')->getPage()->addTag( 'snippets_count', $pagination->getTotalRows() );		
+
 		$pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
 		
 		//Cargamos los top contributors

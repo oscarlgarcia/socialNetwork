@@ -124,7 +124,7 @@ class Page{
   /**
   * Adds additional parsing data
   * A.P.D is used in parsing loops. We may want to have an extra bit
-  of data depending on on iterations value
+  * of data depending on on iterations value
   * for example on a form list, we may want a specific item to be "selected"
   * @param String block the condition applies to
   * @param String tag within the block the condition applies to

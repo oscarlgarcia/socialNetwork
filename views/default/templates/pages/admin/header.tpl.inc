@@ -61,6 +61,7 @@
                    <tr><td><a href="admin_links/browse">Links</a></td></tr>
                    <tr><td><a href="admin_comments/browse">Comentarios</a></td></tr>
                    <tr><td><a href="admin_tags/browse">Tags</a></td></tr>
+                   <tr><td><a href="admin_category/browse">Categorias</a></td></tr>
                  </table>
                </div>
              </div>

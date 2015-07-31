@@ -23,6 +23,7 @@ class Snippets extends Object{
   private $saveable_fields = array( 'title', 'description', 'code', 'ID_category', 'ID_User','rating','totalVotes','added','ID_status');
   /**
    * Genera lista de snippets aprobados para publicación ( Id_status = 4) paginados 
+   * Este metodo se llama en Snippets desde el usuario
    * Devuelve un ResulSet con la siguiente informacion en caché:
    * - ID
    * - Title
@@ -61,6 +62,7 @@ class Snippets extends Object{
 	
   /**
    * Genera lista de snippets populares aprobados para publicación ( Id_status = 4) paginados 
+   * Este metodo se llama en Snippets desde el usuario
    * Devuelve un ResulSet con la siguiente informacion en caché:
    * - ID
    * - Title
@@ -97,6 +99,7 @@ class Snippets extends Object{
 	
   /**
    * Genera lista de snippets favoritos aprobados para publicación ( Id_status = 4) paginados 
+   * Este metodo se llama en Snippets desde el usuario
    * Devuelve un ResulSet con la siguiente informacion en caché:
    * - ID
    * - Title
@@ -133,7 +136,8 @@ class Snippets extends Object{
 	
 	
   /**
-   * Genera lista de snippets mas comentados aprobados para publicación ( Id_status = 4) paginados 
+   * Genera lista de snippets mas comentados aprobados para publicación ( Id_status = 4) paginados
+   * Este metodo se llama en Snippets desde el usuario 
    * Devuelve un ResulSet con la siguiente informacion en caché:
    * - ID
    * - Title
@@ -170,7 +174,8 @@ class Snippets extends Object{
   }
 	
   /**
-   * Genera lista de snippets por la categoria aprobados para publicación ( Id_status = 4) paginados 
+   * Genera lista de snippets por la categoria aprobados para publicación ( Id_status = 4) paginados
+   * Este metodo se llama en Snippets desde el usuario 
    * Devuelve un ResulSet con la siguiente informacion en caché:
    * - ID
    * - Title
@@ -208,6 +213,7 @@ class Snippets extends Object{
 	
   /**
    * Genera lista de snippets por el usuario aprobados para publicación ( Id_status = 4) paginados 
+   * Este metodo se llama en Snippets desde el usuario
    * Devuelve un ResulSet con la siguiente informacion en caché:
    * - ID
    * - Title
@@ -245,6 +251,7 @@ class Snippets extends Object{
 	
   /**
    * Genera lista de snippets por tag aprobados para publicación ( Id_status = 4) paginados 
+   * Este metodo se llama en Snippets desde el usuario
    * Devuelve un ResulSet con la siguiente informacion en caché:
    * - ID
    * - Title
@@ -283,6 +290,36 @@ class Snippets extends Object{
 
   /**
    * Genera lista de snippets que coinciden con el criterio pasado paginados 
+   * Este metodo se llama en Admin_Snippets desde el administrador
+   * Devuelve un ResulSet con la siguiente informacion en caché:
+   * - ID
+   * - Title
+   * - Fecha ( Friendly format)
+   * - rating
+   * - Status
+   * - faved
+   * - Comments
+   * - category
+   * - autor
+   * - class. La CSS class del snippet ( dependiendo de su estatus)
+   * - User_id
+   * @param int $criterio 
+   * @return Object pagination object
+   */
+  public function search($offset = 1, $criteria = "")
+  {
+    $this->paginatedResult->setLimit(10);
+	$this->paginatedResult->setOffset($offset - 1);
+	$query="SELECT s.ID,s.title, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha, s.rating, s.id_status, s.totalFav as faved, s.totalComments as comments, c.name as category, u.user_login as author,u.id as user_id, o.status_class as class	FROM snippets s inner join category c on s.ID_category = c.ID inner join users u on s.ID_USER = u.ID inner join operational_status o on s.ID_Status = o.ID where s.title like '%".$criteria."%'  group by ID order by added desc";
+	$this->paginatedResult->setQuery( $query );
+	$this->paginatedResult->setMethod( 'cache' );
+	$this->paginatedResult->generatePagination();
+	return $this->paginatedResult;
+  }
+
+  /**
+   * Genera lista de snippets que coinciden con el usuario pasado paginados 
+   * Este metodo se llama en Admin_Snippets desde el administrador
    * Devuelve un ResulSet con la siguiente informacion en caché:
    * - ID
    * - Title
@@ -297,19 +334,21 @@ class Snippets extends Object{
    * @param int $criterio 
    * @return Object pagination object
    */
-  public function search($offset = 1, $criteria = "")
+  public function searchByUser($offset = 1, $username)
   {
     $this->paginatedResult->setLimit(10);
-	$this->paginatedResult->setOffset($offset - 1);
-	$query="SELECT s.ID,s.title, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha, s.rating, s.id_status, s.totalFav as faved, s.totalComments as comments, c.name as category, u.user_login as author, o.status_class as class	FROM snippets s inner join category c on s.ID_category = c.ID inner join users u on s.ID_USER = u.ID inner join operational_status o on s.ID_Status = o.ID where s.title like '%".$criteria."%'  group by ID order by added desc";
-	$this->paginatedResult->setQuery( $query );
-	$this->paginatedResult->setMethod( 'cache' );
-	$this->paginatedResult->generatePagination();
-	return $this->paginatedResult;
+    $this->paginatedResult->setOffset($offset - 1);
+    $query="SELECT s.ID,s.title, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha, s.rating, s.id_status, s.totalFav as faved, s.totalComments as comments, c.name as category, u.user_login as author,u.id as user_id, o.status_class as class FROM snippets s inner join category c on s.ID_category = c.ID inner join users u on s.ID_USER = u.ID inner join operational_status o on s.ID_Status = o.ID where u.user_login = '".$username."' group by ID order by added desc";
+
+    $this->paginatedResult->setQuery( $query );
+    $this->paginatedResult->setMethod( 'cache' );
+    $this->paginatedResult->generatePagination();
+    return $this->paginatedResult;
   }
 	
 	/**
 	 * Genera lista de usuarios que mas han creado snippets
+   * Este metodo se llama en Snippets desde el usuario
 	 * @return  ResultSet, un resultSet de los contribuidores
 	 */
 	public function topSnippetsContributors()
@@ -325,6 +364,7 @@ class Snippets extends Object{
 
     /**
 	* Obtiene un snippet a partir de su ID
+  * Se llama tanto desde User como desde admin
 	* @param int $snippetID 
 	* @return Object 
 	* - ID del snippet
@@ -382,6 +422,7 @@ class Snippets extends Object{
 	
   /*
   * Metodo que detemina si el usuario ha marcado como favorito el snippet
+  * Este metodo se llama en Snippets desde el user
   * @param int, $snippetID ID del snippet
   * @param int, $userID ID del usuario
   * @return boolean, True si ha marcado como favorito, False si no

@@ -271,13 +271,14 @@ class Pagination {
       $sub2 = $pn - 2;
       $add1 = $pn + 1;
       $add2 = $pn + 2;	   	   
-
+      
 	  $to_print=""; 
 	  $href= "<a href=\"".$controller."/".$action."/";
       if (!is_null($parameter1)){
 	    if(!is_numeric($parameter1))
 		  $href .=$parameter1."/";
 	  } 
+
 	  
 	  if ($this->numRowsPage<=$this->limit){  // si es solo 1 pagina
 		$to_print .= "<li class=\"disabled\"><span>&laquo;</span></li><li class=\"active\"><span>".$pn ."</span></li><li class=\"disabled\"><span>&raquo;</span></li>";

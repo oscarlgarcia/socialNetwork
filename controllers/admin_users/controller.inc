@@ -157,6 +157,7 @@ class Admin_userscontroller{
 	  );
 	  
 	 //Cargamos los datos
+	  $this->registry->getObject('template')->getPage()->addTag('ID',$data['ID']);
 	  $this->registry->getObject('template')->getPage()->addTag('login',$data['login']);
 	  $this->registry->getObject('template')->getPage()->addTag( 'topUserURL', $this->registry->getSetting('avatar_path')); 
 	  $this->registry->getObject('template')->getPage()->addTag('image',$data['image']);

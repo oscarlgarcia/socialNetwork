@@ -43,7 +43,7 @@
               </div>
             </td>
 		  	    <td class="col-md-3"><a href="admin_snippets/view/{ID}">{title}</a></td>
-            <td class="col-md-1">{author}</td>
+            <td class="col-md-1"><a href="admin_snippets/listByUser/{author}">{author}</a></td>
             <td class="col-md-1">{category}</td>
             <td class="col-md-2">{fecha}</td>
             <td class="col-md-1">{comments}</td>
