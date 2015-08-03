@@ -110,6 +110,65 @@ class Links extends Object{
 	return $this->paginatedResult;
   }
 	
+
+  /**
+   * Genera lista de links que coinciden con el criterio pasado paginados 
+   * Este metodo se llama en Admin_Links desde el administrador
+   * Devuelve un ResulSet con la siguiente informacion en caché:
+   * - ID
+   * - Title
+   * - Fecha ( Friendly format)
+   * - rating
+   * - Status
+   * - faved
+   * - Comments
+   * - autor
+   * - class. La CSS class del snippet ( dependiendo de su estatus)
+   * - User_id
+   * @param int $criterio 
+   * @return Object pagination object
+   */
+  public function search($offset = 1, $criteria = "")
+  {
+    $this->paginatedResult->setLimit(10);
+  $this->paginatedResult->setOffset($offset - 1);
+  $query="SELECT s.ID,s.title, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha, s.rating, s.id_status, s.totalFav as faved, s.totalComments as comments, u.user_login as author,u.id as user_id, o.status_class as class FROM links s inner join users u on s.ID_USER = u.ID inner join operational_status o on s.ID_Status = o.ID where s.title like '%".$criteria."%'  group by ID order by added desc";
+  $this->paginatedResult->setQuery( $query );
+  $this->paginatedResult->setMethod( 'cache' );
+  $this->paginatedResult->generatePagination();
+  return $this->paginatedResult;
+  }
+
+
+ /**
+   * Genera lista de links que coinciden con el usuario pasado paginados 
+   * Este metodo se llama en Admin_links desde el administrador
+   * Devuelve un ResulSet con la siguiente informacion en caché:
+   * - ID
+   * - Title
+   * - Fecha ( Friendly format)
+   * - rating
+   * - Status
+   * - faved
+   * - Comments
+   * - autor
+   * - class. La CSS class del snippet ( dependiendo de su estatus)
+   * @param int $criterio 
+   * @return Object pagination object
+   */
+  public function searchByUser($offset = 1, $username)
+  {
+    $this->paginatedResult->setLimit(10);
+    $this->paginatedResult->setOffset($offset - 1);
+    $query="SELECT s.ID,s.title, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha, s.rating, s.id_status, s.totalFav as faved, s.totalComments as comments, u.user_login as author,u.id as user_id, o.status_class as class FROM links s inner join users u on s.ID_USER = u.ID inner join operational_status o on s.ID_Status = o.ID where u.user_login = '".$username."' group by ID order by added desc";
+
+    $this->paginatedResult->setQuery( $query );
+    $this->paginatedResult->setMethod( 'cache' );
+    $this->paginatedResult->generatePagination();
+    return $this->paginatedResult;
+  }
+
+
   /**
    * Obtiene un snippet a partir de su ID
    * @param int $linkId 

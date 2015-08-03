@@ -289,9 +289,6 @@ class Admin_snippetscontroller{
 		$pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
 	  }		
 
-
-
-
   }
 
 

@@ -56,24 +56,17 @@ class Admin_linkscontroller{
 			  
 			   switch( $urlBits[1] )
 				{
-					case 'browse':
-					  $this->browse(intval($this->parameter1));
-					  break;
-					  
-				   case 'search':
-  				     $this->search(intval($this->parameter1));
-					  break;
+					
+				  case 'search':
+  				    $this->search(intval($this->parameter1));
+				    break;
 
-					case 'view':
-					  //$this->view(intval($this->parameter1));
-					  break;
+                  case 'listByUser':
+				    $this->listByUser($this->parameter1,intval($this->parameter2));
+				    break;
 				}
 				
-			}else
-		   {
-		     //$this->action="browse";
-			  //$this->browse(1);
-		   }
+			}
 		   
 		}else 
 		{
@@ -88,166 +81,103 @@ class Admin_linkscontroller{
 	}
 	
 	
-   /*
-	* Metodo para buscar snippets
-	*
-	*
+	/*
+	* Metodo para buscar Links desde la pantalla de admin
 	*/
-    private function browse($offset=1)
+    private function search($offset)
     {   
-      $offset=($offset<=0)?1:$offset;
-  	   require_once( FRAMEWORK_PATH . 'models/links.inc');
-	   $snippets = new Snippets( $this->registry );
-	   $pagination = $snippets->listSnippets( $offset );
+      $offset = ($offset<=0)?1:$offset;
+      
+      if (!isset($_SESSION['link_criteria'])){
+      	$this->registry->getObject('util')->storeToSession('link_criteria',"");
+      }
+
+      if (isset($_POST['search'])){
+      	$this->registry->getObject('util')->storeToSession('link_criteria',$_POST['search']);
+      }
+
+      require_once( FRAMEWORK_PATH . 'models/links.inc');
+	  $links = new Links( $this->registry );
+	  $pagination = $links->search($offset,$_SESSION['link_criteria']);
 	 
       if(!$pagination->checkOffset($offset) )
+      {
         $this->registry->getObject('template')->buildFromTemplates(
-        	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-        	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'links/'.$this->registry->getObject('constants')->getInvalidTpl(),
-        	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-        	);
-	   else
-	  { 
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'links/'.$this->registry->getObject('constants')->getInvalidTpl(),
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+        );
+        
+        //Cargamos la busqueda
+	    $this->registry->getObject('template')->getPage()->addTag('links.search',$_SESSION['link_criteria']);	
+        // cargamos el total de links
+		$this->registry->getObject('template')->getPage()->addTag( 'links_count', $pagination->getTotalRows() );	
 
-	    $this->registry->getObject('template')->buildFromTemplates(
-	    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'links/'.$this->registry->getObject('constants')->getListTpl(),
-	    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	    	);
-		 //cargamos la info de cada snippet
-		 $this->registry->getObject('template')->getPage()->addTag( 'snippets', array( 'SQL', $pagination->getCache() ) );
-         
-		 //Cargamos la busqueda
-	     $this->registry->getObject('template')->getPage()->addTag( 'snippet.search',"");	
-         // cargamos el total de snippets
-		 $this->registry->getObject('template')->getPage()->addTag( 'snippets_count', $pagination->getTotalRows() );		
-		 $pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
-	  }		
-	 
-  }	
-   
-   /*
-	* Metodo para buscar snippets con query
-	*
-	*
-	*/
-    private function search()
-    {   
-  	   require_once( FRAMEWORK_PATH . 'models/snippets.inc');
-	   $snippet = new Snippets($this->registry );
-	   $pagination = $snippet->search($_POST['snippet_search']);
-	 
-      if($pagination->getTotalRows()<=0)
-        $this->registry->getObject('template')->buildFromTemplates(
-        	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-        	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'links/'.$this->registry->getObject('constants')->getNoResultsTpl(),
-        	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-        	);
-	   else
-	  { 
-
-	    $this->registry->getObject('template')->buildFromTemplates(
-	    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'links/'.$this->registry->getObject('constants')->getListTpl(),
-	    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	    	);
-		 //cargamos la info de cada usuario
-		 $this->registry->getObject('template')->getPage()->addTag( 'snippets', array( 'SQL', $pagination->getCache() ) );
-         //Cargamos la busqueda
-	     $this->registry->getObject('template')->getPage()->addTag( 'snippet.search',$_POST['snippet_search']);	
-		 
-         // cargamos el total de usuarios
-		 $this->registry->getObject('template')->getPage()->addTag( 'snippets_count', $pagination->getTotalRows() );		
-		 $pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
-	  }		
-	 
-  }	
-  
-  
-  
-  /*
-  * Metodo que redirecciona a la plantilla de ver
-  *
-  **/
-  private function view($snippetID)
-  {
-  	require_once( FRAMEWORK_PATH . 'models/snippets.inc');
-  	require_once( FRAMEWORK_PATH . 'models/tags_snippet.inc');
-	require_once( FRAMEWORK_PATH . 'models/rating_snippet.inc');
-	$snippets = new Snippets( $this->registry );
-	$snippetData = $snippets->getSnippet( $snippetID );
-	// Si no encontramos el snippet
-    if( $snippetData==null )
-	{
-	  //pantalla de error
-	  $this->registry->getObject('template')->buildFromTemplates(
-	  	$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_logged_base')).'links/'.$this->registry->getObject('constants')->getInvalidTpl(), 
-	  	$this->registry->getObject('constants')->getFooterTpl()
-	  	);
-	  //cargamos el total de snippets por categoria
-	  require_once( FRAMEWORK_PATH . 'models/category.inc');
-	  $category = new Category( $this->registry );
-	  $pagination =$category->countSnippetByCategory();
-	  $this->registry->getObject('template')->getPage()->addTag( 'langs', array( 'SQL', $pagination->getCache() ) );  
-	}
-	else
-	{ 
-	  //Si lo encontramos 
-	  // Definimos la pagina de view 
-	  $this->registry->getObject('template')->buildFromTemplates(
-	  	$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_logged_base')).'links/'.$this->registry->getObject('constants')->getViewTpl(), 
-	  	$this->registry->getObject('constants')->getFooterTpl()
-	  	);
-	  // Cargamos los datos
-	  $this->registry->getObject('template')->getPage()->addTag('title',$snippetData['title']);
-	  $this->registry->getObject('template')->getPage()->addTag('description',$snippetData['description']);
-	  $this->registry->getObject('template')->getPage()->addTag('code',$snippetData['code']);
-	  $this->registry->getObject('template')->getPage()->addTag('rating',$snippetData['rating']);
-	  $this->registry->getObject('template')->getPage()->addTag('category',$snippetData['category']);
-	  
-	  // Comprobamos si el usuario lo ha guardado como favorito
-	  // Si es asi colocamos la action y el icono correspondiente
-	  if($snippets->isFavorited($snippetID,$this->registry->getObject('authenticate')->getUser()->getUserID())){
-	    $this->registry->getObject('template')->getPage()->addTag( 'action', "unfav" );
-		$this->registry->getObject('template')->getPage()->addTag( 'fav_msg', "glyphicon-heart" );  
-	  }else
-	  {
-	    $this->registry->getObject('template')->getPage()->addTag( 'action',"fav"); 
-		$this->registry->getObject('template')->getPage()->addTag( 'fav_msg', "glyphicon-heart-empty" ); 
-	  }
-	  
-	  
-	  // Cargamos los tags
-      $tags= new Tags_Snippet( $this->registry );
-      $pagination = $tags->listTagsBySnippet($snippetID);
-      if( $pagination->getNumRowsPage() > 0 )
-	  {
-        $this->registry->getObject('template')->getPage()->addTag( 'tags', array( 'SQL', $pagination->getCache() ) );    	  
       }
+	  else
+	  { 
+        $this->registry->getObject('template')->buildFromTemplates(
+	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'links/'.$this->registry->getObject('constants')->getListTpl(),
+	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+	    );
+		//cargamos la info de cada snippet
+		$this->registry->getObject('template')->getPage()->addTag( 'links', array( 'SQL', $pagination->getCache() ) );
+         
+		//Cargamos la busqueda
+	    $this->registry->getObject('template')->getPage()->addTag( 'links.search',$_SESSION['link_criteria']);	
+        // cargamos el total de links
+		$this->registry->getObject('template')->getPage()->addTag( 'links_count', $pagination->getTotalRows() );		
+		$pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
+	  }		
+    }
+
 	
-	  // Validamos el rating
-	  // Si puede o no hacer rating
-	  $rated= new Rating_Snippet( $this->registry );
-      $this->registry->getObject('template')->getPage()->addTag( 'rating_readonly',$rated->isRatedByUser($snippetID,$this->registry->getObject('authenticate')->getUser()->getUserID()) );  
-      
-	  // cargamos los related
-	  $pagination =$tags->getRelatedSnippets($snippetID);
-      if( $pagination->getNumRowsPage() > 0 )
-	  {
-        $this->registry->getObject('template')->getPage()->addTag( 'related', array( 'SQL', $pagination->getCache() ) );    	  
-      }	
-	  
-	  //Guardamos la info en session para los metodos AJAX
-	  $this->registry->getObject('util')->storeToSession('snippet',$snippets->getSnippet($snippetID));
-    }		
+/*
+  * Busca links de un usuario en particular
+  */
+  private function listByUser($username,$offset){
+
+  	$offset = ($offset<=0)?1:$offset;
+    require_once( FRAMEWORK_PATH . 'models/links.inc');
+    $links = new Links( $this->registry );
+	$pagination = $links->searchByUser($offset, $username );
+    
+    if(!$pagination->checkOffset($offset) )
+      {
+        $this->registry->getObject('template')->buildFromTemplates(
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'links/'.$this->registry->getObject('constants')->getInvalidTpl(),
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+        );
+        
+        //Cargamos la busqueda
+	    $this->registry->getObject('template')->getPage()->addTag('links.search',$_SESSION['link_criteria']);	
+        // cargamos el total de links
+		$this->registry->getObject('template')->getPage()->addTag( 'links_count', $pagination->getTotalRows() );	
+
+      }
+	  else
+	  { 
+        $this->registry->getObject('template')->buildFromTemplates(
+	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'links/'.$this->registry->getObject('constants')->getListTpl(),
+	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+	    );
+		//cargamos la info de cada snippet
+		$this->registry->getObject('template')->getPage()->addTag( 'links', array( 'SQL', $pagination->getCache() ) );
+         
+		//Cargamos la busqueda
+	    $this->registry->getObject('template')->getPage()->addTag( 'links.search',$_SESSION['link_criteria']);	
+        // cargamos el total de links
+		$this->registry->getObject('template')->getPage()->addTag( 'links_count', $pagination->getTotalRows() );	
+		$pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
+	  }		
+
   }
- 
-
 	
 
-	
+
 }
 			
 ?>

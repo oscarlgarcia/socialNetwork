@@ -65,55 +65,70 @@
           </div> 
         </div>  
         
-        <div class="col-sm-4">
+        <div class="col-sm-6">
           <div class="widget navy-bg text-center">
             <div class="row">
-              <div class="col-sm-4">
+              <div class="col-sm-3">
                 <i class="fa fa-code fa-3x"></i>
               </div>
-              <div class="col-sm-8">
+              <div class="col-sm-4">
                 <span>Snippets</span>
+                <h2><strong><a href="admin_snippets/listByUser/{login}">{total_snippets}</a></strong></h2>                    
+              </div>
+              <div class="col-sm-5">
+                <span>Comentarios</span>
                 <h2><strong><a href="admin_snippets/listByUser/{login}">{total_snippets}</a></strong></h2>                    
               </div>
             </div>
           </div>
         </div>
 
-          <div class="col-sm-2">
-            <div class="widget navy-bg text-center">
-              <i class="fa fa-bookmark fa-2x"></i>
-              <h2><strong>{total_links}</strong></h2>                    
-              <p><small>Links</small></p>
+        <div class="col-sm-6">
+          <div class="widget lazur-bg text-center">
+            <div class="row">
+              <div class="col-sm-3">
+                <i class="fa fa-bookmark fa-3x"></i>
+              </div>
+              <div class="col-sm-4">
+                <span>Links</span>
+                <h2><strong><a href="admin_links/listByUser/{login}">{total_links}</a></strong>
+              </div>
+              <div class="col-sm-5">
+                <span>Comentarios</span>
+                <h2><strong><a href="admin_snippets/listByUser/{login}">{total_snippets}</a></strong></h2>                    
+              </div>
             </div>
           </div>
-          <div class="col-sm-2">
-            <div class="widget lazur-bg text-center">
-              <i class="fa fa-comment fa-2x"></i>
-              <h2><strong>{total_comments_snippets}</strong></h2>                    
-              <p><small>Snippets</small></p>
-            </div>
-          </div>
-          <div class="col-sm-2">
-            <div class="widget lazur-bg text-center">
-              <i class="fa fa-comment fa-2x"></i>
-              <h2><strong>{total_comments_snippets}</strong></h2>                    
-              <p><small>Links</small></p>
-            </div> 
-          </div>  
-          <div class="col-sm-2">
+        </div>
+          
+          <div class="col-sm-4">
             <div class="widget yellow-bg text-center">
-              <i class="fa fa-user fa-2x"></i>
-              <h2><strong>{total_comments_snippets}</strong></h2>                    
-              <p><small>Logged</small></p>
-            </div> 
+              <div class="row">
+                <div class="col-sm-3">
+                  <i class="fa fa-user fa-3x"></i>
+                </div>
+                <div class="col-sm-5">
+                  <span>Sesiones</span>
+                  <h2><strong><a href="admin_snippets/listByUser/{login}">{total_snippets}</a></strong></h2>                    
+                </div>
+              </div>
+            </div>
           </div>  
-          <div class="col-sm-2">
+
+          <div class="col-sm-4">
             <div class="widget red-bg text-center">
-              <i class="fa fa-history fa-2x"></i>
-              <h2><strong>{total_comments_snippets}</strong></h2>                    
-              <p><small>Historial</small></p>
-            </div> 
-          </div>  
+              <div class="row">
+                <div class="col-sm-3">
+                  <i class="fa fa-history fa-3x"></i>
+                </div>
+                <div class="col-sm-5">
+                  <span>Historial</span>
+                  <h2><strong><a href="admin_snippets/listByUser/{login}">{total_snippets}</a></strong></h2>                    
+                </div>
+              </div>
+            </div>
+          </div>
+
        </div> 
      <!-- Fin Perfil -->
       </div>
