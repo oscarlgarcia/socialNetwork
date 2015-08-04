@@ -18,8 +18,23 @@ class Links extends Object{
   private $limit = 5; //TODO poner en configs
   private $saveable_fields = array( 'title', 'description', 'url', 'ID_User','rating','totalVotes','added');
 	
-  /**
-   * Genera lista de links paginados
+ /**
+   * Genera lista de links aprobados para publicación ( Id_status = 4) paginados 
+   * Este metodo se llama en Links desde el usuario
+   * Devuelve un ResulSet con la siguiente informacion en caché:
+   * - ID
+   * - Title
+   * - url
+   * - descripcion
+   * - Fecha ( Friendly format)
+   * - Fecha ( raw para ordenacion)
+   * - rating
+   * - faved
+   * - Comments
+   * - autor
+   * - profile_image
+   * - tag name
+   * - All tags 
    * @param int $offset 
    * @return Object pagination object
    */
@@ -32,7 +47,7 @@ class Links extends Object{
 		As all_tags FROM( SELECT l.ID,l.title, l.url ,l.description, DATE_FORMAT( l.added,'%b %d %Y') as fecha , l.added as rawDate,
 		l.rating,l.totalFav as faved,l.totalComments as comments, u.user_login as author,u.profile_image , CONCAT('<a href=\"links/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
 		FROM links l inner join users u on l.ID_USER=u.ID inner join list_tags_links lt on l.ID=lt.ID_Links 
-		inner join tags t on lt.ID_Tags=t.ID ) tbl GROUP BY tbl.id order by ".$order." desc";
+		inner join tags t on lt.ID_Tags=t.ID  where l.id_status = 4 ) tbl GROUP BY tbl.id order by ".$order." desc";
 	$this->paginatedResult->setQuery( $query );
 	$this->paginatedResult->setMethod( 'cache' );
 	$this->paginatedResult->generatePagination();
@@ -40,7 +55,22 @@ class Links extends Object{
   }
 		
   /**
-   * Genera lista de snippets por usuario paginados
+   * Genera lista de links por usuario aprobados para publicación ( Id_status = 4) paginados 
+   * Este metodo se llama en Links desde el usuario
+   * Devuelve un ResulSet con la siguiente informacion en caché:
+   * - ID
+   * - Title
+   * - url
+   * - descripcion
+   * - Fecha ( Friendly format)
+   * - Fecha ( raw para ordenacion)
+   * - rating
+   * - faved
+   * - Comments
+   * - autor
+   * - profile_image
+   * - tag name
+   * - All tags 
    * @param string username, int $offset 
    * @return Object pagination object
    */
@@ -52,7 +82,7 @@ class Links extends Object{
 		As all_tags FROM( SELECT l.ID,l.title, l.url,l.description, DATE_FORMAT( l.added,'%b %d %Y') as fecha , 
 		l.rating as rating,l.totalFav as faved,l.totalComments as comments, u.user_login as author, u.profile_image , CONCAT('<a href=\"links/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
 		FROM links l inner join users u on l.ID_User=u.ID inner join list_tags_links lt on l.ID=lt.ID_Links
-		inner join tags t on lt.ID_Tags=t.ID where u.user_login='".$username."' ) tbl GROUP BY tbl.id ";
+		inner join tags t on lt.ID_Tags=t.ID where u.user_login='".$username."' and l.id_status = 4 ) tbl GROUP BY tbl.id ";
 	$this->paginatedResult->setQuery( $query );
 	$this->paginatedResult->setMethod( 'cache' );
 	$this->paginatedResult->generatePagination();
@@ -60,7 +90,22 @@ class Links extends Object{
   }
 	
   /**
-    * Genera lista de snippets por tag paginados
+   * Genera lista de links por tag aprobados para publicación ( Id_status = 4) paginados 
+   * Este metodo se llama en Links desde el usuario
+   * Devuelve un ResulSet con la siguiente informacion en caché:
+   * - ID
+   * - Title
+   * - url
+   * - descripcion
+   * - Fecha ( Friendly format)
+   * - Fecha ( raw para ordenacion)
+   * - rating
+   * - faved
+   * - Comments
+   * - autor
+   * - profile_image
+   * - tag name
+   * - All tags 
     * @param string tag, int $offset 
 	* @return Object pagination object
 	*/
@@ -72,7 +117,7 @@ class Links extends Object{
 		As all_tags FROM( SELECT l.ID, l.title, l.url ,l.description, DATE_FORMAT( l.added,'%b %d %Y') as fecha , 
 		l.rating as rating,l.totalFav as faved,l.totalComments as comments, u.user_login as author, u.profile_image , CONCAT('<a href=\"links/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
 		FROM links l inner join users u on l.ID_USER=u.ID inner join list_tags_links lt on l.ID=lt.ID_Links 
-		inner join tags t on lt.ID_Tags=t.ID where t.tag_name='".$tag."' ) tbl GROUP BY tbl.id ";
+		inner join tags t on lt.ID_Tags=t.ID where t.tag_name='".$tag."' and l.id_status = 4 ) tbl GROUP BY tbl.id ";
 	$this->paginatedResult->setQuery( $query );
 	$this->paginatedResult->setMethod( 'cache' );
 	$this->paginatedResult->generatePagination();
@@ -88,7 +133,7 @@ class Links extends Object{
   {
     $this->paginatedResult->setLimit(35);
     $this->paginatedResult->setOffset(0);
-    $query = "SELECT  count(b.id) as total , b.user_login, b.profile_image FROM links a inner join users b on a.ID_User = b.ID group by b.user_login order by total DESC";
+    $query = "SELECT  count(b.id) as total , b.user_login, b.profile_image FROM links a inner join users b on a.ID_User = b.ID where a.id_status = 4 group by b.user_login order by total DESC";
     $this->paginatedResult->setQuery( $query );
 	$this->paginatedResult->setMethod( 'cache' );
 	$this->paginatedResult->generatePagination();
@@ -103,7 +148,7 @@ class Links extends Object{
   {
     $this->paginatedResult->setLimit(15); 
 	$this->paginatedResult->setOffset(0);
-	$query = "SELECT count(a.tag_name) total, a.tag_name as name FROM tags a inner join list_tags_links b on a.ID=b.ID_tags group by a.tag_name order by total desc";
+	$query = "SELECT count(a.tag_name) total, a.tag_name as name FROM tags a inner join list_tags_links b on a.ID = b.ID_tags inner join links l on l.id = b.ID_Links where l.id_status = 4 group by a.tag_name order by total desc";
 	$this->paginatedResult->setQuery( $query );
 	$this->paginatedResult->setMethod( 'cache' );
 	$this->paginatedResult->generatePagination();
@@ -206,6 +251,24 @@ class Links extends Object{
 	return false;
   }
 
+
+
+  /**
+  * borra un link a partir de su ID
+  * @param int $linkID 
+  */
+  public function delete($linkID)
+  {
+    $this->registry->getObject('db')->deleteRecords( 'links',' id = '.$linkID,'1');
+    $uid = $this->registry->getObject('db')->lastInsertID();
+    return $uid;  
+  }
+ 
+
+   /*
+  * Metodo que guarda el link
+  *
+  **/
   public function save()
   {
     $changes = array();
@@ -217,6 +280,20 @@ class Links extends Object{
 	$uid = $this->registry->getObject('db')->lastInsertID();
 	return $uid;  
   }	
+
+
+  /**
+  * actualiza el estatus del links a partir de su ID
+  * @param int $snippetID 
+  */
+  public function updateStatus($id, $status)
+  {
+    $changes = array();
+    $changes['ID_Status'] = $status;
+    $this->registry->getObject('db')->updateRecords('links', $changes," id = ".$id );
+    $uid = $this->registry->getObject('db')->lastInsertID();
+    return $uid;  
+  }
 	
   /*
   * Metodos setter y getter

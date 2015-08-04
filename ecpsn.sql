@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-08-2015 a las 17:35:50
+-- Tiempo de generación: 04-08-2015 a las 17:12:43
 -- Versión del servidor: 5.6.17
 -- Versión de PHP: 5.5.12
 
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `badges_achieved` (
   PRIMARY KEY (`ID`),
   KEY `fk1_idx` (`ID_User`),
   KEY `fk2_idx` (`ID_Badge`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Almacena la relacion de badges por usuario\n' AUTO_INCREMENT=38 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Almacena la relacion de badges por usuario\n' AUTO_INCREMENT=40 ;
 
 --
 -- Volcado de datos para la tabla `badges_achieved`
@@ -83,7 +83,9 @@ INSERT INTO `badges_achieved` (`ID`, `ID_User`, `ID_Badge`, `showed`) VALUES
 (34, 10, 5, 0),
 (35, 10, 3, 0),
 (36, 14, 3, 0),
-(37, 14, 5, 0);
+(37, 14, 5, 0),
+(38, 11, 3, 0),
+(39, 11, 5, 0);
 
 -- --------------------------------------------------------
 
@@ -135,7 +137,7 @@ CREATE TABLE IF NOT EXISTS `comments_links` (
   PRIMARY KEY (`ID`),
   KEY `fk_comments_links1_idx` (`ID_User`),
   KEY `fk_comments_links2_idx` (`ID_Link`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 --
 -- Volcado de datos para la tabla `comments_links`
@@ -145,8 +147,22 @@ INSERT INTO `comments_links` (`ID`, `added`, `approved`, `comment`, `ID_User`, `
 (1, '2014-12-17 00:14:30', 0, 'sam`Ã±e\r\n', 8, 1),
 (2, '2014-12-22 01:19:21', 0, 'ejemplo desde mac', 8, 1),
 (3, '2015-03-27 14:06:43', 0, 'asdasdsdfsdf\r\n', 8, 18),
-(4, '2015-03-27 14:06:52', 0, 'sdfsdfs\r\n', 8, 19),
-(5, '2015-06-08 15:40:27', 0, 'assfsdfsadf', 8, 18);
+(5, '2015-06-08 15:40:27', 0, 'assfsdfsadf', 8, 18),
+(6, '2015-08-04 16:40:02', 0, 'sefsdfasdfasdf', 8, 18),
+(7, '2015-08-04 16:50:02', 0, 's&lt;dfsdffsdf\r\n', 8, 18),
+(8, '2015-08-04 16:50:05', 0, 'sfdgsdfgsdfg', 8, 18),
+(9, '2015-08-04 16:50:33', 0, 'xfghdfxghdfghf', 8, 2),
+(11, '2015-08-04 17:04:20', 0, 'fffdghdfgh', 8, 17);
+
+--
+-- Disparadores `comments_links`
+--
+DROP TRIGGER IF EXISTS `comment_links_add`;
+DELIMITER //
+CREATE TRIGGER `comment_links_add` AFTER INSERT ON `comments_links`
+ FOR EACH ROW UPDATE links SET totalComments = (totalComments+1) WHERE links.ID = NEW.ID_Link
+//
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -328,13 +344,30 @@ CREATE TABLE IF NOT EXISTS `links` (
 
 INSERT INTO `links` (`ID`, `URL`, `Description`, `Title`, `ID_User`, `rating`, `totalVotes`, `totalFav`, `totalComments`, `added`, `totalBroken`, `ID_Status`) VALUES
 (1, 'http://www.dzone.com/links/r/how_to_scroll_to_the_top_of_a_webpage_using_jquer.html', 'Put forth are a few steps to send push notification with sound and badge effect.', 'Sending push notifications with sound and badge effect', 10, '5.00', 1, 0, 0, '2014-11-18 00:00:00', 0, 3),
-(2, 'http://www.dzone.com/links/r/how_to_scroll_to_the_top_of_a_webpage_using_jquer.html', 'Put forth are a few steps to send push notification with sound and badge effect.', 'Sending push notifications with sound and badge effect 2', 11, '4.00', 1, 0, 0, '2014-11-18 00:00:00', 0, 3),
-(14, 'https://gorails.com/setup/osx/10.10-yosemite', 'We will be setting up a Ruby on Rails development environment on Mac OS X 10.10 Yosemite.\r\n\r\nOlder versions of OS X are mostly compatible so follow along as far as you can and then Google search for any problems you run into. There are plenty of people who have documented solutions for them.', 'Setup Ruby On Rails on Mac OS X 10.10 Yosemite', 8, '0.00', 0, 0, 0, '2015-01-05 01:43:57', 0, 3),
+(2, 'http://www.dzone.com/links/r/how_to_scroll_to_the_top_of_a_webpage_using_jquer.html', 'Put forth are a few steps to send push notification with sound and badge effect.', 'Sending push notifications with sound and badge effect 2', 11, '4.00', 1, 1, 1, '2014-11-18 00:00:00', 0, 4),
+(14, 'https://gorails.com/setup/osx/10.10-yosemite', 'We will be setting up a Ruby on Rails development environment on Mac OS X 10.10 Yosemite.\r\n\r\nOlder versions of OS X are mostly compatible so follow along as far as you can and then Google search for any problems you run into. There are plenty of people who have documented solutions for them.', 'Setup Ruby On Rails on Mac OS X 10.10 Yosemite', 8, '0.00', 0, 0, 0, '2015-01-05 01:43:57', 0, 4),
 (15, 'sdfsdfsdf', 'sdfsdfsdf', 'sdfsdf', 8, '0.00', 0, 0, 0, '2015-01-05 02:31:43', 0, 3),
-(16, 'http://sourcecookbook.com/es/recipes/41/validar-una-url-con-expresiones-regulares', 'Como Validar una URL ', 'Como validar una URL', 8, '0.00', 0, 0, 0, '2015-01-06 01:59:43', 0, 3),
-(17, 'http://radar.oreilly.com/nat/page/121', 'Links de interes', 'Radar Oreilly', 8, '0.00', 0, 0, 0, '2015-01-06 17:47:44', 0, 3),
-(18, 'http://www.lexicalist.com/', 'Lexicalist uses artificial intelligence to analyze the web and figure out who''s talking about what. The result is a demographic picture of language in actual use today.', 'LEXICALIST', 8, '2.00', 1, 0, 0, '2015-01-06 17:48:16', 0, 3),
-(19, '', '', '', 8, '5.00', 1, 0, 0, '2015-03-27 13:48:54', 0, 3);
+(16, 'http://sourcecookbook.com/es/recipes/41/validar-una-url-con-expresiones-regulares', 'Como Validar una URL ', 'Como validar una URL', 8, '0.00', 0, 0, 0, '2015-01-06 01:59:43', 0, 4),
+(17, 'http://radar.oreilly.com/nat/page/121', 'Links de interes', 'Radar Oreilly', 8, '5.00', 1, 1, 1, '2015-01-06 17:47:44', 0, 4),
+(18, 'http://www.lexicalist.com/', 'Lexicalist uses artificial intelligence to analyze the web and figure out who''s talking about what. The result is a demographic picture of language in actual use today.', 'LEXICALIST', 8, '2.00', 1, 1, 3, '2015-01-06 17:48:16', 0, 4);
+
+--
+-- Disparadores `links`
+--
+DROP TRIGGER IF EXISTS `delete_links`;
+DELIMITER //
+CREATE TRIGGER `delete_links` BEFORE DELETE ON `links`
+ FOR EACH ROW begin
+SET @disable_trigger = 1;
+DELETE from list_favorites_links where list_favorites_links.ID_links = old.ID;
+#DELETE from snippet_log where snippet_log.ID_Snippet = old.ID;
+DELETE from list_tags_links where list_tags_links.ID_Links = old.ID;
+DELETE from comments_links where comments_links.ID_Link = old.ID;
+DELETE from rating_links where rating_links.ID_Links = old.ID;
+SET @disable_trigger = NULL;
+END
+//
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -552,7 +585,7 @@ CREATE TABLE IF NOT EXISTS `list_favorites_links` (
   PRIMARY KEY (`ID`),
   KEY `fk_favorites_links1_idx` (`ID_Links`),
   KEY `fk_favorites_links2_idx` (`ID_Users`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=27 ;
 
 --
 -- Volcado de datos para la tabla `list_favorites_links`
@@ -560,8 +593,29 @@ CREATE TABLE IF NOT EXISTS `list_favorites_links` (
 
 INSERT INTO `list_favorites_links` (`ID`, `ID_Users`, `ID_Links`) VALUES
 (16, 8, 1),
-(20, 8, 19),
-(22, 8, 18);
+(23, 8, 18),
+(24, 8, 2),
+(26, 8, 17);
+
+--
+-- Disparadores `list_favorites_links`
+--
+DROP TRIGGER IF EXISTS `fav_link_add`;
+DELIMITER //
+CREATE TRIGGER `fav_link_add` AFTER INSERT ON `list_favorites_links`
+ FOR EACH ROW UPDATE links SET totalFav = totalFav+1 WHERE links.ID = NEW.ID_Links
+//
+DELIMITER ;
+DROP TRIGGER IF EXISTS `fav_links_del`;
+DELIMITER //
+CREATE TRIGGER `fav_links_del` BEFORE DELETE ON `list_favorites_links`
+ FOR EACH ROW begin
+IF @disable_trigger IS NULL THEN
+UPDATE links SET totalFav = IF( totalFav>0 ,totalFav-1, 0)WHERE links.ID = OLD.ID_Links;
+END IF;
+end
+//
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -645,8 +699,7 @@ INSERT INTO `list_tags_links` (`ID`, `ID_Tags`, `ID_Links`) VALUES
 (13, 10, 16),
 (14, 96, 17),
 (15, 85, 18),
-(16, 97, 18),
-(17, 121, 19);
+(16, 97, 18);
 
 -- --------------------------------------------------------
 
@@ -677,7 +730,7 @@ CREATE TABLE IF NOT EXISTS `logger` (
   `session` varchar(100) NOT NULL DEFAULT 'NOSESSION',
   `browser` longtext NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabla para registrar las entradas al site\nRegistrará ' AUTO_INCREMENT=1615 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabla para registrar las entradas al site\nRegistrará ' AUTO_INCREMENT=1741 ;
 
 --
 -- Volcado de datos para la tabla `logger`
@@ -2293,7 +2346,134 @@ INSERT INTO `logger` (`ID`, `ipAddress`, `route`, `date`, `session`, `browser`) 
 (1611, '127.0.0.1', 'admin_users/search/2', '2015-08-03 17:33:32', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
 (1612, '127.0.0.1', 'admin_users/view/8', '2015-08-03 17:33:34', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
 (1613, '127.0.0.1', 'admin_users/view/8', '2015-08-03 17:34:28', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
-(1614, '127.0.0.1', 'admin_links/listByUser/oscarlgarcia', '2015-08-03 17:34:32', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"');
+(1614, '127.0.0.1', 'admin_links/listByUser/oscarlgarcia', '2015-08-03 17:34:32', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1615, '127.0.0.1', 'admin_links/listByUser/oscarlgarcia', '2015-08-04 09:46:11', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1616, '127.0.0.1', 'admin_users/view/8', '2015-08-04 10:59:28', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1617, '127.0.0.1', 'admin_links/listByUser/oscarlgarcia', '2015-08-04 11:02:03', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1618, '127.0.0.1', 'admin_links/view/19', '2015-08-04 11:02:11', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1619, '127.0.0.1', 'admin_links/listByUser/oscarlgarcia', '2015-08-04 11:02:13', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1620, '127.0.0.1', 'admin_links/history/19', '2015-08-04 11:02:19', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1621, '127.0.0.1', 'admin_links/listByUser/oscarlgarcia', '2015-08-04 11:02:21', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1622, '127.0.0.1', 'links/browse', '2015-08-04 12:32:33', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1623, '127.0.0.1', 'links/browse', '2015-08-04 12:33:07', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1624, '127.0.0.1', 'admin_links/listByUser/oscarlgarcia', '2015-08-04 13:12:30', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1625, '127.0.0.1', 'admin_snippets/search', '2015-08-04 13:12:42', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1626, '127.0.0.1', 'admin_links/search', '2015-08-04 13:12:49', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1627, '127.0.0.1', 'admin_links/publish/2', '2015-08-04 13:12:52', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1628, '127.0.0.1', 'admin_links/search', '2015-08-04 13:12:52', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1629, '127.0.0.1', 'links/browse', '2015-08-04 13:12:57', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1630, '127.0.0.1', 'admin_links/publish/18', '2015-08-04 13:41:35', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1631, '127.0.0.1', 'admin_links/search', '2015-08-04 13:41:35', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1632, '127.0.0.1', 'links/browse', '2015-08-04 13:41:37', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1633, '127.0.0.1', 'admin_links/ban/18', '2015-08-04 13:41:41', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1634, '127.0.0.1', 'admin_links/search', '2015-08-04 13:41:41', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1635, '127.0.0.1', 'links/browse', '2015-08-04 13:41:43', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1636, '127.0.0.1', 'admin_links/publish/18', '2015-08-04 13:41:47', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1637, '127.0.0.1', 'admin_links/search', '2015-08-04 13:41:47', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1638, '127.0.0.1', 'links/browse', '2015-08-04 13:44:18', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1639, '127.0.0.1', 'links/popular', '2015-08-04 13:44:21', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1640, '127.0.0.1', 'links/favorites', '2015-08-04 13:44:25', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1641, '127.0.0.1', 'links/commented', '2015-08-04 13:44:30', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1642, '127.0.0.1', 'links/user/oscarlgarcia', '2015-08-04 13:45:20', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1643, '127.0.0.1', 'admin_links/listByUser/oscarlgarcia', '2015-08-04 13:45:34', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1644, '127.0.0.1', 'links/user/oscarlgarcia', '2015-08-04 13:46:04', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1645, '127.0.0.1', 'links/commented', '2015-08-04 13:46:22', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1646, '127.0.0.1', 'links/tag/css', '2015-08-04 13:46:24', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1647, '127.0.0.1', 'links/tag/css', '2015-08-04 13:46:42', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1648, '127.0.0.1', 'admin_links/listByUser/oscarlgarcia', '2015-08-04 14:12:21', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1649, '127.0.0.1', 'links/browse', '2015-08-04 14:12:29', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1650, '127.0.0.1', 'admin_links/listByUser/oscarlgarcia', '2015-08-04 14:12:32', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1651, '127.0.0.1', 'admin_links/search', '2015-08-04 14:12:35', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1652, '127.0.0.1', 'admin_links/search', '2015-08-04 15:55:45', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1653, '127.0.0.1', 'admin_links/search', '2015-08-04 15:56:58', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1654, '127.0.0.1', 'admin_links/search', '2015-08-04 15:57:46', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1655, '127.0.0.1', 'admin_links/search', '2015-08-04 15:58:50', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1656, '127.0.0.1', 'admin_links/search', '2015-08-04 15:59:16', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1657, '127.0.0.1', 'admin_links/delete/19', '2015-08-04 15:59:34', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1658, '127.0.0.1', 'admin_links/search', '2015-08-04 15:59:37', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1659, '127.0.0.1', 'admin_links/delete/19', '2015-08-04 16:00:06', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1660, '127.0.0.1', 'admin_links/search', '2015-08-04 16:01:09', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1661, '127.0.0.1', 'admin_links/delete/19', '2015-08-04 16:01:14', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1662, '127.0.0.1', 'admin_links/search', '2015-08-04 16:01:29', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1663, '127.0.0.1', 'admin_links/search', '2015-08-04 16:21:49', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1664, '127.0.0.1', 'admin_links/delete/19', '2015-08-04 16:33:29', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1665, '127.0.0.1', 'links/view/18', '2015-08-04 16:39:57', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1666, '127.0.0.1', 'links/show_comment', '2015-08-04 16:39:57', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1667, '127.0.0.1', 'links/comment', '2015-08-04 16:40:02', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1668, '127.0.0.1', 'links/browse', '2015-08-04 16:40:05', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1669, '127.0.0.1', 'links/view/2', '2015-08-04 16:49:20', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1670, '127.0.0.1', 'links/show_comment', '2015-08-04 16:49:20', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1671, '127.0.0.1', 'links/browse', '2015-08-04 16:49:23', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1672, '127.0.0.1', 'links/view/18', '2015-08-04 16:49:25', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1673, '127.0.0.1', 'links/show_comment', '2015-08-04 16:49:25', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1674, '127.0.0.1', 'links/unfav', '2015-08-04 16:49:29', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1675, '127.0.0.1', 'links/fav', '2015-08-04 16:49:31', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1676, '127.0.0.1', 'links/browse', '2015-08-04 16:49:32', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1677, '127.0.0.1', 'links/favorites', '2015-08-04 16:49:38', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1678, '127.0.0.1', 'links/popular', '2015-08-04 16:49:45', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1679, '127.0.0.1', 'links/favorites', '2015-08-04 16:49:50', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1680, '127.0.0.1', 'links/commented', '2015-08-04 16:49:53', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1681, '127.0.0.1', 'links/view/18', '2015-08-04 16:49:58', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1682, '127.0.0.1', 'links/show_comment', '2015-08-04 16:49:59', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1683, '127.0.0.1', 'links/comment', '2015-08-04 16:50:02', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1684, '127.0.0.1', 'links/comment', '2015-08-04 16:50:05', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1685, '127.0.0.1', 'links/browse', '2015-08-04 16:50:07', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1686, '127.0.0.1', 'links/view/2', '2015-08-04 16:50:18', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1687, '127.0.0.1', 'links/show_comment', '2015-08-04 16:50:18', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1688, '127.0.0.1', 'links/fav', '2015-08-04 16:50:19', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1689, '127.0.0.1', 'links/browse', '2015-08-04 16:50:24', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1690, '127.0.0.1', 'links/browse', '2015-08-04 16:50:29', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1691, '127.0.0.1', 'links/view/2', '2015-08-04 16:50:31', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1692, '127.0.0.1', 'links/show_comment', '2015-08-04 16:50:31', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1693, '127.0.0.1', 'links/comment', '2015-08-04 16:50:33', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1694, '127.0.0.1', 'links/browse', '2015-08-04 16:50:36', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1695, '127.0.0.1', 'admin_links/search', '2015-08-04 16:57:55', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1696, '127.0.0.1', 'admin_links/publish/19', '2015-08-04 16:58:08', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1697, '127.0.0.1', 'admin_links/search', '2015-08-04 16:58:08', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1698, '127.0.0.1', 'links/browse', '2015-08-04 16:58:12', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1699, '127.0.0.1', 'links/view/19', '2015-08-04 16:58:13', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1700, '127.0.0.1', 'links/show_comment', '2015-08-04 16:58:13', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1701, '127.0.0.1', 'links/unfav', '2015-08-04 16:58:15', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1702, '127.0.0.1', 'links/fav', '2015-08-04 16:58:16', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1703, '127.0.0.1', 'links/comment', '2015-08-04 16:58:19', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1704, '127.0.0.1', 'links/browse', '2015-08-04 16:58:21', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1705, '127.0.0.1', 'admin_links/delete/19', '2015-08-04 16:58:49', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1706, '127.0.0.1', 'admin_links/search', '2015-08-04 16:59:53', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1707, '127.0.0.1', 'admin_links/delete/19', '2015-08-04 16:59:57', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1708, '127.0.0.1', 'admin_links/search', '2015-08-04 17:02:40', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1709, '127.0.0.1', 'admin_links/delete/19', '2015-08-04 17:02:43', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1710, '127.0.0.1', 'admin_links/search', '2015-08-04 17:03:23', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1711, '127.0.0.1', 'admin_links/delete/19', '2015-08-04 17:03:26', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1712, '127.0.0.1', 'admin_links/search', '2015-08-04 17:03:26', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1713, '127.0.0.1', 'admin_links/publish/17', '2015-08-04 17:03:58', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1714, '127.0.0.1', 'admin_links/search', '2015-08-04 17:03:58', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1715, '127.0.0.1', 'links/view/19', '2015-08-04 17:04:02', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1716, '127.0.0.1', 'home', '2015-08-04 17:04:03', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1717, '127.0.0.1', 'links', '2015-08-04 17:04:06', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1718, '127.0.0.1', 'links/view/17', '2015-08-04 17:04:09', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1719, '127.0.0.1', 'links/show_comment', '2015-08-04 17:04:10', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1720, '127.0.0.1', 'links/rating', '2015-08-04 17:04:14', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1721, '127.0.0.1', 'links/fav', '2015-08-04 17:04:16', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1722, '127.0.0.1', 'links/comment', '2015-08-04 17:04:19', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1723, '127.0.0.1', 'links/browse', '2015-08-04 17:04:22', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1724, '127.0.0.1', 'links/tag/links', '2015-08-04 17:04:30', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1725, '127.0.0.1', 'links/browse', '2015-08-04 17:04:32', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1726, '127.0.0.1', 'links/browse', '2015-08-04 17:05:58', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"');
+INSERT INTO `logger` (`ID`, `ipAddress`, `route`, `date`, `session`, `browser`) VALUES
+(1727, '127.0.0.1', 'links/browse', '2015-08-04 17:07:58', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1728, '127.0.0.1', 'links/browse', '2015-08-04 17:08:10', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1729, '127.0.0.1', 'links/browse', '2015-08-04 17:08:30', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1730, '127.0.0.1', 'admin_links/publish/16', '2015-08-04 17:08:56', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1731, '127.0.0.1', 'admin_links/search', '2015-08-04 17:08:56', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1732, '127.0.0.1', 'links/browse', '2015-08-04 17:09:00', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1733, '127.0.0.1', 'admin_links/ban/16', '2015-08-04 17:09:08', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1734, '127.0.0.1', 'admin_links/search', '2015-08-04 17:09:08', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1735, '127.0.0.1', 'admin_links/publish/14', '2015-08-04 17:09:16', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1736, '127.0.0.1', 'admin_links/search', '2015-08-04 17:09:16', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1737, '127.0.0.1', 'links/browse', '2015-08-04 17:09:19', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"'),
+(1738, '127.0.0.1', 'admin_links/publish/16', '2015-08-04 17:09:38', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1739, '127.0.0.1', 'admin_links/search', '2015-08-04 17:09:38', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36"'),
+(1740, '127.0.0.1', 'links/browse', '2015-08-04 17:09:41', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"');
 
 -- --------------------------------------------------------
 
@@ -2471,7 +2651,7 @@ CREATE TABLE IF NOT EXISTS `rating_links` (
   PRIMARY KEY (`ID`),
   KEY `fk_rating_links1_idx` (`ID_Links`),
   KEY `fk_rating_links2_idx` (`ID_Users`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Volcado de datos para la tabla `rating_links`
@@ -2481,7 +2661,7 @@ INSERT INTO `rating_links` (`ID`, `ID_Links`, `ID_Users`, `vote`) VALUES
 (2, 2, 8, '4.00'),
 (3, 1, 8, '5.00'),
 (4, 18, 8, '2.00'),
-(5, 19, 8, '5.00');
+(6, 17, 8, '5.00');
 
 --
 -- Disparadores `rating_links`
@@ -2906,7 +3086,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`ID`, `user_login`, `user_pass`, `password_salt`, `twitter_name`, `user_email`, `user_url`, `user_registered`, `user_status`, `display_name`, `experience_points`, `reputation_points`, `level_points`, `reset_key`, `reset_expires`, `activation_key`, `user_level`, `profile_image`) VALUES
 (8, 'oscarlgarcia', '$2a$07$106c84709b2b7a5e6ef78OyF32F8K7bPfSiIbfvx3UDKZaLZZquoW', '$2a$07$106c84709b2b7a5e6ef78a7f7e226c2d656ca810e48d$', 'c_programador', 'oscarlgarcia@gmail.com', 'http://radar.oreilly.com/nat/page/123', '2014-03-06 01:26:52', 4, 'oscarlgarcia', 157, 107, 1, '60eeb732ec5dac454243178ae6c0c4d8', '2015-03-26 16:57:58', '624e86b4c38468e7695a8ac71ebd4c61', 0, 'oscar.jpg'),
 (10, 'pedro', '$2a$07$1c173912f89d4921d411euyGh1S5gXebi9./pkETmwwIQgby5Ibty', '$2a$07$1c173912f89d4921d411e8cef1e53e9acf5c5c6839de$', NULL, 'pedroperez@ff.com', NULL, '2014-10-20 17:50:29', 4, 'pedro', 57, 7, 0, NULL, NULL, '5033fd6a244f95b9d33e4a388f0f0eb4', 0, 'user3.png'),
-(11, 'director', '$2a$07$441112768ee904e1c81bbOY6nCGoWambFLWFsBygKLjHAHuy2r6kC', '$2a$07$441112768ee904e1c81bbae0cb9110b3c473e4b6a444$', NULL, 'oscar.garcia@elclubdelprogramador.com', NULL, '2014-11-06 14:58:21', 4, 'director', 10, 1, 0, NULL, NULL, '13945b33caf58e2d7770f0637f008807', 10, 'user3.png'),
+(11, 'director', '$2a$07$441112768ee904e1c81bbOY6nCGoWambFLWFsBygKLjHAHuy2r6kC', '$2a$07$441112768ee904e1c81bbae0cb9110b3c473e4b6a444$', NULL, 'oscar.garcia@elclubdelprogramador.com', NULL, '2014-11-06 14:58:21', 4, 'director', 36, 5, 0, NULL, NULL, '13945b33caf58e2d7770f0637f008807', 10, 'user3.png'),
 (12, 'usuario2', '$2a$07$fb026efc8f989177cd0dduBxYBVgBgRbTEppx5C35VaQqs63noETG', '$2a$07$fb026efc8f989177cd0dd227a5a0a4d01a7ebb5bf26e$', NULL, 'usuarios2@gmsail.com', NULL, '2014-11-13 12:25:42', 4, 'usuario2', 10, 1, 0, NULL, NULL, '101be302634e6345c900ce239d5c5905', 0, 'gravatar.jpg'),
 (13, 'usuario3', '$2a$07$653ca6a92c2b784192e93Oi5Ghi4zWQ8aryZZeklD2dIvqpj.Qtgu', '$2a$07$653ca6a92c2b784192e93a2f2c433a079fcf28b193b0$', NULL, 'usuarios3@gmsail.com', NULL, '2014-11-13 12:26:25', 4, 'usuario3', 36, 5, 0, NULL, NULL, '6af78b66065197267fd4d1c0663dadbf', 0, 'user2.png'),
 (14, 'usuario4', '$2a$07$b4d6df0f9e5dc9c4cf7aceKu2Z.mMePcjAnRYIqtLSmZ9DDw97zuG', '$2a$07$b4d6df0f9e5dc9c4cf7acf7682caccef3b398b2aeb18$', NULL, 'usuarios4@gmsail.com', NULL, '2014-11-13 12:26:41', 4, 'usuario4', 36, 5, 0, NULL, NULL, '99cd3c5c9584d87afb801e966ce90462', 0, 'use4.png'),
@@ -2932,7 +3112,7 @@ CREATE TABLE IF NOT EXISTS `user_event` (
   PRIMARY KEY (`ID`),
   KEY `fk2_idx` (`ID_User`),
   KEY `fk_user_event_1_idx` (`eventName`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla que almacena los eventos del site que ha realizado un  /* comment truncated */ /*usuario*/' AUTO_INCREMENT=1374 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla que almacena los eventos del site que ha realizado un  /* comment truncated */ /*usuario*/' AUTO_INCREMENT=1389 ;
 
 --
 -- Volcado de datos para la tabla `user_event`
@@ -4150,7 +4330,22 @@ INSERT INTO `user_event` (`ID`, `ID_User`, `eventName`, `ipaddress`, `data`, `da
 (1370, 8, 'user.login', '127.0.0.1', '', '2015-07-30 16:35:11'),
 (1371, 8, 'user.login', '127.0.0.1', '', '2015-07-31 13:37:42'),
 (1372, 8, 'user.fav.del', '127.0.0.1', '{"id_Links":""18""}', '2015-08-03 17:09:05'),
-(1373, 8, 'user.fav.add', '127.0.0.1', '{"id_links":""18""}', '2015-08-03 17:09:06');
+(1373, 8, 'user.fav.add', '127.0.0.1', '{"id_links":""18""}', '2015-08-03 17:09:06'),
+(1374, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""18""}', '2015-08-04 16:40:02'),
+(1375, 8, 'user.fav.del', '127.0.0.1', '{"id_Links":""18""}', '2015-08-04 16:49:29'),
+(1376, 8, 'user.fav.add', '127.0.0.1', '{"id_links":""18""}', '2015-08-04 16:49:31'),
+(1377, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""18""}', '2015-08-04 16:50:02'),
+(1378, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""18""}', '2015-08-04 16:50:05'),
+(1379, 8, 'user.fav.add', '127.0.0.1', '{"id_links":""2""}', '2015-08-04 16:50:19'),
+(1380, 11, 'user.fav.get', '127.0.0.1', '{"id_links":""2""}', '2015-08-04 16:50:19'),
+(1381, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""2""}', '2015-08-04 16:50:33'),
+(1382, 11, 'user.comment.get', '127.0.0.1', '{"id_snippet":""2""}', '2015-08-04 16:50:33'),
+(1383, 8, 'user.fav.del', '127.0.0.1', '{"id_Links":""19""}', '2015-08-04 16:58:15'),
+(1384, 8, 'user.fav.add', '127.0.0.1', '{"id_links":""19""}', '2015-08-04 16:58:16'),
+(1385, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""19""}', '2015-08-04 16:58:19'),
+(1386, 8, 'user.rating.add', '127.0.0.1', '{"id_links":""17"","rating":""5""}', '2015-08-04 17:04:14'),
+(1387, 8, 'user.fav.add', '127.0.0.1', '{"id_links":""17""}', '2015-08-04 17:04:16'),
+(1388, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""17""}', '2015-08-04 17:04:20');
 
 --
 -- Restricciones para tablas volcadas

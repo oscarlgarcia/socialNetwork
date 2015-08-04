@@ -37,7 +37,7 @@
                   <li><a href="admin_links/publish/{ID}"><span class="fa fa-check"></span> Publicar</a></li>
                   <li><a href="admin_links/ban/{ID}"><span class="fa fa-ban"></span> Retirar</a></li>
                   <li class="divider"></li>
-                  <li ><a id="delete" data-deleteurl="admin_links/delete/{ID}" data-toggle="modal" data-target="#delete_modal"><span class="fa fa-trash"></span> Eliminar</a></li>
+                  <li ><a href="#" id="delete" data-deleteurl="admin_links/delete/{ID}" data-toggle="modal" data-target="#delete_modal"><span class="fa fa-trash"></span> Eliminar</a></li>
                 </ul>
               </div>
             </td>
@@ -64,7 +64,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Se va a eliminar este Snippet</h4>
+            <h4 class="modal-title">Se va a eliminar este Link</h4>
           </div>
           <div class="modal-body">
             <p class="text-warning">Est&aacute;s seguro? Esta operaci&oacute;n no podr&aacute; deshacerse</p>

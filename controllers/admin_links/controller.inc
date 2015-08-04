@@ -64,6 +64,19 @@ class Admin_linkscontroller{
                   case 'listByUser':
 				    $this->listByUser($this->parameter1,intval($this->parameter2));
 				    break;
+
+				  case 'publish':
+				    $this->publish(intval($this->parameter1));
+				    break;
+
+				  case 'ban':
+				    $this->ban(intval($this->parameter1));
+				    break;
+
+				  case 'delete':
+				    $this->delete(intval($this->parameter1));
+				    break;
+
 				}
 				
 			}
@@ -174,6 +187,44 @@ class Admin_linkscontroller{
 		$pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
 	  }		
 
+  }
+
+
+
+  /*
+  * Metodo que borra el link
+  *
+  **/
+  private function delete($linkID)
+  {
+    require_once( FRAMEWORK_PATH . 'models/links.inc');
+    $links = new Links( $this->registry );
+    $deleted = $links->delete( $linkID );
+    header('Location: /socialNetwork/admin_links/search');   
+  } 
+  
+
+   /*
+  * Metodo para publicar los links
+  *  TODO asignar los puntos por gamificacion solo cuando sean publicados no cuando 
+  *  el usuario lo postee
+  */
+  public function publish($linkID){
+    require_once( FRAMEWORK_PATH . 'models/links.inc');
+	$links = new Links( $this->registry );
+	$deleted = $links->updateStatus( $linkID, 4);
+	header('Location: /socialNetwork/admin_links/search');
+  }
+
+  /*
+  * Metodo para banear los links
+  *  TODO quitar los puntos por gamificacion solo cuando sean baneado 
+  */
+  public function ban($linkID){
+    require_once( FRAMEWORK_PATH . 'models/links.inc');
+	$links = new Links( $this->registry );
+	$deleted = $links->updateStatus( $linkID,5);
+	header('Location: /socialNetwork/admin_links/search');
   }
 	
 
