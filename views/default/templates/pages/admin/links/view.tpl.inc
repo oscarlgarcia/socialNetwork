@@ -29,7 +29,7 @@
                   <li><a href="admin_snippets/publish/{id}"><span class="fa fa-check"></span> Publicar</a></li>
                   <li><a href="admin_snippets/ban/{id}"><span class="fa fa-ban"></span> Retirar</a></li>
                   <li class="divider"></li>
-                  <li ><a id="delete" data-deleteurl="admin_snippets/delete/{id}" data-toggle="modal" data-target="#delete_modal"><span class="fa fa-trash"></span> Eliminar</a></li>
+                  <li class="deleteButton"><a id="delete" data-deleteurl="admin_snippets/delete/{id}" data-toggle="modal" data-target="#delete_modal"><span class="fa fa-trash"></span> Eliminar</a></li>
                 </ul>
               </div>
   	        </div>

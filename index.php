@@ -37,10 +37,15 @@ $registry->getObject('authenticate')->checkForAuthentication();
 //-------------- Registramos la ruta solicitada -----------------------
 require_once( FRAMEWORK_PATH . 'models/logger_page.inc');
 $session = "guest";
+$resource = "home";
 if (isset($_SESSION['sn_auth_session_uid']))
   $session = $_SESSION['sn_auth_session_uid'];
+
+if ( $registry->getObject('url')->getURLPath() != "")
+  $resource = $registry->getObject('url')->getURLPath();
+
 $loggerPage = new LoggerPage($registry,$_SERVER["REMOTE_ADDR"],
-  $registry->getObject('url')->getURLPath(),
+  $resource,
   date("Y-m-d H:i:s"),
   $session,
   $registry->getObject('util')->prepareData($_SERVER['HTTP_USER_AGENT']));

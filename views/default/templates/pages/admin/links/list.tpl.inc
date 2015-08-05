@@ -37,7 +37,7 @@
                   <li><a href="admin_links/publish/{ID}"><span class="fa fa-check"></span> Publicar</a></li>
                   <li><a href="admin_links/ban/{ID}"><span class="fa fa-ban"></span> Retirar</a></li>
                   <li class="divider"></li>
-                  <li ><a href="#" id="delete" data-deleteurl="admin_links/delete/{ID}" data-toggle="modal" data-target="#delete_modal"><span class="fa fa-trash"></span> Eliminar</a></li>
+                  <li class="deleteButton"><a id="delete" data-deleteurl="admin_links/delete/{ID}" data-toggle="modal" data-target="#delete_modal"><span class="fa fa-trash"></span> Eliminar</a></li>
                 </ul>
               </div>
             </td>
@@ -76,7 +76,6 @@
         </div>
       </div>
     </div>
-
-
-    <script type="text/javascript" src="lib/search/search_animation.js"></script>
-    <script type="text/javascript" src="lib/menuOps/delete_confirm.js"></script>
+    <!-- fin MODAL -->
+<script type="text/javascript" src="lib/menuOps/delete_confirm.js"></script>
+<script type="text/javascript" src="lib/search/search_animation.js"></script>

@@ -38,7 +38,7 @@
                   <li><a href="admin_snippets/publish/{ID}"><span class="fa fa-check"></span> Publicar</a></li>
                   <li><a href="admin_snippets/ban/{ID}"><span class="fa fa-ban"></span> Retirar</a></li>
                   <li class="divider"></li>
-                  <li ><a id="delete" data-deleteurl="admin_snippets/delete/{ID}" data-toggle="modal" data-target="#delete_modal"><span class="fa fa-trash"></span> Eliminar</a></li>
+                  <li class="deleteButton" ><a id="delete" data-deleteurl="admin_snippets/delete/{ID}" data-toggle="modal" data-target="#delete_modal"><span class="fa fa-trash"></span> Eliminar</a></li>
                 </ul>
               </div>
             </td>
@@ -78,7 +78,5 @@
         </div>
       </div>
     </div>
-
-
     <script type="text/javascript" src="lib/search/search_animation.js"></script>
     <script type="text/javascript" src="lib/menuOps/delete_confirm.js"></script>
