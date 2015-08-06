@@ -161,6 +161,7 @@ class Authentication {
   function logout() 
 	{
 		//unset($_SESSION['sn_auth_session_uid'] );
+    session_regenerate_id(TRUE); 
 		session_unset ();
 		$this->loggedIn = false;
 		$this->user = null;

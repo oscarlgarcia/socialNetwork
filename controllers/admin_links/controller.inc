@@ -65,6 +65,10 @@ class Admin_linkscontroller{
 				    $this->listByUser($this->parameter1,intval($this->parameter2));
 				    break;
 
+				  case 'view':
+				    $this->view(intval($this->parameter1));
+					break;
+
 				  case 'publish':
 				    $this->publish(intval($this->parameter1));
 				    break;
@@ -189,6 +193,51 @@ class Admin_linkscontroller{
 
   }
 
+  /*
+  * Metodo que redirecciona a la plantilla de ver
+  *
+  **/
+  private function view($linkID)
+  {
+  	require_once( FRAMEWORK_PATH . 'models/links.inc');
+	$link = new Links( $this->registry );
+	$data = $link->getLink( $linkID );
+	// Si no encontramos el link
+    if( $data == null )
+	{
+	  //pantalla de error
+	  $this->registry->getObject('template')->buildFromTemplates(
+	  	$this->registry->getObject('constants')->getHeaderTpl(), 
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'links/'.$this->registry->getObject('constants')->getInvalidTpl(), 
+	  	$this->registry->getObject('constants')->getFooterTpl()
+	  	);
+	}
+	else
+	{ 
+	  //Si lo encontramos 
+	  // Definimos la pagina de view 
+	  require_once( FRAMEWORK_PATH . 'models/tags_links.inc');
+	  $this->registry->getObject('template')->buildFromTemplates(
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'links/'.$this->registry->getObject('constants')->getViewTpl(),
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+	  	);
+		
+	  // Cargamos los datos
+	  $this->registry->getObject('template')->getPage()->addTag('title',$data['title']);
+	  $this->registry->getObject('template')->getPage()->addTag('id',$data['ID']);
+	  $this->registry->getObject('template')->getPage()->addTag('description',$data['description']);
+	  $this->registry->getObject('template')->getPage()->addTag('url',$data['url']);
+	   
+	  // Cargamos los tags
+      $tags= new Tags_Links( $this->registry );
+      $pagination = $tags->listTagsByLink($linkID);
+      if( $pagination->getNumRowsPage() > 0 )
+	  {
+        $this->registry->getObject('template')->getPage()->addTag( 'tags', array( 'SQL', $pagination->getCache() ) );    	  
+      }
+   }		
+  }
 
 
   /*

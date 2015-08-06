@@ -100,6 +100,28 @@
             </div>
           </div>
         </div>
+
+         <div class="col-sm-8">
+          <div class="widget winter-blonde-bg text-center">
+            <div class="row">
+              <div class="col-sm-3">
+                <i class="fa fa-heart fa-3x"></i>
+              </div>
+              <div class="col-sm-3">
+                <span>Snippets</span>
+                <h2><strong>{total_comments_snippets}</strong></h2>   
+              </div>
+              <div class="col-sm-3">
+                <span>Links</span>
+                <h2><strong>{total_comments_snippets}</strong></h2>   
+              </div>
+              <div class="col-sm-3">
+                <span>Tutoriales</span>
+                <h2><strong>{total_comments_snippets}</strong></h2>   
+              </div>
+            </div>                 
+          </div> 
+        </div>  
           
           <div class="col-sm-4">
             <div class="widget yellow-bg text-center">
@@ -123,7 +145,7 @@
                 </div>
                 <div class="col-sm-5">
                   <span>Historial</span>
-                  <h2><strong><a href="admin_snippets/listByUser/{login}">{total_snippets}</a></strong></h2>                    
+                  <h2><strong><a href="admin_users/history/{ID}">{total_snippets}</a></strong></h2>                    
                 </div>
               </div>
             </div>

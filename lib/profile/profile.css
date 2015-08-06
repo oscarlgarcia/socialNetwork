@@ -31,7 +31,7 @@
     color: #ffffff;
 }
 
-.pruple-bg {
+.pruple-bg, .pruple-bg a {
     background-color: #966FD6;
     color: #ffffff;
 }
@@ -43,6 +43,12 @@
 
 .lazur-bg ,.lazur-bg a {
     background-color: #23c6c8;
+    color: #ffffff;
+}
+
+.winter-blonde-bg ,.winter-blonde-bg a {
+    background-color: #428bca;
+    /*#423C57; */
     color: #ffffff;
 }
 

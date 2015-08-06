@@ -48,7 +48,8 @@ $loggerPage = new LoggerPage($registry,$_SERVER["REMOTE_ADDR"],
   $resource,
   date("Y-m-d H:i:s"),
   $session,
-  $registry->getObject('util')->prepareData($_SERVER['HTTP_USER_AGENT']));
+  $registry->getObject('util')->prepareData($_SERVER['HTTP_USER_AGENT']),
+  session_id());
 $loggerPage->save();
 
 //---------------- buscamos los settings en la bd ---------------------

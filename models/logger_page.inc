@@ -15,11 +15,12 @@ class LoggerPage extends Object
   private $route;
   private $session;
   private $browser;
-  private $saveable_fields = array( 'ipAddress', 'date','route','session','browser'); 
+  private $sessionID;
+  private $saveable_fields = array( 'ipAddress', 'date','route','session','browser',"sessionID"); 
   private $limit = 500; //poner en config
   
 
-  public function __construct( Registry $registry , $ipAddress ='NO_IP_AVAILABLE', $route = 'REDIRECT',$date , $session = 'NOSESSION', $browser = 'NOBROWSER')
+  public function __construct( Registry $registry , $ipAddress ='NO_IP_AVAILABLE', $route = 'REDIRECT',$date , $session = 'NOSESSION', $browser = 'NOBROWSER',$sessionID = 'NOSESSION')
   {
     parent::__construct($registry);
     $this->ipAddress = $ipAddress;
@@ -27,6 +28,7 @@ class LoggerPage extends Object
     $this->date = $date;
     $this->session = $session;
     $this->browser = $browser;
+    $this->sessionID = $sessionID;
   }
 
 
@@ -53,7 +55,7 @@ class LoggerPage extends Object
   */
   public function getLogger($loggerID)
   {
-    $query = "SELECT ID, ipAddress , route , date , session  FROM logger where c.ID = ".$loggerID ;
+    $query = "SELECT ID, ipAddress , route , date , session, sessionID  FROM logger where c.ID = ".$loggerID ;
 	  $this->registry->getObject('db')->executeQuery( $query );
     if( $this->registry->getObject('db')->numRows() > 0 )
     {
@@ -111,6 +113,14 @@ class LoggerPage extends Object
   
   public function getBrowserData(){
     return $this->browser;
+  }
+
+  public function setSessionID($sessionID){ 
+    $this->sessionID = $sessionID; 
+  }
+  
+  public function getSessionID(){
+    return $this->sessionID;
   }
 
 }
