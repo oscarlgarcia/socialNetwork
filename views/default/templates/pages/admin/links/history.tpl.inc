@@ -38,21 +38,21 @@
         <div class="panel-body">
           <div class="row">
             <div class="col-md-12">
-  		        <p>{description}</p>
-  		        <!-- START logs -->
-              <div class="media">
-                <a href="#" class="pull-left">
-                  <span class="{imageEvent}"></span>
-                </a>
-                <div class="media-body">
-                  <h4 class="media-heading">{user_login} <small><i>{created}</i></small></h4>
-                  <p>{event}</p>
-                </div>
-              </div>
-              <hr />
-              <!-- END logs -->
-  		      </div>  
+  		      <p>{description}</p>
+  		      <!-- START logs -->
+  		        <div class="media">
+   <a class="pull-left" href="#">
+      <span class="glyphicon {imageEvent} icon-48"></span>
+   </a>
+   <div class="media-body">
+      <h5 class="media-heading">El usuario: <b>{user_login}</b></h5>
+      <p>Ha ejecutado la acci&oacute;n: <b>{event}</b> el: {created}</p>
+   </div>
+</div> 
+<!-- END logs -->
+  		    </div>  
   	      </div>
+
   	    </div> 
       </div>
     </div>

@@ -65,6 +65,10 @@ class Admin_linkscontroller{
 				    $this->listByUser($this->parameter1,intval($this->parameter2));
 				    break;
 
+				  case 'history':
+				    $this->history(intval($this->parameter1));
+				    break;
+
 				  case 'view':
 				    $this->view(intval($this->parameter1));
 					break;
@@ -238,6 +242,52 @@ class Admin_linkscontroller{
       }
    }		
   }
+
+
+ /*
+  * Metodo que redirecciona a la plantilla de historial
+  *
+  **/
+  private function history($linkID)
+  {
+    require_once( FRAMEWORK_PATH . 'models/links.inc');
+	$link = new Links( $this->registry );
+	$linkData = $link->getLink( $linkID );  	
+  	  
+  	require_once( FRAMEWORK_PATH . 'models/link_log.inc');
+    $link_log = new Link_Log( $this->registry );
+    
+	$logData = $link_log->getHistory( $linkID );
+	
+	// Si no encontramos datos 
+    if( $logData->getTotalRows()<=0 )
+	{
+	  //pantalla de error
+	  $this->registry->getObject('template')->buildFromTemplates(
+	   	$this->registry->getObject('constants')->getHeaderTpl(), 
+	   	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'links/'.$this->registry->getObject('constants')->getInvalidTpl(), 
+	   	$this->registry->getObject('constants')->getFooterTpl()
+	   	);
+	}
+	else
+	{   
+	  //Si lo encontramos  
+	  $this->registry->getObject('template')->buildFromTemplates(
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+	   	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'links/'.$this->registry->getObject('constants')->getHistoryTpl(),
+	   	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+	   	);
+      //cargamos la info de cada usuario
+	  $this->registry->getObject('template')->getPage()->addTag( 'logs', array( 'SQL', $logData->getCache() ) );
+	  $this->registry->getObject('template')->getPage()->addTag('title',$linkData['title']);
+	  $this->registry->getObject('template')->getPage()->addTag('id',$linkData['ID']);
+	  $this->registry->getObject('template')->getPage()->addTag('description',$linkData['description']);  
+    }
+   
+  }
+
+
+
 
 
   /*

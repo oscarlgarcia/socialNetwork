@@ -84,8 +84,12 @@ class Registrationcontroller{
 			
 			// registramos en el log y gamificamos
 			$data['link_name']=$links->getTitle();
-	      $this->registry->getObject('event')->notify('user.link.add',$user,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data));
+	        $this->registry->getObject('event')->notify('user.link.add',$user,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data));
 			
+         	require_once FRAMEWORK_PATH . 'models/link_log.inc';
+         	$log = new Link_Log($this->registry,$user,$idLinks,'user.link.add');
+			$log->save();
+
 			//TODO poner la pagina que debemos mostrar
 			//$this->registry->redirectUser( array('profile', 'view', 'edit' ), 'Profile saved', 'The changes to your profile have been saved', false );
 		}

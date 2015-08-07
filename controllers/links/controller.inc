@@ -297,6 +297,7 @@ class Linkscontroller{
   	require_once( FRAMEWORK_PATH . 'models/links.inc');
   	require_once( FRAMEWORK_PATH . 'models/tags_links.inc');
 	require_once( FRAMEWORK_PATH . 'models/rating_links.inc');
+	$me=$this->registry->getObject('authenticate')->getUser()->getUserID();
 	$link = new Links( $this->registry );
 	$data = $link->getLink( $linkID );
 	
@@ -359,6 +360,12 @@ class Linkscontroller{
 	  
 	  //Guardamos la info en session para los metodos AJAX
 	  $this->registry->getObject('util')->storeToSession('link',$link->getLink($linkID));
+
+      // guardamos en el Log
+	  require_once FRAMEWORK_PATH . 'models/link_log.inc';
+      $log = new Link_Log($this->registry,$me,$_SESSION['link']['ID'],'user.link.view');
+	  $log->save();
+
     }		
   }
   
@@ -407,13 +414,18 @@ class Linkscontroller{
 	   
 	   $link_owner=$_SESSION['link']['ID_User'];
 	   // registramos en el log y gamificamos
-	   $data['id_links']=$_SESSION['link']['ID'];
+	   $data['id_links'] = $_SESSION['link']['ID'];
 	   $this->registry->getObject('event')->notify('user.fav.add',$me,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data));
 	   
 	   // Determinamos quien es el dueno, si es diferente al que hace like sumamos
 	   if($me!=$link_owner){
 	    $this->registry->getObject('event')->notify('user.fav.get',$link_owner,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data));
 	   }
+
+	   require_once FRAMEWORK_PATH . 'models/link_log.inc';
+       $log = new Link_Log($this->registry,$me,$_SESSION['link']['ID'],'user.fav.add');
+	   $log->save();
+
 	   //TODO poner en constante
 	   echo "unfav";
   	   exit();
@@ -433,6 +445,11 @@ class Linkscontroller{
 	   //registramos en el log y gamificamos
 	   $data['id_Links']=$_SESSION['link']['ID'];
 	   $this->registry->getObject('event')->notify('user.fav.del',$me,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data));
+
+	   require_once FRAMEWORK_PATH . 'models/link_log.inc';
+       $log = new Link_Log($this->registry,$me,$_SESSION['link']['ID'],'user.fav.del');
+	   $log->save();
+
 	   //TODO poner en constante
 	   echo "fav";
   	   exit();
@@ -464,6 +481,10 @@ class Linkscontroller{
 	    $this->registry->getObject('event')->notify('user.comment.get',$snippet_owner,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data));
 	   }
 	   
+	   require_once FRAMEWORK_PATH . 'models/link_log.inc';
+       $log = new Link_Log($this->registry,$me,$_SESSION['link']['ID'],'user.comment.add');
+	   $log->save();
+
 	   // Obtenemos todos los comentarios para este link
 	   echo $comment->getCommentsByLink($_SESSION['link']['ID']);
   	   exit();
@@ -508,6 +529,11 @@ class Linkscontroller{
 	   $data['id_links']=$_SESSION['link']['ID'];
 	   $data['rating']=$_POST['rating'];
 	   $this->registry->getObject('event')->notify('user.rating.add',$me,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data));
+
+	   require_once FRAMEWORK_PATH . 'models/link_log.inc';
+       $log = new Link_Log($this->registry,$me,$_SESSION['link']['ID'],'user.rating.add');
+	   $log->save();
+
 	   //TODO poner en consatante
 	   echo "ok";
   	   exit();

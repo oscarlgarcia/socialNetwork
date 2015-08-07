@@ -155,8 +155,6 @@ class Admin_snippetscontroller{
 	  }		
     }
 
- 
-  
   
   /*
   * Metodo que redirecciona a la plantilla de historial

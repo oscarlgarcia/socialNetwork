@@ -56,7 +56,7 @@
   	      </div>	
   	      <div class="row">
   	        <div class="col-md-12">
-  		      <a href="{url}" target="_blank" rel="nofollow" class="links">Visitar Link</a>
+  		      <a href="{url}" target="_blank" rel="nofollow" class="links"><span class="fa fa-external-link"></span> Visitar Link</a>
   		    </div>
           </div>
   	    </div> 

@@ -45,8 +45,8 @@
   	      <div class="row">
   	        <div class="col-md-12">
   		      <div class="form-group">
-  		        <a href="{url}" target="_blank">{url}</a>
-              </div>
+  		        <a href="{url}" target="_blank"><span class="fa fa-external-link"></span> {url}</a>
+            </div>
   		    </div>
           </div>
   	    </div> 

@@ -581,6 +581,7 @@ class Snippetscontroller{
   	require_once( FRAMEWORK_PATH . 'models/snippets.inc');
   	require_once( FRAMEWORK_PATH . 'models/tags_snippet.inc');
 	require_once( FRAMEWORK_PATH . 'models/rating_snippet.inc');
+	$me=$this->registry->getObject('authenticate')->getUser()->getUserID();
 	$snippets = new Snippets( $this->registry );
 	$snippetData = $snippets->getSnippet( $snippetID );
 	// Si no encontramos el snippet
@@ -648,6 +649,13 @@ class Snippetscontroller{
 	  
 	  //Guardamos la info en session para los metodos AJAX
 	  $this->registry->getObject('util')->storeToSession('snippet',$snippets->getSnippet($snippetID));
+
+	  // guardamos en el Log
+	  require_once FRAMEWORK_PATH . 'models/snippet_log.inc';
+      $log = new Snippet_Log($this->registry,$me,$snippetID,'user.snippet.view');
+	  $log->save();
+
+
     }		
   }
   
@@ -715,7 +723,7 @@ class Snippetscontroller{
 	   }
 	   
 	   require_once FRAMEWORK_PATH . 'models/snippet_log.inc';
-      $log = new Snippet_Log($this->registry,$me,$_SESSION['snippet']['ID'],'user.fav.add');
+       $log = new Snippet_Log($this->registry,$me,$_SESSION['snippet']['ID'],'user.fav.add');
 	   $log->save();	   	   
 	   
 	   
@@ -824,8 +832,8 @@ class Snippetscontroller{
 	   $data['rating']=$_POST['rating'];
 	   $this->registry->getObject('event')->notify('user.rating.add',$me,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data));
       
-      require_once FRAMEWORK_PATH . 'models/snippet_log.inc';
-      $log = new Snippet_Log($this->registry,$me,$_SESSION['snippet']['ID'],'user.rating.add');
+       require_once FRAMEWORK_PATH . 'models/snippet_log.inc';
+       $log = new Snippet_Log($this->registry,$me,$_SESSION['snippet']['ID'],'user.rating.add');
 	   $log->save();
 				   
 	   
