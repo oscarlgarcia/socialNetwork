@@ -47,6 +47,7 @@ class Link_Log extends Object{
   * - Fecha de creacion
   * - Titulo
   * - Usuario que lo creo
+  * - ID de Usuario
   * - imagen que corresponde al tipo de evento
   * @param idSnippet
   * @return paginatedResult
@@ -56,7 +57,7 @@ class Link_Log extends Object{
   {
     $this->paginatedResult->setLimit(1000);
     $this->paginatedResult->setOffset(0);
-    $query="SELECT a.id, a.event, DATE_FORMAT(a.created,'%d %b %Y %T') as created, b.Title, c.user_login, d.imageEvent 
+    $query="SELECT a.id, d.description as event, DATE_FORMAT(a.created,'%d %b %Y %T') as created, b.Title, c.user_login, c.id as id_usuario, d.imageEvent 
     FROM link_log a INNER JOIN links b ON a.ID_Link = b.ID 
     INNER JOIN users c ON a.ID_User = c.ID  INNER JOIN event d ON a.event = d.eventName 
     WHERE `ID_Link` =".$idLink. "  ORDER BY created  ";

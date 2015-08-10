@@ -67,6 +67,10 @@ class Admin_snippetscontroller{
 				  case 'listByUser':
 				    $this->listByUser($this->parameter1,intval($this->parameter2));
 				    break;
+
+				   case 'comments':
+				    $this->comments(intval($this->parameter1),intval($this->parameter2));
+				    break;  
 				  
 				  case 'history':
 				    $this->history(intval($this->parameter1));

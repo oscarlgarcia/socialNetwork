@@ -49,6 +49,7 @@ class Snippet_Log extends Object{
   * - Fecha de creacion
   * - Titulo
   * - Usuario que lo creo
+  * - ID del usuario
   * - imagen que corresponde al tipo de evento
   * @param idSnippet
   * @return paginatedResult
@@ -57,7 +58,7 @@ class Snippet_Log extends Object{
   {
     $this->paginatedResult->setLimit(1000);
     $this->paginatedResult->setOffset(0);
-    $query="SELECT a.id, d.description as event, DATE_FORMAT(a.created,'%d %b %Y %T') as created, b.Title, c.user_login, d.imageEvent 
+    $query="SELECT a.id, d.description as event, DATE_FORMAT(a.created,'%d %b %Y %T') as created, b.Title, c.user_login, c.id as id_usuario, d.imageEvent 
     FROM snippet_log a INNER JOIN snippets b ON a.ID_Snippet = b.ID 
     INNER JOIN users c ON a.ID_User = c.ID  INNER JOIN event d ON a.event = d.eventName 
     WHERE `ID_Snippet` =".$idSnippet. "  ORDER BY created  ";

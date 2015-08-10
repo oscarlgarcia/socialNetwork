@@ -1,13 +1,4 @@
-<link rel="stylesheet" href="lib/codemirror/codemirror.css"/>
-<link rel="stylesheet" href="lib/rating/star-rating.min.css"/>
-<link rel="stylesheet" href="lib/codemirror/theme/solarized.css">
-<link rel="stylesheet" href="lib/codemirror/addon/display/fullscreen.css" />
-<script src="lib/codemirror/codemirror.js"></script>
-<script src="lib/codemirror/mode/javascript/javascript.js"></script>
-<script src="lib/codemirror/addon/selection/active-line.js"></script>
-<script src="lib/codemirror/addon/display/fullscreen.js"></script>
-<script src="lib/rating/star-rating.min.js"></script>
-<script src="lib/charCounter/charcounter.js"></script>
+<link rel="stylesheet" href="lib/timeline/timeline.css"/>
 <div class="container-fluid ecpGlobal-margin">
   <!-- Snippets panel -->
   <div class="row">
@@ -39,25 +30,29 @@
           <div class="row">
             <div class="col-md-12">
   		        <p>{description}</p>
+              <ul class="timeline">
   		        <!-- START logs -->
-              <div class="media">
-                <a href="#" class="pull-left">
-                  <span class="{imageEvent}"></span>
-                </a>
-                <div class="media-body">
-                  <h4 class="media-heading">{user_login} <small><i>{created}</i></small></h4>
-                  <p>{event}</p>
-                </div>
-              </div>
-              <hr />
+                <li >
+                  <span class=" timeline-badge {imageEvent}"></span>
+                  <div class="timeline-panel">
+                    <div class="timeline-heading">
+                      <h4 class="timeline-title"><a href="admin_users/view/{id_usuario}">{user_login}</a></h4>
+                      <p><small class="text-muted"><i class="fa fa-clock-o"></i> {created}</small></p>
+                    </div>
+                    <div class="timeline-body">
+                      <p>{event}</p>
+                    </div>
+                  </div>
+                </li>
               <!-- END logs -->
-  		      </div>  
+              </ul>
+            </div>  
   	      </div>
-  	    </div> 
+        </div> 
       </div>
     </div>
   </div>
-  <!-- End Snippets panel -->
+<!-- End Snippets panel -->
 </div>
  <!-- MODAL -->
     <div id="delete_modal" class="modal fade">
