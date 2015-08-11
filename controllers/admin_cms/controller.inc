@@ -61,7 +61,7 @@ class Admin_cmscontroller{
 					  break;
 					  
 				   case 'preview':
-  				      $this->browse();
+  				    $this->browse();
 					  break;
 
 					case 'edit':

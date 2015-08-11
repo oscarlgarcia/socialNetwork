@@ -69,7 +69,7 @@ $registry->getObject('template')->getPage()->addTag( 'site_description', $regist
 $registry->getObject('template')->getPage()->addTag( 'site_keywords', $registry->getSetting('site_keywords') );
 //---------------  buscamos los controladores activos ------------------
 $controllers = array();
-$controllersSQL = "SELECT * FROM controllers WHERE active=1";
+$controllersSQL = "SELECT * FROM controllers WHERE active = 4";
 $registry->getObject('db')->executeQuery( $controllersSQL );
 
 //----------------  los cargarmos en un array del framework -------------

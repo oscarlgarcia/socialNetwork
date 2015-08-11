@@ -30,18 +30,21 @@
           <div class="panel panel-primary">
             <div class="panel-heading">
               <h4 class="panel-title">
-                <span class="fa fa-calendar">&nbsp;</span><a data-toggle="collapse" data-parent="#accordion" href="#collapseSite">Historial</a>
+                <span class="fa fa-gears">&nbsp;</span><a data-toggle="collapse" data-parent="#accordion" href="#collapseSite">Ajustes</a>
               </h4>
             </div>
             <div id="collapseSite" class="panel-collapse collapse">
               <div class="panel-body">
                 <table class="table">
-                  <tr><td><span class="fa fa-random">&nbsp;</span><a href="admin_users/browse">Rutas</a></td></tr>
-                   <tr><td><a href="admin_snippets/search">cccc</a></td></tr>
-                   <tr><td><a href="admin_links/browse">xxxxxx</a></td></tr>
-                   <tr><td><a href="admin_comments/browse">ccccc</a></td></tr>
-                   <tr><td><a href="admin_tags/browse">ssssss</a></td></tr>
-                 </table>
+                  <tr><td><a href="admin_settings/search">Ajustes Generales</a></td></tr>
+                  <tr><td><a href="admin_controllers/search">Controladores</a></td></tr>
+                  <tr><td><a href="admin_event/search">Eventos</a></td></tr>
+                  <tr><td><a href="admin_gamification/search">Gamificaci&oacute;n</a></td></tr>
+                  <tr><td><a href="admin_category/search">Categor&iacute;as</a></td></tr>
+                  <tr><td><a href="admin_badge/search">Insignias</a></td></tr>
+                  <tr><td><a href="admin_media/search">Media</a></td></tr>
+
+                </table>
                </div>
              </div>
            </div>
@@ -60,7 +63,6 @@
                    <tr><td><a href="admin_snippets/search">Snippets</a></td></tr>
                    <tr><td><a href="admin_links/search">Links</a></td></tr>
                    <tr><td><a href="admin_tags/browse">Tags</a></td></tr>
-                   <tr><td><a href="admin_category/browse">Categorias</a></td></tr>
                  </table>
                </div>
              </div>
