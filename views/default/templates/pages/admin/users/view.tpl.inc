@@ -33,7 +33,7 @@
             </div>
             <div class="col-sm-8">
               <span>Reputacion</span>
-              <h2><strong>{total_comments_snippets}</strong></h2>   
+              <h2><strong>{reputation}</strong></h2>   
             </div>
             </div>                 
           </div> 
@@ -46,7 +46,7 @@
               </div>
               <div class="col-sm-8">
                 <span>Experiencia</span>
-                <h2><strong>{total_comments_snippets}</strong></h2>   
+                <h2><strong>{experience}</strong></h2>   
               </div>
             </div>                 
           </div> 
@@ -59,7 +59,7 @@
               </div>
               <div class="col-sm-8">
                 <span>Nivel</span>
-                <h2><strong>{total_comments_snippets}</strong></h2>   
+                <h2><strong>{level}</strong></h2>   
               </div>
             </div>                 
           </div> 
@@ -77,7 +77,7 @@
               </div>
               <div class="col-sm-5">
                 <span>Comentarios</span>
-                <h2><strong><a href="admin_snippets/listByUser/{login}">{total_snippets}</a></strong></h2>                    
+                <h2><strong><a href="admin_users/comments/{login}">{total_comments_snippets}</a></strong></h2>                    
               </div>
             </div>
           </div>
@@ -95,7 +95,7 @@
               </div>
               <div class="col-sm-5">
                 <span>Comentarios</span>
-                <h2><strong><a href="admin_snippets/listByUser/{login}">{total_snippets}</a></strong></h2>                    
+                <h2><strong><a href="admin_snippets/listByUser/{login}">{total_comments_links}</a></strong></h2>                    
               </div>
             </div>
           </div>
@@ -109,15 +109,15 @@
               </div>
               <div class="col-sm-3">
                 <span>Snippets</span>
-                <h2><strong>{total_comments_snippets}</strong></h2>   
+                <h2><strong>{xxxx}</strong></h2>   
               </div>
               <div class="col-sm-3">
                 <span>Links</span>
-                <h2><strong>{total_comments_snippets}</strong></h2>   
+                <h2><strong>{xxxx}</strong></h2>   
               </div>
               <div class="col-sm-3">
                 <span>Tutoriales</span>
-                <h2><strong>{total_comments_snippets}</strong></h2>   
+                <h2><strong>{xxxx}</strong></h2>   
               </div>
             </div>                 
           </div> 
@@ -131,7 +131,7 @@
                 </div>
                 <div class="col-sm-5">
                   <span>Sesiones</span>
-                  <h2><strong><a href="admin_snippets/listByUser/{login}">{total_snippets}</a></strong></h2>                    
+                  <h2><strong><a href="admin_snippets/listByUser/{login}">{xxxx}</a></strong></h2>                    
                 </div>
               </div>
             </div>
@@ -145,7 +145,7 @@
                 </div>
                 <div class="col-sm-5">
                   <span>Historial</span>
-                  <h2><strong><a href="admin_users/history/{ID}">{total_snippets}</a></strong></h2>                    
+                  <h2><strong><a href="admin_users/history/{ID}">{xxxx}</a></strong></h2>                    
                 </div>
               </div>
             </div>
@@ -156,23 +156,3 @@
       </div>
     </div>
   </div>
-
- <!-- MODAL -->
-    <div id="delete_modal" class="modal fade">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Se va a eliminar este Snippet</h4>
-          </div>
-          <div class="modal-body">
-            <p class="text-warning">Est&aacute;s seguro? Esta operaci&oacute;n no podr&aacute; deshacerse</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-            <a id="delete_link" type="button" class="btn btn-danger">Confirmar eliminaci&oacute;n</a>
-          </div>
-        </div>
-      </div>
-    </div>
-<script type="text/javascript" src="lib/menuOps/delete_confirm.js"></script>

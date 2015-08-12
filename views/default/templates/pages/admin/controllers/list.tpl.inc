@@ -40,7 +40,7 @@
               </ul>
             </div>
           </td>
-		  	  <td class="col-md-3"><a href="admin_controllers/view/{ID}">{controller}</a></td>
+		  	  <td class="col-md-3">{controller}</td>
           <td class="col-md-3">{created}</td>
           <td class="col-md-3">{description}</td>
         </tr>

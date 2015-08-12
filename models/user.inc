@@ -98,7 +98,7 @@ class UserModel extends Object{
   */
   public function getUser($userID){
     
-    $query = "SELECT count(DISTINCT s.ID) as total_snippets, count(DISTINCT l.ID) as total_links, count(DISTINCT cs.ID) as total_comments_snippets, u.ID as ID, u.user_login as login, u.twitter_name as twitter, u.user_email as email, u.user_url as url, u.display_name as display, u.experience_points as experience, u.reputation_points as reputation , u.level_points as level, u.user_level as granted , u.profile_image as image from users u  inner join snippets s on u.ID = s.ID_User inner join links l on u.ID = l.ID_User inner join comment_snippet cs on u.ID = cs.ID_User where u.ID = ".$userID ;
+    $query = "SELECT count(DISTINCT s.ID) as total_snippets, count(DISTINCT l.ID) as total_links, count(DISTINCT cs.ID) as total_comments_snippets, count(DISTINCT cl.ID) as total_comments_links, u.ID as ID, u.user_login as login, u.twitter_name as twitter, u.user_email as email, u.user_url as url, u.display_name as display, u.experience_points as experience, u.reputation_points as reputation , u.level_points as level, u.user_level as granted , u.profile_image as image from users u  left join snippets s on u.ID = s.ID_User left join links l on u.ID = l.ID_User left join comment_snippet cs on u.ID = cs.ID_User left join comments_links cl on u.ID = cl.ID_User where u.ID = ".$userID ;
     $this->registry->getObject('db')->executeQuery( $query );
     if( $this->registry->getObject('db')->numRows() > 0 )
     {
@@ -117,6 +117,7 @@ class UserModel extends Object{
       $tempo['total_snippets'] = $data['total_snippets'];
       $tempo['total_links'] = $data['total_links'];
       $tempo['total_comments_snippets'] = $data['total_comments_snippets'];
+      $tempo['total_comments_links'] = $data['total_comments_links'];
       return $tempo;
     }
     return null;

@@ -63,9 +63,26 @@ class Admin_controllerscontroller{
                   case 'view':
 				    $this->view(intval($this->parameter1));
 					break;
+
 				  case 'add':
 				    $this->add();
 					break;
+
+				  case 'register':
+				    $this->register();
+					break;
+
+				  case 'publish':
+				    $this->publish(intval($this->parameter1));
+				    break;
+
+				  case 'ban':
+				    $this->ban(intval($this->parameter1));
+				    break;
+
+				  case 'delete':
+				    $this->delete(intval($this->parameter1));
+				    break;
                   
                   default:
                     $this->search(1);  
@@ -154,93 +171,71 @@ class Admin_controllerscontroller{
     	);
     $this->registry->getObject('template')->getPage()->addTag('error_msg','error-msg');	
 	$this->registry->getObject('template')->getPage()->addTag('error_text','');
-  }
- 
-
-
-
-
-  /*
-  * Metodo que redirecciona a la plantilla de ver
-  *
-  **/
-  private function view($snippetID)
-  {
-  	require_once( FRAMEWORK_PATH . 'models/snippets.inc');
-  	require_once( FRAMEWORK_PATH . 'models/tags_snippet.inc');
-	$snippets = new Snippets( $this->registry );
-	$snippetData = $snippets->getSnippet( $snippetID );
-	// Si no encontramos el snippet
-    if( $snippetData==null )
-	{
-	  //pantalla de error
-	  $this->registry->getObject('template')->buildFromTemplates(
-	  	$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getInvalidTpl(), 
-	  	$this->registry->getObject('constants')->getFooterTpl()
-	  	);
-	}
-	else
-	{ 
-	  //Si lo encontramos 
-	  // Definimos la pagina de view 
-	  $this->registry->getObject('template')->buildFromTemplates(
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getViewTpl(),
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	  	);
-		
-	  // Cargamos los datos
-	  $this->registry->getObject('template')->getPage()->addTag('title',$snippetData['title']);
-	  $this->registry->getObject('template')->getPage()->addTag('id',$snippetData['ID']);
-	  $this->registry->getObject('template')->getPage()->addTag('description',$snippetData['description']);
-	  $this->registry->getObject('template')->getPage()->addTag('code',$snippetData['code']);
-	   
-	  // Cargamos los tags
-      $tags= new Tags_Snippet( $this->registry );
-      $pagination = $tags->listTagsBySnippet($snippetID);
-      if( $pagination->getNumRowsPage() > 0 )
-	  {
-        $this->registry->getObject('template')->getPage()->addTag( 'tags', array( 'SQL', $pagination->getCache() ) );    	  
-      }
-   }		
+	$this->registry->getObject('template')->getPage()->addTag('controller_name','');	
+	$this->registry->getObject('template')->getPage()->addTag('controller_description','');
   }
  
   
   /*
-  * Metodo que borra el snippet
+  * Metodo que guarda la pagina en BBDD 
+  * 
+  */
+  private function register(){
+ 
+     require_once FRAMEWORK_PATH . 'controllers/admin_controllers/registrationcontroller.inc';
+     require_once( FRAMEWORK_PATH . 'models/controller.inc');
+     $controller = new Controller( $this->registry );
+     if ($controller->canSave($_POST['controller_name']))
+     {
+       $rc = new Registrationcontroller( $this->registry,$this->registry->getObject('authenticate')->getUser()->getUserID());
+	   header('Location: add'); 
+     }else
+     {
+       $this->registry->getObject('template')->buildFromTemplates(
+    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'controllers/'.$this->registry->getObject('constants')->getAddTpl(),
+    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+    	);
+       $this->registry->getObject('template')->getPage()->addTag('error_msg',' ');	
+	   $this->registry->getObject('template')->getPage()->addTag('error_text','El controlador ya existe');
+	   $this->registry->getObject('template')->getPage()->addTag('controller_name',$_POST['controller_name']);	
+	   $this->registry->getObject('template')->getPage()->addTag('controller_description',$_POST['controller_description']);
+     }
+	  	
+  }
+ 
+  
+  /*
+  * Metodo que borra el controlador
   *
   **/
-  private function delete($snippetID)
+  private function ban($controllerID)
   {
-  	require_once( FRAMEWORK_PATH . 'models/snippets.inc');
-	$snippets = new Snippets( $this->registry );
-	$deleted = $snippets->delete( $snippetID );
-	header('Location: /socialNetwork/admin_snippets/search');  	
+    require_once( FRAMEWORK_PATH . 'models/controller.inc');
+	$controller = new Controller( $this->registry );
+	$data = $controller->updateStatus( $controllerID, 5);
+	header('Location: /socialNetwork/admin_controllers/search'); 	
   } 
  
 
   /*
-  * Metodo para publicar los snippets
-  *  TODO asignar los puntos por gamificacion solo cuando sean publicados no cuando 
-  *  el usuario lo postee
+  * Metodo para habilitar el controlador
   */
-  public function publish($snippetID){
-    require_once( FRAMEWORK_PATH . 'models/snippets.inc');
-	$snippets = new Snippets( $this->registry );
-	$deleted = $snippets->updateStatus( $snippetID, 4);
-	header('Location: /socialNetwork/admin_snippets/search');
+  public function publish($controllerID){
+    require_once( FRAMEWORK_PATH . 'models/controller.inc');
+	$controller = new Controller( $this->registry );
+	$data = $controller->updateStatus( $controllerID, 4);
+	header('Location: /socialNetwork/admin_controllers/search');
   }
 
   /*
-  * Metodo para banear los snippets
-  *  TODO quitar los puntos por gamificacion solo cuando sean baneado 
+  * Metodo para borrar el controlador
   */
-  public function update($snippetID){
-    require_once( FRAMEWORK_PATH . 'models/snippets.inc');
-	$snippets = new Snippets( $this->registry );
-	$deleted = $snippets->updateStatus( $snippetID,5);
-	header('Location: /socialNetwork/admin_snippets/search');
+  public function delete($controllerID){
+    require_once( FRAMEWORK_PATH . 'models/controller.inc');
+	$controller = new Controller( $this->registry );
+	$deleted = $controller->delete($controllerID);
+	header('Location: /socialNetwork/admin_controllers/search');
   }
  
  

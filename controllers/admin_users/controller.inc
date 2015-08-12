@@ -163,13 +163,14 @@ class Admin_userscontroller{
 	  $this->registry->getObject('template')->getPage()->addTag('image',$data['image']);
 	  $this->registry->getObject('template')->getPage()->addTag('twitter',$data['twitter']);
 	  $this->registry->getObject('template')->getPage()->addTag('url',$data['url']);
+      $this->registry->getObject('template')->getPage()->addTag('reputation',$data['reputation']);
+      $this->registry->getObject('template')->getPage()->addTag('experience',$data['experience']);
+      $this->registry->getObject('template')->getPage()->addTag('level',$data['level']);      
+	  
 	  $this->registry->getObject('template')->getPage()->addTag('total_snippets',$data['total_snippets']);
 	  $this->registry->getObject('template')->getPage()->addTag('total_links',$data['total_links']);
 	  $this->registry->getObject('template')->getPage()->addTag('total_comments_snippets',$data['total_comments_snippets']);
-	  
-	  
-	  /*$this->registry->getObject('template')->getPage()->addTag('rating',$data['rating']);
-	  $this->registry->getObject('template')->getPage()->addTag('category',$data['category']);*/
+	  $this->registry->getObject('template')->getPage()->addTag('total_comments_links',$data['total_comments_links']);
     }		
   }
  

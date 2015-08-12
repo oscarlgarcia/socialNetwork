@@ -31,20 +31,19 @@ class Controller extends Object
 	return $uid;  
   }	
 
-  /*
-  * Metodo que actualiza el controller en BBDD
+  /**
+  * actualiza el estatus del controlador a partir de su ID
+  * @param int $controllerID 
   */
-  public function update()
+  public function updateStatus($controllerID, $status)
   {
     $changes = array();
-    foreach( $this->saveable_fields as $field )
-    {
-      $changes[ $field ] = $this->$field;
-    }
-    $this->registry->getObject('db')->updateRecords('controllers', $changes," id = ".$this->ID );
+    $changes['active'] = $status;
+    $this->registry->getObject('db')->updateRecords('controllers', $changes," id = ".$controllerID );
     $uid = $this->registry->getObject('db')->lastInsertID();
     return $uid;  
   }
+  
 
   /**
   * borra un controller a partir de su ID
@@ -58,6 +57,21 @@ class Controller extends Object
   }
 
   /**
+  * Metodo que valida si un controlador ya se ha guardado
+  * @param $controllerName, nombre del controlador
+  * @return true, si el nombre puede guardarse, false si no
+  */
+  public function canSave($controllerName){
+    $query = "SELECT ID FROM controllers where controller = '".$controllerName."'";
+    $this->registry->getObject('db')->executeQuery( $query );
+    if( $this->registry->getObject('db')->numRows() > 0 )
+      return false;
+    else
+      return true;
+  }
+
+
+  /**
   * Obtiene un controlador a partir de su ID
   * Devuelve un objeto con la siguiente Informacion:
   * - ID 
@@ -69,7 +83,7 @@ class Controller extends Object
   */
   public function getController($controllerID)
   {
-    $query = "SELECT ID, controller, created, active, description FROM controller where ID = ".$controllerID;
+    $query = "SELECT ID, controller, created, active, description FROM controller where ID=".$controllerID;
 	  $this->registry->getObject('db')->executeQuery( $query );
     if( $this->registry->getObject('db')->numRows() > 0 )
     {

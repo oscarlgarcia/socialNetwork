@@ -62,7 +62,7 @@
                   <tr><td><a href="admin_users/search">Usuarios</a></td></tr>
                    <tr><td><a href="admin_snippets/search">Snippets</a></td></tr>
                    <tr><td><a href="admin_links/search">Links</a></td></tr>
-                   <tr><td><a href="admin_tags/browse">Tags</a></td></tr>
+                   <tr><td><a href="admin_tags/search">Tags</a></td></tr>
                  </table>
                </div>
              </div>
