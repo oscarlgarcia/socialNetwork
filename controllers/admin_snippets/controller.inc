@@ -293,6 +293,53 @@ class Admin_snippetscontroller{
 
   }
 
+   /*
+  * Busca snippets de un usuario en particular
+  */
+  private function comments($snippetID,$offset){
+
+  	$offset = ($offset<=0)?1:$offset;
+  	require_once( FRAMEWORK_PATH . 'models/comments.inc');
+    require_once( FRAMEWORK_PATH . 'models/snippets.inc');
+
+    $snippets = new Snippets( $this->registry );
+	$pagination = $snippets->getComments($offset, $snippetID );
+    
+    if(!$pagination->checkOffset($offset) )
+      {
+        $this->registry->getObject('template')->buildFromTemplates(
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getInvalidTpl(),
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+        );
+        
+        //Cargamos la busqueda
+	    $this->registry->getObject('template')->getPage()->addTag('comments.search',$_SESSION['criteria']);	
+        // cargamos el total de snippets
+		$this->registry->getObject('template')->getPage()->addTag( 'comments_count', $pagination->getTotalRows() );	
+
+      }
+	  else
+	  { 
+        $this->registry->getObject('template')->buildFromTemplates(
+	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getListDetailTpl(),
+	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+	    );
+		//cargamos la info de cada snippet
+		$this->registry->getObject('template')->getPage()->addTag( 'snippets', array( 'SQL', $pagination->getCache() ) );
+         
+		//Cargamos la busqueda
+	    $this->registry->getObject('template')->getPage()->addTag( 'snippet.search',$_SESSION['criteria']);	
+        // cargamos el total de snippets
+		$this->registry->getObject('template')->getPage()->addTag( 'snippets_count', $pagination->getTotalRows() );	
+		$pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
+	  }		
+
+  }
+
+
+
 
   /*
   * Metodo que borra el snippet

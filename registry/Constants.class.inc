@@ -33,6 +33,7 @@ class Constants{
      'logged_userbar' => 'userbar_loggedin.tpl.inc', // Barra de usuario loggeado
      'main'           => 'main.tpl.inc', // template del main
      'list'           => 'list.tpl.inc', // template para mostrar listas
+     'list_detail'    => 'list_detail.tpl.inc', // template para mostrar un segundo nivel de lista
      'category'       => 'category.tpl.inc', // Template para mostrar las cateogrias
      'add'            => 'add.tpl.inc', // template para agregar
      'view'           => 'view.tpl.inc', // template para ver detalle 
@@ -110,6 +111,11 @@ class Constants{
   // retorna el template list
   public function getListTpl(){
     return $this->templates['list'];
+  } 
+
+  // retorna el template list_detail
+  public function getListDetailTpl(){
+    return $this->templates['list_detail'];
   } 
 
   // retorna el template add

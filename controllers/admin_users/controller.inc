@@ -171,6 +171,10 @@ class Admin_userscontroller{
 	  $this->registry->getObject('template')->getPage()->addTag('total_links',$data['total_links']);
 	  $this->registry->getObject('template')->getPage()->addTag('total_comments_snippets',$data['total_comments_snippets']);
 	  $this->registry->getObject('template')->getPage()->addTag('total_comments_links',$data['total_comments_links']);
+	  $this->registry->getObject('template')->getPage()->addTag('total_fav_snippets',$data['total_fav_snippets']);
+	  $this->registry->getObject('template')->getPage()->addTag('total_fav_links',$data['total_fav_links']);
+	  $this->registry->getObject('template')->getPage()->addTag('total_fav_tuts',$data['total_fav_tuts']);
+	  
     }		
   }
  

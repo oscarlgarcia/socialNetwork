@@ -77,7 +77,7 @@
               </div>
               <div class="col-sm-5">
                 <span>Comentarios</span>
-                <h2><strong><a href="admin_users/comments/{login}">{total_comments_snippets}</a></strong></h2>                    
+                <h2><strong><a href="admin_users/comments/{ID}">{total_comments_snippets}</a></strong></h2>                    
               </div>
             </div>
           </div>
@@ -109,48 +109,32 @@
               </div>
               <div class="col-sm-3">
                 <span>Snippets</span>
-                <h2><strong>{xxxx}</strong></h2>   
+                <h2><strong>{total_fav_snippets}</strong></h2>   
               </div>
               <div class="col-sm-3">
                 <span>Links</span>
-                <h2><strong>{xxxx}</strong></h2>   
+                <h2><strong>{total_fav_links}</strong></h2>   
               </div>
               <div class="col-sm-3">
                 <span>Tutoriales</span>
-                <h2><strong>{xxxx}</strong></h2>   
+                <h2><strong>{total_fav_tuts}</strong></h2>   
               </div>
             </div>                 
           </div> 
         </div>  
           
-          <div class="col-sm-4">
-            <div class="widget yellow-bg text-center">
-              <div class="row">
-                <div class="col-sm-3">
-                  <i class="fa fa-user fa-3x"></i>
-                </div>
-                <div class="col-sm-5">
-                  <span>Sesiones</span>
-                  <h2><strong><a href="admin_snippets/listByUser/{login}">{xxxx}</a></strong></h2>                    
-                </div>
+        <div class="col-sm-4">
+          <div class="widget red-bg text-center">
+            <div class="row">
+              <div class="col-sm-3">
+                <i class="fa fa-history fa-3x"></i>
               </div>
-            </div>
-          </div>  
-
-          <div class="col-sm-4">
-            <div class="widget red-bg text-center">
-              <div class="row">
-                <div class="col-sm-3">
-                  <i class="fa fa-history fa-3x"></i>
-                </div>
-                <div class="col-sm-5">
-                  <span>Historial</span>
-                  <h2><strong><a href="admin_users/history/{ID}">{xxxx}</a></strong></h2>                    
-                </div>
+              <div class="col-sm-5">
+                <h4><strong><a href="admin_users/history/{ID}">Historial</a></strong></h4>
               </div>
             </div>
           </div>
-
+        </div>
        </div> 
      <!-- Fin Perfil -->
       </div>
