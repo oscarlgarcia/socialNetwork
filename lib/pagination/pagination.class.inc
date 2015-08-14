@@ -135,6 +135,7 @@ class Pagination {
     	$limit .= ( $this->offset * $this->limit ) . ", " . $this->limit;
     	$temp_query = $temp_query . $limit;
     	$this->executedQuery = $temp_query;
+
     	if( $this->method == 'cache' )
     	{
     		$this->cache = $this->registry->getObject('db')->cacheQuery( $temp_query );
@@ -273,7 +274,7 @@ class Pagination {
       $add2 = $pn + 2;	   	   
       
 	  $to_print=""; 
-	  $href= "<a href=\"".$controller."/".$action."/";
+      $href= "<a href=\"".$controller."/".$action."/";
       if (!is_null($parameter1)){
 	    if(!is_numeric($parameter1))
 		  $href .=$parameter1."/";

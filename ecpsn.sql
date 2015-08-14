@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-08-2015 a las 17:57:58
+-- Tiempo de generación: 14-08-2015 a las 14:14:00
 -- Versión del servidor: 5.6.17
 -- Versión de PHP: 5.5.12
 
@@ -177,11 +177,12 @@ CREATE TABLE IF NOT EXISTS `comment_snippet` (
   `added` datetime NOT NULL COMMENT 'Fecha de Agregado ',
   `ID_User` bigint(20) NOT NULL COMMENT 'Usuario que lo realizo',
   `ID_Snippet` bigint(20) NOT NULL COMMENT 'Snippet al que pertenece',
-  `approved` tinyint(1) NOT NULL DEFAULT '1',
+  `approved` bigint(1) NOT NULL DEFAULT '3',
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID` (`ID`),
   KEY `ID_User` (`ID_User`),
-  KEY `FK_comment_snippet2` (`ID_Snippet`)
+  KEY `FK_comment_snippet2` (`ID_Snippet`),
+  KEY `IDX_approved_comment_snippets` (`approved`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=110 ;
 
 --
@@ -189,28 +190,28 @@ CREATE TABLE IF NOT EXISTS `comment_snippet` (
 --
 
 INSERT INTO `comment_snippet` (`ID`, `comment`, `added`, `ID_User`, `ID_Snippet`, `approved`) VALUES
-(61, 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim', '2014-10-01 12:44:06', 8, 38, 1),
-(72, '&lt;!doctype html&gt;\r\n&lt;html lang=&quot;en&quot;&gt;\r\n&lt;head&gt;\r\n  &lt;meta charset=&quot;utf-8&quot;&gt;\r\n  &lt;title&gt;The Brand New Web Site&lt;/title&gt;\r\n  &lt;meta name=&quot;description&quot; content=&quot;The Brand New Web Site&quot;&gt;\r\n  &lt;meta name=&quot;author&quot; content=&quot;Barattalo.it&quot;&gt;\r\n  &lt;link rel=&quot;stylesheet&quot; href=&quot;css/styles.css?v=1.0&quot;&gt;\r\n  &lt;!--[if lt IE 9]&gt;\r\n  &lt;script src=&quot;http://html5shiv.googlecode.com/svn/trunk/html5.js&quot;&gt;&lt;/script&gt;\r\n  &lt;![endif]--&gt;\r\n&lt;/head&gt;\r\n&lt;body&gt;\r\n \r\n \r\n \r\n	&lt;!-- run javascript at the end --&gt;\r\n  &lt;script src=&quot;js/scripts.js&quot;&gt;&lt;/script&gt;\r\n&lt;/body&gt;\r\n&lt;/html&gt;', '2014-10-01 13:38:55', 8, 38, 1),
-(75, 'Fenomenal lo guardar&Atilde;&copy; se&Atilde;&plusmn;or mac''allistair ', '2014-10-01 13:48:15', 8, 38, 1),
-(79, 'delete from snippets where 1; commit', '2014-10-01 13:49:51', 8, 38, 1),
-(80, 'fenomenal se&ntilde;or avi&oacute;n mac''alistais \\|@#~&euro;&not;][{}&lt;&lt;&gt;&gt;&gt;&lt;&lt;&ordf;&ordf;&ordf;!!&quot;&quot;&middot;&middot;&quot;%&amp;%$&amp;((/()''=()=?^PK&Ntilde;HKJ', '2014-10-01 13:50:37', 8, 38, 1),
-(81, 'Good Eric Meyer reset!', '2014-10-01 14:29:09', 8, 40, 1),
-(83, 'fdghfdghdfh', '2014-10-01 17:14:36', 8, 38, 1),
-(86, 'Test Comment', '2014-10-21 14:31:00', 10, 68, 1),
-(87, 'Esto es la leche!!', '2014-10-22 17:39:24', 8, 71, 1),
-(88, 'Gracias Se&ntilde;or macallistar''s ', '2014-10-22 17:41:48', 10, 71, 1),
-(89, 'Esto es asi?\r\n \r\npreg_match(&quot;/(enum\\((.*?)\\))/&quot;, $result[&quot;Type&quot;], $enumArray);\r\n$getEnumSet = explode(&quot;''&quot;, $enumArray[&quot;2&quot;]);\r\n$getEnumSet = preg_replace(&quot;/,/&quot;, &quot;&quot;, $getEnumSet);\r\n\r\n', '2014-10-22 17:42:06', 10, 71, 1),
-(90, 'wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwcxxxxxxxxxxcxcxcxcx', '2014-11-03 16:48:11', 8, 71, 1),
-(91, 'Ejemplo con Ajax loaded', '2014-11-04 14:07:29', 8, 70, 1),
-(92, 'señor', '2014-11-04 14:56:51', 8, 38, 1),
-(93, 'avión señorito ///////\\\\\\\\\\\\&lt;&gt;'''''''''''''''''''''''' ª!!"!ª"·ª!·$!·"$5$·$&amp;/%&amp;/()&amp;)=()=¿)=¿)=¡;:;:;:_;_:&gt;Z&gt;ñ´ñ´ñ', '2014-11-04 14:57:21', 8, 38, 1),
-(94, 'Äáéíúó ', '2014-11-04 14:59:23', 8, 38, 1),
-(95, 'asdfasdfasdf\r\nasasdfas\r\ndfa\r\nsdf\r\nasdf', '2014-11-04 18:06:00', 8, 71, 1),
-(96, 'sdfthsrty srthger sy\r\nhgw trg\r\ns d\r\nffgs\r\ndffg \r\n', '2014-11-04 18:06:05', 8, 71, 1),
-(104, 'Test', '2015-03-01 21:06:23', 8, 41, 1),
-(107, 'fsdfsdf', '2015-05-13 17:07:57', 8, 80, 1),
-(108, 'comento algo', '2015-08-07 14:08:14', 8, 83, 1),
-(109, 'otro link\r\n', '2015-08-07 14:18:22', 10, 83, 1);
+(61, 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim', '2014-10-01 12:44:06', 8, 38, 3),
+(72, '&lt;!doctype html&gt;\r\n&lt;html lang=&quot;en&quot;&gt;\r\n&lt;head&gt;\r\n  &lt;meta charset=&quot;utf-8&quot;&gt;\r\n  &lt;title&gt;The Brand New Web Site&lt;/title&gt;\r\n  &lt;meta name=&quot;description&quot; content=&quot;The Brand New Web Site&quot;&gt;\r\n  &lt;meta name=&quot;author&quot; content=&quot;Barattalo.it&quot;&gt;\r\n  &lt;link rel=&quot;stylesheet&quot; href=&quot;css/styles.css?v=1.0&quot;&gt;\r\n  &lt;!--[if lt IE 9]&gt;\r\n  &lt;script src=&quot;http://html5shiv.googlecode.com/svn/trunk/html5.js&quot;&gt;&lt;/script&gt;\r\n  &lt;![endif]--&gt;\r\n&lt;/head&gt;\r\n&lt;body&gt;\r\n \r\n \r\n \r\n	&lt;!-- run javascript at the end --&gt;\r\n  &lt;script src=&quot;js/scripts.js&quot;&gt;&lt;/script&gt;\r\n&lt;/body&gt;\r\n&lt;/html&gt;', '2014-10-01 13:38:55', 8, 38, 3),
+(75, 'Fenomenal lo guardar&Atilde;&copy; se&Atilde;&plusmn;or mac''allistair ', '2014-10-01 13:48:15', 8, 38, 3),
+(79, 'delete from snippets where 1; commit', '2014-10-01 13:49:51', 8, 38, 3),
+(80, 'fenomenal se&ntilde;or avi&oacute;n mac''alistais \\|@#~&euro;&not;][{}&lt;&lt;&gt;&gt;&gt;&lt;&lt;&ordf;&ordf;&ordf;!!&quot;&quot;&middot;&middot;&quot;%&amp;%$&amp;((/()''=()=?^PK&Ntilde;HKJ', '2014-10-01 13:50:37', 8, 38, 3),
+(81, 'Good Eric Meyer reset!', '2014-10-01 14:29:09', 8, 40, 3),
+(83, 'fdghfdghdfh', '2014-10-01 17:14:36', 8, 38, 3),
+(86, 'Test Comment', '2014-10-21 14:31:00', 10, 68, 3),
+(87, 'Esto es la leche!!', '2014-10-22 17:39:24', 8, 71, 3),
+(88, 'Gracias Se&ntilde;or macallistar''s ', '2014-10-22 17:41:48', 10, 71, 3),
+(89, 'Esto es asi?\r\n \r\npreg_match(&quot;/(enum\\((.*?)\\))/&quot;, $result[&quot;Type&quot;], $enumArray);\r\n$getEnumSet = explode(&quot;''&quot;, $enumArray[&quot;2&quot;]);\r\n$getEnumSet = preg_replace(&quot;/,/&quot;, &quot;&quot;, $getEnumSet);\r\n\r\n', '2014-10-22 17:42:06', 10, 71, 3),
+(90, 'wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwcxxxxxxxxxxcxcxcxcx', '2014-11-03 16:48:11', 8, 71, 3),
+(91, 'Ejemplo con Ajax loaded', '2014-11-04 14:07:29', 8, 70, 3),
+(92, 'señor', '2014-11-04 14:56:51', 8, 38, 3),
+(93, 'avión señorito ///////\\\\\\\\\\\\&lt;&gt;'''''''''''''''''''''''' ª!!"!ª"·ª!·$!·"$5$·$&amp;/%&amp;/()&amp;)=()=¿)=¿)=¡;:;:;:_;_:&gt;Z&gt;ñ´ñ´ñ', '2014-11-04 14:57:21', 8, 38, 3),
+(94, 'Äáéíúó ', '2014-11-04 14:59:23', 8, 38, 3),
+(95, 'asdfasdfasdf\r\nasasdfas\r\ndfa\r\nsdf\r\nasdf', '2014-11-04 18:06:00', 8, 71, 3),
+(96, 'sdfthsrty srthger sy\r\nhgw trg\r\ns d\r\nffgs\r\ndffg \r\n', '2014-11-04 18:06:05', 8, 71, 3),
+(104, 'Test', '2015-03-01 21:06:23', 8, 41, 3),
+(107, 'fsdfsdf', '2015-05-13 17:07:57', 8, 80, 3),
+(108, 'comento algo', '2015-08-07 14:08:14', 8, 83, 3),
+(109, 'otro link\r\n', '2015-08-07 14:18:22', 10, 83, 3);
 
 --
 -- Disparadores `comment_snippet`
@@ -236,7 +237,7 @@ CREATE TABLE IF NOT EXISTS `controllers` (
   `created` datetime NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `idx_ctrl` (`active`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Para registrar los controladores del site\n' AUTO_INCREMENT=23 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Para registrar los controladores del site\n' AUTO_INCREMENT=24 ;
 
 --
 -- Volcado de datos para la tabla `controllers`
@@ -254,7 +255,8 @@ INSERT INTO `controllers` (`ID`, `controller`, `active`, `description`, `created
 (12, 'admin_controllers', 4, 'Controlador para gestionar los Controladores del Site, No BORRAR!!!', '2015-08-12 16:35:43'),
 (20, 'admin_cms', 4, 'Controlador para gestionar el CMS del Site ', '2015-08-12 16:35:43'),
 (21, 'admin_links', 4, 'Controlador para gestionar los enlaces , cancin, &lt;acento&gt;', '2015-08-12 16:45:14'),
-(22, 'admin_tags', 4, 'Controlador para gestionar los Tags que se crean en el Site ( Links, Snippets, Paginas,etc)', '2015-08-12 16:46:22');
+(22, 'admin_tags', 4, 'Controlador para gestionar los Tags que se crean en el Site ( Links, Snippets, Paginas,etc)', '2015-08-12 16:46:22'),
+(23, 'admin_comments_snippet', 4, 'Controlador para gestionar los comentarios de un Snippet en particular:\r\nLa lista mostrar todos los comentarios y a partir de aqu se puede filtrar por snippet o por usuario', '2015-08-14 14:08:13');
 
 -- --------------------------------------------------------
 
@@ -798,7 +800,7 @@ CREATE TABLE IF NOT EXISTS `logger` (
   `browser` longtext CHARACTER SET latin1 NOT NULL,
   `sessionID` varchar(100) CHARACTER SET latin1 NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla para registrar las entradas al siteRegistrará ' AUTO_INCREMENT=2831 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla para registrar las entradas al siteRegistrará ' AUTO_INCREMENT=2994 ;
 
 --
 -- Volcado de datos para la tabla `logger`
@@ -3635,7 +3637,171 @@ INSERT INTO `logger` (`ID`, `ipAddress`, `route`, `date`, `session`, `browser`, 
 (2827, '127.0.0.1', 'admin_users/search/2', '2015-08-12 17:54:55', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
 (2828, '127.0.0.1', 'admin_users/view/10', '2015-08-12 17:54:56', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
 (2829, '127.0.0.1', 'admin_users/view/10', '2015-08-12 17:57:01', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
-(2830, '127.0.0.1', 'admin_controllers/search', '2015-08-12 17:57:05', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5');
+(2830, '127.0.0.1', 'admin_controllers/search', '2015-08-12 17:57:05', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2831, '127.0.0.1', 'admin_users/search', '2015-08-13 10:36:30', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2832, '127.0.0.1', 'admin_users/search/2', '2015-08-13 10:36:31', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2833, '127.0.0.1', 'admin_users/view/8', '2015-08-13 10:36:33', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2834, '127.0.0.1', 'admin_users/search/2', '2015-08-13 10:36:34', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2835, '127.0.0.1', 'admin_users/view/10', '2015-08-13 10:36:36', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2836, '127.0.0.1', 'admin_users/view/10', '2015-08-13 10:37:09', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2837, '127.0.0.1', 'admin_users/view/10', '2015-08-13 10:37:20', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2838, '127.0.0.1', 'admin_users/view/10', '2015-08-13 10:37:30', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2839, '127.0.0.1', 'admin_users/view/10', '2015-08-13 12:45:24', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2840, '127.0.0.1', 'admin_users/search/2', '2015-08-13 12:45:28', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2841, '127.0.0.1', 'admin_users/view/8', '2015-08-13 12:45:29', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2842, '127.0.0.1', 'admin_users/view/8', '2015-08-13 12:59:39', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2843, '127.0.0.1', 'admin_users/view/8', '2015-08-13 13:00:03', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2844, '127.0.0.1', 'admin_users/search/2', '2015-08-13 13:00:12', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2845, '127.0.0.1', 'admin_users/view/10', '2015-08-13 13:00:13', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2846, '127.0.0.1', 'admin_users/search/2', '2015-08-13 13:00:20', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2847, '127.0.0.1', 'admin_users/view/8', '2015-08-13 13:00:22', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2848, '127.0.0.1', 'admin_users/view/8', '2015-08-13 13:12:06', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2849, '127.0.0.1', 'admin_controllers/search', '2015-08-13 13:12:17', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2850, '127.0.0.1', 'admin_users/search', '2015-08-13 13:12:22', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2851, '127.0.0.1', 'admin_snippets/search', '2015-08-13 13:12:24', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2852, '127.0.0.1', 'admin_users/search', '2015-08-13 13:36:03', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2853, '127.0.0.1', 'admin_users/search/2', '2015-08-13 13:36:05', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2854, '127.0.0.1', 'admin_users/view/8', '2015-08-13 13:36:06', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2855, '127.0.0.1', 'admin_users/search/2', '2015-08-13 13:36:41', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2856, '127.0.0.1', 'admin_users/view/8', '2015-08-13 13:36:48', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2857, '127.0.0.1', 'admin_users/view/8', '2015-08-13 13:37:56', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2858, '127.0.0.1', 'admin_users/view/8', '2015-08-13 13:39:21', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2859, '127.0.0.1', 'admin_users/view/8', '2015-08-13 13:39:33', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2860, '127.0.0.1', 'admin_links/search', '2015-08-13 13:40:11', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2861, '127.0.0.1', 'admin_snippets/search', '2015-08-13 13:40:16', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2862, '127.0.0.1', 'tuts', '2015-08-13 14:00:38', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2863, '127.0.0.1', 'tuts/AngularJs', '2015-08-13 14:00:41', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2864, '127.0.0.1', 'tuts/AngularJs/Principiante', '2015-08-13 14:00:42', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2865, '127.0.0.1', 'tuts/angular-1', '2015-08-13 14:00:43', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2866, '127.0.0.1', 'tuts/AngularJs', '2015-08-13 14:00:57', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2867, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-13 14:48:48', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2868, '127.0.0.1', 'admin_snippets/search', '2015-08-13 14:48:58', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2869, '127.0.0.1', 'admin_snippets/comments/81', '2015-08-13 14:49:00', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2870, '127.0.0.1', 'admin_snippets/search', '2015-08-13 14:49:02', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2871, '127.0.0.1', 'admin_snippets/search', '2015-08-14 09:50:20', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2872, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 10:15:30', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2873, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 10:25:13', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2874, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 10:25:26', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2875, '127.0.0.1', 'snippets', '2015-08-14 10:40:49', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2876, '127.0.0.1', 'snippets/commented', '2015-08-14 10:40:54', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2877, '127.0.0.1', 'snippets/view/38', '2015-08-14 10:40:55', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2878, '127.0.0.1', 'snippets/show_comment', '2015-08-14 10:40:56', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2879, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 12:26:28', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2880, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 12:26:29', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2881, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 12:27:48', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2882, '127.0.0.1', 'admin_snippets/comments/views/default/images/avatar/user3.png', '2015-08-14 12:27:48', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2883, '127.0.0.1', 'admin_snippets/comments/views/default/images/avatar/oscar.jpg', '2015-08-14 12:27:48', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2884, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 12:28:15', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2885, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 12:29:45', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2886, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 12:29:48', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2887, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 12:31:11', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2888, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 12:31:53', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2889, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 12:33:14', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2890, '127.0.0.1', 'admin_snippets/search', '2015-08-14 12:33:37', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2891, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 12:33:40', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2892, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 12:40:16', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2893, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 12:40:28', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2894, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 12:40:48', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2895, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 12:42:43', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2896, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 12:44:57', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2897, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 12:53:26', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2898, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 12:53:45', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2899, '127.0.0.1', 'admin_snippets/search', '2015-08-14 12:53:51', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2900, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 12:53:54', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5');
+INSERT INTO `logger` (`ID`, `ipAddress`, `route`, `date`, `session`, `browser`, `sessionID`) VALUES
+(2901, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 12:55:13', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2902, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 12:55:14', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2903, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 12:55:15', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2904, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 12:55:52', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2905, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 12:56:15', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2906, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 12:56:20', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2907, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 12:56:32', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2908, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 12:56:43', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2909, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 12:56:43', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2910, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 12:56:43', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2911, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 12:56:44', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2912, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 12:56:44', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2913, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 12:56:50', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2914, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 12:57:04', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2915, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 12:57:40', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2916, '127.0.0.1', 'admin_snippets/search', '2015-08-14 12:57:50', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2917, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 12:57:50', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2918, '127.0.0.1', 'admin_snippets/search', '2015-08-14 12:57:52', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2919, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 12:57:54', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2920, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 12:58:09', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2921, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 12:59:07', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2922, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 12:59:46', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2923, '127.0.0.1', 'snippets/view/71', '2015-08-14 13:00:03', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2924, '127.0.0.1', 'snippets/show_comment', '2015-08-14 13:00:03', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2925, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 13:15:34', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2926, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 13:16:57', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2927, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 13:18:22', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2928, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 13:18:35', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2929, '127.0.0.1', 'admin_snippets/comments/2', '2015-08-14 13:18:38', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2930, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 13:18:43', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2931, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 13:20:44', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2932, '127.0.0.1', 'admin_snippets/comments/71/2', '2015-08-14 13:20:46', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2933, '127.0.0.1', 'admin_snippets/comments/71/3', '2015-08-14 13:20:48', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2934, '127.0.0.1', 'snippets/view/38', '2015-08-14 13:20:53', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2935, '127.0.0.1', 'snippets/show_comment', '2015-08-14 13:20:54', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2936, '127.0.0.1', 'snippets/commented', '2015-08-14 13:20:57', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2937, '127.0.0.1', 'snippets/commented/2', '2015-08-14 13:21:00', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2938, '127.0.0.1', 'snippets/commented/2/3', '2015-08-14 13:21:04', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2939, '127.0.0.1', 'snippets/commented/2/3', '2015-08-14 13:21:10', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2940, '127.0.0.1', 'snippets/commented/2/4', '2015-08-14 13:21:18', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2941, '127.0.0.1', 'snippets/commented/2/1', '2015-08-14 13:21:32', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2942, '127.0.0.1', 'snippets', '2015-08-14 13:21:37', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2943, '127.0.0.1', 'snippets/browse/2', '2015-08-14 13:21:43', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2944, '127.0.0.1', 'snippets/browse/2', '2015-08-14 13:22:44', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2945, '127.0.0.1', 'admin_snippets/comments/71/3', '2015-08-14 13:23:02', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2946, '127.0.0.1', 'admin_snippets/comments/71/3', '2015-08-14 13:23:20', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2947, '127.0.0.1', 'snippets/browse/2', '2015-08-14 13:23:26', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2948, '127.0.0.1', 'snippets/browse/2', '2015-08-14 13:24:48', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2949, '127.0.0.1', 'snippets/browse/3', '2015-08-14 13:24:52', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2950, '127.0.0.1', 'snippets/browse/4', '2015-08-14 13:24:54', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2951, '127.0.0.1', 'admin_snippets/comments/71/3', '2015-08-14 13:24:57', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2952, '127.0.0.1', 'admin_snippets/comments/1', '2015-08-14 13:24:59', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2953, '127.0.0.1', 'admin_snippets/comments/71/3', '2015-08-14 13:25:02', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2954, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 13:25:04', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2955, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 13:25:27', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2956, '127.0.0.1', 'snippets/commented', '2015-08-14 13:31:41', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2957, '127.0.0.1', 'snippets/view/38', '2015-08-14 13:31:42', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2958, '127.0.0.1', 'snippets/show_comment', '2015-08-14 13:31:43', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2959, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 13:36:17', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2960, '127.0.0.1', 'admin_snippets/comments/71/3', '2015-08-14 13:38:51', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2961, '127.0.0.1', 'admin_snippets/comments/71/2', '2015-08-14 13:38:53', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2962, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 13:38:53', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2963, '127.0.0.1', 'admin_snippets/search', '2015-08-14 13:38:54', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2964, '127.0.0.1', 'admin_snippets/comments/84', '2015-08-14 13:39:20', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2965, '127.0.0.1', 'admin_snippets/search', '2015-08-14 13:39:24', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2966, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 13:39:26', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2967, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 13:39:38', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2968, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 13:39:39', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2969, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 13:39:39', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2970, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 13:39:40', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2971, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 13:39:40', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2972, '127.0.0.1', 'admin_snippets/search', '2015-08-14 13:39:42', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2973, '127.0.0.1', 'admin_snippets/comments/80', '2015-08-14 13:39:45', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2974, '127.0.0.1', 'admin_snippets/search', '2015-08-14 13:39:46', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2975, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 13:39:47', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2976, '127.0.0.1', 'admin_snippets/search', '2015-08-14 13:39:54', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2977, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 13:39:56', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2978, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 13:40:48', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2979, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 13:40:54', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2980, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-14 13:41:20', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2981, '127.0.0.1', 'admin_snippets/search', '2015-08-14 13:41:23', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2982, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 13:41:26', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2983, '127.0.0.1', 'admin_snippets/comments/71', '2015-08-14 13:43:01', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2984, '127.0.0.1', 'snippets/view/38', '2015-08-14 13:43:49', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2985, '127.0.0.1', 'snippets/show_comment', '2015-08-14 13:43:50', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2986, '127.0.0.1', 'admin_controllers/search', '2015-08-14 14:07:22', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2987, '127.0.0.1', 'admin_controllers/add', '2015-08-14 14:07:23', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2988, '127.0.0.1', 'admin_controllers/register', '2015-08-14 14:08:13', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2989, '127.0.0.1', 'admin_controllers/add', '2015-08-14 14:08:13', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2990, '127.0.0.1', 'admin_controllers/search', '2015-08-14 14:08:17', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2991, '127.0.0.1', 'admin_controllers/publish/23', '2015-08-14 14:08:28', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2992, '127.0.0.1', 'admin_controllers/search', '2015-08-14 14:08:28', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2993, '127.0.0.1', 'admin_controllers/search', '2015-08-14 14:09:28', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5');
 
 -- --------------------------------------------------------
 
@@ -4043,7 +4209,7 @@ CREATE TABLE IF NOT EXISTS `snippet_log` (
   KEY `fk_snippetlog_snippet_idx` (`ID_Snippet`),
   KEY `fk_snippetlog_user_idx` (`ID_User`),
   KEY `fk_snippetlog_event_idx` (`event`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=113 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=118 ;
 
 --
 -- Volcado de datos para la tabla `snippet_log`
@@ -4062,7 +4228,12 @@ INSERT INTO `snippet_log` (`ID`, `ID_Snippet`, `event`, `ID_User`, `created`) VA
 (109, 83, 'user.comment.add', 10, '2015-08-07 14:18:22'),
 (110, 83, 'user.rating.add', 10, '2015-08-07 14:20:38'),
 (111, 84, 'user.snippet.add', 10, '2015-08-12 17:43:44'),
-(112, 84, 'user.snippet.view', 10, '2015-08-12 17:44:07');
+(112, 84, 'user.snippet.view', 10, '2015-08-12 17:44:07'),
+(113, 38, 'user.snippet.view', 10, '2015-08-14 10:40:55'),
+(114, 71, 'user.snippet.view', 10, '2015-08-14 13:00:03'),
+(115, 38, 'user.snippet.view', 10, '2015-08-14 13:20:53'),
+(116, 38, 'user.snippet.view', 10, '2015-08-14 13:31:42'),
+(117, 38, 'user.snippet.view', 10, '2015-08-14 13:43:50');
 
 -- --------------------------------------------------------
 
@@ -5608,6 +5779,7 @@ ALTER TABLE `comments_links`
 -- Filtros para la tabla `comment_snippet`
 --
 ALTER TABLE `comment_snippet`
+  ADD CONSTRAINT `FK_commentsnippet_operational` FOREIGN KEY (`approved`) REFERENCES `operational_status` (`ID`),
   ADD CONSTRAINT `FK_comment_snippet1` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`),
   ADD CONSTRAINT `FK_comment_snippet2` FOREIGN KEY (`ID_Snippet`) REFERENCES `snippets` (`ID`);
 

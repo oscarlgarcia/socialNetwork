@@ -17,20 +17,41 @@ class Comment_Snippet extends Object{
 		
 	/**
 	 * Genera lista de comentarios del snippet paginados 
+	 * Este metodo se llama en snippets
+	 * Devuelve un ojeto 
 	 * @param int $snippetID 
 	 * @return Object pagination object
 	 */
 	public function getCommentsBySnippet( $snippetID )
 	{
-      $this->paginatedResult->setLimit($this->limit); //TODO poner no limit
+      $this->paginatedResult->setLimit($this->limit); 
       $this->paginatedResult->setOffset(0);
       $query = "SELECT c.comment as comment, DATE_FORMAT( c.added,'%d de %b %Y') as fecha, u.user_login as user , u.profile_image as image
 		          FROM comment_snippet c inner join snippets s on c.ID_Snippet=s.ID inner 
-				  join users u on c.ID_User=u.ID WHERE s.ID=". $snippetID ." ORDER BY c.added ASC" ;
+				  join users u on c.ID_User=u.ID WHERE c.approved = 4 and s.ID=". $snippetID ." ORDER BY c.added ASC" ;
       $this->paginatedResult->setQuery( $query );
       $this->paginatedResult->setMethod( 'cache' );
       $this->paginatedResult->generatePagination();
       $this->getComments($this->paginatedResult);
+	}
+
+
+	 /**
+	 * Genera lista de comentarios del snippet paginados 
+	 * Este metodo se llama en admin_snippets
+	 * Devuelve un ojeto 
+	 * @param int $snippetID 
+	 * @return Object pagination object
+	 */
+	public function getComments_by_this_snippet($offset = 1, $snippetID )
+	{
+      $this->paginatedResult->setLimit( $this->limit);
+      $this->paginatedResult->setOffset($offset  - 1 );
+      $query = "SELECT c.ID, c.comment as comment, DATE_FORMAT( c.added,'%d de %b %Y') as dateAdded, u.user_login as user , c.approved, op.status_class as class FROM comment_snippet c inner join snippets s on c.ID_Snippet=s.ID inner join users u on c.ID_User=u.ID inner join operational_status op on op.ID = c.approved WHERE s.ID=". $snippetID ." ORDER BY c.added ASC" ;
+      $this->paginatedResult->setQuery( $query );
+      $this->paginatedResult->setMethod( 'cache' );
+      $this->paginatedResult->generatePagination();
+      return $this->paginatedResult;
 	}
 		
 	/*
@@ -50,6 +71,32 @@ class Comment_Snippet extends Object{
 	  return $uid;
 	}	
 	
+    /**
+    * borra un comentario a partir de su ID
+    * @param int $commentID 
+    */
+  public function delete($commentID)
+  {
+    $this->registry->getObject('db')->deleteRecords( 'comment_snippet',' id = '.$commentID,'1');
+	$uid = $this->registry->getObject('db')->lastInsertID();
+	return $uid;  
+  }
+
+  /**
+  * actualiza el estatus del comentario a partir de su ID
+  * @param int $commentID 
+  */
+  public function updateStatus($commentID, $status)
+  {
+  	$changes = array();
+  	$changes['approved'] = $status;
+    $this->registry->getObject('db')->updateRecords('comment_snippet', $changes," id = ".$commentID );
+    $uid = $this->registry->getObject('db')->lastInsertID();
+    return $uid;  
+  }
+
+
+
 	/*
 	* Metodos setter
 	*
