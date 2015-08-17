@@ -1,10 +1,10 @@
 <?php
  /**
- * Controlador para administracion de snippets  browse / edit / delete / ban
+ * Controlador para administracion de los comentarios de snippets  browse / edit / delete / ban
  * @version 1.0
  * @author  Oscar Garcia
  */	
-class Admin_snippetscontroller{
+class Admin_comments_snippetcontroller{
 	
 	/**
 	 * Referencia del objeto registro
@@ -60,23 +60,7 @@ class Admin_snippetscontroller{
   				    $this->search(intval($this->parameter1));
 					break;
                   
-                  case 'view':
-				    $this->view(intval($this->parameter1));
-					break;
-
-				  case 'listByUser':
-				    $this->listByUser($this->parameter1,intval($this->parameter2));
-				    break;
-
-				   case 'comments':
-				    $this->comments(intval($this->parameter1),intval($this->parameter2));
-				    break;  
-				  
-				  case 'history':
-				    $this->history(intval($this->parameter1));
-				    break;
-					  
-				  case 'delete':
+                  case 'delete':
 				    $this->delete(intval($this->parameter1));
 				    break;
 
@@ -87,6 +71,7 @@ class Admin_snippetscontroller{
 				  case 'ban':
 				    $this->ban(intval($this->parameter1));
 				    break;
+
 				}
 				
 			}else
@@ -115,263 +100,87 @@ class Admin_snippetscontroller{
     {   
       $offset = ($offset<=0)?1:$offset;
       
-      if (!isset($_SESSION['criteria'])){
-      	$this->registry->getObject('util')->storeToSession('criteria',"");
+      if (!isset($_SESSION['comment_snippet_criteria'])){
+      	$this->registry->getObject('util')->storeToSession('comment_snippet_criteria',"");
       }
 
       if (isset($_POST['search'])){
-      	$this->registry->getObject('util')->storeToSession('criteria',$_POST['search']);
+      	$this->registry->getObject('util')->storeToSession('comment_snippet_criteria',$_POST['search']);
       }
 
-      require_once( FRAMEWORK_PATH . 'models/snippets.inc');
-	  $snippets = new Snippets( $this->registry );
-	  $pagination = $snippets->search($offset,$_SESSION['criteria']);
+      require_once( FRAMEWORK_PATH . 'models/comment_snippet.inc');
+	  $comments = new Comment_Snippet( $this->registry );
+	  $pagination = $comments->search($offset,$_SESSION['comment_snippet_criteria']);
 	 
       if(!$pagination->checkOffset($offset) )
       {
         $this->registry->getObject('template')->buildFromTemplates(
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getInvalidTpl(),
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_snippet/'.$this->registry->getObject('constants')->getInvalidTpl(),
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
         );
         
         //Cargamos la busqueda
-	    $this->registry->getObject('template')->getPage()->addTag('snippet.search',$_SESSION['criteria']);	
+	    $this->registry->getObject('template')->getPage()->addTag('comments_snippet.search',$_SESSION['comment_snippet_criteria']);	
         // cargamos el total de snippets
-		$this->registry->getObject('template')->getPage()->addTag( 'snippets_count', $pagination->getTotalRows() );	
+		$this->registry->getObject('template')->getPage()->addTag( 'comments_snippet_count', $pagination->getTotalRows() );	
 
       }
 	  else
 	  { 
         $this->registry->getObject('template')->buildFromTemplates(
 	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getListTpl(),
+	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_snippet/'.$this->registry->getObject('constants')->getListTpl(),
 	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
 	    );
 		//cargamos la info de cada snippet
-		$this->registry->getObject('template')->getPage()->addTag( 'snippets', array( 'SQL', $pagination->getCache() ) );
+		$this->registry->getObject('template')->getPage()->addTag( 'comments_snippet', array( 'SQL', $pagination->getCache() ) );
          
 		//Cargamos la busqueda
-	    $this->registry->getObject('template')->getPage()->addTag( 'snippet.search',$_SESSION['criteria']);	
+	    $this->registry->getObject('template')->getPage()->addTag( 'comments_snippet.search',$_SESSION['comment_snippet_criteria']);	
         // cargamos el total de snippets
-		$this->registry->getObject('template')->getPage()->addTag( 'snippets_count', $pagination->getTotalRows() );		
+		$this->registry->getObject('template')->getPage()->addTag( 'comments_snippet_count', $pagination->getTotalRows() );		
 		$pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
 	  }		
     }
 
   
-  /*
-  * Metodo que redirecciona a la plantilla de historial
-  *
-  **/
-  private function history($snippetID)
-  {
-    require_once( FRAMEWORK_PATH . 'models/snippets.inc');
-	$snippets = new Snippets( $this->registry );
-	$snippetData = $snippets->getSnippet( $snippetID );  	
-  	  
-  	require_once( FRAMEWORK_PATH . 'models/snippet_log.inc');
-    $data = new Snippet_Log( $this->registry );
-    
-	$logData = $data->getHistory( $snippetID );
-	
-	// Si no encontramos datos 
-    if( $logData->getTotalRows()<=0 )
-	{
-	  //pantalla de error
-	  $this->registry->getObject('template')->buildFromTemplates(
-	   	$this->registry->getObject('constants')->getHeaderTpl(), 
-	   	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getInvalidTpl(), 
-	   	$this->registry->getObject('constants')->getFooterTpl()
-	   	);
-	}
-	else
-	{   
-	  //Si lo encontramos 
-	  // Definimos la pagina de 
-	  $this->registry->getObject('template')->buildFromTemplates(
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	   	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getHistoryTpl(),
-	   	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	   	);
-      //cargamos la info de cada usuario
-	  $this->registry->getObject('template')->getPage()->addTag( 'logs', array( 'SQL', $logData->getCache() ) );
-	  $this->registry->getObject('template')->getPage()->addTag('title',$snippetData['title']);
-	  $this->registry->getObject('template')->getPage()->addTag('id',$snippetData['ID']);
-	  $this->registry->getObject('template')->getPage()->addTag('description',$snippetData['description']);  
-    }
-   
-  }
-
-
-  /*
-  * Metodo que redirecciona a la plantilla de ver
-  *
-  **/
-  private function view($snippetID)
-  {
-  	require_once( FRAMEWORK_PATH . 'models/snippets.inc');
-  	require_once( FRAMEWORK_PATH . 'models/tags_snippet.inc');
-	$snippets = new Snippets( $this->registry );
-	$snippetData = $snippets->getSnippet( $snippetID );
-	// Si no encontramos el snippet
-    if( $snippetData==null )
-	{
-	  //pantalla de error
-	  $this->registry->getObject('template')->buildFromTemplates(
-	  	$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getInvalidTpl(), 
-	  	$this->registry->getObject('constants')->getFooterTpl()
-	  	);
-	}
-	else
-	{ 
-	  //Si lo encontramos 
-	  // Definimos la pagina de view 
-	  $this->registry->getObject('template')->buildFromTemplates(
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getViewTpl(),
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	  	);
-		
-	  // Cargamos los datos
-	  $this->registry->getObject('template')->getPage()->addTag('title',$snippetData['title']);
-	  $this->registry->getObject('template')->getPage()->addTag('id',$snippetData['ID']);
-	  $this->registry->getObject('template')->getPage()->addTag('description',$snippetData['description']);
-	  $this->registry->getObject('template')->getPage()->addTag('code',$snippetData['code']);
-	   
-	  // Cargamos los tags
-      $tags= new Tags_Snippet( $this->registry );
-      $pagination = $tags->listTagsBySnippet($snippetID);
-      if( $pagination->getNumRowsPage() > 0 )
-	  {
-        $this->registry->getObject('template')->getPage()->addTag( 'tags', array( 'SQL', $pagination->getCache() ) );    	  
-      }
-   }		
-  }
  
-  /*
-  * Busca snippets de un usuario en particular
-  */
-  private function listByUser( $username , $offset ){
-
-  	$offset = ($offset<=0)?1:$offset;
-    require_once( FRAMEWORK_PATH . 'models/snippets.inc');
-    $snippets = new Snippets( $this->registry );
-	$pagination = $snippets->searchByUser($offset, $username );
-    
-    if(!$pagination->checkOffset($offset) )
-      {
-        $this->registry->getObject('template')->buildFromTemplates(
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getInvalidTpl(),
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-        );
-        
-        //Cargamos la busqueda
-	    $this->registry->getObject('template')->getPage()->addTag('snippet.search',$_SESSION['criteria']);	
-        // cargamos el total de snippets
-		$this->registry->getObject('template')->getPage()->addTag( 'snippets_count', $pagination->getTotalRows() );	
-
-      }
-	  else
-	  { 
-        $this->registry->getObject('template')->buildFromTemplates(
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getListTpl(),
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	    );
-		//cargamos la info de cada snippet
-		$this->registry->getObject('template')->getPage()->addTag( 'snippets', array( 'SQL', $pagination->getCache() ) );
-         
-		//Cargamos la busqueda
-	    $this->registry->getObject('template')->getPage()->addTag( 'snippet.search',$_SESSION['criteria']);	
-        // cargamos el total de snippets
-		$this->registry->getObject('template')->getPage()->addTag( 'snippets_count', $pagination->getTotalRows() );	
-		$pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
-	  }		
-
-  }
-
-   /*
-  * Busca comments del snippets en particular
-  */
-  private function comments($snippetID,$offset){
-
-  	$offset = ($offset<=0)?1:$offset;
-    require_once( FRAMEWORK_PATH . 'models/comment_snippet.inc');
-    $comments = new Comment_Snippet( $this->registry );
-	$pagination = $comments->getComments_by_this_snippet($offset, $snippetID );
-    if(!$pagination->checkOffset($offset) )
-      {
-        $this->registry->getObject('template')->buildFromTemplates(
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getInvalidTpl(),
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-        );
-        
-        //Cargamos la busqueda
-	    $this->registry->getObject('template')->getPage()->addTag('comments.search',$_SESSION['criteria']);	
-        // cargamos el total de snippets
-		$this->registry->getObject('template')->getPage()->addTag( 'comments_count', $pagination->getTotalRows() );	
-
-      }
-	  else
-	  { 
-        $this->registry->getObject('template')->buildFromTemplates(
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getListDetailTpl(),
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	    );
-		//cargamos la info de cada comments
-		$this->registry->getObject('template')->getPage()->addTag( 'comments', array( 'SQL', $pagination->getCache() ) );
-         
-		//Cargamos la busqueda
-	    $this->registry->getObject('template')->getPage()->addTag( 'comments.search',$_SESSION['criteria']);	
-        // cargamos el total de comments
-		$this->registry->getObject('template')->getPage()->addTag( 'comments_count', $pagination->getTotalRows() );	
-		$pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
-	  }		
-
-  }
-
-
-
 
   /*
-  * Metodo que borra el snippet
+  * Metodo que borra el comentario
   *
   **/
-  private function delete($snippetID)
+  private function delete($commentID)
   {
-  	require_once( FRAMEWORK_PATH . 'models/snippets.inc');
-	$snippets = new Snippets( $this->registry );
-	$deleted = $snippets->delete( $snippetID );
-	header('Location: /socialNetwork/admin_snippets/search');  	
+  	require_once( FRAMEWORK_PATH . 'models/comment_snippet.inc');
+	$comment = new Comment_Snippet( $this->registry );
+	$deleted = $comment->delete( $commentID );
+	header('Location: /socialNetwork/admin_comments_snippet/search');  	
   } 
  
 
   /*
-  * Metodo para publicar los snippets
+  * Metodo para publicar los comentarios
   *  TODO asignar los puntos por gamificacion solo cuando sean publicados no cuando 
   *  el usuario lo postee
   */
-  public function publish($snippetID){
-    require_once( FRAMEWORK_PATH . 'models/snippets.inc');
-	$snippets = new Snippets( $this->registry );
-	$deleted = $snippets->updateStatus( $snippetID, 4);
-	header('Location: /socialNetwork/admin_snippets/search');
+  public function publish($commentID){
+    require_once( FRAMEWORK_PATH . 'models/comment_snippet.inc');
+	$comment = new Comment_Snippet( $this->registry );
+	$deleted = $comment->updateStatus( $commentID, 4);
+	header('Location: /socialNetwork/admin_comments_snippet/search');
   }
 
   /*
-  * Metodo para banear los snippets
+  * Metodo para banear los comentarios
   *  TODO quitar los puntos por gamificacion solo cuando sean baneado 
   */
-  public function ban($snippetID){
-    require_once( FRAMEWORK_PATH . 'models/snippets.inc');
-	$snippets = new Snippets( $this->registry );
-	$deleted = $snippets->updateStatus( $snippetID,5);
-	header('Location: /socialNetwork/admin_snippets/search');
+  public function ban($commentID){
+    require_once( FRAMEWORK_PATH . 'models/comment_snippet.inc');
+	$comment = new Comment_Snippet( $this->registry );
+	$deleted = $comment->updateStatus( $commentID,5);
+	header('Location: /socialNetwork/admin_comments_snippet/search');
   }
  
  

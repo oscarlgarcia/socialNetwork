@@ -68,10 +68,6 @@ class Admin_snippetscontroller{
 				    $this->listByUser($this->parameter1,intval($this->parameter2));
 				    break;
 
-				   case 'comments':
-				    $this->comments(intval($this->parameter1),intval($this->parameter2));
-				    break;  
-				  
 				  case 'history':
 				    $this->history(intval($this->parameter1));
 				    break;
@@ -293,51 +289,7 @@ class Admin_snippetscontroller{
 
   }
 
-   /*
-  * Busca comments del snippets en particular
-  */
-  private function comments($snippetID,$offset){
-
-  	$offset = ($offset<=0)?1:$offset;
-    require_once( FRAMEWORK_PATH . 'models/comment_snippet.inc');
-    $comments = new Comment_Snippet( $this->registry );
-	$pagination = $comments->getComments_by_this_snippet($offset, $snippetID );
-    if(!$pagination->checkOffset($offset) )
-      {
-        $this->registry->getObject('template')->buildFromTemplates(
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getInvalidTpl(),
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-        );
-        
-        //Cargamos la busqueda
-	    $this->registry->getObject('template')->getPage()->addTag('comments.search',$_SESSION['criteria']);	
-        // cargamos el total de snippets
-		$this->registry->getObject('template')->getPage()->addTag( 'comments_count', $pagination->getTotalRows() );	
-
-      }
-	  else
-	  { 
-        $this->registry->getObject('template')->buildFromTemplates(
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getListDetailTpl(),
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	    );
-		//cargamos la info de cada comments
-		$this->registry->getObject('template')->getPage()->addTag( 'comments', array( 'SQL', $pagination->getCache() ) );
-         
-		//Cargamos la busqueda
-	    $this->registry->getObject('template')->getPage()->addTag( 'comments.search',$_SESSION['criteria']);	
-        // cargamos el total de comments
-		$this->registry->getObject('template')->getPage()->addTag( 'comments_count', $pagination->getTotalRows() );	
-		$pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
-	  }		
-
-  }
-
-
-
-
+ 
   /*
   * Metodo que borra el snippet
   *

@@ -19,7 +19,7 @@ class Snippets extends Object{
   private $added;
   private $ID_status;
 
-  private $limit = 5; //TODO poner en configs
+  private $limit = 10; //TODO poner en configs
   private $saveable_fields = array( 'title', 'description', 'code', 'ID_category', 'ID_User','rating','totalVotes','added','ID_status');
   /**
    * Genera lista de snippets aprobados para publicación ( Id_status = 4) paginados 
@@ -308,7 +308,7 @@ class Snippets extends Object{
    */
   public function search($offset = 1, $criteria = "")
   {
-    $this->paginatedResult->setLimit(10);
+    $this->paginatedResult->setLimit($this->limit);
 	  $this->paginatedResult->setOffset($offset - 1);
 	  $query="SELECT s.ID,s.title, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha, s.rating, s.id_status, s.totalFav as faved, s.totalComments as comments, c.name as category, u.user_login as author,u.id as user_id, o.status_class as class	FROM snippets s inner join category c on s.ID_category = c.ID inner join users u on s.ID_USER = u.ID inner join operational_status o on s.ID_Status = o.ID where s.title like '%".$criteria."%'  group by ID order by added desc";
 	  $this->paginatedResult->setQuery( $query );
@@ -336,7 +336,7 @@ class Snippets extends Object{
    */
   public function searchByUser($offset = 1, $username)
   {
-    $this->paginatedResult->setLimit(10);
+    $this->paginatedResult->setLimit($this->limit);
     $this->paginatedResult->setOffset($offset - 1);
     $query="SELECT s.ID,s.title, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha, s.rating, s.id_status, s.totalFav as faved, s.totalComments as comments, c.name as category, u.user_login as author,u.id as user_id, o.status_class as class FROM snippets s inner join category c on s.ID_category = c.ID inner join users u on s.ID_USER = u.ID inner join operational_status o on s.ID_Status = o.ID where u.user_login = '".$username."' group by ID order by added desc";
 

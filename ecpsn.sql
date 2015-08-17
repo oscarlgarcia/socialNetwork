@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-08-2015 a las 14:14:00
+-- Tiempo de generación: 17-08-2015 a las 13:55:05
 -- Versión del servidor: 5.6.17
 -- Versión de PHP: 5.5.12
 
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `badges_achieved` (
   PRIMARY KEY (`ID`),
   KEY `fk1_idx` (`ID_User`),
   KEY `fk2_idx` (`ID_Badge`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Almacena la relacion de badges por usuario\n' AUTO_INCREMENT=40 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Almacena la relacion de badges por usuario\n' AUTO_INCREMENT=41 ;
 
 --
 -- Volcado de datos para la tabla `badges_achieved`
@@ -85,7 +85,8 @@ INSERT INTO `badges_achieved` (`ID`, `ID_User`, `ID_Badge`, `showed`) VALUES
 (36, 14, 3, 0),
 (37, 14, 5, 0),
 (38, 11, 3, 0),
-(39, 11, 5, 0);
+(39, 11, 5, 0),
+(40, 12, 5, 0);
 
 -- --------------------------------------------------------
 
@@ -183,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `comment_snippet` (
   KEY `ID_User` (`ID_User`),
   KEY `FK_comment_snippet2` (`ID_Snippet`),
   KEY `IDX_approved_comment_snippets` (`approved`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=110 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=112 ;
 
 --
 -- Volcado de datos para la tabla `comment_snippet`
@@ -211,7 +212,8 @@ INSERT INTO `comment_snippet` (`ID`, `comment`, `added`, `ID_User`, `ID_Snippet`
 (104, 'Test', '2015-03-01 21:06:23', 8, 41, 3),
 (107, 'fsdfsdf', '2015-05-13 17:07:57', 8, 80, 3),
 (108, 'comento algo', '2015-08-07 14:08:14', 8, 83, 3),
-(109, 'otro link\r\n', '2015-08-07 14:18:22', 10, 83, 3);
+(109, 'otro link\r\n', '2015-08-07 14:18:22', 10, 83, 3),
+(111, 'Clap your hand', '2015-08-17 13:50:09', 10, 78, 4);
 
 --
 -- Disparadores `comment_snippet`
@@ -800,7 +802,7 @@ CREATE TABLE IF NOT EXISTS `logger` (
   `browser` longtext CHARACTER SET latin1 NOT NULL,
   `sessionID` varchar(100) CHARACTER SET latin1 NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla para registrar las entradas al siteRegistrará ' AUTO_INCREMENT=2994 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla para registrar las entradas al siteRegistrará ' AUTO_INCREMENT=3078 ;
 
 --
 -- Volcado de datos para la tabla `logger`
@@ -3801,7 +3803,91 @@ INSERT INTO `logger` (`ID`, `ipAddress`, `route`, `date`, `session`, `browser`, 
 (2990, '127.0.0.1', 'admin_controllers/search', '2015-08-14 14:08:17', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
 (2991, '127.0.0.1', 'admin_controllers/publish/23', '2015-08-14 14:08:28', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
 (2992, '127.0.0.1', 'admin_controllers/search', '2015-08-14 14:08:28', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
-(2993, '127.0.0.1', 'admin_controllers/search', '2015-08-14 14:09:28', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5');
+(2993, '127.0.0.1', 'admin_controllers/search', '2015-08-14 14:09:28', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2994, '127.0.0.1', 'snippets/view/38', '2015-08-17 09:32:33', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2995, '127.0.0.1', 'snippets/show_comment', '2015-08-17 09:32:34', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(2996, '127.0.0.1', 'admin_snippets/search', '2015-08-17 10:51:53', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2997, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-17 10:51:54', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2998, '127.0.0.1', 'admin_controllers/search', '2015-08-17 10:52:38', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(2999, '127.0.0.1', 'admin_snippets/comments/83', '2015-08-17 10:53:13', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3000, '127.0.0.1', 'admin_snippets/search', '2015-08-17 10:53:27', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3001, '127.0.0.1', 'admin_controllers/search', '2015-08-17 12:31:43', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3002, '127.0.0.1', 'admin_snippets/search', '2015-08-17 12:32:00', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3003, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 12:35:17', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3004, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 12:37:44', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3005, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 12:37:46', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3006, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 12:37:46', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3007, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 12:37:47', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3008, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 12:38:26', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3009, '127.0.0.1', 'admin_comments_snippet/search/2', '2015-08-17 12:38:38', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3010, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 12:38:39', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3011, '127.0.0.1', 'snippets/browse', '2015-08-17 13:17:34', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(3012, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:22:07', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3013, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:24:09', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3014, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:24:29', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3015, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:24:49', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3016, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:24:50', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3017, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:27:48', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3018, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:29:06', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3019, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:29:31', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3020, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:29:41', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3021, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:29:47', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3022, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:30:23', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3023, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:30:54', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3024, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:31:15', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3025, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:31:31', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3026, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:32:13', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3027, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:36:24', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3028, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:36:59', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3029, '127.0.0.1', 'admin_comments_snippet/search/2', '2015-08-17 13:37:06', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3030, '127.0.0.1', 'admin_comments_snippet/search/3', '2015-08-17 13:37:10', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3031, '127.0.0.1', 'snippets/browse', '2015-08-17 13:37:19', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(3032, '127.0.0.1', 'snippets/browse/2', '2015-08-17 13:37:23', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(3033, '127.0.0.1', 'snippets/browse/3', '2015-08-17 13:37:28', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(3034, '127.0.0.1', 'snippets/browse/4', '2015-08-17 13:37:34', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(3035, '127.0.0.1', 'snippets/browse/2', '2015-08-17 13:37:39', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(3036, '127.0.0.1', 'snippets/browse/1', '2015-08-17 13:37:44', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(3037, '127.0.0.1', 'snippets/view/78', '2015-08-17 13:37:53', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(3038, '127.0.0.1', 'snippets/show_comment', '2015-08-17 13:37:54', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(3039, '127.0.0.1', 'snippets/comment', '2015-08-17 13:38:03', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(3040, '127.0.0.1', 'snippets/view/78', '2015-08-17 13:38:08', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(3041, '127.0.0.1', 'snippets/show_comment', '2015-08-17 13:38:08', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(3042, '127.0.0.1', 'admin_comments_snippet/search/3', '2015-08-17 13:38:12', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3043, '127.0.0.1', 'admin_comments_snippet/search/3', '2015-08-17 13:38:31', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3044, '127.0.0.1', 'admin_comments_snippet/search/3', '2015-08-17 13:39:37', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3045, '127.0.0.1', 'admin_comments_snippet/search/3', '2015-08-17 13:40:25', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3046, '127.0.0.1', 'admin_comments_snippet/search/3', '2015-08-17 13:40:26', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3047, '127.0.0.1', 'admin_comments_snippet/search/3', '2015-08-17 13:40:27', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3048, '127.0.0.1', 'admin_comments_snippet/search/3', '2015-08-17 13:40:28', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3049, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:40:45', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3050, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:40:47', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3051, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:40:54', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3052, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:41:03', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3053, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:41:12', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3054, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:42:05', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3055, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:47:53', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3056, '127.0.0.1', 'admin_comments_snippet/search/2', '2015-08-17 13:47:58', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3057, '127.0.0.1', 'admin_comments_snippet/search/3', '2015-08-17 13:48:01', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3058, '127.0.0.1', 'admin_comments_snippet/publish/110', '2015-08-17 13:48:04', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3059, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:48:04', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3060, '127.0.0.1', 'admin_comments_snippet/search/3', '2015-08-17 13:48:07', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3061, '127.0.0.1', 'snippets/view/78', '2015-08-17 13:48:12', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(3062, '127.0.0.1', 'snippets/show_comment', '2015-08-17 13:48:13', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(3063, '127.0.0.1', 'admin_comments_snippet/ban/110', '2015-08-17 13:49:16', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3064, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:49:16', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3065, '127.0.0.1', 'admin_comments_snippet/search/3', '2015-08-17 13:49:18', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3066, '127.0.0.1', 'snippets/view/78', '2015-08-17 13:49:22', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(3067, '127.0.0.1', 'snippets/show_comment', '2015-08-17 13:49:22', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(3068, '127.0.0.1', 'admin_comments_snippet/search/3', '2015-08-17 13:49:44', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3069, '127.0.0.1', 'admin_comments_snippet/delete/110', '2015-08-17 13:49:51', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3070, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:49:51', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3071, '127.0.0.1', 'admin_comments_snippet/search/3', '2015-08-17 13:49:55', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3072, '127.0.0.1', 'snippets/comment', '2015-08-17 13:50:09', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(3073, '127.0.0.1', 'admin_comments_snippet/search/3', '2015-08-17 13:50:12', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3074, '127.0.0.1', 'admin_comments_snippet/publish/111', '2015-08-17 13:50:14', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3075, '127.0.0.1', 'admin_comments_snippet/search', '2015-08-17 13:50:14', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"', 'cu5ifjrfl9o5mnlqa1jm24q1v5'),
+(3076, '127.0.0.1', 'snippets/view/78', '2015-08-17 13:50:18', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"', '3j0r6b1fk4ak90kaqf260eird5'),
+(3077, '127.0.0.1', 'snippets/show_comment', '2015-08-17 13:50:18', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"', '3j0r6b1fk4ak90kaqf260eird5');
 
 -- --------------------------------------------------------
 
@@ -4169,7 +4255,7 @@ INSERT INTO `snippets` (`ID`, `Title`, `Code`, `description`, `ID_Category`, `ID
 (71, 'Get Enumerated Values for a MySQL Field', 'function enum($table, $field) {\r\n$result = @mysql_query("show columns from {$table} like \\"$field\\"");\r\n$result = @mysql_fetch_assoc($result);\r\nif($result["Type"])\r\n{\r\npreg_match("/(enum\\((.*?)\\))/", $result["Type"], $enumArray);\r\n$getEnumSet = explode("''", $enumArray["2"]);\r\n$getEnumSet = preg_replace("/,/", "", $getEnumSet);\r\n$enumFields = array();\r\nforeach($getEnumSet as $enumFieldValue)\r\n{\r\nif($enumFieldValue)\r\n{\r\n$enumFields[] = $enumFieldValue;\r\n}\r\n}\r\nreturn $enumFields;\r\n}\r\nreturn false;\r\n}', 'Returns an array of values specified for an enumerated MySQL field', 16, 8, '3.25', 2, 2, 6, '2014-10-20 16:14:09', 4),
 (74, '&ntilde;a&ntilde;ito avi&oacute;n', 'Tu codigo aquí.... php', ',ENT_COMPAT,''UTF-8'' Vamos a construir un ejemplo en PHP que realice la misma funcionalidad, eso si, omitir&eacute; por cuestiones pr&aacute;cticas, el estilo y dise&ntilde;o de Facebook, as&iacute; que comencemos. La idea que subyace detr&aacute;s de esta funcionalidad es la de poder procesar el contenido de la p&aacute;gina en cuesti&oacute;n y extraer de ella toda la informaci&oacute;n contenida en las etiquetas HTML (&lt;title&gt;, &lt;img&gt;, &lt;meta description&gt;, etc), sirvi&eacute;ndonos para ello de funciones especificas que nos proporciona PHP.', 5, 8, '0.00', 0, 1, 0, '2014-11-04 10:44:50', 4),
 (75, 'delete from Snippets where 1;', 'Todo tuyo.... dfgadsfgsd', 'Vamos a construir un ejemplo en PHP que realice la misma funcionalidad, eso si, omitir&eacute; por cuestiones pr&aacute;cticas, el estilo y dise&ntilde;o de Facebook, as&iacute; que comencemos. La idea que subyace detr&aacute;s de esta funcionalidad es la de poder procesar el contenido de la p&aacute;gina en cuesti&oacute;n y extraer de ella toda la informaci&oacute;n contenida en las etiquetas HTML (&lt;title&gt;, &lt;img&gt;, &lt;meta description&gt;, etc), sirvi&eacute;ndonos para ello de funciones especificas que nos proporciona PHP.', 4, 8, '0.00', 0, 1, 0, '2014-11-04 10:48:53', 4),
-(78, 'HTML5 Mobile Video with Flash, Silverlight, Java, Animated GIF and Download fallback', '<!DOCTYPE html>\r\n<html>\r\n<head>\r\n  <meta charset="utf-8" />\r\n  <title>HTML5 Video with Flash and Download fallback</title>\r\n  <!--[if lt IE 9]>\r\n     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>\r\n  <![endif]-->\r\n  <style type="text/css">\r\n      header, section, footer, aside, nav, article, figure, audio, video, canvas { display:block; }\r\n      img { border:0; vertical-align:middle; }\r\n  </style>\r\n</head>\r\n<body>\r\n<div id="movie">\r\n  <video id="movie_html5" width="320" height="240" preload controls>\r\n    <source src="video.webm" type=''video/webm; codecs="vp8, vorbis"'' />\r\n    <source src="video.ogv" type=''video/ogg; codecs="theora, vorbis"'' />\r\n    <source src="video.mp4" />\r\n    <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id="movie_object" name="movie_object" width="320" height="240" type="application/x-shockwave-flash" data="player.swf"> \r\n      <param name="movie" value="player.swf" />\r\n      <param name="wmode" value="transparent" />\r\n      <param name="allowfullscreen" value="true" />\r\n      <param name="allowscriptaccess" value="always" />\r\n      <param name="flashvars" value="file=video.flv&image=video.jpg" />\r\n      <embed type="application/x-shockwave-flash" id="movie_embed" name="movie_embed" \r\n             src="player.swf"\r\n             width="320"\r\n             height="240"\r\n             bgcolor="#000000"\r\n             allowscriptaccess="always"\r\n             allowfullscreen="true"\r\n             wmode="transparent"\r\n             flashvars="file=video.flv&image=video.jpg">\r\n        <noembed>\r\n          <!-- Java Applet OGG player, see: http://git.xiph.org/?p=cortado.git;a=blob;f=README -->\r\n          <applet id="movie_java" name="movie_java" code="com.fluendo.player.Cortado.class" archive="http://theora.org/cortado.jar" width="320" height="240"> \r\n            <param name="url" value="video.ogv" />\r\n            <param name="autoPlay" value="false" />\r\n            <!-- Mobile stream (Image can be an Animated GIF for playback with no sound) -->\r\n            <div id="movie_mobile">              \r\n              <a href="video.3gp"><img alt="PLAY" src="video.gif" width="320" height="240" /></a>\r\n            </div>\r\n          </applet>       \r\n        </noembed>       \r\n      </embed>\r\n    </object>\r\n   <!-- JW Silverlight WMV player -->\r\n    <div id="movie_silverlight" name="movie_silverlight" style="display:none; position:relative; top:8px; left:8px;">&nbsp;</div>\r\n    <script type="text/javascript" src="silverlight.js"></script>\r\n    <script type="text/javascript" src="wmvplayer.js"></script>    \r\n    <script type="text/javascript">      \r\n      var hasSilverlight = Boolean(window.Silverlight);\r\n      if (hasSilverlight) {\r\n        var cnt = document.getElementById("movie_silverlight"); //media container\r\n        cnt.style.display = ''block'';                           //show Silverlight\r\n        document.getElementById("movie_object").style.display=''none''; //hide Flash, Java and Mobile\r\n        var xaml = "wmvplayer.xaml";                            //XAML player\r\n        var cfg = { file:"video.wmv", image:"video.jpg", width:"320", height:"240" }; //configure WMV file, preview thumbnail, width/height\r\n        var ply = new jeroenwijering.Player(cnt, xaml, cfg);\r\n      }\r\n    </script>\r\n  </video>\r\n  <!-- Offer direct download link to play in Browser plugin or allow System default Media Player to take over -->\r\n  <p>\r\n  Download: <a href="video.mp4">MP4</a> | <a href="video.webm">WebM</a> | <a href="video.ogv">Ogg</a> | <a href="video.3gp">3gp</a> | <a href="video.flv">Flash</a> | <a href="video.wmv">WMV</a>\r\n  </p>\r\n</div>\r\n</body>\r\n</html>', 'Due to device capability inconsistencies and fragmentation, in order to play on the broadest range of devices, approximately 6 formats would be required:\r\nFlash - VP6 (IE 4-6, Netscape, some tablets/PDAs, legacy Desktop browsers)\r\nSilverlight - WMV (IE7+, Windows Phone)\r\nHTML5 video - Ogg Theora (FF, Fenick, Opera, Opera Mobile)\r\nHTML5 video - WebM VP8 (Chrome, Android phones/tablets)\r\nHTML5 video or Java Applet - MP4 baseline H.264 (Safari, iOS devices: iPad/iPod/iPhone, J2SE/J2ME devices)\r\nMobile video - 3GP via RTSP or HTTP ', 5, 12, '0.00', 0, 0, 0, '2014-11-13 12:32:02', 4),
+(78, 'HTML5 Mobile Video with Flash, Silverlight, Java, Animated GIF and Download fallback', '<!DOCTYPE html>\r\n<html>\r\n<head>\r\n  <meta charset="utf-8" />\r\n  <title>HTML5 Video with Flash and Download fallback</title>\r\n  <!--[if lt IE 9]>\r\n     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>\r\n  <![endif]-->\r\n  <style type="text/css">\r\n      header, section, footer, aside, nav, article, figure, audio, video, canvas { display:block; }\r\n      img { border:0; vertical-align:middle; }\r\n  </style>\r\n</head>\r\n<body>\r\n<div id="movie">\r\n  <video id="movie_html5" width="320" height="240" preload controls>\r\n    <source src="video.webm" type=''video/webm; codecs="vp8, vorbis"'' />\r\n    <source src="video.ogv" type=''video/ogg; codecs="theora, vorbis"'' />\r\n    <source src="video.mp4" />\r\n    <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id="movie_object" name="movie_object" width="320" height="240" type="application/x-shockwave-flash" data="player.swf"> \r\n      <param name="movie" value="player.swf" />\r\n      <param name="wmode" value="transparent" />\r\n      <param name="allowfullscreen" value="true" />\r\n      <param name="allowscriptaccess" value="always" />\r\n      <param name="flashvars" value="file=video.flv&image=video.jpg" />\r\n      <embed type="application/x-shockwave-flash" id="movie_embed" name="movie_embed" \r\n             src="player.swf"\r\n             width="320"\r\n             height="240"\r\n             bgcolor="#000000"\r\n             allowscriptaccess="always"\r\n             allowfullscreen="true"\r\n             wmode="transparent"\r\n             flashvars="file=video.flv&image=video.jpg">\r\n        <noembed>\r\n          <!-- Java Applet OGG player, see: http://git.xiph.org/?p=cortado.git;a=blob;f=README -->\r\n          <applet id="movie_java" name="movie_java" code="com.fluendo.player.Cortado.class" archive="http://theora.org/cortado.jar" width="320" height="240"> \r\n            <param name="url" value="video.ogv" />\r\n            <param name="autoPlay" value="false" />\r\n            <!-- Mobile stream (Image can be an Animated GIF for playback with no sound) -->\r\n            <div id="movie_mobile">              \r\n              <a href="video.3gp"><img alt="PLAY" src="video.gif" width="320" height="240" /></a>\r\n            </div>\r\n          </applet>       \r\n        </noembed>       \r\n      </embed>\r\n    </object>\r\n   <!-- JW Silverlight WMV player -->\r\n    <div id="movie_silverlight" name="movie_silverlight" style="display:none; position:relative; top:8px; left:8px;">&nbsp;</div>\r\n    <script type="text/javascript" src="silverlight.js"></script>\r\n    <script type="text/javascript" src="wmvplayer.js"></script>    \r\n    <script type="text/javascript">      \r\n      var hasSilverlight = Boolean(window.Silverlight);\r\n      if (hasSilverlight) {\r\n        var cnt = document.getElementById("movie_silverlight"); //media container\r\n        cnt.style.display = ''block'';                           //show Silverlight\r\n        document.getElementById("movie_object").style.display=''none''; //hide Flash, Java and Mobile\r\n        var xaml = "wmvplayer.xaml";                            //XAML player\r\n        var cfg = { file:"video.wmv", image:"video.jpg", width:"320", height:"240" }; //configure WMV file, preview thumbnail, width/height\r\n        var ply = new jeroenwijering.Player(cnt, xaml, cfg);\r\n      }\r\n    </script>\r\n  </video>\r\n  <!-- Offer direct download link to play in Browser plugin or allow System default Media Player to take over -->\r\n  <p>\r\n  Download: <a href="video.mp4">MP4</a> | <a href="video.webm">WebM</a> | <a href="video.ogv">Ogg</a> | <a href="video.3gp">3gp</a> | <a href="video.flv">Flash</a> | <a href="video.wmv">WMV</a>\r\n  </p>\r\n</div>\r\n</body>\r\n</html>', 'Due to device capability inconsistencies and fragmentation, in order to play on the broadest range of devices, approximately 6 formats would be required:\r\nFlash - VP6 (IE 4-6, Netscape, some tablets/PDAs, legacy Desktop browsers)\r\nSilverlight - WMV (IE7+, Windows Phone)\r\nHTML5 video - Ogg Theora (FF, Fenick, Opera, Opera Mobile)\r\nHTML5 video - WebM VP8 (Chrome, Android phones/tablets)\r\nHTML5 video or Java Applet - MP4 baseline H.264 (Safari, iOS devices: iPad/iPod/iPhone, J2SE/J2ME devices)\r\nMobile video - 3GP via RTSP or HTTP ', 5, 12, '0.00', 0, 0, 2, '2014-11-13 12:32:02', 4),
 (80, 'List all images from directory', '<?php\r\n                $dir = "assets/images/";\r\n                foreach (glob($dir . ''/*'') as $filename) {\r\n                   echo "<img src=''" . $filename . "''><br/>";\r\n            }', 'List all images from directory', 4, 14, '3.50', 1, 1, 1, '2014-11-13 12:38:13', 4),
 (81, 'Listing special forms', '(keys clojure.lang.Compiler/specials)', 'Title tells everything', 17, 8, '4.00', 1, 1, 0, '2014-12-02 13:02:47', 4),
 (83, 'dgseert', 'sdfgsdfg', 'sddfgsdfgsdf', 15, 8, '3.50', 2, 1, 2, '2015-08-07 13:46:39', 4),
@@ -4209,7 +4295,7 @@ CREATE TABLE IF NOT EXISTS `snippet_log` (
   KEY `fk_snippetlog_snippet_idx` (`ID_Snippet`),
   KEY `fk_snippetlog_user_idx` (`ID_User`),
   KEY `fk_snippetlog_event_idx` (`event`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=118 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=126 ;
 
 --
 -- Volcado de datos para la tabla `snippet_log`
@@ -4233,7 +4319,15 @@ INSERT INTO `snippet_log` (`ID`, `ID_Snippet`, `event`, `ID_User`, `created`) VA
 (114, 71, 'user.snippet.view', 10, '2015-08-14 13:00:03'),
 (115, 38, 'user.snippet.view', 10, '2015-08-14 13:20:53'),
 (116, 38, 'user.snippet.view', 10, '2015-08-14 13:31:42'),
-(117, 38, 'user.snippet.view', 10, '2015-08-14 13:43:50');
+(117, 38, 'user.snippet.view', 10, '2015-08-14 13:43:50'),
+(118, 38, 'user.snippet.view', 10, '2015-08-17 09:32:33'),
+(119, 78, 'user.snippet.view', 10, '2015-08-17 13:37:53'),
+(120, 78, 'user.comment.add', 10, '2015-08-17 13:38:03'),
+(121, 78, 'user.snippet.view', 10, '2015-08-17 13:38:08'),
+(122, 78, 'user.snippet.view', 10, '2015-08-17 13:48:12'),
+(123, 78, 'user.snippet.view', 10, '2015-08-17 13:49:22'),
+(124, 78, 'user.comment.add', 10, '2015-08-17 13:50:09'),
+(125, 78, 'user.snippet.view', 10, '2015-08-17 13:50:18');
 
 -- --------------------------------------------------------
 
@@ -4435,7 +4529,7 @@ INSERT INTO `users` (`ID`, `user_login`, `user_pass`, `password_salt`, `twitter_
 (8, 'oscarlgarcia', '$2a$07$106c84709b2b7a5e6ef78OyF32F8K7bPfSiIbfvx3UDKZaLZZquoW', '$2a$07$106c84709b2b7a5e6ef78a7f7e226c2d656ca810e48d$', 'c_programador', 'oscarlgarcia@gmail.com', 'http://radar.oreilly.com/nat/page/123', '2014-03-06 01:26:52', 4, 'oscarlgarcia', 157, 107, 1, '60eeb732ec5dac454243178ae6c0c4d8', '2015-03-26 16:57:58', '624e86b4c38468e7695a8ac71ebd4c61', 0, 'oscar.jpg'),
 (10, 'pedro', '$2a$07$1c173912f89d4921d411euyGh1S5gXebi9./pkETmwwIQgby5Ibty', '$2a$07$1c173912f89d4921d411e8cef1e53e9acf5c5c6839de$', NULL, 'pedroperez@ff.com', NULL, '2014-10-20 17:50:29', 4, 'pedro', 57, 7, 0, NULL, NULL, '5033fd6a244f95b9d33e4a388f0f0eb4', 0, 'user3.png'),
 (11, 'director', '$2a$07$441112768ee904e1c81bbOY6nCGoWambFLWFsBygKLjHAHuy2r6kC', '$2a$07$441112768ee904e1c81bbae0cb9110b3c473e4b6a444$', NULL, 'oscar.garcia@elclubdelprogramador.com', NULL, '2014-11-06 14:58:21', 4, 'director', 36, 5, 0, NULL, NULL, '13945b33caf58e2d7770f0637f008807', 10, 'user3.png'),
-(12, 'usuario2', '$2a$07$fb026efc8f989177cd0dduBxYBVgBgRbTEppx5C35VaQqs63noETG', '$2a$07$fb026efc8f989177cd0dd227a5a0a4d01a7ebb5bf26e$', NULL, 'usuarios2@gmsail.com', NULL, '2014-11-13 12:25:42', 4, 'usuario2', 10, 1, 0, NULL, NULL, '101be302634e6345c900ce239d5c5905', 0, 'gravatar.jpg'),
+(12, 'usuario2', '$2a$07$fb026efc8f989177cd0dduBxYBVgBgRbTEppx5C35VaQqs63noETG', '$2a$07$fb026efc8f989177cd0dd227a5a0a4d01a7ebb5bf26e$', NULL, 'usuarios2@gmsail.com', NULL, '2014-11-13 12:25:42', 4, 'usuario2', 21, 2, 0, NULL, NULL, '101be302634e6345c900ce239d5c5905', 0, 'gravatar.jpg'),
 (13, 'usuario3', '$2a$07$653ca6a92c2b784192e93Oi5Ghi4zWQ8aryZZeklD2dIvqpj.Qtgu', '$2a$07$653ca6a92c2b784192e93a2f2c433a079fcf28b193b0$', NULL, 'usuarios3@gmsail.com', NULL, '2014-11-13 12:26:25', 4, 'usuario3', 36, 5, 0, NULL, NULL, '6af78b66065197267fd4d1c0663dadbf', 0, 'user2.png'),
 (14, 'usuario4', '$2a$07$b4d6df0f9e5dc9c4cf7aceKu2Z.mMePcjAnRYIqtLSmZ9DDw97zuG', '$2a$07$b4d6df0f9e5dc9c4cf7acf7682caccef3b398b2aeb18$', NULL, 'usuarios4@gmsail.com', NULL, '2014-11-13 12:26:41', 4, 'usuario4', 36, 5, 0, NULL, NULL, '99cd3c5c9584d87afb801e966ce90462', 0, 'use4.png'),
 (15, 'usuario33', '$2a$07$8d2b9e64e8a270943c0e4O7/9xAD27qzxcj9VlwCrXDPDZgu6n3hq', '$2a$07$8d2b9e64e8a270943c0e4bcdbee09c1a081fc8c735fa$', NULL, 'pepo@gmailq.com', NULL, '2015-01-25 18:25:17', 3, 'usuario33', 0, 0, 0, NULL, NULL, 'dfc413eb9bdf80c35158267bab8ccb6d', 0, 'comment.png'),
@@ -4460,7 +4554,7 @@ CREATE TABLE IF NOT EXISTS `user_event` (
   PRIMARY KEY (`ID`),
   KEY `fk2_idx` (`ID_User`),
   KEY `fk_user_event_1_idx` (`eventName`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla que almacena los eventos del site que ha realizado un  /* comment truncated */ /*usuario*/' AUTO_INCREMENT=1451 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla que almacena los eventos del site que ha realizado un  /* comment truncated */ /*usuario*/' AUTO_INCREMENT=1455 ;
 
 --
 -- Volcado de datos para la tabla `user_event`
@@ -5755,7 +5849,11 @@ INSERT INTO `user_event` (`ID`, `ID_User`, `eventName`, `ipaddress`, `data`, `da
 (1447, 11, 'user.page.add', '127.0.0.1', '{"page_title":""angular 1""}', '2015-08-12 16:44:05'),
 (1448, 8, 'user.logout', '127.0.0.1', '', '2015-08-12 17:43:32'),
 (1449, 10, 'user.login', '127.0.0.1', '', '2015-08-12 17:43:36'),
-(1450, 10, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""sdfsdf""}', '2015-08-12 17:43:44');
+(1450, 10, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""sdfsdf""}', '2015-08-12 17:43:44'),
+(1451, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""78""}', '2015-08-17 13:38:03'),
+(1452, 12, 'user.comment.get', '127.0.0.1', '{"id_snippet":""78""}', '2015-08-17 13:38:03'),
+(1453, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""78""}', '2015-08-17 13:50:09'),
+(1454, 12, 'user.comment.get', '127.0.0.1', '{"id_snippet":""78""}', '2015-08-17 13:50:09');
 
 --
 -- Restricciones para tablas volcadas

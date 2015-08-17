@@ -46,7 +46,7 @@
             <td class="col-md-1"><a href="admin_snippets/listByUser/{author}">{author}</a></td>
             <td class="col-md-1">{category}</td>
             <td class="col-md-2">{fecha}</td>
-            <td class="col-md-1"><a href="admin_snippets/comments/{ID}">{comments}</a></td>
+            <td class="col-md-1"><a href="admin_comments_snippet/view/{ID}">{comments}</a></td>
             <td class="col-md-1">{rating}</td>
             <td class="col-md-1">{faved}</td>
           </tr>

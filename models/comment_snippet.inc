@@ -11,7 +11,7 @@ class Comment_Snippet extends Object{
 	private $id_user;
 	private $id_snippet;
 	private $added;
-	private $limit = 1000;
+	private $limit = 10;
 	
 	private $saveable_fields = array( 'comment','id_user','id_snippet','added');
 		
@@ -24,7 +24,7 @@ class Comment_Snippet extends Object{
 	 */
 	public function getCommentsBySnippet( $snippetID )
 	{
-      $this->paginatedResult->setLimit($this->limit); 
+      $this->paginatedResult->setLimit(100000); 
       $this->paginatedResult->setOffset(0);
       $query = "SELECT c.comment as comment, DATE_FORMAT( c.added,'%d de %b %Y') as fecha, u.user_login as user , u.profile_image as image
 		          FROM comment_snippet c inner join snippets s on c.ID_Snippet=s.ID inner 
@@ -36,9 +36,35 @@ class Comment_Snippet extends Object{
 	}
 
 
+    /**
+	 * Genera lista de comentarios pendientes de aprobar
+	 * Este metodo se llama en admin_comments_snippet
+	 * Devuelve un ojeto 
+	 * ID
+	 * Comentario
+	 * fecha
+	 * usuario
+	 * css
+	 * ID de snippet al que pertenece
+	 * Titulo del snippet al que pertenece
+	 * @param int $offset, el offset de la busqueda.
+	 * @param String $criteria, la cadena de busqueda
+	 * @return Object pagination object
+	 */
+	public function search( $offset = 1 , $criteria )
+	{
+      $this->paginatedResult->setLimit( $this->limit);
+      $this->paginatedResult->setOffset($offset  - 1 );
+      $query = "SELECT c.ID, c.comment as comment, DATE_FORMAT( c.added,'%d de %b %Y') as dateAdded, u.user_login as user, u.id as user_id, c.approved, op.status_class as class , s.id as snippet_id, s.title as title FROM comment_snippet c inner join snippets s on c.ID_Snippet=s.ID inner join users u on c.ID_User=u.ID inner join operational_status op on op.ID = c.approved WHERE c.comment like '%". $criteria ."%' ORDER BY c.added ASC";
+      $this->paginatedResult->setQuery( $query );
+      $this->paginatedResult->setMethod( 'cache' );
+      $this->paginatedResult->generatePagination();
+      return $this->paginatedResult;
+	}
+
 	 /**
 	 * Genera lista de comentarios del snippet paginados 
-	 * Este metodo se llama en admin_snippets
+	 * Este metodo se llama en admin_comments_snippet
 	 * Devuelve un ojeto 
 	 * @param int $snippetID 
 	 * @return Object pagination object
@@ -95,7 +121,7 @@ class Comment_Snippet extends Object{
     return $uid;  
   }
 
-
+  
 
 	/*
 	* Metodos setter
