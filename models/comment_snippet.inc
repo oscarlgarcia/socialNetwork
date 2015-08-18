@@ -19,6 +19,10 @@ class Comment_Snippet extends Object{
 	 * Genera lista de comentarios del snippet paginados 
 	 * Este metodo se llama en snippets
 	 * Devuelve un ojeto 
+	 * Comentario
+	 * Fecha
+	 * User
+	 * imagen de user
 	 * @param int $snippetID 
 	 * @return Object pagination object
 	 */
@@ -37,7 +41,7 @@ class Comment_Snippet extends Object{
 
 
     /**
-	 * Genera lista de comentarios pendientes de aprobar
+	 * Genera lista de comentarios de snippets pendientes de aprobar
 	 * Este metodo se llama en admin_comments_snippet
 	 * Devuelve un ojeto 
 	 * ID
@@ -55,30 +59,66 @@ class Comment_Snippet extends Object{
 	{
       $this->paginatedResult->setLimit( $this->limit);
       $this->paginatedResult->setOffset($offset  - 1 );
-      $query = "SELECT c.ID, c.comment as comment, DATE_FORMAT( c.added,'%d de %b %Y') as dateAdded, u.user_login as user, u.id as user_id, c.approved, op.status_class as class , s.id as snippet_id, s.title as title FROM comment_snippet c inner join snippets s on c.ID_Snippet=s.ID inner join users u on c.ID_User=u.ID inner join operational_status op on op.ID = c.approved WHERE c.comment like '%". $criteria ."%' ORDER BY c.added ASC";
+      $query = "SELECT c.ID, c.comment as comment, DATE_FORMAT( c.added,'%d de %b %Y') as dateAdded, u.user_login as user, u.id as user_id, c.approved, op.status_class as class , s.id as snippet_id, s.title as title FROM comment_snippet c inner join snippets s on c.ID_Snippet = s.ID inner join users u on c.ID_User = u.ID inner join operational_status op on op.ID = c.approved WHERE c.comment like '%". $criteria ."%' ORDER BY c.added ASC";
       $this->paginatedResult->setQuery( $query );
       $this->paginatedResult->setMethod( 'cache' );
       $this->paginatedResult->generatePagination();
       return $this->paginatedResult;
 	}
 
-	 /**
-	 * Genera lista de comentarios del snippet paginados 
-	 * Este metodo se llama en admin_comments_snippet
-	 * Devuelve un ojeto 
-	 * @param int $snippetID 
-	 * @return Object pagination object
-	 */
-	public function getComments_by_this_snippet($offset = 1, $snippetID )
-	{
-      $this->paginatedResult->setLimit( $this->limit);
-      $this->paginatedResult->setOffset($offset  - 1 );
-      $query = "SELECT c.ID, c.comment as comment, DATE_FORMAT( c.added,'%d de %b %Y') as dateAdded, u.user_login as user , c.approved, op.status_class as class FROM comment_snippet c inner join snippets s on c.ID_Snippet=s.ID inner join users u on c.ID_User=u.ID inner join operational_status op on op.ID = c.approved WHERE s.ID=". $snippetID ." ORDER BY c.added ASC" ;
-      $this->paginatedResult->setQuery( $query );
-      $this->paginatedResult->setMethod( 'cache' );
-      $this->paginatedResult->generatePagination();
-      return $this->paginatedResult;
-	}
+  /**
+   * Genera lista de comentarios de snippet que coinciden con el usuario pasado paginados 
+   * Este metodo se llama en admin_comments_snippet desde el administrador
+   * Devuelve un ResulSet con la siguiente informacion en caché:
+   * ID
+   * Comentario
+   * fecha
+   * usuario
+   * css
+   * ID de snippet al que pertenece
+   * Titulo del snippet al que pertenece
+   * @param int $offset
+   * @param string username, Usuario 
+   * @return Object pagination object
+   */
+  public function searchByUser($offset = 1, $username)
+  {
+    $this->paginatedResult->setLimit($this->limit);
+    $this->paginatedResult->setOffset($offset - 1);
+    $query = "SELECT c.ID, c.comment as comment, DATE_FORMAT( c.added,'%d de %b %Y') as dateAdded, u.user_login as user, u.id as user_id, c.approved, op.status_class as class , s.id as snippet_id, s.title as title FROM comment_snippet c inner join snippets s on c.ID_Snippet = s.ID inner join users u on c.ID_User = u.ID inner join operational_status op on op.ID = c.approved WHERE u.user_login = '".$username."' ORDER BY c.added ASC";
+    $this->paginatedResult->setQuery( $query );
+    $this->paginatedResult->setMethod( 'cache' );
+    $this->paginatedResult->generatePagination();
+    return $this->paginatedResult;
+  }
+	
+
+	/**
+   * Genera lista de comentarios de snippet que coinciden con el snippet pasado paginados 
+   * Este metodo se llama en admin_comments_snippet desde el administrador
+   * Devuelve un ResulSet con la siguiente informacion en caché:
+   * ID
+   * Comentario
+   * fecha
+   * usuario
+   * css
+   * ID de snippet al que pertenece
+   * Titulo del snippet al que pertenece
+   * @param int $offset
+   * @param string snippetID, snippet 
+   * @return Object pagination object
+   */
+  public function searchBySnippet($snippetID)
+  {
+    $this->paginatedResult->setLimit(1000000);
+    $this->paginatedResult->setOffset(0);
+    $query = "SELECT c.ID, c.comment as comment, DATE_FORMAT( c.added,'%d de %b %Y') as dateAdded, u.user_login as user, u.id as user_id, c.approved, op.status_class as class , s.id as snippet_id, s.title as title FROM comment_snippet c inner join snippets s on c.ID_Snippet = s.ID inner join users u on c.ID_User = u.ID inner join operational_status op on op.ID = c.approved WHERE s.ID = '".$snippetID."' ORDER BY c.added ASC";
+    $this->paginatedResult->setQuery( $query );
+    $this->paginatedResult->setMethod( 'cache' );
+    $this->paginatedResult->generatePagination();
+    return $this->paginatedResult;
+  }
+	
 		
 	/*
 	* Metodo que almacena un comentario en la bbdd

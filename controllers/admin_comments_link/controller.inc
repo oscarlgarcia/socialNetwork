@@ -1,10 +1,10 @@
 <?php
  /**
- * Controlador para administracion de los comentarios de snippets  browse / edit / delete / ban
+ * Controlador para administracion de los comentarios de links  browse / edit / delete / ban
  * @version 1.0
  * @author  Oscar Garcia
  */	
-class Admin_comments_snippetcontroller{
+class Admin_comments_linkcontroller{
 	
 	/**
 	 * Referencia del objeto registro
@@ -76,8 +76,8 @@ class Admin_comments_snippetcontroller{
 				    $this->listByUser($this->parameter1,intval($this->parameter2));
 				    break;
 
-				 case 'listBySnippet':
-  				    $this->listBySnippet(intval($this->parameter1));
+				 case 'listByLink':
+  				    $this->listByLink(intval($this->parameter1));
 					break;
 				}
 				
@@ -107,46 +107,46 @@ class Admin_comments_snippetcontroller{
     {   
       $offset = ($offset<=0)?1:$offset;
       
-      if (!isset($_SESSION['comment_snippet_criteria'])){
-      	$this->registry->getObject('util')->storeToSession('comment_snippet_criteria',"");
+      if (!isset($_SESSION['comments_links_criteria'])){
+      	$this->registry->getObject('util')->storeToSession('comments_links_criteria',"");
       }
 
       if (isset($_POST['search'])){
-      	$this->registry->getObject('util')->storeToSession('comment_snippet_criteria',$_POST['search']);
+      	$this->registry->getObject('util')->storeToSession('comments_links_criteria',$_POST['search']);
       }
 
-      require_once( FRAMEWORK_PATH . 'models/comment_snippet.inc');
-	  $comments = new Comment_Snippet( $this->registry );
-	  $pagination = $comments->search($offset,$_SESSION['comment_snippet_criteria']);
+      require_once( FRAMEWORK_PATH . 'models/comments_links.inc');
+	  $comments = new Comments_Links( $this->registry );
+	  $pagination = $comments->search($offset,$_SESSION['comments_links_criteria']);
 	 
       if(!$pagination->checkOffset($offset) )
       {
         $this->registry->getObject('template')->buildFromTemplates(
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_snippet/'.$this->registry->getObject('constants')->getInvalidTpl(),
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_link/'.$this->registry->getObject('constants')->getInvalidTpl(),
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
         );
         
         //Cargamos la busqueda
-	    $this->registry->getObject('template')->getPage()->addTag('comments_snippet.search',$_SESSION['comment_snippet_criteria']);	
+	    $this->registry->getObject('template')->getPage()->addTag('comments_link.search',$_SESSION['comments_links_criteria']);	
         // cargamos el total de snippets
-		$this->registry->getObject('template')->getPage()->addTag( 'comments_snippet_count', $pagination->getTotalRows() );	
+		$this->registry->getObject('template')->getPage()->addTag( 'comments_link_count', $pagination->getTotalRows() );	
 
       }
 	  else
 	  { 
         $this->registry->getObject('template')->buildFromTemplates(
 	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_snippet/'.$this->registry->getObject('constants')->getListTpl(),
+	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_link/'.$this->registry->getObject('constants')->getListTpl(),
 	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
 	    );
 		//cargamos la info de cada snippet
-		$this->registry->getObject('template')->getPage()->addTag( 'comments_snippet', array( 'SQL', $pagination->getCache() ) );
+		$this->registry->getObject('template')->getPage()->addTag( 'comments_link', array( 'SQL', $pagination->getCache() ) );
          
 		//Cargamos la busqueda
-	    $this->registry->getObject('template')->getPage()->addTag( 'comments_snippet.search',$_SESSION['comment_snippet_criteria']);	
+	    $this->registry->getObject('template')->getPage()->addTag( 'comments_link.search',$_SESSION['comments_links_criteria']);	
         // cargamos el total de snippets
-		$this->registry->getObject('template')->getPage()->addTag( 'comments_snippet_count', $pagination->getTotalRows() );		
+		$this->registry->getObject('template')->getPage()->addTag( 'comments_link_count', $pagination->getTotalRows() );		
 		$pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
 	  }		
     }
@@ -159,38 +159,38 @@ class Admin_comments_snippetcontroller{
   private function listByUser( $username , $offset ){
 
   	$offset = ($offset<=0)?1:$offset;
-    require_once( FRAMEWORK_PATH . 'models/comment_snippet.inc');
-    $comments = new Comment_Snippet( $this->registry );
+    require_once( FRAMEWORK_PATH . 'models/comments_links.inc');
+    $comments = new Comments_Links( $this->registry );
 	$pagination = $comments->searchByUser($offset, $username );
     
     if(!$pagination->checkOffset($offset) )
       {
         $this->registry->getObject('template')->buildFromTemplates(
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_snippet/'.$this->registry->getObject('constants')->getInvalidTpl(),
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_link/'.$this->registry->getObject('constants')->getInvalidTpl(),
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
         );
         
         //Cargamos la busqueda
-	    $this->registry->getObject('template')->getPage()->addTag('comments_snippet.search',$_SESSION['comment_snippet_criteria']);	
+	    $this->registry->getObject('template')->getPage()->addTag('comments_link.search',$_SESSION['comments_links_criteria']);	
         // cargamos el total de snippets
-		$this->registry->getObject('template')->getPage()->addTag( 'comments_snippet_count', $pagination->getTotalRows() );	
+		$this->registry->getObject('template')->getPage()->addTag( 'comments_link_count', $pagination->getTotalRows() );	
 
       }
 	  else
 	  { 
         $this->registry->getObject('template')->buildFromTemplates(
 	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_snippet/'.$this->registry->getObject('constants')->getListTpl(),
+	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_link/'.$this->registry->getObject('constants')->getListTpl(),
 	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
 	    );
 		//cargamos la info de cada snippet
-		$this->registry->getObject('template')->getPage()->addTag( 'comments_snippet', array( 'SQL', $pagination->getCache() ) );
+		$this->registry->getObject('template')->getPage()->addTag( 'comments_link', array( 'SQL', $pagination->getCache() ) );
          
 		//Cargamos la busqueda
-	    $this->registry->getObject('template')->getPage()->addTag( 'comments_snippet.search',$_SESSION['comment_snippet_criteria']);	
+	    $this->registry->getObject('template')->getPage()->addTag( 'comments_link.search',$_SESSION['comments_links_criteria']);	
         // cargamos el total de snippets
-		$this->registry->getObject('template')->getPage()->addTag( 'comments_snippet_count', $pagination->getTotalRows() );	
+		$this->registry->getObject('template')->getPage()->addTag( 'comments_link_count', $pagination->getTotalRows() );	
 		$pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
 	  }		
 
@@ -199,40 +199,40 @@ class Admin_comments_snippetcontroller{
   /*
   * Busca comentarios de un usuario en particular
   */
-  private function listBySnippet( $snippetID){
+  private function listByLink( $linkID){
 
-  	require_once( FRAMEWORK_PATH . 'models/comment_snippet.inc');
-    $comments = new Comment_Snippet( $this->registry );
-	$pagination = $comments->searchBySnippet( $snippetID );
+  	require_once( FRAMEWORK_PATH . 'models/comments_links.inc');
+    $comments = new Comments_Links( $this->registry );
+	$pagination = $comments->searchByLink( $linkID );
     
     if(!$pagination->checkOffset(1) )
       {
         $this->registry->getObject('template')->buildFromTemplates(
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_snippet/'.$this->registry->getObject('constants')->getInvalidTpl(),
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_link/'.$this->registry->getObject('constants')->getInvalidTpl(),
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
         );
         
         //Cargamos la busqueda
-	    $this->registry->getObject('template')->getPage()->addTag('comments_snippet.search',$_SESSION['comment_snippet_criteria']);	
+	    $this->registry->getObject('template')->getPage()->addTag('comments_link.search',$_SESSION['comments_links_criteria']);	
         // cargamos el total de snippets
-		$this->registry->getObject('template')->getPage()->addTag( 'comments_snippet_count', $pagination->getTotalRows() );	
+		$this->registry->getObject('template')->getPage()->addTag( 'comments_link_count', $pagination->getTotalRows() );	
 
       }
 	  else
 	  { 
         $this->registry->getObject('template')->buildFromTemplates(
 	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_snippet/'.$this->registry->getObject('constants')->getListTpl(),
+	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_link/'.$this->registry->getObject('constants')->getListTpl(),
 	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
 	    );
 		//cargamos la info de cada snippet
-		$this->registry->getObject('template')->getPage()->addTag( 'comments_snippet', array( 'SQL', $pagination->getCache() ) );
+		$this->registry->getObject('template')->getPage()->addTag( 'comments_link', array( 'SQL', $pagination->getCache() ) );
          
 		//Cargamos la busqueda
-	    $this->registry->getObject('template')->getPage()->addTag( 'comments_snippet.search',$_SESSION['comment_snippet_criteria']);	
+	    $this->registry->getObject('template')->getPage()->addTag( 'comments_link.search',$_SESSION['comments_links_criteria']);	
         // cargamos el total de snippets
-		$this->registry->getObject('template')->getPage()->addTag( 'comments_snippet_count', $pagination->getTotalRows() );	
+		$this->registry->getObject('template')->getPage()->addTag( 'comments_link_count', $pagination->getTotalRows() );	
 		$pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
 	  }		
 
@@ -246,10 +246,10 @@ class Admin_comments_snippetcontroller{
   **/
   private function delete($commentID)
   {
-  	require_once( FRAMEWORK_PATH . 'models/comment_snippet.inc');
-	$comment = new Comment_Snippet( $this->registry );
+  	require_once( FRAMEWORK_PATH . 'models/comments_links.inc');
+	$comment = new Comments_Links( $this->registry );
 	$deleted = $comment->delete( $commentID );
-	header('Location: /socialNetwork/admin_comments_snippet/search');  	
+	header('Location: /socialNetwork/admin_comments_link/search');  	
   } 
  
 
@@ -259,10 +259,10 @@ class Admin_comments_snippetcontroller{
   *  el usuario lo postee
   */
   public function publish($commentID){
-    require_once( FRAMEWORK_PATH . 'models/comment_snippet.inc');
-	$comment = new Comment_Snippet( $this->registry );
+    require_once( FRAMEWORK_PATH . 'models/comments_links.inc');
+	$comment = new Comments_Links( $this->registry );
 	$deleted = $comment->updateStatus( $commentID, 4);
-	header('Location: /socialNetwork/admin_comments_snippet/search');
+	header('Location: /socialNetwork/admin_comments_link/search');
   }
 
   /*
@@ -270,10 +270,10 @@ class Admin_comments_snippetcontroller{
   *  TODO quitar los puntos por gamificacion solo cuando sean baneado 
   */
   public function ban($commentID){
-    require_once( FRAMEWORK_PATH . 'models/comment_snippet.inc');
-	$comment = new Comment_Snippet( $this->registry );
+    require_once( FRAMEWORK_PATH . 'models/comments_links.inc');
+	$comment = new Comments_Links( $this->registry );
 	$deleted = $comment->updateStatus( $commentID,5);
-	header('Location: /socialNetwork/admin_comments_snippet/search');
+	header('Location: /socialNetwork/admin_comments_link/search');
   }
  
  

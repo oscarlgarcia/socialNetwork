@@ -8,7 +8,7 @@ html,body { height: 100%;}
 /*---- background general ----*/
 .ecpGlobal-bg{ background-image: url('../images/site/site_bg.png'); }
 /*---- background de la navbar ----*/
-.ecpnavbar-bg{ background-image: url(../images/site/navbar_bg.png); }
+.ecpnavbar-bg{ background-image: url(../images/site/navbar_bg.png); z-index: 1050; }
 
 /*---- Jumbotron ----*/
 .ecpsplash-bg {background: url('../images/site/splash.jpg') no-repeat scroll 40% bottom / cover rgba(0, 0, 0, 0); !important; }

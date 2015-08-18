@@ -1,11 +1,11 @@
     <div class="panel panel-primary">
 	   <div class="panel-heading">
-		  <h3 class="panel-title"><span class="badge">{comments_snippet_count}</span> Comentarios Encontrados</h3>
+		  <h3 class="panel-title"><span class="badge">{comments_link_count}</span> Comentarios Encontrados</h3>
 		</div>
 		<div class="panel-body">
-        <form class="navbar-form" role="search" method="post" action="admin_comments_snippet/search">
+        <form class="navbar-form" role="search" method="post" action="admin_comments_link/search">
            <div class="input-group">
-             <input type="text" class="form-control" placeholder="Busca Comentarios" id="search" name="search" value="{comments_snippet.search}">
+             <input type="text" class="form-control" placeholder="Busca Comentarios" id="search" name="search" value="{comments_link.search}">
              <div class="input-group-btn">
                <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
              </div>
@@ -18,30 +18,30 @@
 				    <th>Comentario</th>
             <th>Autor</th>
             <th>Publicado</th>
-            <th>Snippet</th>
+            <th>Link</th>
 			    </tr>
 		    </thead>
 		    <tbody>
-		    <!-- START comments_snippet -->
+		    <!-- START comments_link -->
 		      <tr class="{class}">
 		        <td class="col-md-2">
               <div class="btn-group">
                 <button type="button" class="btn btn-{class}">{ID}</button>
                 <button type="button" data-toggle="dropdown" class="btn btn-{class} dropdown-toggle"> <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><a href="admin_comments_snippet/publish/{ID}"><span class="fa fa-check"></span> Publicar</a></li>
-                  <li><a href="admin_comments_snippet/ban/{ID}"><span class="fa fa-ban"></span> Retirar</a></li>
+                  <li><a href="admin_comments_link/publish/{ID}"><span class="fa fa-check"></span> Publicar</a></li>
+                  <li><a href="admin_comments_link/ban/{ID}"><span class="fa fa-ban"></span> Retirar</a></li>
                   <li class="divider"></li>
-                  <li class="deleteButton" ><a id="delete" data-deleteurl="admin_comments_snippet/delete/{ID}" data-toggle="modal" data-target="#delete_modal"><span class="fa fa-trash"></span> Eliminar</a></li>
+                  <li class="deleteButton" ><a id="delete" data-deleteurl="admin_comments_link/delete/{ID}" data-toggle="modal" data-target="#delete_modal"><span class="fa fa-trash"></span> Eliminar</a></li>
                 </ul>
               </div>
             </td>
 		  	    <td class="col-md-3"><textarea rows="5" cols="50" readonly="true">{comment}</textarea></td>
-            <td class="col-md-2"><a href="admin_comments_snippet/listByUser/{user}">{user}</a></td>
+            <td class="col-md-2"><a href="admin_comments_link/listByUser/{user}">{user}</a></td>
             <td class="col-md-2">{dateAdded}</td>
-            <td class="col-md-3"><a href="admin_comments_snippet/listBySnippet/{snippet_id}">{title}</a></td>
+            <td class="col-md-3"><a href="admin_comments_link/listByLink/{snippet_id}">{title}</a></td>
           </tr>
-        <!-- END comments_snippet -->
+        <!-- END comments_link -->
 		    </tbody>
         </table>
         <div class="col-md-9">
