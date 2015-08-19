@@ -15,15 +15,32 @@
 <body>
 <div id="wrap" class="ecpGlobal-bg">
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-2 col-md-2">
-        <img src="views/default/images/site/logo_1.png" style="padding-top:2px;" alt="Thumbnail Image">
+  <div role="navigation" class="navbar navbar-inverse navbar-fixed-top ecpnavbar-bg">
+   <!-- Menubar -->
+      <!-- Toggle for mobile -->
+      <div class="navbar-header">
+        <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button> 
+        <a href="home" class="navbar-brand"><img src="views/default/images/site/titulo.png"></a>
       </div>
-      <div class="pull-right">
-        <a href="authenticate/logout"><span class="fa fa-sign-out"></span> Cerrar Sesion</a>
-      </div>
-    </div>
-    <div class="row">
+    <!-- Nav Links-->
+    <div id="navbarCollapse" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+            <a href="#" data-toggle="dropdown" class="dropdown-toggle"> <i>Admin</i><b class="caret"></b></a>
+         <ul class="dropdown-menu dropdownmenu-custom">
+        <li><a href="authenticate/logout"><span class="fa fa-sign-out pull-right" ></span> Cerrar Sesion</a></li>
+         </ul>
+         </li>
+       </ul>
+     </div>
+     </div> <!-- fin del role -->
+    <!-- Menu Admin -->
+    <div class="row ecpGlobal-margin">
       <div class="col-sm-2 col-md-2">
         <div class="panel-group" id="accordion">
           <!-- Funciones historial -->
