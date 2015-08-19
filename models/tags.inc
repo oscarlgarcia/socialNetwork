@@ -8,12 +8,16 @@ require_once ("Object.inc");
 class Tags extends Object{
 	
   private $tag_name;
-  private $limit = 15;
+  private $limit = 10;
   private $saveable_fields = array( 'tag_name');
 	
 	
   /**
-  * Genera lista de tags mas usados en Snippets 
+  * Genera lista de tags mas usados en Snippets
+  * Se utiliza en Snippets para crear la nube de tags
+  * Devuelve un objeto:
+  * Total de ocurrencias.
+  * nombre Tag
   * @return Object pagination object
   */
   public function topSnippetTags()
@@ -26,25 +30,38 @@ class Tags extends Object{
 	  $this->paginatedResult->generatePagination();
 	  return $this->paginatedResult;
   }
-
 	
-  /**
-  * Obtiene el tag
-  * @param int $id 
-  * @return Object pagination object
-  */
-  public function getTag( $tagID )
+   /**
+   * Genera lista de tags que coinciden con el criterio pasado paginados 
+   * Este metodo se llama en Admin_Tags desde el administrador
+   * Devuelve un ResulSet con la siguiente informacion en caché:
+   * ID del Tag
+   * Nombre del Tag
+   * Total de Snippets que tiene este tag
+   * Total de Links que tiene este tag
+   * Total de Paginas que tiene este Tag
+   * Total de Imagenes que tiene este tag.
+   * @param int $offset, pagina de la busqueda
+   * @param String $criteria, cadena de busqueda 
+   * @return Object pagination object
+   */
+  public function search($offset = 1, $criteria = "")
   {
-	  $query = "SELECT ID,tag_name as tag FROM tags where ID=".$tagID ;
-	  $this->paginatedResult->setQuery( $query );
-	  $this->paginatedResult->setMethod( 'cache' );
-	  $this->paginatedResult->generatePagination();
-	  return $this->paginatedResult;
+    $this->paginatedResult->setLimit($this->limit);
+    $this->paginatedResult->setOffset($offset - 1);
+    $query="SELECT t.ID, t.tag_name, count(DISTINCT ts.ID) as total_snippets, count(DISTINCT tl.ID) as total_links, count(DISTINCT tp.ID) as total_pages, count(DISTINCT tm.ID) as total_media FROM tags t left join lista_tag_snippet ts on ts.ID_tag = t.id left join list_tags_links tl on tl.ID_tags = t.ID left join list_tag_page tp on tp.ID_tag = t.ID left join list_media_tags tm on tm.ID_tag = t.ID WHERE t.tag_name like '%".$criteria."%' group by t.ID";
+    $this->paginatedResult->setQuery( $query );
+    $this->paginatedResult->setMethod( 'cache' );
+    $this->paginatedResult->generatePagination();
+  return $this->paginatedResult;
   }
-	
-  /*
+
+
+
+
+  /**
   * Metodo que verifica si un tag esta ya guardado
-  * @param varchar nombre del tag
+  * @param String $tagName , Nombre del tag
   * @return ID del tag o false sino existe
   */
   public function isSaved($tagName)
@@ -88,6 +105,58 @@ class Tags extends Object{
 	  return $isSaved;
   }	
 	
+
+  /**
+  * borra un tag a partir de su ID
+  * @param int $snippetID 
+  */
+  public function delete($id)
+  {
+    $this->registry->getObject('db')->deleteRecords( 'tags',' id = '.$id,'1');
+    $uid = $this->registry->getObject('db')->lastInsertID();
+    return $uid;  
+  }
+
+  /**
+  * actualiza el nombre del tag
+  * @param int $tagID 
+  */
+  public function updateTagName($tagID, $newName)
+  {
+    $changes = array();
+    $changes['tag_name'] = $newName;
+    $this->registry->getObject('db')->updateRecords('tags', $changes," id = ".$tagID );
+    $uid = $this->registry->getObject('db')->lastInsertID();
+    return $uid;  
+  }
+  
+  /**
+  * Metodo que comprueba si este tag tiene algun recurso asignado
+  * La idea es que no deje borrar un Tag si hay algun recurso que lo contenga
+  * @param $tagID
+  * @return True si no hay resurso asignado ( puede ser borrado),
+  * False si hay algun recurso ( no puede borrarse)
+  */
+  public function canErase($tagID)
+  {
+    $query = "SELECT t.ID, t.tag_name, count(DISTINCT ts.ID) as total_snippets, count(DISTINCT tl.ID) as total_links, count(DISTINCT tp.ID) as total_pages, count(DISTINCT tm.ID) as total_media FROM tags t left join lista_tag_snippet ts on ts.ID_tag = t.id left join list_tags_links tl on tl.ID_tags = t.ID left join list_tag_page tp on tp.ID_tag = t.ID left join list_media_tags tm on tm.ID_tag = t.ID WHERE t.ID =".$tagID;
+    $this->paginatedResult->setQuery( $query );
+    $this->paginatedResult->setMethod( 'cache' );
+    $this->paginatedResult->generatePagination();
+    if ($this->paginatedResult->getTotalRows()==1)
+    {  
+      $tag = $this->registry->getObject('db')->resultsFromCache($this->paginatedResult->getCache());
+      $temp['total_snippets'] = intval($tag["total_snippets"]);
+      $temp['total_links'] = intval($tag["total_links"]);
+      $temp['total_pages'] = intval($tag["total_pages"]);
+      $temp['total_media'] = intval($tag["total_media"]);
+      if ( $temp['total_snippets']==0 && $temp['total_links'] == 0 && $temp['total_pages'] == 0 && $temp['total_media'] == 0 )
+        return true;
+      return false;
+    }
+    return false;
+  }
+
   /*
   * Metodos setter
   */

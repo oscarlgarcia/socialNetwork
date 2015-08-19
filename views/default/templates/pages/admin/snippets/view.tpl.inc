@@ -12,7 +12,7 @@
   <!-- Snippets panel -->
   <div class="row">
     <div class="col-md-12">
-        <a href="admin_snippets/search"><span class="glyphicon glyphicon-arrow-left"></span> Regresar al listado</a>
+        <a href="admin_snippets/search"><span class="fa fa-arrow-left"></span> Regresar al listado</a>
       <div class="panel panel-primary">
   	    <div class="panel-heading">
   	      <div class="row">

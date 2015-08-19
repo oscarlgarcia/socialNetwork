@@ -37,6 +37,7 @@ class Comments_Links extends Object{
 		$this->paginatedResult->setMethod( 'cache' );
 		$this->paginatedResult->generatePagination();
 		$this->getComments($this->paginatedResult);
+		
 	}
 		
 

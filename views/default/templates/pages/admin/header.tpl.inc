@@ -20,7 +20,7 @@
         <img src="views/default/images/site/logo_1.png" style="padding-top:2px;" alt="Thumbnail Image">
       </div>
       <div class="pull-right">
-        <a href="authenticate/logout"><span class="glyphicon glyphicon-log-out"></span> Cerrar Sesion</a>
+        <a href="authenticate/logout"><span class="fa fa-sign-out"></span> Cerrar Sesion</a>
       </div>
     </div>
     <div class="row">
@@ -90,7 +90,7 @@
            <div class="panel panel-primary">
                   <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><span class="glyphicon glyphicon-calendar"></span> Historial</a>
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><span class="fa fa-calendar">&nbsp;</span>Historial</a>
                         </h4>
                     </div>
                     <div id="collapseTwo" class="panel-collapse collapse">
@@ -123,8 +123,8 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree"><span class="glyphicon glyphicon-user">
-                            </span>Account</a>
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                              <span class="fa fa-user">&nbsp;</span>Account</a>
                         </h4>
                     </div>
                     <div id="collapseThree" class="panel-collapse collapse">
@@ -147,7 +147,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span class="glyphicon glyphicon-trash text-danger"></span><a href="http://www.jquery2dotnet.com" class="text-danger">
+                                        <span class="fa fa-trash text-danger"></span><a href="http://www.jquery2dotnet.com" class="text-danger">
                                             Delete Account</a>
                                     </td>
                                 </tr>
@@ -158,8 +158,8 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour"><span class="glyphicon glyphicon-file">
-                            </span>Reports</a>
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+                              <span class="fa fa-bar-chart">&nbsp;</span>Reports</a>
                         </h4>
                     </div>
                     <div id="collapseFour" class="panel-collapse collapse">
@@ -167,22 +167,22 @@
                             <table class="table">
                                 <tr>
                                     <td>
-                                        <span class="glyphicon glyphicon-usd"></span><a href="http://www.jquery2dotnet.com">Sales</a>
+                                        <span class="fa fa-usd"></span><a href="http://www.jquery2dotnet.com">Sales</a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span class="glyphicon glyphicon-user"></span><a href="http://www.jquery2dotnet.com">Customers</a>
+                                        <span class="fa fa-user"></span><a href="http://www.jquery2dotnet.com">Customers</a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span class="glyphicon glyphicon-tasks"></span><a href="http://www.jquery2dotnet.com">Products</a>
+                                        <span class="fa fa-tasks"></span><a href="http://www.jquery2dotnet.com">Products</a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span class="glyphicon glyphicon-shopping-cart"></span><a href="http://www.jquery2dotnet.com">Shopping Cart</a>
+                                        <span class="fa fa-shopping-cart"></span><a href="http://www.jquery2dotnet.com">Shopping Cart</a>
                                     </td>
                                 </tr>
                                 

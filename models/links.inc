@@ -127,6 +127,11 @@ class Links extends Object{
 	
   /**
    * Genera lista de usuarios que mas han creado links
+   * Se llama en Links
+   * Retorna un objeto:
+   * Total de Ocurrencias
+   * Usuario
+   * imagen del usuario
    * @return 
    */
   public function topContributors()
@@ -142,6 +147,9 @@ class Links extends Object{
 	
   /**
    * Genera lista de tags mas usados
+   * Devuelve un objeto 
+   * Nombre tag
+   * Total de ocurrencias
    * @return Object pagination object
    */
   public function topTags()

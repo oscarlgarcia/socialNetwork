@@ -80,6 +80,7 @@ class UserModel extends Object{
 
   /*
   * Metodo que retorna toda la info disponible para administracion del usuario
+  * Se consulta desde View de Admin_Users
   * El objeto retornado poseerá los siguientes atributos
   * - ID
   * - login
