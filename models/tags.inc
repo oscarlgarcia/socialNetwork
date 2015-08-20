@@ -13,6 +13,45 @@ class Tags extends Object{
 	
 	
   /**
+  * Obtiene un Tag a partir de su ID
+  * Se llama desde Admin_tags
+  * @param int $tagID 
+  * @return Object 
+  * Id del Tag
+  * Nombre del Tag
+  */
+  public function getTag($tagID)
+  {
+    $query = "SELECT t.tag_name FROM tags t where t.ID=".$tagID ;
+    $this->registry->getObject('db')->executeQuery( $query );
+    if( $this->registry->getObject('db')->numRows() > 0 )
+    {
+      $data = $this->registry->getObject('db')->getRows();
+      $tempo['tag_name']=$data['tag_name']; 
+      return $tempo; 
+    }
+    return null;
+  }
+
+  /**
+  * Obtiene todos los Tags
+  * Se llama desde Admin_tags
+  * @return Object 
+  * Id del Tag
+  * Nombre del Tag
+  */
+  public function getTags()
+  {
+    $this->paginatedResult->setLimit(1000000);
+    $this->paginatedResult->setOffset(0);
+    $query = "SELECT ID, tag_name FROM tags" ;
+    $this->paginatedResult->setQuery( $query );
+    $this->paginatedResult->setMethod( 'cache' );
+    $this->paginatedResult->generatePagination();
+    return $this->paginatedResult;
+  }
+
+  /**
   * Genera lista de tags mas usados en Snippets
   * Se utiliza en Snippets para crear la nube de tags
   * Devuelve un objeto:

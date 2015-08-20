@@ -34,7 +34,7 @@
                 </ul>
               </div>
             </td>
-		  	    <td class="col-md-2"><a href="admin_tags/view/{ID}">{tag_name}</a></td>
+		  	    <td class="col-md-2"><a href="admin_tags/view/{tag_name}">{tag_name}</a></td>
             <td class="col-md-2">{total_snippets}</td>
             <td class="col-md-2">{total_links}</td>
             <td class="col-md-2">{total_pages}</td>

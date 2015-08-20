@@ -145,22 +145,19 @@ class Admin_tagscontroller{
   {
   	require_once( FRAMEWORK_PATH . 'models/tags.inc');
 	$tag = new tags( $this->registry );
-	$data = $tag->gettag( $tagID );
+	$data = $tag->getTag( $tagID );
 	// Si no encontramos el tag
     if( $data == null )
 	{
 	  //pantalla de error
 	  $this->registry->getObject('template')->buildFromTemplates(
-	  	$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'tags/'.$this->registry->getObject('constants')->getInvalidTpl(), 
-	  	$this->registry->getObject('constants')->getFooterTpl()
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'tags/'.$this->registry->getObject('constants')->getInvalidTpl(),
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
 	  	);
 	}
 	else
 	{ 
-	  //Si lo encontramos 
-	  // Definimos la pagina de view 
-	  require_once( FRAMEWORK_PATH . 'models/tags_tags.inc');
 	  $this->registry->getObject('template')->buildFromTemplates(
 	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
 	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'tags/'.$this->registry->getObject('constants')->getViewTpl(),

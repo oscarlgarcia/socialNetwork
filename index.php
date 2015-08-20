@@ -42,7 +42,7 @@ if (isset($_SESSION['sn_auth_session_uid']))
   $session = $_SESSION['sn_auth_session_uid'];
 
 if ( $registry->getObject('url')->getURLPath() != "")
-  $resource = $registry->getObject('url')->getURLPath();
+  $resource = $registry->getObject('db')->sanitizeData($registry->getObject('url')->getURLPath());
 
 $loggerPage = new LoggerPage($registry,$_SERVER["REMOTE_ADDR"],
   $resource,

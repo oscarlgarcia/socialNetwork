@@ -102,11 +102,20 @@ class Admin_userscontroller{
 	   $pagination = $users->search($offset,$_SESSION['user_criteria']);
 
       if(!$pagination->checkOffset($offset) )
+      {
         $this->registry->getObject('template')->buildFromTemplates(
         	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base')).$this->registry->getObject('constants')->getHeaderTpl(), 
-        	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'users/'.$this->registry->getObject('constants')->getInvalidTpl(),
+        	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'users/'.$this->registry->getObject('constants')->getNoResultsTpl(),
         	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-        	);
+        );
+        
+        //Cargamos la busqueda
+	    $this->registry->getObject('template')->getPage()->addTag( 'user.search',$_SESSION['user_criteria']);	
+        // cargamos el total de usuarios
+		$this->registry->getObject('template')->getPage()->addTag( 'users_count', $pagination->getTotalRows() );	
+      }
+        
+
 	   else
 	  { 
 
@@ -137,7 +146,7 @@ class Admin_userscontroller{
 	$user = new UserModel( $this->registry );
 	$data = $user->getUser( $userID );
 	// Si no encontramos el user
-    if( $data == null )
+    if( $data['ID'] == null )
 	{
 	  //pantalla de error
 	  $this->registry->getObject('template')->buildFromTemplates(

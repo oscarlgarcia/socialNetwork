@@ -13,8 +13,8 @@
 	<script type="text/javascript" src="lib/jquery/jquery-2.1.0.min.js" ></script>
 </head>  
 <body>
-<div id="wrap" class="ecpGlobal-bg">
-  <div class="container-fluid">
+<div id="wrap" class="ecpGlobal-bg" nombre="wrapper_pagina">
+  <div class="container-fluid" nombre="contenedor_todo">
   <div role="navigation" class="navbar navbar-inverse navbar-fixed-top ecpnavbar-bg">
    <!-- Menubar -->
       <!-- Toggle for mobile -->
@@ -40,7 +40,7 @@
      </div>
      </div> <!-- fin del role -->
     <!-- Menu Admin -->
-    <div class="row ecpGlobal-margin">
+    <div class="row ecpGlobal-margin" nombre="menu_y_contenido">
       <div class="col-sm-2 col-md-2">
         <div class="panel-group" id="accordion">
           <!-- Funciones historial -->
@@ -209,4 +209,4 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-10 col-md-10">
+        <div class="col-sm-10 col-md-10" nombre="contenido_principal">

@@ -1,16 +1,13 @@
-    <div class="panel panel-primary">
-	   <div class="panel-heading">
-		  <h3 class="panel-title"><span class="badge">{snippets_count}</span> Snippets Encontrados</h3>
-		</div>
-		<div class="panel-body">
-        <form class="navbar-form" role="search" method="post" action="admin_snippets/search">
-           <div class="input-group">
-             <input type="text" class="form-control" placeholder="Busca Snippets" id="search" name="search" value="{snippet.search}">
-             <div class="input-group-btn">
-               <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-             </div>
-           </div>
-         </form>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="text-center">
+                <h1><i class="fa fa-warning"></i> Oops!</h1>
+                <h2>Recurso Inv&aacute;lido o no encontrado</h2>
+                <div>
+                    El recurso que intentas solicitar no se puede encontrar
+                </div>
+            </div>
         </div>
     </div>
-    <script type="text/javascript" src="lib/search/search_animation.js"></script>
+</div>

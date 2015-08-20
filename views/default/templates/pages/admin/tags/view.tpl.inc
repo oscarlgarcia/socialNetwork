@@ -1,18 +1,12 @@
-<link rel="stylesheet" type="text/css" href="lib/pagesTree/pagesTree.css"/>
-<link rel="stylesheet" type="text/css" href="lib/imageUpload/imageUpload.css"/>
-<link rel="stylesheet" href="lib/tagging/jquery.tagsinput.css" />
-<script type="text/javascript" src="lib/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="lib/pagesTree/pagesTree.js"></script>
-<script type="text/javascript" src="lib/tagging/jquery.tagsinput.js"></script>
-  <div class="panel panel-primary">
-	  <div class="panel-heading">
-	   <h3 class="panel-title">Nueva P&aacute;gina</h3>
-	  </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">Nueva P&aacute;gina</h3>
+	</div>
+	<div class="panel-body">
+    <!-- START errors -->
+    <div class="alert alert-danger" id="{error_msg}">{error_text}</div>
+    <!-- END errors -->
     <form  method="post" action="admin_cms/update/{id}" accept-charset="UTF-8" id="add_page_form">
-	  <div class="panel-body">
-      <!-- START errors -->
-      <div class="alert alert-danger" id="{error_msg}">{error_text}</div>
-      <!-- END errors -->
       <div class="form-group">
         <label for="title" class="control-label" >Titulo</label>
         <input class="form-control"  value="{title}" name="title" id="title" type="text"  maxlength="400" autofocus="" tabindex="1">
@@ -65,45 +59,46 @@
       </div>
       <div class="form-group">
         <label for="treePanel" class="control-label" >Parent</label>
-        <div class="treePanel" tabindex="5">
-          {page_tree}
+          <div class="treePanel" tabindex="5">
+            {page_tree}
+          </div>
+          </div>
+          <div class="form-group ">
+            <label for="parent" class="control-label" >Parent Id Selected</label>
+            <input type="text" id="parent" name="parent" value="{parent}" class="form-control" > 
+          </div>
+          <div class="form-group">
+            <button type="button" tabindex="6" class="btn btn-primary" data-toggle="modal" data-target="#mediaModal"><span class="fa fa-image"></span> Subir Imagen</button>
+          </div>
+          <div class="form-group">
+            <button type="button" tabindex="6" class="btn btn-primary" data-toggle="modal" data-target="#htmlSourceModal"><span class="fa fa-file-code-o"></span> Ver HMTL</button>
+          </div>
+          <div class="form-group">
+            <label for="editor" class="control-label" >Contenido</label>
+            <textarea name="editor" id="editor" rows="50" cols="80" tabindex="7">
+              {body}
+            </textarea>
+          </div>
+          <div class="form-group">
+            <label for="keywords" class="control-label" >Keywords para SEO</label>
+            <input class="form-control" value="{keywords}" name="keywords" id="keywords" type="text"  maxlength="400" autofocus="" tabindex="8">
+          </div>
+          <div class="form-group">
+            <label for="description" class="control-label" >Descripcion para SEO</label>
+            <textarea class="form-control" name="description" id="description" rows="3" cols="50" tabindex="9">{description}</textarea>
+          </div>  
         </div>
-      </div>
-      <div class="form-group ">
-        <label for="parent" class="control-label" >Parent Id Selected</label>
-        <input type="text" id="parent" name="parent" value="{parent}" class="form-control" > 
-      </div>
-      <div class="form-group">
-        <button type="button" tabindex="6" class="btn btn-primary" data-toggle="modal" data-target="#mediaModal"><span class="fa fa-image"></span> Subir Imagen</button>
-      </div>
-      <div class="form-group">
-        <button type="button" tabindex="6" class="btn btn-primary" data-toggle="modal" data-target="#htmlSourceModal"><span class="fa fa-file-code-o"></span> Ver HMTL</button>
-      </div>
-      <div class="form-group">
-        <label for="editor" class="control-label" >Contenido</label>
-        <textarea name="editor" id="editor" rows="50" cols="80" tabindex="7">
-          {body}
-        </textarea>
-      </div>
-      <div class="form-group">
-        <label for="keywords" class="control-label" >Keywords para SEO</label>
-        <input class="form-control" value="{keywords}" name="keywords" id="keywords" type="text"  maxlength="400" autofocus="" tabindex="8">
-      </div>
-      <div class="form-group">
-        <label for="description" class="control-label" >Descripcion para SEO</label>
-        <textarea class="form-control" name="description" id="description" rows="3" cols="50" tabindex="9">{description}</textarea>
+      <div class="panel-footer clearfix">
+        <div class="pull-right">
+          <input type="button" id="preview-btn" class="btn btn-warning" value="Vista Preliminar" />
+		      <input type="submit" value="Actualizar Pagina" name="btn" id="btn-addPage" data-loading-text="Guardando ..." class="btn btn-primary" tabindex="10" /> 
+        </div>
       </div>  
-    </div>
-    <div class="panel-footer clearfix">
-      <div class="pull-right">
-        <input type="button" id="preview-btn" class="btn btn-warning" value="Vista Preliminar" />
-	      <input type="submit" value="Actualizar Pagina" name="btn" id="btn-addPage" data-loading-text="Guardando ..." class="btn btn-primary" tabindex="10" /> 
-      </div>
-    </div> 
-    </form> 
-  <!-- Modal html -->
-  <div id="htmlSourceModal" class="modal fade">
-    <div class="modal-dialog">
+    </form>
+
+<!-- Modal html -->
+<div id="htmlSourceModal" class="modal fade">
+  <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">x</span><span class="sr-only">Close</span></button>
@@ -112,11 +107,12 @@
         <div class="modal-body">
           <textarea cols="88" rows="20">{body}</textarea>
         </div>
-      </div>
+        </div>
     </div>
-  </div>
-  <!-- end Modal html -->
-  <!-- Modal imagenes -->
+</diV>
+<!-- end Modal html -->
+
+<!-- Modal imagenes -->
   <div id="mediaModal" class="modal fade">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -131,8 +127,8 @@
           </ul>
           <!-- Tab content-->
           <div id="myTabContent" class="tab-content">
-          <div class="tab-pane upload_tab active in" id="upload">
-            <div class="alert alert-danger" id="uploadErrorMsg"></div>
+            <div class="tab-pane upload_tab active in" id="upload">
+             <div class="alert alert-danger" id="uploadErrorMsg"></div>
               <form action="admin_cms/image_upload" class="form-inline" method="post" enctype="multipart/form-data" id="uploadImageForm">
                 <div class="form-group upload_group">
                   <label  class="control-label" for="imageName">Nombre de la Imagen</label>
@@ -148,8 +144,8 @@
                   <input name="FileInput" id="FileInput" type="file" class="upload" />
                 </div>
                 <div class="form-group upload_group">
-                  <button type="button" class="btn btn-primary" id="uploadbtn" data-loading-text="Subiendo..." data-toggle="button"><span class="fa fa-cloud-upload"></span> Cargar Imagen</button>
-                </div>
+                <button type="button" class="btn btn-primary" id="uploadbtn" data-loading-text="Subiendo..." data-toggle="button"><span class="fa fa-cloud-upload"></span> Cargar Imagen</button>
+              </div>
               </form>
               <div id="output"></div>
             </div>
@@ -172,6 +168,4 @@
     </div>
   </div>
   <!-- End modal imagenes-->
-  </div> 
-<script type="text/javascript" src="lib/imageUpload/imageUpload.js"></script>
-<script type="text/javascript" src="lib/page/add_page.js"></script>
+  </div>

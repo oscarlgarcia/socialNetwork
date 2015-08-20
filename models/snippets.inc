@@ -45,19 +45,18 @@ class Snippets extends Object{
    */
   public function listSnippets( $offset=1 )
   {
-	$this->paginatedResult->setLimit($this->limit);
-	$this->paginatedResult->setOffset( $offset-1);
-	
-	//TODO poner el link a busqueda por  tags
-	$query="SELECT tbl.*, GROUP_CONCAT(DISTINCT tag_name SEPARATOR '') 
+	  $this->paginatedResult->setLimit($this->limit);
+	  $this->paginatedResult->setOffset( $offset-1);
+		//TODO poner el link a busqueda por  tags
+	  $query="SELECT tbl.*, GROUP_CONCAT(DISTINCT tag_name SEPARATOR '') 
 		As all_tags FROM( SELECT s.ID,s.title, s.description, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha , s.added as rawDate,                                          
 		s.rating,s.totalFav as faved,s.totalComments as comments, c.name as category,c.image_category as image_category, u.user_login as author, u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
 		FROM snippets s inner join category c on s.ID_category=c.ID inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
 		inner join tags t on l.ID_Tag=t.ID where s.id_status = 4 ) tbl GROUP BY tbl.id order by rawDate desc";
-	$this->paginatedResult->setQuery( $query );
-	$this->paginatedResult->setMethod( 'cache' );
-	$this->paginatedResult->generatePagination();
-	return $this->paginatedResult;
+	  $this->paginatedResult->setQuery( $query );
+	  $this->paginatedResult->setMethod( 'cache' );
+	  $this->paginatedResult->generatePagination();
+	  return $this->paginatedResult;
   }
 	
   /**
