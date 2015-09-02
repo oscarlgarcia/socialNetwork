@@ -125,7 +125,7 @@ class Admin_linkscontroller{
       {
         $this->registry->getObject('template')->buildFromTemplates(
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'links/'.$this->registry->getObject('constants')->getInvalidTpl(),
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'links/'.$this->registry->getObject('constants')->getNoResultsTpl(),
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
         );
         
@@ -168,7 +168,7 @@ class Admin_linkscontroller{
       {
         $this->registry->getObject('template')->buildFromTemplates(
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'links/'.$this->registry->getObject('constants')->getInvalidTpl(),
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'links/'.$this->registry->getObject('constants')->getNoResultsTpl(),
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
         );
         
@@ -211,10 +211,10 @@ class Admin_linkscontroller{
 	{
 	  //pantalla de error
 	  $this->registry->getObject('template')->buildFromTemplates(
-	  	$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'links/'.$this->registry->getObject('constants')->getInvalidTpl(), 
-	  	$this->registry->getObject('constants')->getFooterTpl()
-	  	);
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'links/'.$this->registry->getObject('constants')->getInvalidTpl(),
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+        );
 	}
 	else
 	{ 
@@ -264,10 +264,10 @@ class Admin_linkscontroller{
 	{
 	  //pantalla de error
 	  $this->registry->getObject('template')->buildFromTemplates(
-	   	$this->registry->getObject('constants')->getHeaderTpl(), 
-	   	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'links/'.$this->registry->getObject('constants')->getInvalidTpl(), 
-	   	$this->registry->getObject('constants')->getFooterTpl()
-	   	);
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'links/'.$this->registry->getObject('constants')->getInvalidTpl(),
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+        );
 	}
 	else
 	{   

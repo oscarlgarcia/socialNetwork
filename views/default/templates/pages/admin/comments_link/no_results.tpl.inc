@@ -1,11 +1,11 @@
     <div class="panel panel-primary">
 	   <div class="panel-heading">
-		  <h3 class="panel-title"><span class="badge">{comments_snippet_count}</span> Comentarios Encontrados</h3>
+		  <h3 class="panel-title"><span class="badge">{comments_link_count}</span> Comentarios Encontrados</h3>
 		</div>
 		<div class="panel-body">
-        <form class="navbar-form" role="search" method="post" action="admin_comments_snippet/search">
+        <form class="navbar-form" role="search" method="post" action="admin_comments_link/search">
            <div class="input-group">
-             <input type="text" class="form-control" placeholder="Busca Comentarios" id="search" name="search" value="{comments_snippet.search}">
+             <input type="text" class="form-control" placeholder="Busca Comentarios" id="search" name="search" value="{comments_link.search}">
              <div class="input-group-btn">
                <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
              </div>

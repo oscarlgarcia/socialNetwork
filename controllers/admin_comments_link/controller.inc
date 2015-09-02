@@ -105,6 +105,8 @@ class Admin_comments_linkcontroller{
 	*/
     private function search($offset)
     {   
+
+
       $offset = ($offset<=0)?1:$offset;
       
       if (!isset($_SESSION['comments_links_criteria'])){
@@ -123,7 +125,7 @@ class Admin_comments_linkcontroller{
       {
         $this->registry->getObject('template')->buildFromTemplates(
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_link/'.$this->registry->getObject('constants')->getInvalidTpl(),
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_link/'.$this->registry->getObject('constants')->getNoResultsTpl(),
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
         );
         
@@ -167,7 +169,7 @@ class Admin_comments_linkcontroller{
       {
         $this->registry->getObject('template')->buildFromTemplates(
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_link/'.$this->registry->getObject('constants')->getInvalidTpl(),
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_link/'.$this->registry->getObject('constants')->getNoResultsTpl(),
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
         );
         
@@ -209,10 +211,9 @@ class Admin_comments_linkcontroller{
       {
         $this->registry->getObject('template')->buildFromTemplates(
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_link/'.$this->registry->getObject('constants')->getInvalidTpl(),
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_link/'.$this->registry->getObject('constants')->getNoResultsTpl(),
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
         );
-        
         //Cargamos la busqueda
 	    $this->registry->getObject('template')->getPage()->addTag('comments_link.search',$_SESSION['comments_links_criteria']);	
         // cargamos el total de snippets
