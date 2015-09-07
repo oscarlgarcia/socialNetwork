@@ -25,7 +25,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button> 
-        <a href="home" class="navbar-brand"><img src="views/default/images/site/titulo.png"></a>
+        <a href="home" class="navbar-brand"><img src="views/default/images/site/titulo-admin.png"></a>
       </div>
     <!-- Nav Links-->
     <div id="navbarCollapse" class="collapse navbar-collapse">
