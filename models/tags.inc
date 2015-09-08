@@ -7,30 +7,104 @@ require_once ("Object.inc");
  */
 class Tags extends Object{
 	
+  private $ID;
   private $tag_name;
+  private $snippets;
+  private $links;
+  private $page;
+  private $image;
   private $limit = 10;
   private $saveable_fields = array( 'tag_name');
 	
 	
   /**
-  * Obtiene un Tag a partir de su ID
+  * Obtiene un Tag a partir de su name
   * Se llama desde Admin_tags
-  * @param int $tagID 
-  * @return Object 
-  * Id del Tag
-  * Nombre del Tag
+  * @param String $tagName 
+  * @return Object Tag
   */
-  public function getTag($tagID)
+  public function getTag($tagName)
   {
-    $query = "SELECT t.tag_name FROM tags t where t.ID=".$tagID ;
+    $query = "SELECT * FROM tags where tag_name = '".$tagName."'" ;
     $this->registry->getObject('db')->executeQuery( $query );
     if( $this->registry->getObject('db')->numRows() > 0 )
     {
       $data = $this->registry->getObject('db')->getRows();
-      $tempo['tag_name']=$data['tag_name']; 
-      return $tempo; 
+      $this->setID($data['ID']);
+      $this->setTagName($data['tag_name']);
+      return true;
     }
     return null;
+  }
+
+
+   /**
+  * Obtiene un Tag a partir de su ID
+  * Se llama desde Admin_tags
+  * @param int $tagID 
+  * @return Object Tag
+  */
+  public function loadTag($tagID)
+  {
+    $query = "SELECT * FROM tags where id = ".$tagID;
+    $this->registry->getObject('db')->executeQuery( $query );
+    if( $this->registry->getObject('db')->numRows() > 0 )
+    {
+      $data = $this->registry->getObject('db')->getRows();
+      $this->setID($data['ID']);
+      $this->setTagName($data['tag_name']);
+      return true;
+    }
+    return null;
+  }
+
+
+  //Obtiene los snippets a partir del ID
+  public function getAllSnippets()
+  {
+    $this->paginatedResult->setLimit(1000000000); // TODO sin limite
+    $this->paginatedResult->setOffset(0);
+    $query = "SELECT s.ID as snippet_ID, s.title as snippet_title FROM snippets s inner join lista_tag_snippet ls on ls.ID_Snippets = s.ID inner join tags t on t.ID = ls.ID_tag  where t.ID = ".$this->getID();
+    $this->paginatedResult->setQuery( $query );
+    $this->paginatedResult->setMethod( 'cache' );
+    $this->paginatedResult->generatePagination();
+    return $this->paginatedResult;
+  }
+
+  //Obtiene los links a partir del ID
+  public function getAllLinks()
+  {
+    $this->paginatedResult->setLimit(1000000000); // TODO sin limite
+    $this->paginatedResult->setOffset(0);
+    $query = "SELECT l.ID as link_ID, l.title as link_title FROM links l inner join list_tags_links ll on ll.ID_Links = l.ID inner join tags t on t.ID = ll.ID_tags  where t.ID = ".$this->getID();
+    $this->paginatedResult->setQuery( $query );
+    $this->paginatedResult->setMethod( 'cache' );
+    $this->paginatedResult->generatePagination();
+    return $this->paginatedResult;
+  }
+
+  //Obtiene los pages a partir del ID
+  public function getAllPages()
+  {
+    $this->paginatedResult->setLimit(1000000000); // TODO sin limite
+    $this->paginatedResult->setOffset(0);
+    $query = "SELECT p.ID as page_ID, p.title as page_title FROM page p inner join list_tag_page lp on lp.ID_Page = p.ID inner join tags t on t.ID = lp.ID_Tag  where t.ID = ".$this->getID();
+    $this->paginatedResult->setQuery( $query );
+    $this->paginatedResult->setMethod( 'cache' );
+    $this->paginatedResult->generatePagination();
+    return $this->paginatedResult;
+  }
+
+  //Obtiene los pages a partir del ID
+  public function getAllImages()
+  {
+    $this->paginatedResult->setLimit(1000000000); // TODO sin limite
+    $this->paginatedResult->setOffset(0);
+    $query = "SELECT m.ID as media_ID, m.name as media_title, m.url as media_url FROM media m inner join list_media_tags lm on lm.ID_Media = m.ID inner join tags t on t.ID = lm.ID_Tag  where t.ID = ".$this->getID();
+    $this->paginatedResult->setQuery( $query );
+    $this->paginatedResult->setMethod( 'cache' );
+    $this->paginatedResult->generatePagination();
+    return $this->paginatedResult;
   }
 
   /**
@@ -42,9 +116,9 @@ class Tags extends Object{
   */
   public function getTags()
   {
-    $this->paginatedResult->setLimit(1000000);
+    $this->paginatedResult->setLimit(1000000000); // TODO sin limite
     $this->paginatedResult->setOffset(0);
-    $query = "SELECT ID, tag_name FROM tags" ;
+    $query = "SELECT ID as tagID, tag_name as tagName FROM tags" ;
     $this->paginatedResult->setQuery( $query );
     $this->paginatedResult->setMethod( 'cache' );
     $this->paginatedResult->generatePagination();
@@ -92,10 +166,8 @@ class Tags extends Object{
     $this->paginatedResult->setQuery( $query );
     $this->paginatedResult->setMethod( 'cache' );
     $this->paginatedResult->generatePagination();
-  return $this->paginatedResult;
+    return $this->paginatedResult;
   }
-
-
 
 
   /**
@@ -105,16 +177,35 @@ class Tags extends Object{
   */
   public function isSaved($tagName)
   {
+    if ($tagName == "") 
+      return true;
  	  $query = "SELECT ID as id, tag_name as tag FROM tags where tag_name='".$tagName."'" ;
+    var_dump($query);
 	  $this->paginatedResult->setQuery( $query );
 	  $this->paginatedResult->setMethod( 'cache' );
 	  $this->paginatedResult->generatePagination();
-	  if ($this->paginatedResult->getTotalRows()==1)
+	  if ($this->paginatedResult->getTotalRows() == 1)
     {  
 	    $tag = $this->registry->getObject('db')->resultsFromCache($this->paginatedResult->getCache());
 	    return $tag["id"];
 	  }
 	  return false;
+  }
+
+   /**
+  * Metodo que verifica si un tag esta ya guardado
+  * @param Int $tagID , Id del tag
+  * @return True o false sino existe
+  */
+  public function exist($tagID)
+  {
+    $query = "SELECT ID FROM tags where ID = ".$tagID ;
+    $this->paginatedResult->setQuery( $query );
+    $this->paginatedResult->setMethod( 'cache' );
+    $this->paginatedResult->generatePagination();
+    if ($this->paginatedResult->getTotalRows() == 1)
+      return true;
+    return false;
   }
 
   /*
@@ -129,7 +220,7 @@ class Tags extends Object{
 	  {
 	    $changes[ $field ] = $this->$field;
 	  }
-	  $isSaved=$this->isSaved($this->tag_name);
+	  $isSaved = $this->isSaved($this->tag_name);
 	
 	  // Si el tag no esta guardado
 	  if(!$isSaved)
@@ -196,11 +287,45 @@ class Tags extends Object{
     return false;
   }
 
+
+  /**
+  * Metodo que reasigna los tags de los snippets, links, tuts  e imagenes 
+  * a otro tag
+  * @param $tagId_source el tag del que se quitaran las relaciones
+  * @param $tagID_dest tag destino que las aceptara
+  **/
+  public function reasig ($tagId_source, $tagID_dest){
+     $changes = array();
+     $changes['id_tag'] = $tagID_dest;
+     $this->registry->getObject('db')->updateRecords('lista_tag_snippet', $changes," id_tag = ".$tagId_source );
+     $this->registry->getObject('db')->updateRecords('list_media_tags', $changes," id_tag = ".$tagId_source );
+     $changesL = array();
+     $changesL['id_tags'] = $tagID_dest;
+     $this->registry->getObject('db')->updateRecords('list_tags_links', $changesL," id_tags = ".$tagId_source );
+     $this->registry->getObject('db')->updateRecords('list_tag_page', $changes," id_tag = ".$tagId_source );
+     
+
+  }
+
+
+
   /*
   * Metodos setter
   */
-  public function setName($name){
+  public function setTagName($name){
     $this->tag_name= $name;
+  }
+
+  public function setID($ID){
+    $this->ID= $ID;
+  }  
+
+  public function getID(){
+    return $this->ID;
+  }
+
+  public function getTagName(){
+    return $this->tag_name;
   }
 	
 }

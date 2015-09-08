@@ -77,7 +77,7 @@
               </div>
               <div class="col-sm-5">
                 <span>Comentarios</span>
-                <h2><strong><a href="admin_users/comments/{ID}">{total_comments_snippets}</a></strong></h2>                    
+                <h2><strong><a href="admin_comments_snippet/listByUser/{login}">{total_comments_snippets}</a></strong></h2>                    
               </div>
             </div>
           </div>
@@ -95,7 +95,7 @@
               </div>
               <div class="col-sm-5">
                 <span>Comentarios</span>
-                <h2><strong><a href="admin_snippets/listByUser/{login}">{total_comments_links}</a></strong></h2>                    
+                <h2><strong><a href="admin_comments_link/listByUser/{login}">{total_comments_links}</a></strong></h2>                    
               </div>
             </div>
           </div>

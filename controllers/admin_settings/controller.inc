@@ -1,10 +1,10 @@
 <?php
  /**
- * Controlador para administracion de tags  browse / edit / delete / ban
+ * Controlador para administracion de Settings  browse / edit / delete / ban
  * @version 1.0
  * @author  Oscar Garcia
  */	
-class Admin_tagscontroller{
+class Admin_settingscontroller{
 	
 	/**
 	 * Referencia del objeto registro

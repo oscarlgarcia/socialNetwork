@@ -108,6 +108,7 @@ class Mysqldb {
    */
   public function cacheQuery( $queryStr )
   {
+    //var_dump($queryStr);
     if( !$result = $this->connections[$this->activeConnection]->query( $queryStr ) )
     {
 	   trigger_error('Error executing and caching query: '.$this->connections[$this->activeConnection]->error, E_USER_ERROR);
