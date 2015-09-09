@@ -9,10 +9,6 @@ class Tags extends Object{
 	
   private $ID;
   private $tag_name;
-  private $snippets;
-  private $links;
-  private $page;
-  private $image;
   private $limit = 10;
   private $saveable_fields = array( 'tag_name');
 	

@@ -104,57 +104,70 @@ class Admin_snippetscontroller{
 	}
 	
 	
-   /*
-	* Metodo para buscar snippets desde la pantalla de admin
-	*/
-    private function search($offset)
-    {   
-      $offset = ($offset<=0)?1:$offset;
+  /*
+  * Metodo para buscar snippets desde la pantalla de admin
+  */
+  private function search($offset)
+  {   
+    $offset = ($offset<=0)?1:$offset;
       
-      if (!isset($_SESSION['criteria'])){
-      	$this->registry->getObject('util')->storeToSession('criteria',"");
-      }
+    if (!isset($_SESSION['criteria'])){
+      $this->registry->getObject('util')->storeToSession('criteria',"");
+    }
 
-      if (isset($_POST['search'])){
-      	$this->registry->getObject('util')->storeToSession('criteria',$_POST['search']);
-      }
+    if (isset($_POST['search'])){
+      $this->registry->getObject('util')->storeToSession('criteria',$_POST['search']);
+    }
 
-      require_once( FRAMEWORK_PATH . 'models/snippets.inc');
-	  $snippets = new Snippets( $this->registry );
-	  $pagination = $snippets->search($offset,$_SESSION['criteria']);
+    require_once( FRAMEWORK_PATH . 'models/snippets.inc');
+	$snippets = new Snippets( $this->registry );
+	$pagination = $snippets->search($offset,$_SESSION['criteria']);
 	 
-      if(!$pagination->checkOffset($offset) )
+    if($pagination->getTotalRows() == 0 )
+    {
+      //no hay
+      $this->registry->getObject('template')->buildFromTemplates(
+        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getNoResultsTpl(),
+        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+      );
+        
+      //Cargamos la busqueda
+	  $this->registry->getObject('template')->getPage()->addTag('snippet.search',$_SESSION['criteria']);	
+      // cargamos el total de snippets
+	  $this->registry->getObject('template')->getPage()->addTag( 'snippets_count', $pagination->getTotalRows() );	
+
+    }else
+    {
+      if(!$pagination->checkOffset($offset))
       {
+        //invalid
         $this->registry->getObject('template')->buildFromTemplates(
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getNoResultsTpl(),
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getInvalidTpl(),
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
         );
-        
-        //Cargamos la busqueda
-	    $this->registry->getObject('template')->getPage()->addTag('snippet.search',$_SESSION['criteria']);	
-        // cargamos el total de snippets
-		$this->registry->getObject('template')->getPage()->addTag( 'snippets_count', $pagination->getTotalRows() );	
 
-      }
-	  else
+      }else
 	  { 
         $this->registry->getObject('template')->buildFromTemplates(
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getListTpl(),
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+	      $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+	      $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'snippets/'.$this->registry->getObject('constants')->getListTpl(),
+	      $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
 	    );
+		
 		//cargamos la info de cada snippet
 		$this->registry->getObject('template')->getPage()->addTag( 'snippets', array( 'SQL', $pagination->getCache() ) );
          
 		//Cargamos la busqueda
 	    $this->registry->getObject('template')->getPage()->addTag( 'snippet.search',$_SESSION['criteria']);	
+        
         // cargamos el total de snippets
 		$this->registry->getObject('template')->getPage()->addTag( 'snippets_count', $pagination->getTotalRows() );		
 		$pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
 	  }		
-    }
-
+    }	 
+  }
   
   /*
   * Metodo que redirecciona a la plantilla de historial

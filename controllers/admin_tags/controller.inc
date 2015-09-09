@@ -113,36 +113,50 @@ class Admin_tagscontroller{
       require_once( FRAMEWORK_PATH . 'models/tags.inc');
 	  $tags = new Tags( $this->registry );
 	  $pagination = $tags->search($offset,$_SESSION['tag_criteria']);
-	 
-      if(!$pagination->checkOffset($offset) )
+      if( $pagination->getTotalRows() == 0 )
       {
-        $this->registry->getObject('template')->buildFromTemplates(
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'tags/'.$this->registry->getObject('constants')->getInvalidTpl(),
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-        );
-        
-        //Cargamos la busqueda
-	    $this->registry->getObject('template')->getPage()->addTag('tags.search',$_SESSION['tag_criteria']);	
-        // cargamos el total de tags
-		$this->registry->getObject('template')->getPage()->addTag( 'tags_count', $pagination->getTotalRows() );	
 
+      	 // No hay
+	  	  $this->registry->getObject('template')->buildFromTemplates(
+            $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+            $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'tags/'.$this->registry->getObject('constants')->getNoResultsTpl(),
+            $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+          );
+        
+          //Cargamos la busqueda
+	      $this->registry->getObject('template')->getPage()->addTag('tags.search',$_SESSION['tag_criteria']);	
+          // cargamos el total de tags
+		  $this->registry->getObject('template')->getPage()->addTag( 'tags_count', $pagination->getTotalRows() );
       }
 	  else
 	  { 
-        $this->registry->getObject('template')->buildFromTemplates(
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'tags/'.$this->registry->getObject('constants')->getListTpl(),
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	    );
-		//cargamos la info de cada snippet
-		$this->registry->getObject('template')->getPage()->addTag( 'tags', array( 'SQL', $pagination->getCache() ) );
          
-		//Cargamos la busqueda
-	    $this->registry->getObject('template')->getPage()->addTag( 'tags.search',$_SESSION['tag_criteria']);	
-        // cargamos el total de tags
-		$this->registry->getObject('template')->getPage()->addTag( 'tags_count', $pagination->getTotalRows() );		
-		$pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
+	  	if (!$pagination->checkOffset($offset))
+	  	{
+          // Invalid
+          $this->registry->getObject('template')->buildFromTemplates(
+            $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+            $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'tags/'.$this->registry->getObject('constants')->getInvalidTpl(),
+            $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+          );
+   		 	
+	  	}else
+	  	{
+          $this->registry->getObject('template')->buildFromTemplates(
+	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'tags/'.$this->registry->getObject('constants')->getListTpl(),
+	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+	      );
+		
+		  //cargamos la info de cada snippet
+		  $this->registry->getObject('template')->getPage()->addTag( 'tags', array( 'SQL', $pagination->getCache() ) );
+         
+		  //Cargamos la busqueda
+	      $this->registry->getObject('template')->getPage()->addTag( 'tags.search',$_SESSION['tag_criteria']);	
+          // cargamos el total de tags
+		  $this->registry->getObject('template')->getPage()->addTag( 'tags_count', $pagination->getTotalRows() );		
+		  $pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
+	    }
 	  }		
     }
 

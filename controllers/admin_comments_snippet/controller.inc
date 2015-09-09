@@ -119,36 +119,50 @@ class Admin_comments_snippetcontroller{
 	  $comments = new Comment_Snippet( $this->registry );
 	  $pagination = $comments->search($offset,$_SESSION['comment_snippet_criteria']);
 	 
-      if(!$pagination->checkOffset($offset) )
-      {
-        $this->registry->getObject('template')->buildFromTemplates(
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_snippet/'.$this->registry->getObject('constants')->getNoResultsTpl(),
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-        );
+      if($pagination->getTotalRows() == 0 )
+       {
+         //no hay
+         $this->registry->getObject('template')->buildFromTemplates(
+           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_snippet/'.$this->registry->getObject('constants')->getNoResultsTpl(),
+           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+          );
         
-        //Cargamos la busqueda
-	    $this->registry->getObject('template')->getPage()->addTag('comments_snippet.search',$_SESSION['comment_snippet_criteria']);	
-        // cargamos el total de snippets
-		$this->registry->getObject('template')->getPage()->addTag( 'comments_snippet_count', $pagination->getTotalRows() );	
+          //Cargamos la busqueda
+	      $this->registry->getObject('template')->getPage()->addTag('comments_snippet.search',$_SESSION['comment_snippet_criteria']);	
+          // cargamos el total de snippets
+		  $this->registry->getObject('template')->getPage()->addTag( 'comments_snippet_count', $pagination->getTotalRows() );	
 
-      }
-	  else
-	  { 
-        $this->registry->getObject('template')->buildFromTemplates(
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_snippet/'.$this->registry->getObject('constants')->getListTpl(),
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	    );
-		//cargamos la info de cada snippet
-		$this->registry->getObject('template')->getPage()->addTag( 'comments_snippet', array( 'SQL', $pagination->getCache() ) );
+      }else{
+
+      	if(!$pagination->checkOffset($offset))
+      	{
+          //invalid
+      	  $this->registry->getObject('template')->buildFromTemplates(
+            $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+            $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_snippet/'.$this->registry->getObject('constants')->getInvalidTpl(),
+             $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+          );
+
+      	}else
+	    { 
+          $this->registry->getObject('template')->buildFromTemplates(
+	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_snippet/'.$this->registry->getObject('constants')->getListTpl(),
+	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+	      );
+		
+		  //cargamos la info de cada snippet
+		  $this->registry->getObject('template')->getPage()->addTag( 'comments_snippet', array( 'SQL', $pagination->getCache() ) );
          
-		//Cargamos la busqueda
-	    $this->registry->getObject('template')->getPage()->addTag( 'comments_snippet.search',$_SESSION['comment_snippet_criteria']);	
-        // cargamos el total de snippets
-		$this->registry->getObject('template')->getPage()->addTag( 'comments_snippet_count', $pagination->getTotalRows() );		
-		$pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
-	  }		
+		  //Cargamos la busqueda
+	      $this->registry->getObject('template')->getPage()->addTag( 'comments_snippet.search',$_SESSION['comment_snippet_criteria']);	
+          
+          // cargamos el total de snippets
+		  $this->registry->getObject('template')->getPage()->addTag( 'comments_snippet_count', $pagination->getTotalRows() );		
+		  $pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
+	    }		
+      }
     }
 
   
