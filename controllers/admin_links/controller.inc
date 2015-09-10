@@ -121,8 +121,9 @@ class Admin_linkscontroller{
 	  $links = new Links( $this->registry );
 	  $pagination = $links->search($offset,$_SESSION['link_criteria']);
 	 
-      if(!$pagination->checkOffset($offset) )
+      if($pagination->getTotalRows() == 0  )
       {
+      	// no hay 
         $this->registry->getObject('template')->buildFromTemplates(
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'links/'.$this->registry->getObject('constants')->getNoResultsTpl(),
@@ -134,27 +135,39 @@ class Admin_linkscontroller{
         // cargamos el total de links
 		$this->registry->getObject('template')->getPage()->addTag( 'links_count', $pagination->getTotalRows() );	
 
-      }
-	  else
-	  { 
-        $this->registry->getObject('template')->buildFromTemplates(
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'links/'.$this->registry->getObject('constants')->getListTpl(),
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	    );
-		//cargamos la info de cada snippet
-		$this->registry->getObject('template')->getPage()->addTag( 'links', array( 'SQL', $pagination->getCache() ) );
+      }else
+      {
+        if (!$pagination->checkOffset($offset))
+        {
+          // invalid
+          $this->registry->getObject('template')->buildFromTemplates(
+            $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+            $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'links/'.$this->registry->getObject('constants')->getInvalidTpl(),
+            $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+          );
+        
+        }else
+	    { 
+          $this->registry->getObject('template')->buildFromTemplates(
+	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'links/'.$this->registry->getObject('constants')->getListTpl(),
+	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+	      );
+		
+		  //cargamos la info de cada snippet
+		  $this->registry->getObject('template')->getPage()->addTag( 'links', array( 'SQL', $pagination->getCache() ) );
          
-		//Cargamos la busqueda
-	    $this->registry->getObject('template')->getPage()->addTag( 'links.search',$_SESSION['link_criteria']);	
-        // cargamos el total de links
-		$this->registry->getObject('template')->getPage()->addTag( 'links_count', $pagination->getTotalRows() );		
-		$pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
-	  }		
+		  //Cargamos la busqueda
+	      $this->registry->getObject('template')->getPage()->addTag( 'links.search',$_SESSION['link_criteria']);	
+        
+          // cargamos el total de links
+		  $this->registry->getObject('template')->getPage()->addTag( 'links_count', $pagination->getTotalRows() );		
+		  $pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
+	    }
+      }
     }
-
 	
-/*
+  /*
   * Busca links de un usuario en particular
   */
   private function listByUser($username,$offset){

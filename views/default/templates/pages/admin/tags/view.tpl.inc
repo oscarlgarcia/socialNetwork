@@ -3,7 +3,6 @@
     <h3 class="panel-title">Tags</h3>
 	</div>
 	<div class="panel-body">
-    <div class="row form-group">
     <!-- START errors -->
     <div class="alert alert-danger" id="{error_msg}">{error_text}</div>
     <!-- END errors -->
@@ -36,7 +35,6 @@
         </div> 
       </form>
     </div>
-  </div>
     <!-- -->
 
     <div class="row">

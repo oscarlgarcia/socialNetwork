@@ -27,11 +27,11 @@
                 <button type="button" class="btn btn-info">{ID}</button>
                 <button type="button" data-toggle="dropdown" class="btn btn-info dropdown-toggle"> <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li class="deleteButton"><a id="delete" data-deleteurl="admin_tags/delete/{ID}" data-toggle="modal" data-target="#delete_modal"><span class="fa fa-trash"></span> Eliminar</a></li>
+                  <li class="deleteButton"><a id="delete" data-deleteurl="admin_settings/delete/{ID}" data-toggle="modal" data-target="#delete_modal"><span class="fa fa-trash"></span> Eliminar</a></li>
                 </ul>
               </div>
             </td>
-		  	    <td class="col-md-2"><a href="admin_tags/view/{tag_name}">{clave}</a></td>
+		  	    <td class="col-md-2"><a href="admin_settings/view/{ID}">{clave}</a></td>
             <td class="col-md-8"><input readonly="true" class="form-control" type="text" value='{valor}' /></td>
           </tr>
         <!-- END settings -->

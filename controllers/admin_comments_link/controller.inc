@@ -121,8 +121,9 @@ class Admin_comments_linkcontroller{
 	  $comments = new Comments_Links( $this->registry );
 	  $pagination = $comments->search($offset,$_SESSION['comments_links_criteria']);
 	 
-      if(!$pagination->checkOffset($offset) )
+      if( $pagination->getTotalRows() == 0  )
       {
+        // no hay
         $this->registry->getObject('template')->buildFromTemplates(
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_link/'.$this->registry->getObject('constants')->getNoResultsTpl(),
@@ -134,27 +135,37 @@ class Admin_comments_linkcontroller{
         // cargamos el total de snippets
 		$this->registry->getObject('template')->getPage()->addTag( 'comments_link_count', $pagination->getTotalRows() );	
 
-      }
-	  else
-	  { 
-        $this->registry->getObject('template')->buildFromTemplates(
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_link/'.$this->registry->getObject('constants')->getListTpl(),
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	    );
-		//cargamos la info de cada snippet
-		$this->registry->getObject('template')->getPage()->addTag( 'comments_link', array( 'SQL', $pagination->getCache() ) );
+      }else
+      {
+        if (!$pagination->checkOffset($offset))
+        {
+          // invalid
+          $this->registry->getObject('template')->buildFromTemplates(
+            $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+            $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_link/'.$this->registry->getObject('constants')->getInvalidTpl(),
+            $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+          );
+
+        }else
+	    { 
+          $this->registry->getObject('template')->buildFromTemplates(
+	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'comments_link/'.$this->registry->getObject('constants')->getListTpl(),
+	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+	      );
+		
+		  //cargamos la info de cada snippet
+		  $this->registry->getObject('template')->getPage()->addTag( 'comments_link', array( 'SQL', $pagination->getCache() ) );
          
-		//Cargamos la busqueda
-	    $this->registry->getObject('template')->getPage()->addTag( 'comments_link.search',$_SESSION['comments_links_criteria']);	
-        // cargamos el total de snippets
-		$this->registry->getObject('template')->getPage()->addTag( 'comments_link_count', $pagination->getTotalRows() );		
-		$pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
-	  }		
+		  //Cargamos la busqueda
+	      $this->registry->getObject('template')->getPage()->addTag( 'comments_link.search',$_SESSION['comments_links_criteria']);	
+          // cargamos el total de snippets
+		  $this->registry->getObject('template')->getPage()->addTag( 'comments_link_count', $pagination->getTotalRows() );		
+		  $pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
+	    }		
+      }
     }
 
-  
- 
    /*
   * Busca comentarios de un usuario en particular
   */

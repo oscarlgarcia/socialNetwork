@@ -62,7 +62,7 @@ class Admin_settingscontroller{
 				    break;
 
 				  case 'view':
-				    $this->view($this->parameter1);
+				    $this->view(intval($this->parameter1));
 					break;
 
 				  case 'update':
@@ -109,48 +109,59 @@ class Admin_settingscontroller{
 	  $settings = new Settings( $this->registry );
 	  $pagination = $settings->search($offset,$_SESSION['setting_criteria']);
 	 
-      if(!$pagination->checkOffset($offset) )
+      if( $pagination->getTotalRows() == 0 )
       {
+      	// no hay 
         $this->registry->getObject('template')->buildFromTemplates(
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'settings/'.$this->registry->getObject('constants')->getInvalidTpl(),
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'settings/'.$this->registry->getObject('constants')->getNoResultsTpl(),
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
         );
         
         //Cargamos la busqueda
 	    $this->registry->getObject('template')->getPage()->addTag('settings.search',$_SESSION['setting_criteria']);	
         // cargamos el total de settings
-		$this->registry->getObject('template')->getPage()->addTag( 'settings_count', $pagination->getTotalRows() );	
-
-      }
-	  else
-	  { 
-        $this->registry->getObject('template')->buildFromTemplates(
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'settings/'.$this->registry->getObject('constants')->getListTpl(),
-	    $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	    );
-		//cargamos la info de cada snippet
-		$this->registry->getObject('template')->getPage()->addTag( 'settings', array( 'SQL', $pagination->getCache() ) );
+		$this->registry->getObject('template')->getPage()->addTag( 'settings_count', $pagination->getTotalRows() );
+      }else
+      {
+         if(!$pagination->checkOffset($offset))
+         {
+         	// invalid
+            $this->registry->getObject('template')->buildFromTemplates(
+              $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+              $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'settings/'.$this->registry->getObject('constants')->getInvalidTpl(),
+              $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+            );
+         }else
+	     { 
+           $this->registry->getObject('template')->buildFromTemplates(
+	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'settings/'.$this->registry->getObject('constants')->getListTpl(),
+	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+	       );
+		
+		  //cargamos la info de cada snippet
+		  $this->registry->getObject('template')->getPage()->addTag( 'settings', array( 'SQL', $pagination->getCache() ) );
          
-		//Cargamos la busqueda
-	    $this->registry->getObject('template')->getPage()->addTag( 'settings.search',$_SESSION['setting_criteria']);	
-        // cargamos el total de settings
-		$this->registry->getObject('template')->getPage()->addTag( 'settings_count', $pagination->getTotalRows() );		
-		$pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
-	  }		
+		  //Cargamos la busqueda
+	      $this->registry->getObject('template')->getPage()->addTag( 'settings.search',$_SESSION['setting_criteria']);	
+          // cargamos el total de settings
+		  $this->registry->getObject('template')->getPage()->addTag( 'settings_count', $pagination->getTotalRows() );		
+		  $pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
+	    }		
+      }
     }
 
   /*
   * Metodo que redirecciona a la plantilla de ver
   *
   **/
-  private function view($tagName)
+  private function view($tagID)
   {
   	require_once( FRAMEWORK_PATH . 'models/settings.inc');
 	$setting = new Settings( $this->registry );
 	// Si no encontramos el tag
-    if(!$tag->getTag( $this->registry->getObject('db')->sanitizeData($tagName) ) )
+    if(!$setting->getSetting($tagID))
 	{
 	  //pantalla de error
 	  $this->registry->getObject('template')->buildFromTemplates(
@@ -170,37 +181,23 @@ class Admin_settingscontroller{
 	  // Cargamos los datos
 	  $this->registry->getObject('template')->getPage()->addTag('error_msg','error-msg'); 
       $this->registry->getObject('template')->getPage()->addTag('error_text',''); 
-	  $this->registry->getObject('template')->getPage()->addTag('tag_name',$tag->getTagName());
-	  $this->registry->getObject('template')->getPage()->addTag('id',$tag->getID());
-
-	  // Cargamos los tags 
-	  $list = $tag->getTags();
-	  $this->registry->getObject('template')->getPage()->addTag('tag',array('SQL',$list->getCache()));
-
-	  //Cargamos los Snippets
-	   $this->registry->getObject('template')->getPage()->addTag('snippets',array('SQL', $tag->getAllSnippets()->getCache()));
-      
-      //Cargamos los links
-	   $this->registry->getObject('template')->getPage()->addTag('links',array('SQL', $tag->getAllLinks()->getCache()));
-	   //Cargamos los pages
-	   $this->registry->getObject('template')->getPage()->addTag('pages',array('SQL', $tag->getAllPages()->getCache()));
-       //Cargamos las imagenes
-	   $this->registry->getObject('template')->getPage()->addTag('media',array('SQL', $tag->getAllImages()->getCache()));
-
+	  $this->registry->getObject('template')->getPage()->addTag('setting_key',$setting->getKey());
+	  $this->registry->getObject('template')->getPage()->addTag('setting_value',$setting->getValue());
+	  $this->registry->getObject('template')->getPage()->addTag('id',$setting->getID());
 	   
    }
   }
 
 
  /*
-  * Metodo que actualiza el tag
+  * Metodo que actualiza el setting
   *
   **/
-  private function update($tagID)
+  private function update($settingID)
   {
-    require_once( FRAMEWORK_PATH . 'models/tags.inc');
-    $tag = new tags( $this->registry );
-    if(!$tag->loadTag($tagID) )
+    require_once( FRAMEWORK_PATH . 'models/settings.inc');
+    $setting = new Settings( $this->registry );
+    if(!$setting->getSetting($settingID) )
     {
       //pantalla de error
 	  $this->registry->getObject('template')->buildFromTemplates(
@@ -211,14 +208,16 @@ class Admin_settingscontroller{
 	}
 	else
 	{ 
-	  if (isset($_POST['tag_name']))
-        $name_cleaned = $this->registry->getObject('db')->sanitizeData($_POST['tag_name']);
+	  if (isset($_POST['setting_key'])){
+        $key_cleaned = $this->registry->getObject('db')->sanitizeData($_POST['setting_key']);
+        $value_cleaned = $this->registry->getObject('db')->sanitizeData($_POST['setting_value']);
+      }
       else
-      	$name_cleaned = "";
-      if (!$tag->isSaved($name_cleaned) ) // Si este tag no existe ya
+      	$key_cleaned = "";
+      if (!$setting->isSaved($key_cleaned,$settingID) ) // Si este setting no existe ya
       {
-        $tag->updateTagName($tagID, $name_cleaned); 
-        header('Location: /socialNetwork/admin_tags/search');  
+        $setting->update($settingID, $key_cleaned,$value_cleaned); 
+        header('Location: /socialNetwork/admin_settings/search');  
       }
       else
       {
@@ -229,36 +228,14 @@ class Admin_settingscontroller{
 	  	);
         
         $this->registry->getObject('template')->getPage()->addTag('error_msg',''); 
-        $this->registry->getObject('template')->getPage()->addTag('error_text','Este Tag ya Existe'); 
-	    $this->registry->getObject('template')->getPage()->addTag('tag_name',$tag->getTagName());
-	    $this->registry->getObject('template')->getPage()->addTag('id',$tag->getID());
+        $this->registry->getObject('template')->getPage()->addTag('error_text','Este Setting ya Existe'); 
+	    $this->registry->getObject('template')->getPage()->addTag('setting_key',$setting->getKey());
+	    $this->registry->getObject('template')->getPage()->addTag('setting_value',$setting->getValue());
+	    $this->registry->getObject('template')->getPage()->addTag('id',$setting->getID());
+	   
       }
     }    
   } 
-
-
-  /*
-  * Metodo que reasigna el tag
-  *
-  **/
-  private function reasig($sourceID)
-  {
-    require_once( FRAMEWORK_PATH . 'models/tags.inc');
-    $tag = new tags( $this->registry );
-    $destID =$_POST['tag_select'];
-    if ($tag->exist($sourceID) )
-    {
-      $tag->reasig($sourceID, $destID); 
-      header('Location: /socialNetwork/admin_tags/search');  
-    }else
-    {
-      $this->registry->getObject('template')->buildFromTemplates(
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'settings/'.$this->registry->getObject('constants')->getInvalidTpl(),
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	  	);
-    } 
-  }
 
   /*
   * Metodo que borra el tag

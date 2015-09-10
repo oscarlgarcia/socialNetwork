@@ -29,7 +29,7 @@ class Settings extends Object{
       $data = $this->registry->getObject('db')->getRows();
       $this->setID($data['ID']);
       $this->setKey($data['key']);
-      $this->setValue($data['value']);
+      $this->setValue(htmlentities($data['value']));
       return true;
     }
     return null;
@@ -59,45 +59,32 @@ class Settings extends Object{
 
 
   /**
-  * Metodo que verifica si un tag esta ya guardado
-  * @param String $tagName , Nombre del tag
+  * Metodo que verifica si un setting esta ya guardado
+  * @param String $settingKey , Nombre del setting
   * @return ID del tag o false sino existe
   */
-  public function isSaved($tagName)
+  public function isSaved($settingKey,$settingID = 0)
   {
-    if ($tagName == "") 
+    if ($settingKey == "") 
       return true;
- 	  $query = "SELECT ID as id, tag_name as tag FROM tags where tag_name='".$tagName."'" ;
-    var_dump($query);
-	  $this->paginatedResult->setQuery( $query );
+ 	  $query= "SELECT s.ID as id FROM settings s where s.key = '".$settingKey."'" ;
+    $this->paginatedResult->setQuery( $query );
 	  $this->paginatedResult->setMethod( 'cache' );
 	  $this->paginatedResult->generatePagination();
 	  if ($this->paginatedResult->getTotalRows() == 1)
     {  
-	    $tag = $this->registry->getObject('db')->resultsFromCache($this->paginatedResult->getCache());
-	    return $tag["id"];
+	    $setting = $this->registry->getObject('db')->resultsFromCache($this->paginatedResult->getCache());
+      if ($settingID == $setting["id"])
+	      return false;
+      else
+        return true;
 	  }
 	  return false;
   }
 
-   /**
-  * Metodo que verifica si un tag esta ya guardado
-  * @param Int $tagID , Id del tag
-  * @return True o false sino existe
-  */
-  public function exist($tagID)
-  {
-    $query = "SELECT ID FROM tags where ID = ".$tagID ;
-    $this->paginatedResult->setQuery( $query );
-    $this->paginatedResult->setMethod( 'cache' );
-    $this->paginatedResult->generatePagination();
-    if ($this->paginatedResult->getTotalRows() == 1)
-      return true;
-    return false;
-  }
-
+   
   /*
-  * Metodo que almacena un tag en la bbdd
+  * Metodo que almacena un setting en la bbdd
   * @return ID del tag.
   *
   */
@@ -136,14 +123,15 @@ class Settings extends Object{
   }
 
   /**
-  * actualiza el nombre del tag
+  * actualiza el nombre del setting
   * @param int $tagID 
   */
-  public function updateSettingKey($tagID, $newName)
+  public function update($settingID, $settingKey, $settingValue)
   {
     $changes = array();
-    $changes['tag_name'] = $newName;
-    $this->registry->getObject('db')->updateRecords('tags', $changes," id = ".$tagID );
+    $changes['key'] = $settingKey;
+    $changes['value'] = $settingValue;
+    $this->registry->getObject('db')->updateRecords('settings', $changes," id = ".$settingID );
     $uid = $this->registry->getObject('db')->lastInsertID();
     return $uid;  
   }
