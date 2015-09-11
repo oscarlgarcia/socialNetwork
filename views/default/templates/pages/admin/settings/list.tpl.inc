@@ -4,11 +4,16 @@
 		</div>
 		<div class="panel-body">
         <form class="navbar-form" role="search" method="post" action="admin_settings/search">
-           <div class="input-group">
-             <input type="text" class="form-control" placeholder="Busca un Setting" id="search" name="search" value="{settings.search}">
-             <div class="input-group-btn">
-               <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+           <div class="col-md-6">
+             <div class="input-group">
+               <input type="text" class="form-control" placeholder="Busca un Setting" id="search" name="search" value="{settings.search}">
+               <div class="input-group-btn">
+                 <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+               </div>
              </div>
+           </div>
+           <div class="col-md-6">
+             <a class="btn btn-info pull-right" href="admin_settings/add"><i class="fa fa-plus"></i> Agregar Setting</a>
            </div>
          </form>        
         <table class="table table-hover " id="dev-table">
@@ -50,10 +55,11 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Se va a eliminar este Tag</h4>
+            <h4 class="modal-title">Se va a eliminar este Setting</h4>
           </div>
           <div class="modal-body">
             <p class="text-warning">Est&aacute;s seguro? Esta operaci&oacute;n no podr&aacute; deshacerse</p>
+            <p class="text-warning">Realizar esta acci&oacute;n puede producir efectos en el Site</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>

@@ -95,19 +95,11 @@ class Settings extends Object{
 	  {
 	    $changes[ $field ] = $this->$field;
 	  }
-	  $isSaved = $this->isSaved($this->tag_name);
-	
-	  // Si el tag no esta guardado
-	  if(!$isSaved)
-    {
-	    //lo guardamos
-	    $this->registry->getObject('db')->insertRecords( 'tags', $changes );
-	    $uid = $this->registry->getObject('db')->lastInsertID();
-	    return $uid;  
-	  }
-	
-	  //sino lo devolvemos
-	  return $isSaved;
+
+    //lo guardamos
+	  $this->registry->getObject('db')->insertRecords( 'settings', $changes );
+	  $uid = $this->registry->getObject('db')->lastInsertID();
+	  return $uid;
   }	
 	
 
@@ -117,7 +109,7 @@ class Settings extends Object{
   */
   public function delete($id)
   {
-    $this->registry->getObject('db')->deleteRecords( 'tags',' id = '.$id,'1');
+    $this->registry->getObject('db')->deleteRecords( 'settings',' id = '.$id,'1');
     $uid = $this->registry->getObject('db')->lastInsertID();
     return $uid;  
   }

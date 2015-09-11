@@ -64,6 +64,14 @@ class Admin_settingscontroller{
 				  case 'view':
 				    $this->view(intval($this->parameter1));
 					break;
+                  
+                  case 'add':
+				    $this->add();
+					break;	
+
+				  case 'register':
+				  	$this->register();
+					break;
 
 				  case 'update':
 				    $this->update(intval($this->parameter1));
@@ -153,6 +161,53 @@ class Admin_settingscontroller{
     }
 
   /*
+  * Metodo que redirecciona a la plantilla de add
+  *
+  **/
+  private function add()
+  {
+    $this->registry->getObject('template')->buildFromTemplates(
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'settings/'.$this->registry->getObject('constants')->getAddTpl(),
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+	  	);
+    
+      $this->registry->getObject('template')->getPage()->addTag('error_msg','error-msg'); 
+      $this->registry->getObject('template')->getPage()->addTag('error_text',''); 
+      $this->registry->getObject('template')->getPage()->addTag('setting_key','');	
+	  $this->registry->getObject('template')->getPage()->addTag('setting_value','');
+
+  }
+
+ /*
+  * Metodo que guarda el seeting en BBDD 
+  * 
+  */
+  private function register(){
+ 
+     require_once FRAMEWORK_PATH . 'controllers/admin_settings/registrationcontroller.inc';
+     require_once( FRAMEWORK_PATH . 'models/settings.inc');
+     $setting = new Settings( $this->registry );
+     if (!$setting->isSaved($_POST['setting_key']))
+     {
+       $rc = new Registrationcontroller( $this->registry,$this->registry->getObject('authenticate')->getUser()->getUserID());
+	   header('Location: add'); 
+     }else
+     {
+       $this->registry->getObject('template')->buildFromTemplates(
+    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'settings/'.$this->registry->getObject('constants')->getAddTpl(),
+    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+    	);
+       $this->registry->getObject('template')->getPage()->addTag('error_msg',' ');	
+	   $this->registry->getObject('template')->getPage()->addTag('error_text','El Setting ya existe');
+	   $this->registry->getObject('template')->getPage()->addTag('setting_key',$_POST['setting_key']);	
+	   $this->registry->getObject('template')->getPage()->addTag('setting_value',$_POST['setting_value']);
+     }
+	  	
+  }
+ 
+  /*
   * Metodo que redirecciona a la plantilla de ver
   *
   **/
@@ -238,18 +293,15 @@ class Admin_settingscontroller{
   } 
 
   /*
-  * Metodo que borra el tag
+  * Metodo que borra el setting
   *
   **/
-  private function delete($tagID)
+  private function delete($settingID)
   {
-    require_once( FRAMEWORK_PATH . 'models/tags.inc');
-    $tag = new tags( $this->registry );
-    if ($tag->canErase($tagID) )
-    {
-       $tag->delete( $tagID );   
-    }      
-    header('Location: /socialNetwork/admin_tags/search');
+    require_once( FRAMEWORK_PATH . 'models/settings.inc');
+    $setting = new Settings( $this->registry );
+    $setting->delete( $settingID );   
+    header('Location: /socialNetwork/admin_settings/search');
   } 
 
 
