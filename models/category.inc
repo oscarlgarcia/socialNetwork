@@ -68,6 +68,31 @@ class Category extends Object
 	  return $this->paginatedResult;
   }
 
+   /**
+   * Genera lista de categorias que coinciden con el criterio pasado paginados 
+   * Este metodo se llama en Admin_category desde el administrador
+   * Devuelve un ResulSet con la siguiente informacion en caché:
+   * ID de la categoria
+   * Nombre de la categoria
+   * Imagen
+   * Descripcion
+   * @param int $offset, pagina de la busqueda
+   * @param String $criteria, cadena de busqueda 
+   * @return Object pagination object
+   */
+  public function search($offset = 1, $criteria = "")
+  {
+    $this->paginatedResult->setLimit($this->limit);
+    $this->paginatedResult->setOffset($offset - 1);
+    $query="SELECT c.ID as ID, c.name as categoryName, c.image_category as categoryImage, c.description as categoryDescripition from category c where c.name like '%".$criteria."%' or c.image_category  like '%".$criteria."%' or c.description like '%".$criteria."%'";
+    $this->paginatedResult->setQuery( $query );
+    $this->paginatedResult->setMethod( 'cache' );
+    $this->paginatedResult->generatePagination();
+    return $this->paginatedResult;
+  }
+
+
+
   /**
    * Genera lista de categorias con una seleccionada
    * @param int $offset , int $cateogryId

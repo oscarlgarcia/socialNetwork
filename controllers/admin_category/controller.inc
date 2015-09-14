@@ -99,37 +99,37 @@ class Admin_categorycontroller{
 	
 	
 	/*
-	* Metodo para buscar los Settings desde la pantalla de admin
+	* Metodo para buscar las categorias desde la pantalla de admin
 	*/
     private function search($offset)
     {   
       $offset = ($offset<=0)?1:$offset;
       
-      if (!isset($_SESSION['setting_criteria'])){
-      	$this->registry->getObject('util')->storeToSession('setting_criteria',"");
+      if (!isset($_SESSION['category_criteria'])){
+      	$this->registry->getObject('util')->storeToSession('category_criteria',"");
       }
 
       if (isset($_POST['search'])){
-      	$this->registry->getObject('util')->storeToSession('setting_criteria',$_POST['search']);
+      	$this->registry->getObject('util')->storeToSession('category_criteria',$_POST['search']);
       }
 
-      require_once( FRAMEWORK_PATH . 'models/settings.inc');
-	  $settings = new Settings( $this->registry );
-	  $pagination = $settings->search($offset,$_SESSION['setting_criteria']);
+      require_once( FRAMEWORK_PATH . 'models/category.inc');
+	  $category = new Category( $this->registry );
+	  $pagination = $category->search($offset,$_SESSION['category_criteria']);
 	 
       if( $pagination->getTotalRows() == 0 )
       {
       	// no hay 
         $this->registry->getObject('template')->buildFromTemplates(
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'settings/'.$this->registry->getObject('constants')->getNoResultsTpl(),
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'category/'.$this->registry->getObject('constants')->getNoResultsTpl(),
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
         );
         
         //Cargamos la busqueda
-	    $this->registry->getObject('template')->getPage()->addTag('settings.search',$_SESSION['setting_criteria']);	
+	    $this->registry->getObject('template')->getPage()->addTag('category.search',$_SESSION['category_criteria']);	
         // cargamos el total de settings
-		$this->registry->getObject('template')->getPage()->addTag( 'settings_count', $pagination->getTotalRows() );
+		$this->registry->getObject('template')->getPage()->addTag( 'category_count', $pagination->getTotalRows() );
       }else
       {
          if(!$pagination->checkOffset($offset))
@@ -137,24 +137,25 @@ class Admin_categorycontroller{
          	// invalid
             $this->registry->getObject('template')->buildFromTemplates(
               $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-              $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'settings/'.$this->registry->getObject('constants')->getInvalidTpl(),
+              $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'category/'.$this->registry->getObject('constants')->getInvalidTpl(),
               $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
             );
          }else
 	     { 
            $this->registry->getObject('template')->buildFromTemplates(
 	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'settings/'.$this->registry->getObject('constants')->getListTpl(),
+	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'category/'.$this->registry->getObject('constants')->getListTpl(),
 	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
 	       );
 		
 		  //cargamos la info de cada snippet
-		  $this->registry->getObject('template')->getPage()->addTag( 'settings', array( 'SQL', $pagination->getCache() ) );
-         
+		  $this->registry->getObject('template')->getPage()->addTag( 'category', array( 'SQL', $pagination->getCache() ) );
+
+         $this->registry->getObject('template')->getPage()->addTag( 'category_image_path', $this->registry->getSetting('language_path') );
 		  //Cargamos la busqueda
-	      $this->registry->getObject('template')->getPage()->addTag( 'settings.search',$_SESSION['setting_criteria']);	
+	      $this->registry->getObject('template')->getPage()->addTag( 'category.search',$_SESSION['category_criteria']);	
           // cargamos el total de settings
-		  $this->registry->getObject('template')->getPage()->addTag( 'settings_count', $pagination->getTotalRows() );		
+		  $this->registry->getObject('template')->getPage()->addTag( 'category_count', $pagination->getTotalRows() );		
 		  $pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
 	    }		
       }
@@ -168,15 +169,12 @@ class Admin_categorycontroller{
   {
     $this->registry->getObject('template')->buildFromTemplates(
 	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'settings/'.$this->registry->getObject('constants')->getAddTpl(),
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'category/'.$this->registry->getObject('constants')->getAddTpl(),
 	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
 	  	);
     
       $this->registry->getObject('template')->getPage()->addTag('error_msg','error-msg'); 
       $this->registry->getObject('template')->getPage()->addTag('error_text',''); 
-      $this->registry->getObject('template')->getPage()->addTag('setting_key','');	
-	  $this->registry->getObject('template')->getPage()->addTag('setting_value','');
-
   }
 
  /*
@@ -196,7 +194,7 @@ class Admin_categorycontroller{
      {
        $this->registry->getObject('template')->buildFromTemplates(
     	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'settings/'.$this->registry->getObject('constants')->getAddTpl(),
+    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'category/'.$this->registry->getObject('constants')->getAddTpl(),
     	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
     	);
        $this->registry->getObject('template')->getPage()->addTag('error_msg',' ');	
@@ -221,7 +219,7 @@ class Admin_categorycontroller{
 	  //pantalla de error
 	  $this->registry->getObject('template')->buildFromTemplates(
 	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'settings/'.$this->registry->getObject('constants')->getInvalidTpl(),
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'category/'.$this->registry->getObject('constants')->getInvalidTpl(),
 	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
 	  	);
 	}
@@ -229,7 +227,7 @@ class Admin_categorycontroller{
 	{ 
 	  $this->registry->getObject('template')->buildFromTemplates(
 	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'settings/'.$this->registry->getObject('constants')->getViewTpl(),
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'category/'.$this->registry->getObject('constants')->getViewTpl(),
 	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
 	  	);
 		
@@ -257,7 +255,7 @@ class Admin_categorycontroller{
       //pantalla de error
 	  $this->registry->getObject('template')->buildFromTemplates(
 	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'settings/'.$this->registry->getObject('constants')->getInvalidTpl(),
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'category/'.$this->registry->getObject('constants')->getInvalidTpl(),
 	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
 	  	);
 	}
@@ -278,7 +276,7 @@ class Admin_categorycontroller{
       {
         $this->registry->getObject('template')->buildFromTemplates(
 	  	  $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	  $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'settings/'.$this->registry->getObject('constants')->getViewTpl(),
+	  	  $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'category/'.$this->registry->getObject('constants')->getViewTpl(),
 	  	  $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
 	  	);
         
