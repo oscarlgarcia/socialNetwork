@@ -116,7 +116,7 @@
         <div id="myTabContent" class="tab-content">
           <div class="tab-pane upload_tab active in" id="upload">
             <div class="alert alert-danger" id="uploadErrorMsg"></div>
-            <form action="admin_cms/image_upload" class="form-inline" method="post" enctype="ultipart/form-data" id="uploadImageForm">
+            <form action="admin_cms/image_upload" class="form-inline" method="post" enctype="multipart/form-data" id="uploadImageForm">
               <div class="form-group upload_group">
                 <label  class="control-label" for="imageName">Nombre de la Imagen</label>
                 <input name="imageName" maxlength="400" id="imageName" type="text" class="form-control upload_width" />
@@ -156,5 +156,7 @@
 </div>
 <!-- End modal-->
 </div> <!-- end todo -->
-  <script type="text/javascript" src="lib/imageUpload/imageUpload.js"></script>
-  <script type="text/javascript" src="lib/page/add_page.js"></script>
+<script type="text/javascript" src="lib/imageUpload/imageUpload.js"></script>
+<script type="text/javascript" src="lib/imageUpload/input-update.js"></script>
+<script type="text/javascript" src="lib/imageUpload/image-search.js"></script>
+<script type="text/javascript" src="lib/page/add_page.js"></script>

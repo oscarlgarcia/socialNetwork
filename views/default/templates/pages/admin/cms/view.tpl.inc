@@ -174,4 +174,6 @@
   <!-- End modal imagenes-->
   </div> 
 <script type="text/javascript" src="lib/imageUpload/imageUpload.js"></script>
+<script type="text/javascript" src="lib/imageUpload/input-update.js"></script>
+<script type="text/javascript" src="lib/imageUpload/image-search.js"></script>
 <script type="text/javascript" src="lib/page/add_page.js"></script>
