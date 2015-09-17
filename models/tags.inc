@@ -176,7 +176,6 @@ class Tags extends Object{
     if ($tagName == "") 
       return true;
  	  $query = "SELECT ID as id, tag_name as tag FROM tags where tag_name='".$tagName."'" ;
-    var_dump($query);
 	  $this->paginatedResult->setQuery( $query );
 	  $this->paginatedResult->setMethod( 'cache' );
 	  $this->paginatedResult->generatePagination();

@@ -261,8 +261,8 @@ class Admin_cmscontroller{
   */
   private function register(){
  
-     require_once FRAMEWORK_PATH . 'controllers/admin_cms/registrationcontroller.inc';
-	 $rc = new Registrationcontroller( $this->registry,$this->registry->getObject('authenticate')->getUser()->getUserID());
+    require_once FRAMEWORK_PATH . 'controllers/admin_cms/registrationcontroller.inc';
+	  $rc = new Registrationcontroller( $this->registry,$this->registry->getObject('authenticate')->getUser()->getUserID());
 	  header('Location: add');  	
   }
 
@@ -302,7 +302,7 @@ class Admin_cmscontroller{
         foreach($tags as $clave=>$value)
 		    {
 		      $myTag = new Tags( $this->registry);
-		      $myTag->setName(strtolower($value));
+		      $myTag->setTagName(strtolower($value));
 		      $idTags[]=$myTag->save();
 		    }
 			  

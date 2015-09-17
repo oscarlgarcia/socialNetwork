@@ -7,7 +7,7 @@
     <!-- START errors -->
     <div class="alert alert-danger" id="{error_msg}">{error_text}</div>
     <!-- END errors -->
-    <form  method="post" action="admin_category/register" method="post" enctype="multipart/form-data">
+    <form  method="post" action="admin_category/register" name="uploadImageForm" id="uploadImageForm" enctype="multipart/form-data">
       <div class="form-group upload_group">
         <label  class="control-label" for="categoryName">Nombre de la Categoria</label>
         <input name="categoryName" maxlength="400" id="categoryName" type="text" class="form-control upload_width" />
@@ -24,8 +24,7 @@
       <div class="form-group upload_group">
         <button type="button" class="btn btn-primary" id="uploadbtn" data-loading-text="Subiendo..." data-toggle="button"><span class="fa fa-cloud-upload"></span> Cargar Imagen</button>
       </div>
-
-
     </form>
   </div>
+<script type="text/javascript" src="lib/imageUpload/category-upload.js"></script>
 <script type="text/javascript" src="lib/imageUpload/input-update.js"></script>

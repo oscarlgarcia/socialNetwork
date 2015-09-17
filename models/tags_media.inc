@@ -43,8 +43,8 @@ class Tags_Media extends Object{
 	  
     //lo guardamos
     $this->registry->getObject('db')->insertRecords( 'list_media_tags', $changes );
-	$uid = $this->registry->getObject('db')->lastInsertID();
-	return $uid;
+	  $uid = $this->registry->getObject('db')->lastInsertID();
+	  return $uid;
   }	
 	
   /*

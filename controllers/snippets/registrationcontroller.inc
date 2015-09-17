@@ -69,7 +69,7 @@ class Registrationcontroller{
 			foreach($tags as $clave=>$value)
 			{
 			  $myTag = new Tags( $this->registry);
-			  $myTag->setName(strtolower($value));
+			  $myTag->setTagName(strtolower($value));
 			  $idTags[]=$myTag->save();
 			}
 			

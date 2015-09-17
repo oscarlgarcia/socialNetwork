@@ -183,25 +183,7 @@ class Admin_categorycontroller{
   */
   private function register(){
  
-     require_once FRAMEWORK_PATH . 'controllers/admin_settings/registrationcontroller.inc';
-     require_once( FRAMEWORK_PATH . 'models/settings.inc');
-     $setting = new Settings( $this->registry );
-     if (!$setting->isSaved($_POST['setting_key']))
-     {
-       $rc = new Registrationcontroller( $this->registry,$this->registry->getObject('authenticate')->getUser()->getUserID());
-	   header('Location: add'); 
-     }else
-     {
-       $this->registry->getObject('template')->buildFromTemplates(
-    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'category/'.$this->registry->getObject('constants')->getAddTpl(),
-    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-    	);
-       $this->registry->getObject('template')->getPage()->addTag('error_msg',' ');	
-	   $this->registry->getObject('template')->getPage()->addTag('error_text','El Setting ya existe');
-	   $this->registry->getObject('template')->getPage()->addTag('setting_key',$_POST['setting_key']);	
-	   $this->registry->getObject('template')->getPage()->addTag('setting_value',$_POST['setting_value']);
-     }
+    require_once FRAMEWORK_PATH . 'controllers/admin_settings/registrationcontroller.inc';
 	  	
   }
  
