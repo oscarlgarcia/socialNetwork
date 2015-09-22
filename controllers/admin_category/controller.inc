@@ -69,6 +69,14 @@ class Admin_categorycontroller{
 				    $this->add();
 					break;	
 
+				  case 'image_browse':
+                    $this->image_browse();
+                    break;
+
+                  case 'image_upload':
+			        $this->upload();
+			        break;
+
 				  case 'register':
 				  	$this->register();
 					break;
@@ -161,6 +169,7 @@ class Admin_categorycontroller{
       }
     }
 
+
   /*
   * Metodo que redirecciona a la plantilla de add
   *
@@ -187,6 +196,27 @@ class Admin_categorycontroller{
 	  	
   }
  
+ /*
+  * Metodo para subir imagenes
+  * TODO poner en lib
+  * 
+  */
+  private function upload()
+  {
+    require_once( FRAMEWORK_PATH . 'lib/imageUpload/Upload.class.inc');
+    $upload = new Upload($this->registry);
+  }
+
+  /*
+  * Metodo para buscar imagenes
+  */
+   private function image_browse(){
+     require_once( FRAMEWORK_PATH . 'models/media.inc');   
+     $media = new Media($this->registry);
+     echo $media->search($_POST['image_search']);
+     exit();
+   }
+
   /*
   * Metodo que redirecciona a la plantilla de ver
   *
@@ -273,7 +303,7 @@ class Admin_categorycontroller{
   } 
 
   /*
-  * Metodo que borra el setting
+  * Metodo que borra la categoria
   *
   **/
   private function delete($settingID)

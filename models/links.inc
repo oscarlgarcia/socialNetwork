@@ -112,16 +112,16 @@ class Links extends Object{
   public function listByTag( $tag,$offset=1 )
   {
     $this->paginatedResult->setLimit($this->limit);
-	$this->paginatedResult->setOffset( $offset -1);
-	$query="SELECT tbl.*, GROUP_CONCAT(DISTINCT tag_name SEPARATOR '') 
+	  $this->paginatedResult->setOffset( $offset -1);
+	  $query="SELECT tbl.*, GROUP_CONCAT(DISTINCT tag_name SEPARATOR '') 
 		As all_tags FROM( SELECT l.ID, l.title, l.url ,l.description, DATE_FORMAT( l.added,'%b %d %Y') as fecha , 
 		l.rating as rating,l.totalFav as faved,l.totalComments as comments, u.user_login as author, u.profile_image , CONCAT('<a href=\"links/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
 		FROM links l inner join users u on l.ID_USER=u.ID inner join list_tags_links lt on l.ID=lt.ID_Links 
 		inner join tags t on lt.ID_Tags=t.ID where t.tag_name='".$tag."' and l.id_status = 4 ) tbl GROUP BY tbl.id ";
-	$this->paginatedResult->setQuery( $query );
-	$this->paginatedResult->setMethod( 'cache' );
-	$this->paginatedResult->generatePagination();
-	return $this->paginatedResult;
+	  $this->paginatedResult->setQuery( $query );
+	  $this->paginatedResult->setMethod( 'cache' );
+	  $this->paginatedResult->generatePagination();
+	  return $this->paginatedResult;
   }
 	
 	

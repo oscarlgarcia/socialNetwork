@@ -20,7 +20,7 @@ class Media extends Object{
    */
   public function search($criteria)
   {
-	$this->paginatedResult->setLimit($this->limit); //TODO poner no limit
+	$this->paginatedResult->setLimit(5); //TODO poner no limit
 	$this->paginatedResult->setOffset(0);
 	$query = "SELECT id, url, name from media where name like '%".$criteria."%' " ; // poner un indice
 	$this->paginatedResult->setQuery( $query );
@@ -58,15 +58,18 @@ class Media extends Object{
       
       if ($result->getTotalRows()!=0){
       	$table = "<table class='table table-hover'>
-      	          <thead><th>Nombre</th>
+      	          <thead>
+                  <th>ID</th>
+                  <th>Nombre</th>
                   <th>Imagen</th>
                   </thead>
                   <tbody>";
 	    while ($value = $this->registry->getObject('db')->resultsFromCache($result->getCache()))
 	    {
            $table.="<tr>
-                     <td class='col-md-6'>".$value["name"]."</td>
-                     <td>
+                     <td class='col-md-2'>".$value["id"]."</td>
+                     <td class='col-md-4'>".$value["name"]."</td>
+                     <td class='col-md-6'>
                        <img src='".$value["url"]."' class='img-thumbnail' width='80' height='80' />
                      </td>
                     ";

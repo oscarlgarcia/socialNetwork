@@ -41,7 +41,7 @@ class Upload {
       {
 
       	$media->setName(htmlspecialchars($this->registry->getObject('db')->sanitizeData($_POST['imageName']),ENT_IGNORE));
-        $media->setUrl($relative.$NewFileName);
+        $media->setUrl($this->relative.$this->newFileName);
         $id = $media->save();
         
         //Guardamos los Tags
@@ -55,7 +55,6 @@ class Upload {
 		  $idTags[]=$myTag->save();
 		}
 
-
 		//Guardamos la relacion entre tags y media
 		require_once FRAMEWORK_PATH . 'models/tags_media.inc';
 		//Por cada Tag guardamos su relacion con el media
@@ -66,7 +65,7 @@ class Upload {
 		  $myTag_media->setIDMedia($id);
 		  $idTags_snippet[]=$myTag_media->save();
 		}
-	    echo "<img id='imageUploaded' src='".$relative.$NewFileName."'  style='border:1px;' class='img-thumbnail' />";
+	    echo "<img id='imageUploaded' src='".$this->relative.$this->newFileName."'  style='border:1px;' class='img-thumbnail' />";
         exit();
         
       }else{
