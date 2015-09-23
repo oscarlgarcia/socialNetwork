@@ -12,17 +12,21 @@
     <form  method="post" action="admin_category/register" name="categoryForm" id="categoryForm">
       <div class="form-group upload_group">
         <label  class="control-label" for="categoryName">Nombre de la Categoria</label>
-        <input name="categoryName" maxlength="400" id="categoryName" type="text" class="form-control upload_width" />
+        <input name="categoryName" maxlength="400" id="categoryName" value="{categoryName}" type="text" class="form-control" />
       </div>
       <div class="form-group upload_group">
         <label  class="control-label" for="categoryDescription">Descripci&oacute;n de la categor&iacute;a</label>
-        <textarea name="categoryDescription" id="categoryDescription" type="text" class="form-control upload_width" /></textarea>
+        <textarea name="categoryDescription" id="categoryDescription"  class="form-control" />{categoryDescription}</textarea>
       </div>
-      <input id="categoryImage" placeholder="Selecciona una imagen" disabled="disabled" class="filefilter"/>
-      <div class="upload_div btn btn-primary">
+      <div class="form-group">
+        <label  class="control-label" for="categoryDescription">Imagen de la categor&iacute;a: </label>
+        <input id="categoryImage" name="categoryImage"  value="{categoryImage}" placeholder="Selecciona una imagen" type="number" class="filefilter"/>
+        <div class="upload_div btn btn-primary">
         <span class="fa fa-cloud-download"></span>
         <input name="categoryImageBtn" id="categoryImageBtn" class="upload" data-toggle="modal" data-target="#mediaModal" />
       </div>
+      </div>
+      
       <div class="pull-right">
         <input type="submit" value="Guardar Categor&iacute;a" name="btn" id="btn-addCat" data-loading-text="Guardando ..." class="btn btn-primary" tabindex="10"> 
       </div>
@@ -91,3 +95,5 @@
 <script type="text/javascript" src="lib/imageUpload/imageUpload.js"></script>
 <script type="text/javascript" src="lib/imageUpload/input-update.js"></script>
 <script type="text/javascript" src="lib/imageUpload/image-search.js"></script>
+<script type="text/javascript" src="lib/category/category-assign.js"></script>
+<script type="text/javascript" src="lib/category/category-add.js"></script>

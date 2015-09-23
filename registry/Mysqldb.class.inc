@@ -227,6 +227,7 @@ class Mysqldb {
     
     $insert = "INSERT INTO $table ({$fields}) VALUES({$values})";
     //echo $insert;
+    //var_dump($insert);
     $this->executeQuery( $insert );
     return true;
   }

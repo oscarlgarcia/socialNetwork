@@ -38,7 +38,7 @@
               </div>
             </td>
 		  	    <td class="col-md-2">{categoryName}</td>
-            <td class="col-md-3"><img src="{category_image_path}{categoryImage}" class="img-thumbnail" width="30%" height="30%" /></td>
+            <td class="col-md-3"><img src="{categoryImage}" class="img-thumbnail" width="30%" height="30%" /></td>
             <td class="col-md-5">{categoryDescripition}</td>
           </tr>
         <!-- END category -->

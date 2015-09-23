@@ -61,11 +61,7 @@ class Admin_categorycontroller{
   				    $this->search(intval($this->parameter1));
 				    break;
 
-				  case 'view':
-				    $this->view(intval($this->parameter1));
-					break;
-                  
-                  case 'add':
+				  case 'add':
 				    $this->add();
 					break;	
 
@@ -81,11 +77,7 @@ class Admin_categorycontroller{
 				  	$this->register();
 					break;
 
-				  case 'update':
-				    $this->update(intval($this->parameter1));
-					break;
-
-				  case 'delete':
+				 case 'delete':
 				    $this->delete(intval($this->parameter1));
 				    break;
 
@@ -184,6 +176,9 @@ class Admin_categorycontroller{
     
       $this->registry->getObject('template')->getPage()->addTag('error_msg','error-msg'); 
       $this->registry->getObject('template')->getPage()->addTag('error_text',''); 
+      $this->registry->getObject('template')->getPage()->addTag('categoryName','');	
+	  $this->registry->getObject('template')->getPage()->addTag('categoryDescription','');
+	  $this->registry->getObject('template')->getPage()->addTag('categoryImage','');
   }
 
  /*
@@ -192,7 +187,26 @@ class Admin_categorycontroller{
   */
   private function register(){
  
-    require_once FRAMEWORK_PATH . 'controllers/admin_settings/registrationcontroller.inc';
+    require_once FRAMEWORK_PATH . 'controllers/admin_category/registrationcontroller.inc';
+    require_once( FRAMEWORK_PATH . 'models/category.inc');
+     $category = new Category( $this->registry );
+     if ($category->canSave($_POST['categoryName']))
+     {
+       $rc = new Registrationcontroller( $this->registry,$this->registry->getObject('authenticate')->getUser()->getUserID());
+	   header('Location: search'); 
+     }else
+     {
+       $this->registry->getObject('template')->buildFromTemplates(
+    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'category/'.$this->registry->getObject('constants')->getAddTpl(),
+    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+    	);
+       $this->registry->getObject('template')->getPage()->addTag('error_msg',' ');	
+	   $this->registry->getObject('template')->getPage()->addTag('error_text','La categoria ya existe');
+	   $this->registry->getObject('template')->getPage()->addTag('categoryName',$_POST['categoryName']);	
+	   $this->registry->getObject('template')->getPage()->addTag('categoryDescription',$_POST['categoryDescription']);
+	   $this->registry->getObject('template')->getPage()->addTag('categoryImage',$_POST['categoryImage']);
+     }
 	  	
   }
  
@@ -218,100 +232,19 @@ class Admin_categorycontroller{
    }
 
   /*
-  * Metodo que redirecciona a la plantilla de ver
-  *
-  **/
-  private function view($tagID)
-  {
-  	require_once( FRAMEWORK_PATH . 'models/settings.inc');
-	$setting = new Settings( $this->registry );
-	// Si no encontramos el tag
-    if(!$setting->getSetting($tagID))
-	{
-	  //pantalla de error
-	  $this->registry->getObject('template')->buildFromTemplates(
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'category/'.$this->registry->getObject('constants')->getInvalidTpl(),
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	  	);
-	}
-	else
-	{ 
-	  $this->registry->getObject('template')->buildFromTemplates(
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'category/'.$this->registry->getObject('constants')->getViewTpl(),
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	  	);
-		
-	  // Cargamos los datos
-	  $this->registry->getObject('template')->getPage()->addTag('error_msg','error-msg'); 
-      $this->registry->getObject('template')->getPage()->addTag('error_text',''); 
-	  $this->registry->getObject('template')->getPage()->addTag('setting_key',$setting->getKey());
-	  $this->registry->getObject('template')->getPage()->addTag('setting_value',$setting->getValue());
-	  $this->registry->getObject('template')->getPage()->addTag('id',$setting->getID());
-	   
-   }
-  }
-
-
- /*
-  * Metodo que actualiza el setting
-  *
-  **/
-  private function update($settingID)
-  {
-    require_once( FRAMEWORK_PATH . 'models/settings.inc');
-    $setting = new Settings( $this->registry );
-    if(!$setting->getSetting($settingID) )
-    {
-      //pantalla de error
-	  $this->registry->getObject('template')->buildFromTemplates(
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'category/'.$this->registry->getObject('constants')->getInvalidTpl(),
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	  	);
-	}
-	else
-	{ 
-	  if (isset($_POST['setting_key'])){
-        $key_cleaned = $this->registry->getObject('db')->sanitizeData($_POST['setting_key']);
-        $value_cleaned = $this->registry->getObject('db')->sanitizeData($_POST['setting_value']);
-      }
-      else
-      	$key_cleaned = "";
-      if (!$setting->isSaved($key_cleaned,$settingID) ) // Si este setting no existe ya
-      {
-        $setting->update($settingID, $key_cleaned,$value_cleaned); 
-        header('Location: /socialNetwork/admin_settings/search');  
-      }
-      else
-      {
-        $this->registry->getObject('template')->buildFromTemplates(
-	  	  $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	  $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'category/'.$this->registry->getObject('constants')->getViewTpl(),
-	  	  $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	  	);
-        
-        $this->registry->getObject('template')->getPage()->addTag('error_msg',''); 
-        $this->registry->getObject('template')->getPage()->addTag('error_text','Este Setting ya Existe'); 
-	    $this->registry->getObject('template')->getPage()->addTag('setting_key',$setting->getKey());
-	    $this->registry->getObject('template')->getPage()->addTag('setting_value',$setting->getValue());
-	    $this->registry->getObject('template')->getPage()->addTag('id',$setting->getID());
-	   
-      }
-    }    
-  } 
-
-  /*
   * Metodo que borra la categoria
   *
   **/
-  private function delete($settingID)
+  private function delete($catID)
   {
-    require_once( FRAMEWORK_PATH . 'models/settings.inc');
-    $setting = new Settings( $this->registry );
-    $setting->delete( $settingID );   
-    header('Location: /socialNetwork/admin_settings/search');
+    require_once( FRAMEWORK_PATH . 'models/category.inc');
+    $category = new Category( $this->registry );
+
+    if ($category->canErase($catID) )
+    {
+       $category->delete( $catID );  
+    }
+    header('Location: /socialNetwork/admin_category/search');
   } 
 
 

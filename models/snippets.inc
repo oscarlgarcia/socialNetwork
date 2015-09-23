@@ -50,8 +50,8 @@ class Snippets extends Object{
 		//TODO poner el link a busqueda por  tags
 	  $query="SELECT tbl.*, GROUP_CONCAT(DISTINCT tag_name SEPARATOR '') 
 		As all_tags FROM( SELECT s.ID,s.title, s.description, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha , s.added as rawDate,                                          
-		s.rating,s.totalFav as faved,s.totalComments as comments, c.name as category,c.image_category as image_category, u.user_login as author, u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
-		FROM snippets s inner join category c on s.ID_category=c.ID inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
+		s.rating,s.totalFav as faved,s.totalComments as comments, c.name as category, md.url as image_category, u.user_login as author, u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
+		FROM snippets s inner join category c on s.ID_category=c.ID inner join media md on md.id = c.image_category inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
 		inner join tags t on l.ID_Tag=t.ID where s.id_status = 4 ) tbl GROUP BY tbl.id order by rawDate desc";
 	  $this->paginatedResult->setQuery( $query );
 	  $this->paginatedResult->setMethod( 'cache' );
@@ -87,8 +87,8 @@ class Snippets extends Object{
 	  $this->paginatedResult->setOffset( $offset-1 );
 	  $query="SELECT tbl.*, GROUP_CONCAT(DISTINCT tag_name SEPARATOR '') 
 		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha , 
-		s.rating as rating,s.totalFav as faved,s.totalComments as comments, c.name as category, c.image_category as image_category, u.user_login as author,u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
-		FROM snippets s inner join category c on s.ID_category=c.ID inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
+		s.rating as rating,s.totalFav as faved,s.totalComments as comments, c.name as category, md.url as image_category, u.user_login as author,u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
+		FROM snippets s inner join category c on s.ID_category=c.ID inner join media md on md.ID = c.image_category inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
 		inner join tags t on l.ID_Tag=t.ID where s.id_status = 4 ) tbl GROUP BY tbl.id order by rating desc ";
 	  $this->paginatedResult->setQuery( $query );
 	  $this->paginatedResult->setMethod( 'cache' );
@@ -124,8 +124,8 @@ class Snippets extends Object{
 	$this->paginatedResult->setOffset( $offset-1 );
 	$query="SELECT tbl.*, GROUP_CONCAT(DISTINCT tag_name SEPARATOR '') 
 		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha , 
-		s.rating as rating,s.totalFav as faved,s.totalComments as comments, c.name as category, c.image_category as image_category, u.user_login as author,u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
-		FROM snippets s inner join category c on s.ID_category=c.ID inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
+		s.rating as rating,s.totalFav as faved,s.totalComments as comments, c.name as category, md.url as image_category, u.user_login as author,u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
+		FROM snippets s inner join category c on s.ID_category=c.ID inner join media md on md.ID = c.image_category inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
 		inner join tags t on l.ID_Tag=t.ID where s.id_status = 4 ) tbl GROUP BY tbl.id order by faved desc ";
 	$this->paginatedResult->setQuery( $query );
 	$this->paginatedResult->setMethod( 'cache' );
@@ -163,8 +163,8 @@ class Snippets extends Object{
 	//TODO poner el link a busqueda por  tags
 	$query="SELECT tbl.*, GROUP_CONCAT(DISTINCT tag_name SEPARATOR '') 
 		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha , s.added as rawDate,
-		s.rating,s.totalFav as faved,s.totalComments as comments, c.name as category,c.image_category as image_category, u.user_login as author,u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
-		FROM snippets s inner join category c on s.ID_category=c.ID inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
+		s.rating,s.totalFav as faved,s.totalComments as comments, c.name as category, md.url as image_category, u.user_login as author,u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
+		FROM snippets s inner join category c on s.ID_category=c.ID inner join media md on md.ID = c.image_category inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
 		inner join tags t on l.ID_Tag=t.ID  where s.id_status = 4 ) tbl GROUP BY tbl.id order by comments DESC";
 	$this->paginatedResult->setQuery( $query );
 	$this->paginatedResult->setMethod( 'cache' );
@@ -201,8 +201,8 @@ class Snippets extends Object{
 	$this->paginatedResult->setOffset( $offset-1 );
 	$query="SELECT tbl.*, GROUP_CONCAT(DISTINCT tag_name SEPARATOR '') 
 		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha , 
-		s.rating as rating,s.totalFav as faved,s.totalComments as comments, c.name as category, c.image_category as image_category, u.user_login as author,u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
-		FROM snippets s inner join category c on s.ID_category=c.ID inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
+		s.rating as rating,s.totalFav as faved,s.totalComments as comments, c.name as category, md.url as image_category, u.user_login as author,u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
+		FROM snippets s inner join category c on s.ID_category=c.ID inner join media md on md.ID = c.image_category inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
 		inner join tags t on l.ID_Tag=t.ID where c.name='".$category."' and s.id_status = 4 ) tbl GROUP BY tbl.id ";
 	$this->paginatedResult->setQuery( $query );
 	$this->paginatedResult->setMethod( 'cache' );
@@ -239,8 +239,8 @@ class Snippets extends Object{
 	$this->paginatedResult->setOffset( $offset-1 );
 	$query="SELECT tbl.*, GROUP_CONCAT(DISTINCT tag_name SEPARATOR '') 
 		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha , 
-		s.rating as rating,s.totalFav as faved,s.totalComments as comments, c.name as category, c.image_category as image_category, u.user_login as author,u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
-		FROM snippets s inner join category c on s.ID_category=c.ID inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
+		s.rating as rating,s.totalFav as faved,s.totalComments as comments, c.name as category, md.url as image_category, u.user_login as author,u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
+		FROM snippets s inner join category c on s.ID_category=c.ID inner join media md on md.ID = c.image_category inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
 		inner join tags t on l.ID_Tag=t.ID where u.user_login='".$username."' and s.id_status = 4) tbl GROUP BY tbl.id ";
     $this->paginatedResult->setQuery( $query );
 	$this->paginatedResult->setMethod( 'cache' );
@@ -278,8 +278,8 @@ class Snippets extends Object{
 	  $this->paginatedResult->setOffset( $offset -1);
 	  $query="SELECT tbl.*, GROUP_CONCAT(DISTINCT tag_name SEPARATOR '') 
 		As all_tags FROM( SELECT s.ID,s.title, s.code ,s.description, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha , 
-		s.rating as rating,s.totalFav as faved,s.totalComments as comments, c.name as category, c.image_category as image_category, u.user_login as author,u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
-		FROM snippets s inner join category c on s.ID_category=c.ID inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
+		s.rating as rating,s.totalFav as faved,s.totalComments as comments, c.name as category, md.url as image_category, u.user_login as author,u.profile_image , CONCAT('<a href=\"snippets/tag/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tag_name 
+		FROM snippets s inner join category c on s.ID_category=c.ID inner join media md on md.ID = c.image_category inner join users u on s.ID_USER=u.ID inner join lista_tag_snippet l on s.ID=l.ID_Snippets 
 		inner join tags t on l.ID_Tag=t.ID where t.tag_name='".$tag."' and s.id_status = 4 ) tbl GROUP BY tbl.id ";
 	  $this->paginatedResult->setQuery( $query );
 	  $this->paginatedResult->setMethod( 'cache' );

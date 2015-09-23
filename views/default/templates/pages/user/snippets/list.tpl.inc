@@ -47,7 +47,7 @@
               </div>
               <div class="row snippet-content">
                 <div class="col-md-2">
-                  <a href="#"><img src="views/default/images/lang/{image_category}" class="img-thumbnail" id="img-snippet" alt="java"></a>
+                  <a href="#"><img src="{image_category}" class="img-thumbnail" id="img-snippet" alt="java"></a>
                 </div>
                 <div class="col-md-10">
                   <p>{description}</p>

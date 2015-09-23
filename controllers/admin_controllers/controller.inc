@@ -188,7 +188,7 @@ class Admin_controllerscontroller{
      if ($controller->canSave($_POST['controller_name']))
      {
        $rc = new Registrationcontroller( $this->registry,$this->registry->getObject('authenticate')->getUser()->getUserID());
-	   header('Location: add'); 
+	   header('Location: search'); 
      }else
      {
        $this->registry->getObject('template')->buildFromTemplates(

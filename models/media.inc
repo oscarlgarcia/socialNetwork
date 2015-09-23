@@ -57,7 +57,7 @@ class Media extends Object{
 	private function getAsTable($result){
       
       if ($result->getTotalRows()!=0){
-      	$table = "<table class='table table-hover'>
+      	$table = "<table class='table table-hover image_browser'>
       	          <thead>
                   <th>ID</th>
                   <th>Nombre</th>
@@ -70,7 +70,7 @@ class Media extends Object{
                      <td class='col-md-2'>".$value["id"]."</td>
                      <td class='col-md-4'>".$value["name"]."</td>
                      <td class='col-md-6'>
-                       <img src='".$value["url"]."' class='img-thumbnail' width='80' height='80' />
+                       <img data-category='".$value["id"]."'' src='".$value["url"]."' class='img-thumbnail' width='80' height='80' />
                      </td>
                     ";
       	}

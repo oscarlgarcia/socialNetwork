@@ -10,11 +10,14 @@ class Category extends Object
 	
   private $ID;
   private $name;
-  private $image_name;
+  private $image_category;
   private $description;
-  private $saveable_fields = array( 'name', 'image_name','description'); 
+  private $saveable_fields = array( 'name', 'image_category','description'); 
   private $limit = 500; //poner en config
   
+
+
+
   /*
   * Metodo que guarda la categoria en BBDD
   */
@@ -29,6 +32,61 @@ class Category extends Object
 	$uid = $this->registry->getObject('db')->lastInsertID();
 	return $uid;  
   }	
+
+
+    /**
+  * Metodo que valida si una categoria ya se ha guardado
+  * @param $categoryName, nombre del controlador
+  * @return true, si el nombre puede guardarse, false si no
+  */
+  public function canSave($categoryName){
+    $query = "SELECT ID FROM category where name = '".$categoryName."'";
+    $this->registry->getObject('db')->executeQuery( $query );
+    if( $this->registry->getObject('db')->numRows() > 0 )
+      return false;
+    else
+      return true;
+  }
+
+  /**
+  * borra una categoria a partir de su ID
+  * @param int $categoryID 
+  */
+  public function delete($categoryID)
+  {
+    $this->registry->getObject('db')->deleteRecords( 'category',' id = '.$categoryID,'1');
+    $uid = $this->registry->getObject('db')->lastInsertID();
+    return $uid;  
+  }
+
+
+
+  /**
+  * Metodo que comprueba si esa categoria tiene algun recurso asignado
+  * La idea es que no deje borrar la misma si hay algun recurso que lo contenga
+  * @param $catID
+  * @return True si no hay resurso asignado ( puede ser borrado),
+  * False si hay algun recurso ( no puede borrarse)
+  */
+  public function canErase($catID)
+  {
+    $query = "SELECT count(DISTINCT cs.ID) as snippets, count(DISTINCT cp.ID) as pages FROM category c left join snippets cs on cs.ID_Category = c.id left join page cp on cp.Category = c.ID WHERE c.ID =".$catID;
+    $this->paginatedResult->setQuery( $query );
+    $this->paginatedResult->setMethod( 'cache' );
+    $this->paginatedResult->generatePagination();
+    if ($this->paginatedResult->getTotalRows()==1)
+    {  
+      $tag = $this->registry->getObject('db')->resultsFromCache($this->paginatedResult->getCache());
+      $temp['snippets'] = intval($tag["snippets"]);
+      $temp['pages'] = intval($tag["pages"]);
+      if ( $temp['snippets'] == 0 && $temp['pages'] == 0 )
+        return true;
+      return false;
+    }
+    return false;
+  }
+
+
 
 
   /**
@@ -84,7 +142,7 @@ class Category extends Object
   {
     $this->paginatedResult->setLimit($this->limit);
     $this->paginatedResult->setOffset($offset - 1);
-    $query="SELECT c.ID as ID, c.name as categoryName, c.image_category as categoryImage, c.description as categoryDescripition from category c where c.name like '%".$criteria."%' or c.image_category  like '%".$criteria."%' or c.description like '%".$criteria."%'";
+    $query="SELECT c.ID as ID, c.name as categoryName, md.url as categoryImage, c.description as categoryDescripition from category c inner join media md on md.ID = c.image_category where c.name like '%".$criteria."%' or c.image_category  like '%".$criteria."%' or c.description like '%".$criteria."%'";
     $this->paginatedResult->setQuery( $query );
     $this->paginatedResult->setMethod( 'cache' );
     $this->paginatedResult->generatePagination();
@@ -198,11 +256,11 @@ class Category extends Object
   }
 
   public function setImageName($image){ 
-  	$this->image_name = $image; 
+  	$this->image_category = $image; 
   }
   
   public function getImageName(){
- 	return $this->image_name;
+ 	return $this->image_category;
   }
 
   public function setDescription($description){ 
