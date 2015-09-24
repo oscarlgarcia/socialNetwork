@@ -96,7 +96,7 @@ class Category extends Object
   */
   public function getCategory($categoryID)
   {
-    $query = "SELECT c.ID, c.name as name_category, c.image_category as image_category , c.description as description FROM category c where c.name = '".$categoryID . "'" ;
+    $query = "SELECT c.ID, c.name as name_category, md.url as image_category , c.description as description FROM category c inner join media md on md.ID = c.image_category where c.name = '".$categoryID . "'" ;
 	  $this->registry->getObject('db')->executeQuery( $query );
     if( $this->registry->getObject('db')->numRows() > 0 )
     {
@@ -140,7 +140,7 @@ class Category extends Object
    */
   public function search($offset = 1, $criteria = "")
   {
-    $this->paginatedResult->setLimit($this->limit);
+    $this->paginatedResult->setLimit(10);
     $this->paginatedResult->setOffset($offset - 1);
     $query="SELECT c.ID as ID, c.name as categoryName, md.url as categoryImage, c.description as categoryDescripition from category c inner join media md on md.ID = c.image_category where c.name like '%".$criteria."%' or c.image_category  like '%".$criteria."%' or c.description like '%".$criteria."%'";
     $this->paginatedResult->setQuery( $query );
@@ -176,7 +176,7 @@ class Category extends Object
   {
     $this->paginatedResult->setLimit($this->limit);
     $this->paginatedResult->setOffset(0);
-    $query = "select count(*) as category_total, c.name as category_name, c.image_category as category_image from snippets s inner join category c on s.ID_category=c.ID group by c.name" ;
+    $query = "select count(*) as category_total, c.name as category_name from snippets s inner join category c on s.ID_category=c.ID group by c.name" ;
     $this->paginatedResult->setQuery( $query );
     $this->paginatedResult->setMethod( 'cache' );
     $this->paginatedResult->generatePagination();
@@ -192,7 +192,7 @@ class Category extends Object
   {
     $this->paginatedResult->setLimit($this->limit);
     $this->paginatedResult->setOffset(0);
-    $query = "SELECT c.name as category_name , c.description as category_desc, c.image_category as category_image, count(c.name) as total_tuts FROM page  p inner join category c on p.category = c.id WHERE p.published= 1 and parent = 0 group by c.name" ;
+    $query = "SELECT c.name as category_name , c.description as category_desc, md.url as category_image, count(c.name) as total_tuts FROM page  p inner join category c on p.category = c.id inner join media md on md.ID = c.image_category WHERE p.published= 1 and parent = 0 group by c.name" ;
     $this->paginatedResult->setQuery( $query );
     $this->paginatedResult->setMethod( 'cache' );
     $this->paginatedResult->generatePagination();
@@ -231,7 +231,7 @@ class Category extends Object
   {
     $this->paginatedResult->setLimit($this->limit);
     $this->paginatedResult->setOffset(0);
-    $query = "SELECT c.name as category_name ,c.image_category as category_image , l.name as level , p.title as tut_title, p.description_se as tut_description, p.url as tut_url FROM page p inner join category c on p.category = c.id inner join page_level l on p.level = l.ID WHERE p.published= 1 and parent = 0 and l.name = '".$levelName."' and c.name = '".$categoryName."'";
+    $query = "SELECT c.name as category_name , md.url as category_image , l.name as level , p.title as tut_title, p.description_se as tut_description, p.url as tut_url FROM page p inner join category c on p.category = c.id  inner join media md on md.ID = c.image_category inner join page_level l on p.level = l.ID WHERE p.published= 1 and parent = 0 and l.name = '".$levelName."' and c.name = '".$categoryName."'";
     $this->paginatedResult->setQuery( $query );
     $this->paginatedResult->setMethod( 'cache' );
     $this->paginatedResult->generatePagination();

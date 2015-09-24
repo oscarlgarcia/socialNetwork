@@ -9,7 +9,7 @@
         <div class="col-xs-12">
             <div class="box">
               <div class="box-icon">
-              <img src="views/default/images/lang/{category_image}" width="100" height="100" class="img-circle" /> 
+              <img src="{category_image}" width="100" height="100" class="img-circle" /> 
               </div>
               <div class="info">
                     <h4 class="text-center">{category_name}</h4>

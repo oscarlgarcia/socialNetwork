@@ -37,7 +37,7 @@ class Tags_Page extends Object{
   {
     $this->paginatedResult->setLimit(6); //TODO poner no limit
     $this->paginatedResult->setOffset(0);
-    $query = "SELECT Concat(LEFT(s.title,50),'...') as related_title, s.title as full_title, s.url as related_url, count(A2.ID_Tag) AS matches, c.image_category as related_image  FROM list_tag_page A1 JOIN list_tag_page A2 ON A1.ID_Tag=A2.ID_Tag inner join Page s on A2.ID_Page =  s.ID inner join category c on s.category = c.ID WHERE A1.ID_Page = ".$id_page." GROUP BY A2.ID_Page ORDER BY matches DESC";
+    $query = "SELECT Concat(LEFT(s.title,50),'...') as related_title, s.title as full_title, s.url as related_url, count(A2.ID_Tag) AS matches, md.url as related_image  FROM list_tag_page A1 JOIN list_tag_page A2 ON A1.ID_Tag=A2.ID_Tag inner join Page s on A2.ID_Page =  s.ID inner join category c on s.category = c.ID inner join media md on md.ID = c.image_category WHERE A1.ID_Page = ".$id_page." GROUP BY A2.ID_Page ORDER BY matches DESC";
     $this->paginatedResult->setQuery( $query );
     $this->paginatedResult->setMethod( 'cache' );
     $this->paginatedResult->generatePagination();

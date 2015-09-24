@@ -13,7 +13,7 @@
     <!-- START langs -->
     <div class="col-md-2">
       <div class="pin">
-        <img src="views/default/images/lang/{category_image}" />
+        <img src="{category_image}" />
         <h4><a href="tuts/{category_name}">{category_name}</a></a></h4>
         <p>
         <br>Total Tutoriales: {total_tuts}

@@ -39,9 +39,9 @@ class Tags_Links extends Object{
   {
     $this->paginatedResult->setLimit(6); //TODO poner no limit
     $this->paginatedResult->setOffset(0);
-    $query = "SELECT Concat(LEFT(s.title,50),'...') as related_title, s.title as full_title, A2.ID_Snippets as related_ID, c.image_category as related_image_category , count(A2.ID_Tag) AS matches FROM lista_tag_snippet A1 
-                  JOIN lista_tag_snippet A2 ON A1.ID_Tag=A2.ID_Tag inner join snippets s on A2.ID_Snippets=s.ID inner join category c on s.ID_Category=c.ID
-                  WHERE A1.ID_Snippets = ".$id_snippet." GROUP BY A2.ID_Snippets ORDER BY matches DESC";
+    $query = "SELECT Concat(LEFT(s.title,50),'...') as related_title, s.title as full_title, A2.ID_Snippets as related_ID, md.url as related_image_category , count(A2.ID_Tag) AS matches FROM lista_tag_snippet A1 
+      JOIN lista_tag_snippet A2 ON A1.ID_Tag=A2.ID_Tag inner join snippets s on A2.ID_Snippets = s.ID inner join category c on s.ID_Category = c.ID inner join media md on md.ID = c.image_category
+      WHERE A1.ID_Snippets = ".$id_snippet." GROUP BY A2.ID_Snippets ORDER BY matches DESC";
     $this->paginatedResult->setQuery( $query );
     $this->paginatedResult->setMethod( 'cache' );
     $this->paginatedResult->generatePagination();

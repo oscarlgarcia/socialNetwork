@@ -39,7 +39,7 @@
       <div class="panel-body">
         <div class="text-center">
           <a href="tuts/{related_url}" alt="{full_title}">
-            <img class="img-rounded"  alt="{full_title} "width="80" height="80" src="views/default/images/lang/{related_image}">
+            <img class="img-rounded"  alt="{full_title} "width="80" height="80" src="{related_image}">
             <h5>{related_title}</h5>
         </a>
             </div>

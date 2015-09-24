@@ -87,7 +87,7 @@
 		  <div class="panel-body">
 		    <div class="text-center">
 		      <a href="snippets/view/{related_ID}">
-		        <img class="img-rounded"  alt="{full_title} "width="80" height="80" src="views/default/images/lang/{related_image_category}">
+		        <img class="img-rounded"  alt="{full_title} "width="80" height="80" aaa="sss" src="{related_image_category}">
                 <h5>{related_title}</h5>
 			  </a>
             </div>
