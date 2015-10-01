@@ -175,8 +175,9 @@ class Admin_eventcontroller{
     
       $this->registry->getObject('template')->getPage()->addTag('error_msg','error-msg'); 
       $this->registry->getObject('template')->getPage()->addTag('error_text',''); 
-      $this->registry->getObject('template')->getPage()->addTag('setting_key','');	
-	  $this->registry->getObject('template')->getPage()->addTag('setting_value','');
+      $this->registry->getObject('template')->getPage()->addTag('event_name','');	
+	  $this->registry->getObject('template')->getPage()->addTag('event_description','');
+	  $this->registry->getObject('template')->getPage()->addTag('event_image','');
 
   }
 
@@ -294,15 +295,15 @@ class Admin_eventcontroller{
   } 
 
   /*
-  * Metodo que borra el setting
+  * Metodo que borra el Evento
   *
   **/
-  private function delete($settingID)
+  private function delete($eventName)
   {
-    require_once( FRAMEWORK_PATH . 'models/settings.inc');
-    $setting = new Settings( $this->registry );
-    $setting->delete( $settingID );   
-    header('Location: /socialNetwork/admin_settings/search');
+    require_once( FRAMEWORK_PATH . 'models/event.inc');
+    $event = new Event( $this->registry );
+    $event->delete( $eventName );   
+    header('Location: /socialNetwork/admin_event/search');
   } 
 
 

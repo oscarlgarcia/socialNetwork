@@ -33,7 +33,7 @@
     </form>
   </div>
 
-  <!-- Modal HTML -->
+<!-- Modal HTML -->
 <div id="mediaModal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
