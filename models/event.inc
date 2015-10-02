@@ -118,11 +118,11 @@ class Event extends Object{
     $this->eventName = $eventName;
   }
 
-  public function setDescription($description){
+  public function setEventDescription($description){
     $this->description = $description;
   }
 
-  public function setImageEvent($imageEvent){
+  public function setEventImage($imageEvent){
     $this->imageEvent = $imageEvent;
   }  
 
@@ -130,11 +130,11 @@ class Event extends Object{
     return $this->eventName;
   }
 
-  public function getDescription(){
+  public function getEventDescription(){
     return $this->description;
   }
 
-  public function getImageEvent(){
+  public function getEventIamge(){
     return $this->imageEvent;
   }  
 

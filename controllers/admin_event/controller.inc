@@ -175,9 +175,9 @@ class Admin_eventcontroller{
     
       $this->registry->getObject('template')->getPage()->addTag('error_msg','error-msg'); 
       $this->registry->getObject('template')->getPage()->addTag('error_text',''); 
-      $this->registry->getObject('template')->getPage()->addTag('event_name','');	
-	  $this->registry->getObject('template')->getPage()->addTag('event_description','');
-	  $this->registry->getObject('template')->getPage()->addTag('event_image','');
+      $this->registry->getObject('template')->getPage()->addTag('eventName','');	
+	  $this->registry->getObject('template')->getPage()->addTag('eventDescription','');
+	  $this->registry->getObject('template')->getPage()->addTag('eventImage','');
 
   }
 
@@ -187,112 +187,10 @@ class Admin_eventcontroller{
   */
   private function register(){
  
-     require_once FRAMEWORK_PATH . 'controllers/admin_settings/registrationcontroller.inc';
-     require_once( FRAMEWORK_PATH . 'models/settings.inc');
-     $setting = new Settings( $this->registry );
-     if (!$setting->isSaved($_POST['setting_key']))
-     {
-       $rc = new Registrationcontroller( $this->registry,$this->registry->getObject('authenticate')->getUser()->getUserID());
-	   header('Location: add'); 
-     }else
-     {
-       $this->registry->getObject('template')->buildFromTemplates(
-    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'event/'.$this->registry->getObject('constants')->getAddTpl(),
-    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-    	);
-       $this->registry->getObject('template')->getPage()->addTag('error_msg',' ');	
-	   $this->registry->getObject('template')->getPage()->addTag('error_text','El Setting ya existe');
-	   $this->registry->getObject('template')->getPage()->addTag('setting_key',$_POST['setting_key']);	
-	   $this->registry->getObject('template')->getPage()->addTag('setting_value',$_POST['setting_value']);
-     }
-	  	
-  }
- 
-  /*
-  * Metodo que redirecciona a la plantilla de ver
-  *
-  **/
-  private function view($tagID)
-  {
-  	require_once( FRAMEWORK_PATH . 'models/settings.inc');
-	$setting = new Settings( $this->registry );
-	// Si no encontramos el tag
-    if(!$setting->getSetting($tagID))
-	{
-	  //pantalla de error
-	  $this->registry->getObject('template')->buildFromTemplates(
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'event/'.$this->registry->getObject('constants')->getInvalidTpl(),
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	  	);
-	}
-	else
-	{ 
-	  $this->registry->getObject('template')->buildFromTemplates(
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'event/'.$this->registry->getObject('constants')->getViewTpl(),
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	  	);
-		
-	  // Cargamos los datos
-	  $this->registry->getObject('template')->getPage()->addTag('error_msg','error-msg'); 
-      $this->registry->getObject('template')->getPage()->addTag('error_text',''); 
-	  $this->registry->getObject('template')->getPage()->addTag('setting_key',$setting->getKey());
-	  $this->registry->getObject('template')->getPage()->addTag('setting_value',$setting->getValue());
-	  $this->registry->getObject('template')->getPage()->addTag('id',$setting->getID());
-	   
-   }
+     require_once FRAMEWORK_PATH . 'controllers/admin_event/registrationcontroller.inc';
+      $rc = new Registrationcontroller( $this->registry,$this->registry->getObject('authenticate')->getUser()->getUserID());  	
   }
 
-
- /*
-  * Metodo que actualiza el setting
-  *
-  **/
-  private function update($settingID)
-  {
-    require_once( FRAMEWORK_PATH . 'models/settings.inc');
-    $setting = new Settings( $this->registry );
-    if(!$setting->getSetting($settingID) )
-    {
-      //pantalla de error
-	  $this->registry->getObject('template')->buildFromTemplates(
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'event/'.$this->registry->getObject('constants')->getInvalidTpl(),
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	  	);
-	}
-	else
-	{ 
-	  if (isset($_POST['setting_key'])){
-        $key_cleaned = $this->registry->getObject('db')->sanitizeData($_POST['setting_key']);
-        $value_cleaned = $this->registry->getObject('db')->sanitizeData($_POST['setting_value']);
-      }
-      else
-      	$key_cleaned = "";
-      if (!$setting->isSaved($key_cleaned,$settingID) ) // Si este setting no existe ya
-      {
-        $setting->update($settingID, $key_cleaned,$value_cleaned); 
-        header('Location: /socialNetwork/admin_settings/search');  
-      }
-      else
-      {
-        $this->registry->getObject('template')->buildFromTemplates(
-	  	  $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	  $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'event/'.$this->registry->getObject('constants')->getViewTpl(),
-	  	  $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	  	);
-        
-        $this->registry->getObject('template')->getPage()->addTag('error_msg',''); 
-        $this->registry->getObject('template')->getPage()->addTag('error_text','Este Setting ya Existe'); 
-	    $this->registry->getObject('template')->getPage()->addTag('setting_key',$setting->getKey());
-	    $this->registry->getObject('template')->getPage()->addTag('setting_value',$setting->getValue());
-	    $this->registry->getObject('template')->getPage()->addTag('id',$setting->getID());
-	   
-      }
-    }    
-  } 
 
   /*
   * Metodo que borra el Evento

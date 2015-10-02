@@ -32,7 +32,6 @@
                 <button type="button" class="btn btn-info">{name}</button>
                 <button type="button" data-toggle="dropdown" class="btn btn-info dropdown-toggle"> <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li class="updateButton"><a id="delete" data-deleteurl="admin_event/edit/{name}"><span class="fa fa-exchange"></span> Modificar</a></li>
                   <li class="deleteButton"><a id="delete" data-deleteurl="admin_event/delete/{name}" data-toggle="modal" data-target="#delete_modal"><span class="fa fa-trash"></span> Eliminar</a></li>
                 </ul>
               </div>

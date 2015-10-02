@@ -10,22 +10,22 @@
     <form  method="post" action="admin_event/register">
       <div class="form-group">
         <label for="eventName">Nombre del Evento</label>
-        <input type="text" class="form-control" id="eventName" name="eventName" value ="{event_name}">
+        <input type="text" class="form-control" id="eventName" name="eventName" value ="{eventName}">
       </div>
       <div class="form-group">
         <label for="eventDescription">Descripci&oacute;n del Evento</label>
-        <textarea class="form-control" id="eventDescription" name="eventDescription">{event_description}</textarea>
+        <textarea class="form-control" id="eventDescription" name="eventDescription">{eventDescription}</textarea>
       </div>
       <div class="form-group">
         <label  class="control-label" for="eventImage">Icono del Evento </label>
-        <input id="eventImage" name="eventImage"  value="{event_image}" placeholder="Selecciona una imagen"  class="filefilter"/>
+        <input id="eventImage" name="eventImage"  value="{eventImage}" placeholder="Selecciona una imagen"  class="filefilter"/>
         <div class="upload_div btn btn-primary">
         <span class="fa fa-flag"></span>
         <input name="eventImageBtn" id="eventImageBtn" class="upload" data-toggle="modal" data-target="#mediaModal" />
       </div>
       </div>
       <div class="form-group col-md-12">
-        <button class="btn btn-info pull-right" id="btn-addSetting" type="submit"><i class="fa fa-plus"></i> Agregar Evento</button>
+        <button class="btn btn-info pull-right" id="btn-addEvent" type="submit"><i class="fa fa-plus"></i> Agregar Evento</button>
       </div>
     </form>
   </div>
@@ -41,20 +41,21 @@
         <h4 class="modal-title"><span class="fa fa-flag"></span> Font Awesome!</h4>
       </div>
       <div class="modal-body">
-        <div id="browse">
-            <form action="admin_category/image_browse" class="form-inline" method="post" id="imageSearchForm">
+        <div class="row">
+        <div id="browse" class="col-md-6">
               <div class="input-group">
-                <input type="text" class="form-control" placeholder="Busca Imagenes" name="image_search" value="">
+                <input type="text" class="form-control" placeholder="Busca Imagenes" name="iconValue" id="iconValue" value="">
                 <div class="input-group-btn">
-                  <button class="btn btn-default" type="submit" id="image_button_search">
+                  <button class="btn btn-default" type="button" id="icon_button_search">
                     <i class="glyphicon glyphicon-search"></i>
                   </button>
                 </div>
               </div>
-            </form>
-            <div id="image_box"></div>             
           </div>
-       
+          <div id="image_box col-md-6" >
+            <i id="iconViewer" ></i>
+          </div>   
+        </div
       </div>
     </div>
   </div>

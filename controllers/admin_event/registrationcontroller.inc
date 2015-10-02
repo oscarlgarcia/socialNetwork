@@ -44,21 +44,35 @@ class Registrationcontroller{
 		$this->registry = $registry;
 		if( isset( $_POST ) && count( $_POST ) > 0 )
 		{
-		    $idController = "";
-			// Guardamos el Controlador
-			require_once FRAMEWORK_PATH . 'models/settings.inc';
-			$setting = new Settings( $this->registry);
-			$setting->setKey( htmlentities($this->registry->getObject('db')->sanitizeData( $_POST['setting_key'] ),ENT_COMPAT,'UTF-8') );
-			$setting->setValue( htmlspecialchars($this->registry->getObject('db')->sanitizeData($_POST['setting_value']),ENT_IGNORE));
-			$idSetting = $setting->save();		
-		    // TODO poner el log de administracion
-         	//require_once FRAMEWORK_PATH . 'models/admin_log.inc';
-         	//$log = new Admin_Log($this->registry,$user,$idSnippet,'user.snippet.add');
-			//$log->save();
+		    // Guardamos el Evento
+			require_once FRAMEWORK_PATH . 'models/event.inc';
+			$event = new Event( $this->registry);
+            if (!$event->isSaved($_POST['eventName']))
+            {
+              $event->setEventName( htmlentities($this->registry->getObject('db')->sanitizeData( $_POST['eventName'] ),ENT_COMPAT,'UTF-8') );
+			  $event->setEventDescription( htmlentities($this->registry->getObject('db')->sanitizeData( $_POST['eventDescription'] ),ENT_COMPAT,'UTF-8') );
+			  $event->setEventImage( htmlentities($this->registry->getObject('db')->sanitizeData( $_POST['eventImage'] ),ENT_COMPAT,'UTF-8') );
+			  $idEvent = $event->save();		
+		      // TODO poner el log de administracion
+         	  //require_once FRAMEWORK_PATH . 'models/admin_log.inc';
+         	  //$log = new Admin_Log($this->registry,$user,$idSnippet,'user.snippet.add');
+			  //$log->save();
+              header('Location: add'); 
+            }else
+            {
+              $this->registry->getObject('template')->buildFromTemplates(
+    	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+                $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'event/'.$this->registry->getObject('constants')->getAddTpl(),
+     	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+    	      );
+              $this->registry->getObject('template')->getPage()->addTag('error_msg',' ');	
+	          $this->registry->getObject('template')->getPage()->addTag('error_text','El Evento ya existe');
+	          $this->registry->getObject('template')->getPage()->addTag('eventName',$_POST['eventName']);	
+	          $this->registry->getObject('template')->getPage()->addTag('eventDescription',$_POST['eventDescription']);
+	          $this->registry->getObject('template')->getPage()->addTag('eventImage',$_POST['eventImage']);
+            }
 		}
 	}	
-	
-	
 }
 
 ?>
