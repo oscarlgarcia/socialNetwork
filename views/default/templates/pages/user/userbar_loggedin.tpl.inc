@@ -83,6 +83,17 @@
 					</li>
 				</ul>
 	      </li>
+	       <li class="dropdown">
+              <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="fa fa-bullhorn"></span></a>
+			  <ul class="dropdown-menu dropdownmenu-custom">
+			    <li><a href="#"><span class="fa fa-inbox pull-right"></span> Inbox</a></li>
+				<li class="divider"></li>
+				<li><a href="#"><span class="fa fa-calendar pull-right"></span> Eventos</a></li>
+				<li><a href="#"><span class="fa fa-bullhorn pull-right"></span> Notificaciones</a></li>
+				<li><a href="#"><span class="fa fa-flag pull-right"></span>Alertas</a></li>
+				<li><a href="#"><span class="fa fa-list pull-right"></span> To Do</a></li>
+			   </ul>
+	       </li>
 		    <li class="dropdown">
               <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="fa fa-comment"></span></a>
 			  <ul class="dropdown-menu dropdownmenu-custom">
