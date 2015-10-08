@@ -42,23 +42,53 @@ class Event extends Object{
   }
 
   /**
-  * Obtiene todas las notificaciones de un usuario
+  * Obtiene todas las notificaciones de un usuario y las envia
   * @param String $userID 
-  * @return Object notification
   */
-  public function getNotifications($userID)
+  public function sendNotification($userID)
   {
-    $this->paginatedResult->setLimit($this->limit);
-    $this->paginatedResult->setOffset(0);
-    $query = " select * from notification where  ID_User =".$userID." and showed = 0";
-    $this->paginatedResult->setQuery( $query );
-    $this->paginatedResult->setMethod( 'cache' );
-    $this->paginatedResult->generatePagination();
-    return $this->paginatedResult;
+    while(1){
+      $this->update($userID,0,1);  // separamos las q devolveremos
 
+      $this->paginatedResult->setLimit($this->limit);
+      $this->paginatedResult->setOffset(0);
+      $query = "select * from notification where  ID_User =".$userID." and showed = 1";
+      $this->paginatedResult->setQuery( $query );
+      $this->paginatedResult->setMethod( 'cache' );
+      $this->paginatedResult->generatePagination();
+      
+      $this->update($userID,1,2);  //marcamos las devueltas para no procesarlas de nuevo
+
+    }
+   
   }
 
 
+
+  /**
+  * actualiza el showed de la notificacion
+  * @param int $userID
+  * @param int $notifID 
+  */
+  public function update($userID,$previous, $next)
+  {
+    $changes = array();
+    $changes['showed'] = $next;
+    $this->registry->getObject('db')->updateRecords('notification', $changes," ID_User = ".$userID." and showed = ".$previous );
+    $uid = $this->registry->getObject('db')->lastInsertID();
+    return $uid;  
+  }
+
+
+
+  public function writeOutput($cursor){
+
+    header("Content-Type: text/event-stream");
+    header("Cache-Control: no-cache");
+    header("Access-Control-Allow-Origin: *");
+
+
+  }
 	
    /**
    * Genera lista de Eventos que coinciden con el criterio pasado paginados 
@@ -102,8 +132,6 @@ class Event extends Object{
   }	
 	
 
-
-  
   /*
   * Metodos setter
   */
