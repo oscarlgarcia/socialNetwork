@@ -26,3 +26,5 @@
 			</p>			
 </div>
 </div>
+<script type="text/javascript" src="lib/notification/eventsource.js"></script>
+<script type="text/javascript" src="lib/notification/notification.js"></script>

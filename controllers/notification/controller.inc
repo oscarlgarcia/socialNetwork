@@ -25,8 +25,11 @@ class Notificationcontroller{
 	{
 		require_once( FRAMEWORK_PATH . 'models/notification.inc'); 
 		$this->registry = $registry;
-		$this->userID = $this->registry->getObject('authenticate')->getUser()->getUserID();
-		$this->notify($this->userID);
+		if( $this->registry->getObject('authenticate')->isLoggedIn() )
+        {
+		  $this->userID = $this->registry->getObject('authenticate')->getUser()->getUserID();
+		  $this->notify($this->userID);
+		}
 	}
 	
 	/*
@@ -36,6 +39,7 @@ class Notificationcontroller{
 	private function notify($userID){
       $notification = new Notification($this->registry);
       $notification->sendNotification($userID);
+      exit();
 	}
    
 	

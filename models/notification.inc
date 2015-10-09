@@ -5,7 +5,7 @@ require_once ("Object.inc");
  * Notification model
  * - Agrega y gestiona las notificaciones
  */
-class Event extends Object{
+class Notification extends Object{
 	
   private $id;
   private $id_User;
@@ -47,7 +47,13 @@ class Event extends Object{
   */
   public function sendNotification($userID)
   {
-    while(1){
+    $i=0;
+    header("Content-type: text/event-stream");
+    header("Cache-Control: no-cache");
+    header("Access-Control-Allow-Origin: *"); 
+    echo ":" . str_repeat(" ", 2048) . "\n"; // 2 kB padding for IE
+    echo "retry: 6000\n";
+    while($i<6){  // logica para que salga a los 60 segundos
       $this->update($userID,0,1);  // separamos las q devolveremos
 
       $this->paginatedResult->setLimit($this->limit);
@@ -56,11 +62,25 @@ class Event extends Object{
       $this->paginatedResult->setQuery( $query );
       $this->paginatedResult->setMethod( 'cache' );
       $this->paginatedResult->generatePagination();
-      
-      $this->update($userID,1,2);  //marcamos las devueltas para no procesarlas de nuevo
-
+      $this->writeOutput($this->paginatedResult);
+      //$this->update($userID,1,2);  //marcamos las devueltas para no procesarlas de nuevo
+      //sleep(1);
+      $i++;
     }
    
+  }
+
+
+  public function writeOutput($cursor){
+   
+    while($value = $this->registry->getObject('db')->resultsFromCache($cursor->getCache())){
+      echo "id: " . $value["ID"] . "\n";
+      echo "data: " .$value["message"]. ";\n\n";
+      ob_flush();
+      flush();
+     
+    }
+    
   }
 
 
@@ -77,17 +97,6 @@ class Event extends Object{
     $this->registry->getObject('db')->updateRecords('notification', $changes," ID_User = ".$userID." and showed = ".$previous );
     $uid = $this->registry->getObject('db')->lastInsertID();
     return $uid;  
-  }
-
-
-
-  public function writeOutput($cursor){
-
-    header("Content-Type: text/event-stream");
-    header("Cache-Control: no-cache");
-    header("Access-Control-Allow-Origin: *");
-
-
   }
 	
    /**
@@ -135,8 +144,6 @@ class Event extends Object{
   /*
   * Metodos setter
   */
-  private $timestamp;
-
   public function getID(){
     return $this->id;
   }
