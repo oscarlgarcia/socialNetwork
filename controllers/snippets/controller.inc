@@ -719,7 +719,7 @@ class Snippetscontroller{
 	   
 	   // Determinamos quien es el dueno, si es diferente al que hace like sumamos
 	   if($me!=$snippet_owner){
-	    $this->registry->getObject('event')->notify('user.fav.get',$snippet_owner,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data));
+	    $this->registry->getObject('event')->notify('user.fav.get',$snippet_owner,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data),$me,'Se ha hecho favorito',2121212);
 	   }
 	   
 	   require_once FRAMEWORK_PATH . 'models/snippet_log.inc';

@@ -13,8 +13,9 @@ class Notification extends Object{
   private $notification;
   private $showed;
   private $timestamp;
+  private $message;
   private $limit = 1000;
-  private $saveable_fields = array( 'id_User','id_User_From','notification','showed','timestamp');
+  private $saveable_fields = array( 'id_User','id_User_From','notification','showed','timestamp','message');
 	
 	
   /**
@@ -36,6 +37,7 @@ class Notification extends Object{
       $this->setNotificationType($data['notification']);
       $this->setShow($data['showed']);
       $this->setTimestamp($data['timestamp']);
+      $this->setMessage($data['message']);
       return true;
     }
     return null;
@@ -52,8 +54,9 @@ class Notification extends Object{
     header("Cache-Control: no-cache");
     header("Access-Control-Allow-Origin: *"); 
     echo ":" . str_repeat(" ", 2048) . "\n"; // 2 kB padding for IE
-    echo "retry: 6000\n";
-    while($i<6){  // logica para que salga a los 60 segundos
+    echo "retry: 2000\n";
+    while($i<60){  // logica para que salga a los 60 segundos
+      session_start();
       $this->update($userID,0,1);  // separamos las q devolveremos
 
       $this->paginatedResult->setLimit($this->limit);
@@ -63,8 +66,9 @@ class Notification extends Object{
       $this->paginatedResult->setMethod( 'cache' );
       $this->paginatedResult->generatePagination();
       $this->writeOutput($this->paginatedResult);
-      //$this->update($userID,1,2);  //marcamos las devueltas para no procesarlas de nuevo
-      //sleep(1);
+      $this->update($userID,1,2);  //marcamos las devueltas para no procesarlas de nuevo
+      session_write_lock();
+      sleep(1);
       $i++;
     }
    
@@ -190,6 +194,14 @@ class Notification extends Object{
 
   public function setTimestamp($timestamp){
     $this->timestamp = $timestamp;
+  }
+
+  public function getMessage(){
+    return $this->message;
+  }
+
+  public function setMessage($message){
+    $this->message = $message;
   }
 
 }

@@ -22,10 +22,10 @@ class Gamification extends AbstractObserver{
 	*/
 	public function update(AbstractSubject $subject) 
 	{    
-      require_once( FRAMEWORK_PATH . 'models/user_event.inc');
-      $user_event = new User_Event( $this->registry );
+    require_once( FRAMEWORK_PATH . 'models/user_event.inc');
+    $user_event = new User_Event( $this->registry );
 	  $threshold=$user_event->getThresholdByUserEvent($subject->getUserTrigger(),$subject->getEvent());	 	
-      $this->checkAndSave($threshold,$subject);     
+    $this->checkAndSave($threshold,$subject);     
 	}
 
 
@@ -55,7 +55,7 @@ class Gamification extends AbstractObserver{
            $user = new UserModel( $this->registry );
            $user->addReputationPoints($subject->getUserTrigger(),$row['reputation_points']);          
            $user->addExperiencePoints($subject->getUserTrigger(),$row['experience_points']);
-		   $user->addLevel($subject->getUserTrigger(),$row['level_points']);
+		       $user->addLevel($subject->getUserTrigger(),$row['level_points']);
 		   
         }
      }

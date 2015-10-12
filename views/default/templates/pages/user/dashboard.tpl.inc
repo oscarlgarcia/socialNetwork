@@ -28,3 +28,4 @@
 </div>
 <script type="text/javascript" src="lib/notification/eventsource.js"></script>
 <script type="text/javascript" src="lib/notification/notification.js"></script>
+<script type="text/javascript" src="lib/notification/noty/packaged/jquery.noty.packaged.min.js"></script>

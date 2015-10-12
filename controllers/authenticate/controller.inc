@@ -108,7 +108,7 @@ class Authenticatecontroller{
 	    	$this->registry->getObject('constants')->getFooterTpl()
 	    	);
 	    // registramos en el log y gamificamos
-	    $this->registry->getObject('event')->notify('user.activate',$data['ID'],$_SERVER['REMOTE_ADDR']);
+	    $this->registry->getObject('event')->notify('user.activate',$data['ID'],'','',$_SERVER['REMOTE_ADDR'],$data['ID'],'Has iniciado sesion',121212,0);
 	  }
 	  else {
 	  	$this->registry->getObject('template')->buildFromTemplates(
@@ -308,7 +308,7 @@ class Authenticatecontroller{
 					 //redireccionamos por nuestra url sino tenemos "referer"
 					$referer = $this->registry->getSetting($this->registry->getObject('constants')->getConstant('site_url'));
 					// registramos en el log y gamificamos
-					$this->registry->getObject('event')->notify('user.login',$_SESSION['sn_auth_session_uid'],$_SERVER['REMOTE_ADDR']);
+					$this->registry->getObject('event')->notify('user.login',$_SESSION['sn_auth_session_uid'],$_SERVER['REMOTE_ADDR'],'',$_SESSION['sn_auth_session_uid'],'Has iniciado sesion',121212,0);
 					$this->registry->redirectUser( $referer, 'Logged in', 'Thanks, you are now logged in, you are now being redirected to the page you were previously on', false);
 				}
 				else
@@ -321,7 +321,7 @@ class Authenticatecontroller{
                     $ref="#";	 
 				  				  
   				  // registramos en el log y gamificamos
-	              $this->registry->getObject('event')->notify('user.login',$_SESSION['sn_auth_session_uid'],$_SERVER['REMOTE_ADDR']);
+	              $this->registry->getObject('event')->notify('user.login',$_SESSION['sn_auth_session_uid'],$_SERVER['REMOTE_ADDR'],'',$_SESSION['sn_auth_session_uid'],'Has iniciado sesion',121212,0);
 				  // si tenemos "referer" pues lo redireccionamos por ahi
 				  $this->registry->redirectUser( $ref, 'Logged in', 'Thanks, you are now logged in, you are now being redirected to the page you were previously on', false);
 				}
@@ -354,7 +354,7 @@ class Authenticatecontroller{
 	{
 		// registramos en el log y gamificamos
 		if(isset($_SESSION['sn_auth_session_uid'])){
-		  $this->registry->getObject('event')->notify('user.logout',$_SESSION['sn_auth_session_uid'],$_SERVER['REMOTE_ADDR']);	
+		  $this->registry->getObject('event')->notify('user.logout',$_SESSION['sn_auth_session_uid'],$_SERVER['REMOTE_ADDR'],'',$_SESSION['sn_auth_session_uid'],'Has cerrado sesion',111,0);	
 		}
 		$this->registry->getObject('authenticate')->logout();
 		$this->registry->getObject('template')->addTemplateBit(

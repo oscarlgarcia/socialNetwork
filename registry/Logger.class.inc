@@ -21,9 +21,9 @@ class Logger extends AbstractObserver{
   */
   public function update(AbstractSubject $subject) 
   {
-  	 require_once( FRAMEWORK_PATH . 'models/user_event.inc');
-	 $user_event = new User_Event( $this->registry );
-	 $user_event->save($subject->getUserTrigger(),$subject->getEvent(),$subject->getIPAddress(),$subject->getEventData());
+    require_once( FRAMEWORK_PATH . 'models/user_event.inc');
+	  $user_event = new User_Event( $this->registry );
+	  $user_event->save($subject->getUserTrigger(),$subject->getEvent(),$subject->getIPAddress(),$subject->getEventData());
   }
 	
 }

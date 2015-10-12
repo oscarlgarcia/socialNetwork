@@ -15,6 +15,10 @@ class EventListener extends AbstractSubject{
   private $userTrigger;
   private $ip;
   private $data;
+  private $userFrom;
+  private $message;
+  private $timestamp;
+  private $showed;
   
   /*
    * Constructor
@@ -24,8 +28,10 @@ class EventListener extends AbstractSubject{
     $this->registry = $registry;
     require_once( 'Logger.class.inc' );
     require_once( 'Gamification.class.inc' );
+    require_once( 'Notify.class.inc' );
     $this->attach(new Logger($registry));
     $this->attach(new Gamification($registry));
+    $this->attach(new Notify($registry));
   }
 
   /*
@@ -53,12 +59,17 @@ class EventListener extends AbstractSubject{
   /*
    * Propagamos el evento
    */
-  public function notify($event,$userID,$ip='',$data='') 
+  public function notify($event,$userID,$ip='',$data='',$from = '',$message = '', $timestamp = '', $showed = 0 ) 
   {
-  	$this->event=$event;
-  	$this->userTrigger=$userID;
-  	$this->ip=$ip;
-  	$this->data=$data;
+  	$this->event = $event;
+  	$this->userTrigger = $userID;
+  	$this->ip = $ip;
+  	$this->data = $data;
+    $this->userFrom = $from;
+    $this->message = $message;
+    $this->timestamp = $timestamp;
+    $this->showed = $showed;
+
   	foreach($this->observers as $obs) 
   	{
   		$obs->update($this);
@@ -83,6 +94,24 @@ class EventListener extends AbstractSubject{
     return 	$this->data;
   	
   }
+
+  public function getUserFrom(){
+    return  $this->userFrom;
+    
+  }
+  
+  public function getMessage(){
+    return  $this->message;  
+  }
+
+  public function getTimestamp(){
+    return  $this->timestamp;  
+  }
+
+  public function isShowed(){
+    return  $this->showed;  
+  }
+
 }
 
 ?>
