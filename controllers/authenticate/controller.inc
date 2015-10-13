@@ -107,8 +107,9 @@ class Authenticatecontroller{
 	    	'authenticate/register/'.$this->registry->getObject('constants')->getCompleteTpl(),
 	    	$this->registry->getObject('constants')->getFooterTpl()
 	    	);
+	    $date = new DateTime();
 	    // registramos en el log y gamificamos
-	    $this->registry->getObject('event')->notify('user.activate',$data['ID'],'','',$_SERVER['REMOTE_ADDR'],$data['ID'],'Has iniciado sesion',121212,0);
+	    $this->registry->getObject('event')->notify('user.activate',$data['ID'],'','',$_SERVER['REMOTE_ADDR'],$data['ID'],'Has iniciado sesion por primera vez!',$date->getTimestamp(),0);
 	  }
 	  else {
 	  	$this->registry->getObject('template')->buildFromTemplates(
@@ -151,7 +152,9 @@ class Authenticatecontroller{
                 $this->registry->getObject('db')->updateRecords( 'users', $changes, 'ID=' . $data['ID'] );        
 	            // registramos en el log y gamificamos
 	            $forgotData['email']=$e;
-	            $this->registry->getObject('event')->notify('user.password.forgot',$data['ID'],$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($forgotData));
+	            $date = new DateTime();
+	            // registramos en el log y gamificamos
+	            $this->registry->getObject('event')->notify('user.password.forgot',$data['ID'],$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($forgotData),$data['ID'],'Al parecer alguien ha solicitado cambiar tu contraseña',$date->getTimestamp(),0);
 	        }
 			// pantalla de envio de mail
 			$this->registry->getObject('template')->buildFromTemplates(
@@ -254,9 +257,10 @@ class Authenticatecontroller{
 					$changes['reset_expires'] = $now;
                $changes['user_pass'] = $this->registry->getObject('util')->cryptPassword($_POST['reset_password'],$data['password_salt']);
 					$this->registry->getObject('db')->updateRecords( 'users', $changes, 'ID=' . $data['ID'] );
+					$date = new DateTime();
                     // registramos en el log y gamificamos
-                    $this->registry->getObject('event')->notify('user.password.reset',$data['ID'],$_SERVER['REMOTE_ADDR']);
-					$this->registry->errorPage(' Cambio de Password', 'El password se ha cambiado.');
+                    $this->registry->getObject('event')->notify('user.password.reset',$data['ID'],$_SERVER['REMOTE_ADDR'],'',$data['ID'],'Se ha reseteado tu contraseña',$date->getTimestamp(),0);
+           			$this->registry->errorPage(' Cambio de Password', 'El password se ha cambiado.');
 				}
 				else
 				{
@@ -307,8 +311,10 @@ class Authenticatecontroller{
 				{
 					 //redireccionamos por nuestra url sino tenemos "referer"
 					$referer = $this->registry->getSetting($this->registry->getObject('constants')->getConstant('site_url'));
+					$date = new DateTime();
 					// registramos en el log y gamificamos
-					$this->registry->getObject('event')->notify('user.login',$_SESSION['sn_auth_session_uid'],$_SERVER['REMOTE_ADDR'],'',$_SESSION['sn_auth_session_uid'],'Has iniciado sesion',121212,0);
+					$this->registry->getObject('event')->notify('user.login',$_SESSION['sn_auth_session_uid'],$_SERVER['REMOTE_ADDR'],'',$_SESSION['sn_auth_session_uid'],'Has iniciado sesion',$date->getTimestamp(),3);
+                
 					$this->registry->redirectUser( $referer, 'Logged in', 'Thanks, you are now logged in, you are now being redirected to the page you were previously on', false);
 				}
 				else
@@ -318,10 +324,10 @@ class Authenticatecontroller{
                     $ref="#";
 				  
 				  if($_SERVER['HTTP_REFERER']==$this->registry->getSetting($this->registry->getObject('constants')->getConstant('site_url'))."authenticate/logout")
-                    $ref="#";	 
-				  				  
-  				  // registramos en el log y gamificamos
-	              $this->registry->getObject('event')->notify('user.login',$_SESSION['sn_auth_session_uid'],$_SERVER['REMOTE_ADDR'],'',$_SESSION['sn_auth_session_uid'],'Has iniciado sesion',121212,0);
+                    $ref="#";
+	              	$date = new DateTime();
+					// registramos en el log y gamificamos
+					$this->registry->getObject('event')->notify('user.login',$_SESSION['sn_auth_session_uid'],$_SERVER['REMOTE_ADDR'],'',$_SESSION['sn_auth_session_uid'],'Has iniciado sesion',$date->getTimestamp(),3);
 				  // si tenemos "referer" pues lo redireccionamos por ahi
 				  $this->registry->redirectUser( $ref, 'Logged in', 'Thanks, you are now logged in, you are now being redirected to the page you were previously on', false);
 				}
@@ -354,8 +360,11 @@ class Authenticatecontroller{
 	{
 		// registramos en el log y gamificamos
 		if(isset($_SESSION['sn_auth_session_uid'])){
-		  $this->registry->getObject('event')->notify('user.logout',$_SESSION['sn_auth_session_uid'],$_SERVER['REMOTE_ADDR'],'',$_SESSION['sn_auth_session_uid'],'Has cerrado sesion',111,0);	
+
+		  $date = new DateTime();
+		  $this->registry->getObject('event')->notify('user.logout',$_SESSION['sn_auth_session_uid'],$_SERVER['REMOTE_ADDR'],'',$_SESSION['sn_auth_session_uid'],'Has cerrado sesion',$date->getTimestamp(),3);	
 		}
+		
 		$this->registry->getObject('authenticate')->logout();
 		$this->registry->getObject('template')->addTemplateBit(
 			'userbar', 

@@ -53,12 +53,17 @@ class Notification extends Object{
     header("Content-type: text/event-stream");
     header("Cache-Control: no-cache");
     header("Access-Control-Allow-Origin: *"); 
+    header("Connection: keep-alive");
     echo ":" . str_repeat(" ", 2048) . "\n"; // 2 kB padding for IE
     echo "retry: 2000\n";
-    while($i<60){  // logica para que salga a los 60 segundos
-      session_start();
+    
+    while(true){  // logica para que salga a los 60 segundos
+      if(!isset($_SESSION)) 
+      { 
+        session_start(); 
+      }
+    
       $this->update($userID,0,1);  // separamos las q devolveremos
-
       $this->paginatedResult->setLimit($this->limit);
       $this->paginatedResult->setOffset(0);
       $query = "select * from notification where  ID_User =".$userID." and showed = 1";
@@ -66,9 +71,9 @@ class Notification extends Object{
       $this->paginatedResult->setMethod( 'cache' );
       $this->paginatedResult->generatePagination();
       $this->writeOutput($this->paginatedResult);
+      session_write_close();
+      sleep(2);
       $this->update($userID,1,2);  //marcamos las devueltas para no procesarlas de nuevo
-      session_write_lock();
-      sleep(1);
       $i++;
     }
    
@@ -82,7 +87,6 @@ class Notification extends Object{
       echo "data: " .$value["message"]. ";\n\n";
       ob_flush();
       flush();
-     
     }
     
   }
