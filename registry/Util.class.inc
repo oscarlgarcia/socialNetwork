@@ -105,10 +105,9 @@ class Util{
     $user = new UserModel($this->registry);
     $event = new Event($this->registry);
     $userData = $user->getFastUser($userID);
-    $eventData = $event->getEvent($eventName);
+    $event->getEvent($eventName);
 
-    return "<img src='".$this->registry->getSetting("avatar_path"). $userData['profile_image']."' class='img-rounded' height='48' width='48' /> <b><a href='".$userData['ID']."'>".$userData['login']."</a></b> ".$eventData['description']. "<i class='fa fa-code' />'";
-
+    return "<img src='".$this->registry->getSetting("avatar_path"). $userData['profile_image']."' class='img-rounded' height='32' width='32' /> <b><a href='".$userData['ID']."'>".$userData['login']."</a></b> ".$event->getEventDescription(). " en el <a href='snippets/view/".$snippetID."'>Snippet </a>";
 
   }
 

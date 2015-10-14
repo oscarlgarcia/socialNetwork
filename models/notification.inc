@@ -71,9 +71,10 @@ class Notification extends Object{
       $this->paginatedResult->setMethod( 'cache' );
       $this->paginatedResult->generatePagination();
       $this->writeOutput($this->paginatedResult);
-      session_write_close();
-      sleep(2);
       $this->update($userID,1,2);  //marcamos las devueltas para no procesarlas de nuevo
+      session_write_close();
+      sleep(1);
+      
       $i++;
     }
    
