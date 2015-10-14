@@ -22,15 +22,15 @@ class Notify extends AbstractObserver{
 	*/
 	public function update(AbstractSubject $subject) 
 	{    
-    require_once( FRAMEWORK_PATH . 'models/notification.inc');
-    $notification = new Notification( $this->registry );
+      require_once( FRAMEWORK_PATH . 'models/notification.inc');
+      $notification = new Notification( $this->registry );
 	  $notification->setIDUser($subject->getUserTrigger());
-    $notification->setUserIDFrom($subject->getUserFrom());
-    $notification->setNotificationType($subject->getEvent());
-    $notification->setShow($subject->isShowed());
-    $notification->setTimestamp($subject->getTimestamp());
-    $notification->setMessage($subject->getMessage());
-    $notification->save();
+      $notification->setUserIDFrom($subject->getUserFrom());
+      $notification->setNotificationType($subject->getEvent());
+      $notification->setShow($subject->isShowed());
+      $notification->setTimestamp($subject->getTimestamp());
+      $notification->setMessage($subject->getMessage());
+      $notification->save();
 	}
   
 }

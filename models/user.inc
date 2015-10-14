@@ -24,6 +24,7 @@ class UserModel extends Object{
   private $resetExpires;
   private $activationKey;
   private $userLevel;
+  private $profile_image;
   private $limit = 5;
    	
   /**
@@ -76,6 +77,33 @@ class UserModel extends Object{
     $this->paginatedResult->generatePagination();
     return $this->paginatedResult;
   }
+
+
+ /*
+  * Metodo que retorna info básica del usuario
+  * diseñada para las notificaciones
+  * El objeto retornado poseerá los siguientes atributos
+  * - ID
+  * - login
+  * - image_name
+  */
+  public function getFastUser($userID){
+    
+    $query="SELECT u.ID as ID, u.user_login as login, u.profile_image as image from users u where u.ID = ".$userID ;
+    $this->registry->getObject('db')->executeQuery( $query );
+    if( $this->registry->getObject('db')->numRows() > 0 )
+    {
+      $data = $this->registry->getObject('db')->getRows();
+      $tempo['ID'] = $data['ID'];
+      $tempo['login'] = $data['login'];
+      $tempo['profile_image'] = $data['image'];
+      return $tempo;
+    }
+    return null;
+
+  }
+
+
 
 
   /*

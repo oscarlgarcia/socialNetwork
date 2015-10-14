@@ -84,7 +84,7 @@ class Notification extends Object{
    
     while($value = $this->registry->getObject('db')->resultsFromCache($cursor->getCache())){
       echo "id: " . $value["ID"] . "\n";
-      echo "data: " .$value["message"]. ";\n\n";
+      echo "data: " .$value["message"]. "\n\n";
       ob_flush();
       flush();
     }

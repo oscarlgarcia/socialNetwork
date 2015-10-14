@@ -430,14 +430,14 @@ class Snippets extends Object{
   public function isFavorited($snippetID,$userID)
   {
     $query = "SELECT ID, ID_Snippets, ID_User FROM lista_favoritos_snippets where ID_Snippets=".$snippetID ." and ID_User=".$userID ;
-	$this->paginatedResult->setQuery( $query );
-	$this->paginatedResult->setMethod( 'cache' );
-	$this->paginatedResult->generatePagination();
-	if ($this->paginatedResult->getTotalRows()==1)
-	{  
-	  return true;
-	}
-	return false;
+	  $this->paginatedResult->setQuery( $query );
+	  $this->paginatedResult->setMethod( 'cache' );
+	  $this->paginatedResult->generatePagination();
+	  if ($this->paginatedResult->getTotalRows()==1)
+	  {  
+ 	    return true;
+	  }
+	  return false;
   }
 
   /**
@@ -454,12 +454,6 @@ class Snippets extends Object{
 	$uid = $this->registry->getObject('db')->lastInsertID();
 	return $uid;  
   }	
-	
-
-
-
-
-
 
   /*
   * Metodos setter y getter

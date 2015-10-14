@@ -708,8 +708,8 @@ class Snippetscontroller{
 	
        //TODO comporbar que sea por ajax sino redireccionar a home
 	   require_once( FRAMEWORK_PATH . 'models/snippets_favoritos.inc');
-	   $me=$this->registry->getObject('authenticate')->getUser()->getUserID();
-	   $snippetFav=new Snippets_Favoritos($this->registry,$me,$_SESSION['snippet']['ID']);	   
+	   $me = $this->registry->getObject('authenticate')->getUser()->getUserID();
+	   $snippetFav = new Snippets_Favoritos($this->registry,$me,$_SESSION['snippet']['ID']);	   
 	   $snippetFav->save();
 	   
 	   $snippet_owner=$_SESSION['snippet']['ID_User'];
@@ -721,7 +721,7 @@ class Snippetscontroller{
 		   
 	   // Determinamos quien es el dueno, si es diferente al que hace like sumamos
 	   if($me!=$snippet_owner){
-	    $this->registry->getObject('event')->notify('user.fav.get',$snippet_owner,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data),$me,"<img src='views/default/images/avatar/oscar.jpg' class='img-rounded' height='24' width='24'> Ha guardado tu favorito",$date->getTimestamp(),0);
+	    $this->registry->getObject('event')->notify('user.fav.get',$snippet_owner,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data),$me,$this->registry->getObject('db')->sanitizeData($this->registry->getObject('util')->getSnippetNotification('user.fav.get',$snippet_owner,$data['id_snippet'])),$date->getTimestamp(),0);
 	   }
 	   
 	   require_once FRAMEWORK_PATH . 'models/snippet_log.inc';

@@ -20,6 +20,7 @@ class Constants{
     'code_close'             => 'code_close',
     'code_open_replace'      => 'code_open_replace',
     'code_close_replace'     => 'code_close_replace',
+    'avatar_path'            => 'views/default/images/avatar/',
     'pages_logged_base'      => 'logged_pages_base', // Directorio de paginas de usuario
     'pages_admin_base'       => 'admin_pages_base' // directorio base de las paginas de admin
     );

@@ -22,14 +22,14 @@ class Event extends Object{
   */
   public function getEvent($eventName)
   {
-    $query = "SELECT * FROM event where eventName = ".$eventName;
+    $query = "SELECT * FROM event where eventName = '".$eventName."'";
     $this->registry->getObject('db')->executeQuery( $query );
     if( $this->registry->getObject('db')->numRows() > 0 )
     {
       $data = $this->registry->getObject('db')->getRows();
       $this->setEventName($data['eventName']);
-      $this->setDescription($data['description']);
-      $this->setImageEvent($data['imageEvent']);
+      $this->setEventDescription($data['description']);
+      $this->setEventImage($data['imageEvent']);
       return true;
     }
     return null;

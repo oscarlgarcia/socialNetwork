@@ -91,7 +91,29 @@ class Util{
 
         return json_encode($resultado);
   	}
-	
-	
+
+
+  /*
+  * Metodo para construir una frase de notificacion
+  */
+  public function getSnippetNotification($eventName, $userID, $snippetID){
+    
+    // cargamos el usuario ( imagen y login )
+    // cargamos el evento  ( descripicion e imagen)
+    require_once FRAMEWORK_PATH . 'models/event.inc';
+    require_once FRAMEWORK_PATH . 'models/user.inc'; 
+    $user = new UserModel($this->registry);
+    $event = new Event($this->registry);
+    $userData = $user->getFastUser($userID);
+    $eventData = $event->getEvent($eventName);
+
+    return "<img src='".$this->registry->getSetting("avatar_path"). $userData['profile_image']."' class='img-rounded' height='48' width='48' /> <b><a href='".$userData['ID']."'>".$userData['login']."</a></b> ".$eventData['description']. "<i class='fa fa-code' />'";
+
+
+  }
+
+
+
+
 }
 ?>
