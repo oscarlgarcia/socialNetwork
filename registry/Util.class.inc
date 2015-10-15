@@ -94,7 +94,7 @@ class Util{
 
 
   /*
-  * Metodo para construir una frase de notificacion
+  * Metodo para construir una frase de notificacion para snippets
   */
   public function getSnippetNotification($eventName, $userID, $snippetID){
     
@@ -107,11 +107,28 @@ class Util{
     $userData = $user->getFastUser($userID);
     $event->getEvent($eventName);
 
-    return "<img src='".$this->registry->getSetting("avatar_path"). $userData['profile_image']."' class='img-rounded' height='32' width='32' /> <b><a href='".$userData['ID']."'>".$userData['login']."</a></b> ".$event->getEventDescription(). " en el <a href='snippets/view/".$snippetID."'>Snippet </a>";
+    return " Tu <a href='snippets/view/".$snippetID."'>Snippet </a>".$event->getEventDescription()." de <img src='".$this->registry->getSetting("avatar_path"). $userData['profile_image']."' class='img-rounded' height='32' width='32' /> <b><a href='".$userData['ID']."'>".$userData['login']."</a></b> ";
 
   }
 
 
+  /*
+  * Metodo para construir una frase de notificacion para links
+  */
+  public function getLinkNotification($eventName, $userID, $linkID){
+    
+    // cargamos el usuario ( imagen y login )
+    // cargamos el evento  ( descripicion e imagen)
+    require_once FRAMEWORK_PATH . 'models/event.inc';
+    require_once FRAMEWORK_PATH . 'models/user.inc'; 
+    $user = new UserModel($this->registry);
+    $event = new Event($this->registry);
+    $userData = $user->getFastUser($userID);
+    $event->getEvent($eventName);
+
+    return " Tu <a href='links/view/".$linkID."'>Link </a>".$event->getEventDescription()." de <img src='".$this->registry->getSetting("avatar_path"). $userData['profile_image']."' class='img-rounded' height='32' width='32' /> <b><a href='".$userData['ID']."'>".$userData['login']."</a></b> ";
+
+  }
 
 
 }

@@ -44,6 +44,8 @@ class Gamification extends AbstractObserver{
      	  // Si el threshold se cumple
         if ($row['threshold']==$threshold)
         {
+            // se guarda una notificacion
+            
         	   // Y la recompensa tiene badge 
         	  if ($row['ID_Badge']!="1") 
         	  {

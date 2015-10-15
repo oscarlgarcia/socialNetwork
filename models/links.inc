@@ -15,6 +15,7 @@ class Links extends Object{
   private $rating;
   private $totalVotes;
   private $added;
+  private $ID_status;
   private $limit = 5; //TODO poner en configs
   private $saveable_fields = array( 'title', 'description', 'url', 'ID_User','rating','totalVotes','added');
 	

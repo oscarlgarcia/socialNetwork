@@ -721,7 +721,7 @@ class Snippetscontroller{
 		   
 	   // Determinamos quien es el dueno, si es diferente al que hace like sumamos
 	   if($me!=$snippet_owner){
-	    $this->registry->getObject('event')->notify('user.fav.get',$snippet_owner,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data),$me,$this->registry->getObject('db')->sanitizeData($this->registry->getObject('util')->getSnippetNotification('user.fav.get',$snippet_owner,$data['id_snippet'])),$date,0);
+	    $this->registry->getObject('event')->notify('user.fav.get',$snippet_owner,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data),$me,$this->registry->getObject('db')->sanitizeData($this->registry->getObject('util')->getSnippetNotification('user.fav.get',$me,$data['id_snippet'])),$date,0);
 	   }
 	   
 	   require_once FRAMEWORK_PATH . 'models/snippet_log.inc';
@@ -749,7 +749,7 @@ class Snippetscontroller{
 	   $data['id_snippet']=$_SESSION['snippet']['ID'];
        $date = date("Y-m-d H:i:s");
 	   // registramos en el log y gamificamos
-	   $this->registry->getObject('event')->notify('user.fav.del',$me,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data),$me,$me.'Ha borrado tu favorito',$date,0);
+	   $this->registry->getObject('event')->notify('user.fav.del',$me,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data),$me,$me.'Ha borrado tu favorito',$date,3);
 
       require_once FRAMEWORK_PATH . 'models/snippet_log.inc';
       $log = new Snippet_Log($this->registry,$me,$_SESSION['snippet']['ID'],'user.fav.del');
@@ -786,7 +786,7 @@ class Snippetscontroller{
 	   $snippet_owner=$_SESSION['snippet']['ID_User'];
 	   // Determinamos quien es el dueno, si es diferente al que hace like sumamos
 	   if($me!=$snippet_owner){
-	    $this->registry->getObject('event')->notify('user.comment.get',$snippet_owner,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data),$me,$this->registry->getObject('db')->sanitizeData($this->registry->getObject('util')->getSnippetNotification('user.comment.get',$snippet_owner,$data['id_snippet'])),$date,0);
+	    $this->registry->getObject('event')->notify('user.comment.get',$snippet_owner,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data),$me,$this->registry->getObject('db')->sanitizeData($this->registry->getObject('util')->getSnippetNotification('user.comment.get',$me,$data['id_snippet'])),$date,0);
 	   }
 	   
       require_once FRAMEWORK_PATH . 'models/snippet_log.inc';
@@ -844,7 +844,7 @@ class Snippetscontroller{
        
        // Determinamos quien es el dueno, si es diferente al que hace like sumamos
 	   if($me!=$snippet_owner){
-	    $this->registry->getObject('event')->notify('user.rating.get',$snippet_owner,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data),$me,$me.'Han evaluado un snippet',$date,0);
+	    $this->registry->getObject('event')->notify('user.rating.get',$snippet_owner,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data),$me,$this->registry->getObject('db')->sanitizeData($this->registry->getObject('util')->getSnippetNotification('user.rating.get',$me,$data['id_snippet'])),$date,0);
 	   }
        require_once FRAMEWORK_PATH . 'models/snippet_log.inc';
        $log = new Snippet_Log($this->registry,$me,$_SESSION['snippet']['ID'],'user.rating.add');

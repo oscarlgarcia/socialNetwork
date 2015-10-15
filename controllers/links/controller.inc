@@ -415,11 +415,14 @@ class Linkscontroller{
 	   $link_owner=$_SESSION['link']['ID_User'];
 	   // registramos en el log y gamificamos
 	   $data['id_links'] = $_SESSION['link']['ID'];
-	   $this->registry->getObject('event')->notify('user.fav.add',$me,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data));
+	   $date = date("Y-m-d H:i:s");
+
+	   $this->registry->getObject('event')->notify('user.fav.add',$me,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data),$me,$me.'Ha guardado tu favorito',$date,3);
 	   
 	   // Determinamos quien es el dueno, si es diferente al que hace like sumamos
 	   if($me!=$link_owner){
-	    $this->registry->getObject('event')->notify('user.fav.get',$link_owner,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data));
+
+	   	$this->registry->getObject('event')->notify('user.fav.get',$link_owner,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data),$me,$this->registry->getObject('db')->sanitizeData($this->registry->getObject('util')->getLinkNotification('user.fav.get',$me,$data['id_links'])),$date,0);
 	   }
 
 	   require_once FRAMEWORK_PATH . 'models/link_log.inc';
@@ -442,9 +445,12 @@ class Linkscontroller{
 	   $me=$this->registry->getObject('authenticate')->getUser()->getUserID();
 	   $fav=new Favorites_Links($this->registry,$me,$_SESSION['link']['ID']); 
 	   $fav->delete();	
-	   //registramos en el log y gamificamos
+
+	   $date = date("Y-m-d H:i:s");
+	   // registramos en el log y gamificamos
 	   $data['id_Links']=$_SESSION['link']['ID'];
-	   $this->registry->getObject('event')->notify('user.fav.del',$me,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data));
+
+	   $this->registry->getObject('event')->notify('user.fav.del',$me,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data),$me,$me.'Ha borrado tu favorito',$date,3);
 
 	   require_once FRAMEWORK_PATH . 'models/link_log.inc';
        $log = new Link_Log($this->registry,$me,$_SESSION['link']['ID'],'user.fav.del');
@@ -471,14 +477,17 @@ class Linkscontroller{
 	   $comment->setAdded(date("Y-m-d H:i:s")); // fecha de ahora	
 	   $comment->save();
 	   
-	   
+	   $date = date("Y-m-d H:i:s");
 	   //registramos en el log y gamificamos
-	   $data['id_snippet']=$_SESSION['link']['ID'];
-	   $this->registry->getObject('event')->notify('user.comment.add',$me,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data)); 
-	   $snippet_owner=$_SESSION['link']['ID_User'];
+	   $data['id_links'] = $_SESSION['link']['ID'];
+	   $link_owner=$_SESSION['link']['ID_User'];
+
+	   $this->registry->getObject('event')->notify('user.comment.add',$me,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data),$me,$me.'Ha Agregado un comentario',$date,3); 
+
 	   // Determinamos quien es el dueno, si es diferente al que hace like sumamos
 	   if($me!=$snippet_owner){
-	    $this->registry->getObject('event')->notify('user.comment.get',$snippet_owner,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data));
+	    $this->registry->getObject('event')->notify('user.comment.get',$link_owner,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data),$me,$this->registry->getObject('db')->sanitizeData($this->registry->getObject('util')->getLinkNotification('user.comment.get',$me, $data['id_links'])),$date,0);
+
 	   }
 	   
 	   require_once FRAMEWORK_PATH . 'models/link_log.inc';
@@ -527,8 +536,15 @@ class Linkscontroller{
 	   
 	   //registramos en el log y gamificamos
 	   $data['id_links']=$_SESSION['link']['ID'];
+	   $link_owner = $_SESSION['link']['ID_User'];
 	   $data['rating']=$_POST['rating'];
-	   $this->registry->getObject('event')->notify('user.rating.add',$me,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data));
+	   $date = date("Y-m-d H:i:s");
+	   $this->registry->getObject('event')->notify('user.rating.add',$me,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data),$me,$me.' Ha evaluado un Link',$date,3);
+
+       // Determinamos quien es el dueno, si es diferente al que hace like sumamos
+	   if($me!=$snippet_owner){
+	    $this->registry->getObject('event')->notify('user.rating.get',$link_owner,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data),$me,$this->registry->getObject('db')->sanitizeData($this->registry->getObject('util')->getSnippetNotification('user.rating.get',$me,$data['id_snippet'])),$date,0);
+	   }
 
 	   require_once FRAMEWORK_PATH . 'models/link_log.inc';
        $log = new Link_Log($this->registry,$me,$_SESSION['link']['ID'],'user.rating.add');
