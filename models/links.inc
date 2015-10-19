@@ -343,5 +343,13 @@ class Links extends Object{
    public function setAdded($added){
      $this->added=$added;
    } 
+
+   public function setOperationalStatus($value='')
+   {
+     $this->ID_Status = $value;
+   }
+
+
+
 }
 ?>

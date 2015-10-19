@@ -57,6 +57,7 @@ class Registrationcontroller{
 			$links->setRating(0);
 			$links->setTotalVotes(0);			
 			$links->setAdded(date("Y-m-d H:i:s")); // fecha de ahora	
+			$links->setOperationalStatus(3); // Pendiente de aprobar
 			$idLinks=$links->save();		
 		
 			//Guardamos los Tags
@@ -84,7 +85,7 @@ class Registrationcontroller{
 			
 			// registramos en el log y gamificamos
 			$data['link_name']=$links->getTitle();
-	        $this->registry->getObject('event')->notify('user.link.add',$user,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data));
+	        $this->registry->getObject('event')->notify('user.link.add',$user,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data),$user,"Se ha añadido un link",date("Y-m-d H:i:s"),3);
 			
          	require_once FRAMEWORK_PATH . 'models/link_log.inc';
          	$log = new Link_Log($this->registry,$user,$idLinks,'user.link.add');
