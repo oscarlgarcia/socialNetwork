@@ -475,6 +475,7 @@ class Linkscontroller{
 	   $comment->setIDUser($me);
 	   $comment->setIDLink($_SESSION['link']['ID']);
 	   $comment->setAdded(date("Y-m-d H:i:s")); // fecha de ahora	
+	   $comment->setApproved(3); // poner en constante
 	   $comment->save();
 	   
 	   $date = date("Y-m-d H:i:s");
@@ -485,7 +486,7 @@ class Linkscontroller{
 	   $this->registry->getObject('event')->notify('user.comment.add',$me,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data),$me,$me.'Ha Agregado un comentario',$date,3); 
 
 	   // Determinamos quien es el dueno, si es diferente al que hace like sumamos
-	   if($me!=$snippet_owner){
+	   if($me!=$link_owner){
 	    $this->registry->getObject('event')->notify('user.comment.get',$link_owner,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data),$me,$this->registry->getObject('db')->sanitizeData($this->registry->getObject('util')->getLinkNotification('user.comment.get',$me, $data['id_links'])),$date,0);
 
 	   }

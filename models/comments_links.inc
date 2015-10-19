@@ -11,8 +11,9 @@ class Comments_Links extends Object{
 	private $id_user;
 	private $id_link;
 	private $added;
+	private $approved;
 	private $limit = 10; 	
-	private $saveable_fields = array( 'comment','id_user','id_link','added');
+	private $saveable_fields = array( 'comment','id_user','id_link','added','approved');
 		
 	/**
 	 * Genera lista de comentarios de links paginados
@@ -184,6 +185,10 @@ class Comments_Links extends Object{
 	
 	public function setAdded($added){
 	  $this->added= $added;
+	}
+
+	public function setApproved($approved){
+	  $this->approved= $approved;
 	}
 	
 	
