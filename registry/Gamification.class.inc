@@ -42,26 +42,33 @@ class Gamification extends AbstractObserver{
       foreach($rows as $row)
      {
      	  // Si el threshold se cumple
-        if ($row['threshold']==$threshold)
+        if ($row['threshold'] == $threshold)
         {
-            // se guarda una notificacion
-            
-        	   // Y la recompensa tiene badge 
-        	  if ($row['ID_Badge']!="1") 
-        	  {
-        	  	require_once( FRAMEWORK_PATH . 'models/badges_achieved.inc');
-                $badge = new Badges_Achieved( $this->registry );
-                $badge->save($row['ID_Badge'],$subject->getUserTrigger());
-        	  }
-           require_once( FRAMEWORK_PATH . 'models/user.inc');
-           $user = new UserModel( $this->registry );
-           $user->addReputationPoints($subject->getUserTrigger(),$row['reputation_points']);          
-           $user->addExperiencePoints($subject->getUserTrigger(),$row['experience_points']);
-		       $user->addLevel($subject->getUserTrigger(),$row['level_points']);
-		   
-        }
+          // se guarda una notificacion
+          require_once( FRAMEWORK_PATH . 'models/notification.inc');
+          $notification = new Notification( $this->registry );
+          $notification->setIDUser($subject->getUserTrigger());
+          $notification->setUserIDFrom($subject->getUserFrom());
+          $notification->setNotificationType($subject->getEvent());
+          $notification->setShow($subject->isShowed());
+          $notification->setTimestamp($subject->getTimestamp());
+          $notification->setMessage($this->registry->getObject('db')->sanitizeData($this->registry->getObject('util')->getBadgeNotification($row['threshold'],$row['ID_Badge'])));
+          $notification->save();
+        	
+          require_once( FRAMEWORK_PATH . 'models/badges_achieved.inc');
+          // se guardan el badge obtenido
+          $badge = new Badges_Achieved( $this->registry );
+          $badge->save($row['ID_Badge'],$subject->getUserTrigger());
+          // se añaden los puntos 
+        	require_once( FRAMEWORK_PATH . 'models/user.inc');
+          $user = new UserModel( $this->registry );
+          $user->addReputationPoints($subject->getUserTrigger(),$row['reputation_points']);          
+          $user->addExperiencePoints($subject->getUserTrigger(),$row['experience_points']);
+		      $user->addLevel($subject->getUserTrigger(),$row['level_points']);
+		    }
      }
   }
+
   
 }
 

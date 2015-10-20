@@ -131,5 +131,19 @@ class Util{
   }
 
 
+  
+  /*
+  * Metodo para construir una frase de notificacion para links
+  */
+  public function getBadgeNotification($threshold, $badgeID){
+    
+    require_once FRAMEWORK_PATH . 'models/badges.inc';
+    $badge = new Badges($this->registry);
+    $badge->load($badgeID);
+    
+    return $badge->getDescription().". Has ganado <img src='".$this->registry->getSetting("badge_path"). $badge->getPathImage()."' class='img-rounded' height='48' width='48' />";
+  }
+
+
 }
 ?>

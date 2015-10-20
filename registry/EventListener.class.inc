@@ -30,8 +30,8 @@ class EventListener extends AbstractSubject{
     require_once( 'Gamification.class.inc' );
     require_once( 'Notify.class.inc' );
     $this->attach(new Logger($registry));
-    $this->attach(new Gamification($registry));
     $this->attach(new Notify($registry));
+    $this->attach(new Gamification($registry));
   }
 
   /*

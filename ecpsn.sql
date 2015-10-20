@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-10-2015 a las 17:41:49
+-- Tiempo de generación: 20-10-2015 a las 17:36:13
 -- Versión del servidor: 5.6.17
 -- Versión de PHP: 5.5.12
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `badges` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
+  `title` varchar(400) NOT NULL,
   `description` varchar(200) NOT NULL,
   `path_image` varchar(400) NOT NULL,
   PRIMARY KEY (`ID`)
@@ -38,12 +39,12 @@ CREATE TABLE IF NOT EXISTS `badges` (
 -- Volcado de datos para la tabla `badges`
 --
 
-INSERT INTO `badges` (`ID`, `name`, `description`, `path_image`) VALUES
-(1, 'no.badge', 'No Badge', '/no'),
-(2, 'user.activate', 'El Usuario ha activado el perfil', '/www/wwww'),
-(3, 'user.fav.get', 'El usuario ha recibido un favorito', 'favbadge'),
-(4, 'user.comment.add', 'Se ha agregado un comentario', 'commentAdd'),
-(5, 'user.comment.get', 'Se ha recibido un comentario', 'commentGet');
+INSERT INTO `badges` (`ID`, `name`, `title`, `description`, `path_image`) VALUES
+(1, 'Basic.badge', 'Badge BAsico', 'Very basic badge', '/no'),
+(2, 'user.activate', 'Activar tu perfil', 'has activado el perfil', '/www/wwww'),
+(3, 'user.fav.get', 'Recibir tu primer favorito', 'Enhorabuena! Has recibido un favorito', 'favbadge'),
+(4, 'user.comment.add', 'Agregar tu primer comentario', 'has realizado un comentario', 'commentAdd'),
+(5, 'user.comment.get', 'Recibir 12 comentarios', 'Enhorabuena! has recibido 12 comentarios!', '30.png');
 
 -- --------------------------------------------------------
 
@@ -59,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `badges_achieved` (
   PRIMARY KEY (`ID`),
   KEY `fk1_idx` (`ID_User`),
   KEY `fk2_idx` (`ID_Badge`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Almacena la relacion de badges por usuario\n' AUTO_INCREMENT=41 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Almacena la relacion de badges por usuario\n' AUTO_INCREMENT=44 ;
 
 --
 -- Volcado de datos para la tabla `badges_achieved`
@@ -86,7 +87,10 @@ INSERT INTO `badges_achieved` (`ID`, `ID_User`, `ID_Badge`, `showed`) VALUES
 (37, 14, 5, 0),
 (38, 11, 3, 0),
 (39, 11, 5, 0),
-(40, 12, 5, 0);
+(40, 12, 5, 0),
+(41, 8, 5, 0),
+(42, 8, 5, 0),
+(43, 8, 5, 0);
 
 -- --------------------------------------------------------
 
@@ -194,7 +198,7 @@ CREATE TABLE IF NOT EXISTS `comment_snippet` (
   KEY `ID_User` (`ID_User`),
   KEY `FK_comment_snippet2` (`ID_Snippet`),
   KEY `IDX_approved_comment_snippets` (`approved`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=114 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=127 ;
 
 --
 -- Volcado de datos para la tabla `comment_snippet`
@@ -225,7 +229,20 @@ INSERT INTO `comment_snippet` (`ID`, `comment`, `added`, `ID_User`, `ID_Snippet`
 (109, 'otro link\r\n', '2015-08-07 14:18:22', 10, 83, 3),
 (111, 'Clap your hand', '2015-08-17 13:50:09', 10, 78, 4),
 (112, 'comentario', '2015-10-13 16:09:07', 10, 86, 3),
-(113, '&lt;&lt;ddvvxcv', '2015-10-14 16:22:02', 10, 81, 3);
+(113, '&lt;&lt;ddvvxcv', '2015-10-14 16:22:02', 10, 81, 3),
+(114, 'ssdfsfdsf', '2015-10-20 16:32:45', 10, 83, 3),
+(115, 'fsdfsdfsdf', '2015-10-20 16:33:13', 10, 83, 3),
+(116, 'x&lt;dxfzxcvvfz', '2015-10-20 16:34:25', 10, 83, 3),
+(117, 'dsfgsdfgdsfg', '2015-10-20 16:35:57', 10, 83, 3),
+(118, 'dfgsdg', '2015-10-20 16:36:02', 10, 83, 3),
+(119, 'dfgsdfgsdfg', '2015-10-20 16:38:48', 10, 83, 3),
+(120, 'dsfgsdfgdsfgdsfg', '2015-10-20 16:38:53', 10, 83, 3),
+(121, 'dvsdfgadsfgsdf', '2015-10-20 16:40:30', 10, 83, 3),
+(122, 'sdfgsdfgsdfg', '2015-10-20 16:40:38', 10, 83, 3),
+(123, 'dgzdfgsdfg', '2015-10-20 16:42:17', 10, 83, 3),
+(124, 'sdfgsdfgsdgf', '2015-10-20 16:42:19', 10, 83, 3),
+(125, 'sdfasdfasf', '2015-10-20 17:22:39', 10, 83, 3),
+(126, 'sfsdfasd', '2015-10-20 17:23:25', 10, 83, 3);
 
 --
 -- Disparadores `comment_snippet`
@@ -340,10 +357,10 @@ CREATE TABLE IF NOT EXISTS `gamification_rules` (
 INSERT INTO `gamification_rules` (`ID`, `eventName`, `ID_Badge`, `threshold`, `experience_points`, `reputation_points`, `level_points`) VALUES
 (1, 'user.activate', 2, 1, 10, 1, 0),
 (2, 'user.snippet.add', 2, 1, 10, 1, 0),
-(3, 'user.snippet.add', 1, 35, 10, 1, 1),
+(3, 'user.snippet.add', 4, 35, 10, 1, 1),
 (4, 'user.fav.get', 3, 1, 15, 3, 0),
 (5, 'user.comment.add', 4, 1, 11, 1, 0),
-(6, 'user.comment.get', 5, 1, 11, 1, 0);
+(6, 'user.comment.get', 5, 14, 11, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -894,7 +911,7 @@ CREATE TABLE IF NOT EXISTS `logger` (
   `browser` longtext CHARACTER SET latin1 NOT NULL,
   `sessionID` varchar(100) CHARACTER SET latin1 NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla para registrar las entradas al siteRegistrará ' AUTO_INCREMENT=8624 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla para registrar las entradas al siteRegistrará ' AUTO_INCREMENT=8856 ;
 
 --
 -- Volcado de datos para la tabla `logger`
@@ -9548,7 +9565,240 @@ INSERT INTO `logger` (`ID`, `ipAddress`, `route`, `date`, `session`, `browser`, 
 (8620, '::1', 'tuts', '2015-10-19 17:34:45', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
 (8621, '::1', 'home', '2015-10-19 17:34:49', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
 (8622, '::1', 'notification', '2015-10-19 17:34:49', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
-(8623, '::1', 'tuts', '2015-10-19 17:36:04', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4');
+(8623, '::1', 'tuts', '2015-10-19 17:36:04', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8624, '127.0.0.1', 'tuts', '2015-10-19 17:45:35', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '1svneqdetg5tq05imfa2ee86m2'),
+(8625, '127.0.0.1', 'tuts/AngularJs', '2015-10-19 17:45:38', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '1svneqdetg5tq05imfa2ee86m2'),
+(8626, '::1', 'home', '2015-10-20 09:45:45', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8627, '::1', 'notification', '2015-10-20 09:45:45', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8628, '::1', 'tuts', '2015-10-20 09:46:10', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8629, '::1', 'tuts/Clojure', '2015-10-20 09:46:12', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8630, '::1', 'tuts/Clojure/Principiante', '2015-10-20 09:46:13', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8631, '::1', 'tuts/install-clojure', '2015-10-20 09:46:14', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8632, '::1', '{related_image}', '2015-10-20 09:46:14', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8633, '::1', 'tuts/Clojure', '2015-10-20 09:51:48', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8634, '::1', 'tuts', '2015-10-20 09:52:13', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8635, '::1', 'home', '2015-10-20 09:52:49', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8636, '::1', 'notification', '2015-10-20 09:52:49', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8637, '::1', 'notification', '2015-10-20 09:54:51', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8638, '::1', 'home', '2015-10-20 09:54:56', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8639, '::1', 'notification', '2015-10-20 09:54:56', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8640, '::1', 'home', '2015-10-20 09:55:12', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8641, '::1', 'notification', '2015-10-20 09:55:12', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8642, '::1', 'home', '2015-10-20 09:55:25', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8643, '::1', 'notification', '2015-10-20 09:55:25', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8644, '::1', 'home', '2015-10-20 09:55:26', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8645, '::1', 'notification', '2015-10-20 09:55:26', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8646, '::1', 'home', '2015-10-20 09:57:03', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8647, '::1', 'notification', '2015-10-20 09:57:03', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8648, '::1', 'home', '2015-10-20 09:57:43', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8649, '::1', 'notification', '2015-10-20 09:57:43', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8650, '::1', 'home', '2015-10-20 09:57:50', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8651, '::1', 'notification', '2015-10-20 09:57:50', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8652, '::1', 'home', '2015-10-20 09:59:29', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8653, '::1', 'notification', '2015-10-20 09:59:30', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8654, '::1', 'home', '2015-10-20 10:00:08', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8655, '::1', 'notification', '2015-10-20 10:00:08', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8656, '::1', 'home', '2015-10-20 10:00:33', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8657, '::1', 'notification', '2015-10-20 10:00:33', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8658, '::1', 'home', '2015-10-20 10:00:47', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8659, '::1', 'notification', '2015-10-20 10:00:47', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8660, '::1', 'home', '2015-10-20 10:01:22', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8661, '::1', 'notification', '2015-10-20 10:01:23', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8662, '::1', 'home', '2015-10-20 10:02:03', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8663, '::1', 'notification', '2015-10-20 10:02:03', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8664, '::1', 'home', '2015-10-20 10:02:18', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8665, '::1', 'notification', '2015-10-20 10:02:18', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8666, '::1', 'home', '2015-10-20 10:02:37', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8667, '::1', 'notification', '2015-10-20 10:02:37', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8668, '127.0.0.1', 'home', '2015-10-20 10:04:27', 'guest', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8669, '127.0.0.1', 'home', '2015-10-20 10:04:29', 'guest', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'kdqtmvdshkqthg2ltfscu49mj7'),
+(8670, '::1', 'notification', '2015-10-20 10:04:40', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8671, '::1', 'notification', '2015-10-20 10:06:42', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8672, '::1', 'notification', '2015-10-20 10:08:44', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8673, '::1', 'notification', '2015-10-20 10:10:47', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8674, '::1', 'notification', '2015-10-20 10:12:49', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8675, '::1', 'notification', '2015-10-20 10:14:51', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8676, '::1', 'notification', '2015-10-20 10:16:54', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8677, '::1', 'notification', '2015-10-20 10:18:56', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8678, '::1', 'notification', '2015-10-20 10:20:58', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8679, '::1', 'notification', '2015-10-20 10:23:01', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8680, '::1', 'notification', '2015-10-20 10:25:03', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8681, '::1', 'notification', '2015-10-20 10:27:05', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8682, '::1', 'notification', '2015-10-20 10:29:07', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8683, '::1', 'notification', '2015-10-20 10:31:10', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8684, '::1', 'notification', '2015-10-20 10:33:12', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8685, '::1', 'notification', '2015-10-20 10:35:14', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8686, '::1', 'notification', '2015-10-20 10:37:17', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8687, '::1', 'notification', '2015-10-20 10:39:19', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8688, '::1', 'notification', '2015-10-20 10:41:21', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8689, '::1', 'notification', '2015-10-20 10:43:24', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8690, '::1', 'notification', '2015-10-20 10:45:26', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8691, '::1', 'notification', '2015-10-20 10:47:28', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8692, '::1', 'notification', '2015-10-20 10:49:30', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8693, '::1', 'notification', '2015-10-20 10:51:33', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8694, '::1', 'notification', '2015-10-20 10:53:35', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8695, '::1', 'notification', '2015-10-20 10:55:37', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8696, '::1', 'notification', '2015-10-20 10:57:40', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8697, '::1', 'notification', '2015-10-20 10:59:42', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8698, '::1', 'notification', '2015-10-20 11:01:44', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8699, '::1', 'notification', '2015-10-20 11:03:47', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8700, '::1', 'notification', '2015-10-20 11:05:49', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8701, '::1', 'notification', '2015-10-20 11:07:51', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8702, '::1', 'notification', '2015-10-20 11:09:53', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8703, '::1', 'notification', '2015-10-20 11:11:56', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8704, '::1', 'notification', '2015-10-20 11:13:58', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8705, '::1', 'notification', '2015-10-20 11:16:00', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8706, '::1', 'notification', '2015-10-20 11:18:03', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8707, '::1', 'notification', '2015-10-20 11:20:05', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8708, '::1', 'notification', '2015-10-20 11:22:07', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8709, '::1', 'notification', '2015-10-20 11:24:10', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8710, '::1', 'notification', '2015-10-20 11:26:12', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8711, '::1', 'notification', '2015-10-20 11:28:14', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8712, '::1', 'notification', '2015-10-20 11:30:16', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8713, '::1', 'notification', '2015-10-20 11:32:19', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8714, '::1', 'notification', '2015-10-20 11:34:21', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8715, '::1', 'notification', '2015-10-20 11:36:23', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8716, '::1', 'notification', '2015-10-20 11:38:26', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8717, '::1', 'notification', '2015-10-20 11:40:28', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8718, '::1', 'notification', '2015-10-20 11:42:30', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8719, '::1', 'notification', '2015-10-20 11:44:33', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8720, '::1', 'notification', '2015-10-20 11:46:35', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8721, '::1', 'notification', '2015-10-20 11:48:37', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8722, '::1', 'notification', '2015-10-20 11:50:39', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8723, '::1', 'notification', '2015-10-20 11:52:42', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8724, '::1', 'notification', '2015-10-20 11:54:44', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8725, '::1', 'notification', '2015-10-20 11:56:46', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8726, '::1', 'notification', '2015-10-20 11:58:49', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8727, '::1', 'notification', '2015-10-20 12:00:51', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8728, '::1', 'notification', '2015-10-20 12:02:53', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8729, '::1', 'notification', '2015-10-20 12:04:56', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8730, '::1', 'notification', '2015-10-20 12:06:58', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8731, '::1', 'notification', '2015-10-20 12:09:00', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8732, '::1', 'notification', '2015-10-20 12:11:03', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8733, '::1', 'notification', '2015-10-20 12:13:05', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8734, '::1', 'notification', '2015-10-20 12:15:07', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8735, '::1', 'notification', '2015-10-20 12:17:09', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8736, '::1', 'notification', '2015-10-20 12:19:12', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8737, '::1', 'notification', '2015-10-20 12:21:14', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8738, '::1', 'notification', '2015-10-20 12:23:16', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8739, '::1', 'notification', '2015-10-20 12:25:19', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8740, '::1', 'notification', '2015-10-20 12:27:21', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4');
+INSERT INTO `logger` (`ID`, `ipAddress`, `route`, `date`, `session`, `browser`, `sessionID`) VALUES
+(8741, '::1', 'notification', '2015-10-20 12:29:23', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8742, '::1', 'notification', '2015-10-20 12:31:26', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8743, '::1', 'notification', '2015-10-20 12:33:28', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8744, '::1', 'notification', '2015-10-20 12:35:30', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8745, '::1', 'notification', '2015-10-20 12:37:33', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8746, '::1', 'notification', '2015-10-20 12:39:35', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8747, '::1', 'notification', '2015-10-20 12:41:37', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8748, '::1', 'notification', '2015-10-20 12:43:40', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8749, '::1', 'notification', '2015-10-20 12:45:42', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8750, '::1', 'notification', '2015-10-20 12:47:44', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8751, '::1', 'notification', '2015-10-20 12:49:46', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8752, '::1', 'notification', '2015-10-20 12:51:49', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8753, '::1', 'notification', '2015-10-20 12:53:51', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8754, '::1', 'notification', '2015-10-20 12:55:53', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8755, '::1', 'notification', '2015-10-20 12:57:56', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8756, '::1', 'notification', '2015-10-20 12:59:58', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8757, '::1', 'notification', '2015-10-20 13:02:00', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8758, '::1', 'notification', '2015-10-20 13:04:03', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8759, '::1', 'notification', '2015-10-20 13:06:05', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8760, '::1', 'notification', '2015-10-20 13:08:07', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8761, '::1', 'notification', '2015-10-20 13:10:10', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8762, '::1', 'notification', '2015-10-20 13:12:12', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8763, '::1', 'notification', '2015-10-20 13:14:14', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8764, '::1', 'notification', '2015-10-20 13:16:16', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8765, '::1', 'notification', '2015-10-20 13:18:19', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8766, '::1', 'notification', '2015-10-20 13:20:21', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8767, '::1', 'notification', '2015-10-20 13:22:23', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8768, '::1', 'notification', '2015-10-20 13:24:26', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8769, '::1', 'notification', '2015-10-20 13:26:28', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8770, '::1', 'notification', '2015-10-20 13:28:30', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8771, '::1', 'notification', '2015-10-20 13:30:33', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8772, '::1', 'notification', '2015-10-20 13:32:35', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8773, '127.0.0.1', 'authenticate/login', '2015-10-20 16:32:23', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8774, '127.0.0.1', 'authenticate/home', '2015-10-20 16:32:24', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8775, '127.0.0.1', 'notification', '2015-10-20 16:32:24', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8776, '::1', 'home', '2015-10-20 16:32:27', 'guest', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8777, '::1', 'authenticate/login', '2015-10-20 16:32:31', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8778, '::1', 'authenticate/login', '2015-10-20 16:32:31', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8779, '::1', 'notification', '2015-10-20 16:32:31', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8780, '::1', 'home', '2015-10-20 16:32:33', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8781, '::1', 'notification', '2015-10-20 16:32:33', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8782, '127.0.0.1', 'snippets', '2015-10-20 16:32:38', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8783, '127.0.0.1', 'snippets/view/83', '2015-10-20 16:32:40', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8784, '127.0.0.1', 'snippets/show_comment', '2015-10-20 16:32:41', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8785, '127.0.0.1', 'snippets/comment', '2015-10-20 16:32:45', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8786, '::1', 'home', '2015-10-20 16:33:03', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8787, '::1', 'notification', '2015-10-20 16:33:03', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8788, '127.0.0.1', 'snippets/comment', '2015-10-20 16:33:13', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8789, '127.0.0.1', 'snippets/view/83', '2015-10-20 16:34:20', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8790, '127.0.0.1', 'snippets/show_comment', '2015-10-20 16:34:21', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8791, '127.0.0.1', 'snippets/comment', '2015-10-20 16:34:25', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8792, '::1', 'notification', '2015-10-20 16:35:05', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8793, '::1', 'home', '2015-10-20 16:35:51', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8794, '::1', 'notification', '2015-10-20 16:35:51', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8795, '127.0.0.1', 'snippets/view/83', '2015-10-20 16:35:55', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8796, '127.0.0.1', 'snippets/show_comment', '2015-10-20 16:35:55', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8797, '127.0.0.1', 'snippets/comment', '2015-10-20 16:35:57', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8798, '127.0.0.1', 'snippets/comment', '2015-10-20 16:36:02', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8799, '::1', 'notification', '2015-10-20 16:37:54', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8800, '::1', 'home', '2015-10-20 16:38:42', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8801, '::1', 'notification', '2015-10-20 16:38:43', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8802, '127.0.0.1', 'snippets/view/83', '2015-10-20 16:38:45', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8803, '127.0.0.1', 'snippets/show_comment', '2015-10-20 16:38:45', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8804, '127.0.0.1', 'snippets/comment', '2015-10-20 16:38:48', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8805, '127.0.0.1', 'snippets/comment', '2015-10-20 16:38:53', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8806, '::1', 'home', '2015-10-20 16:40:25', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8807, '::1', 'notification', '2015-10-20 16:40:25', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8808, '127.0.0.1', 'snippets/view/83', '2015-10-20 16:40:27', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8809, '127.0.0.1', 'snippets/show_comment', '2015-10-20 16:40:27', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8810, '127.0.0.1', 'snippets/comment', '2015-10-20 16:40:30', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8811, '127.0.0.1', 'snippets/comment', '2015-10-20 16:40:38', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8812, '::1', 'home', '2015-10-20 16:42:10', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8813, '::1', 'notification', '2015-10-20 16:42:10', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8814, '127.0.0.1', 'snippets/view/83', '2015-10-20 16:42:13', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8815, '127.0.0.1', 'snippets/show_comment', '2015-10-20 16:42:14', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8816, '127.0.0.1', 'snippets/comment', '2015-10-20 16:42:17', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8817, '127.0.0.1', 'snippets/comment', '2015-10-20 16:42:19', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8818, '::1', 'notification', '2015-10-20 16:44:12', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8819, '::1', 'notification', '2015-10-20 16:46:14', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8820, '::1', 'notification', '2015-10-20 16:48:17', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8821, '::1', 'notification', '2015-10-20 16:50:19', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8822, '::1', 'notification', '2015-10-20 16:52:21', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8823, '::1', 'notification', '2015-10-20 16:54:24', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8824, '::1', 'notification', '2015-10-20 16:56:26', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8825, '::1', 'notification', '2015-10-20 16:58:28', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8826, '::1', 'notification', '2015-10-20 17:00:31', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8827, '::1', 'notification', '2015-10-20 17:02:33', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8828, '::1', 'notification', '2015-10-20 17:04:35', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8829, '::1', 'notification', '2015-10-20 17:06:38', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8830, '::1', 'notification', '2015-10-20 17:08:40', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8831, '::1', 'notification', '2015-10-20 17:10:42', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8832, '::1', 'notification', '2015-10-20 17:12:45', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8833, '::1', 'notification', '2015-10-20 17:14:47', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8834, '::1', 'notification', '2015-10-20 17:16:50', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8835, '::1', 'notification', '2015-10-20 17:18:52', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8836, '::1', 'notification', '2015-10-20 17:20:55', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8837, '::1', 'home', '2015-10-20 17:22:36', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8838, '::1', 'notification', '2015-10-20 17:22:36', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8839, '127.0.0.1', 'snippets/comment', '2015-10-20 17:22:39', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8840, '127.0.0.1', 'snippets/comment', '2015-10-20 17:23:25', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8841, '127.0.0.1', 'authenticate/logout', '2015-10-20 17:24:16', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'e5tc84eg7ul5uitluhlbv0l9a2'),
+(8842, '127.0.0.1', 'authenticate/login', '2015-10-20 17:24:21', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'qqld4962ibpuotbreh8h0gjsv7'),
+(8843, '127.0.0.1', 'home', '2015-10-20 17:24:26', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'qqld4962ibpuotbreh8h0gjsv7'),
+(8844, '127.0.0.1', 'admin_settings/search', '2015-10-20 17:24:33', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'qqld4962ibpuotbreh8h0gjsv7'),
+(8845, '127.0.0.1', 'admin_settings/search/2', '2015-10-20 17:24:35', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'qqld4962ibpuotbreh8h0gjsv7'),
+(8846, '::1', 'notification', '2015-10-20 17:24:38', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8847, '127.0.0.1', 'admin_event/search', '2015-10-20 17:24:40', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'qqld4962ibpuotbreh8h0gjsv7'),
+(8848, '127.0.0.1', 'admin_gamification/search', '2015-10-20 17:24:47', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'qqld4962ibpuotbreh8h0gjsv7'),
+(8849, '127.0.0.1', 'admin_category/search', '2015-10-20 17:24:50', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'qqld4962ibpuotbreh8h0gjsv7'),
+(8850, '127.0.0.1', 'admin_badge/search', '2015-10-20 17:24:55', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', 'qqld4962ibpuotbreh8h0gjsv7'),
+(8851, '::1', 'notification', '2015-10-20 17:26:40', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8852, '::1', 'notification', '2015-10-20 17:28:43', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8853, '::1', 'notification', '2015-10-20 17:30:45', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8854, '::1', 'notification', '2015-10-20 17:32:47', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4'),
+(8855, '::1', 'notification', '2015-10-20 17:34:50', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'allqjtjfgf9bvlehke8l8k3od4');
 
 -- --------------------------------------------------------
 
@@ -9607,7 +9857,7 @@ CREATE TABLE IF NOT EXISTS `notification` (
   KEY `fk_notifications_1_idx` (`ID_User`),
   KEY `fk_notification_eventtype_idx` (`notification`),
   KEY `idx_userfrom` (`ID_User_From`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=140 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=169 ;
 
 --
 -- Volcado de datos para la tabla `notification`
@@ -9720,7 +9970,36 @@ INSERT INTO `notification` (`ID`, `ID_User`, `ID_User_From`, `notification`, `sh
 (136, 8, 10, 'user.fav.get', 2, '2015-10-19 15:33:52', ' Tu <a href=''links/view/24''>Link </a>El usuario recibe un favorito de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
 (137, 10, 10, 'user.fav.del', 3, '2015-10-19 15:34:00', '10Ha borrado tu favorito'),
 (138, 10, 10, 'user.fav.add', 3, '2015-10-19 15:34:01', '10Ha guardado tu favorito'),
-(139, 8, 10, 'user.fav.get', 2, '2015-10-19 15:34:01', ' Tu <a href=''links/view/24''>Link </a>El usuario recibe un favorito de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> ');
+(139, 8, 10, 'user.fav.get', 2, '2015-10-19 15:34:01', ' Tu <a href=''links/view/24''>Link </a>El usuario recibe un favorito de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(140, 10, 10, 'user.login', 3, '2015-10-20 14:32:23', 'Has iniciado sesion'),
+(141, 8, 8, 'user.login', 3, '2015-10-20 14:32:31', 'Has iniciado sesion'),
+(142, 10, 10, 'user.comment.add', 3, '2015-10-20 14:32:45', '10Ha Agregado un comentario'),
+(143, 8, 10, 'user.comment.get', 2, '2015-10-20 14:32:45', ' Tu <a href=''snippets/view/83''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(144, 10, 10, 'user.comment.add', 3, '2015-10-20 14:33:13', '10Ha Agregado un comentario'),
+(145, 10, 10, 'user.comment.add', 3, '2015-10-20 14:34:25', '10Ha Agregado un comentario'),
+(146, 8, 10, 'user.comment.get', 2, '2015-10-20 14:34:25', ' Tu <a href=''snippets/view/83''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(147, 10, 10, 'user.comment.add', 3, '2015-10-20 14:35:57', '10Ha Agregado un comentario'),
+(148, 8, 10, 'user.comment.get', 2, '2015-10-20 14:35:57', ' Tu <a href=''snippets/view/83''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(149, 10, 10, 'user.comment.add', 3, '2015-10-20 14:36:02', '10Ha Agregado un comentario'),
+(150, 10, 10, 'user.comment.add', 3, '2015-10-20 14:38:48', '10Ha Agregado un comentario'),
+(151, 8, 10, 'user.comment.get', 2, '2015-10-20 14:38:48', ' Tu <a href=''snippets/view/83''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(152, 10, 10, 'user.comment.add', 3, '2015-10-20 14:38:53', '10Ha Agregado un comentario'),
+(153, 10, 10, 'user.comment.add', 3, '2015-10-20 14:40:30', '10Ha Agregado un comentario'),
+(154, 8, 10, 'user.comment.get', 2, '2015-10-20 14:40:30', ' Tu <a href=''snippets/view/83''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(155, 10, 10, 'user.comment.add', 3, '2015-10-20 14:40:38', '10Ha Agregado un comentario'),
+(156, 10, 10, 'user.comment.add', 3, '2015-10-20 14:42:17', '10Ha Agregado un comentario'),
+(157, 8, 10, 'user.comment.get', 2, '2015-10-20 14:42:17', ' Tu <a href=''snippets/view/83''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(158, 10, 10, 'user.comment.add', 3, '2015-10-20 14:42:19', '10Ha Agregado un comentario'),
+(159, 8, 10, 'user.comment.get', 2, '2015-10-20 14:42:19', 'Enhorabuena! has recibido 12 comentarios!. Has ganado un <img src=''views/default/images/badges/30.png'' class=''img-rounded'' height=''32'' width=''32'' />'),
+(160, 8, 10, 'user.comment.get', 2, '2015-10-20 14:42:19', ' Tu <a href=''snippets/view/83''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(161, 10, 10, 'user.comment.add', 3, '2015-10-20 15:22:39', '10Ha Agregado un comentario'),
+(162, 8, 10, 'user.comment.get', 2, '2015-10-20 15:22:39', ' Tu <a href=''snippets/view/83''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(163, 8, 10, 'user.comment.get', 2, '2015-10-20 15:22:39', 'Enhorabuena! has recibido 12 comentarios!. Has ganado un <img src=''views/default/images/badges/30.png'' class=''img-rounded'' height=''32'' width=''32'' />'),
+(164, 10, 10, 'user.comment.add', 3, '2015-10-20 15:23:25', '10Ha Agregado un comentario'),
+(165, 8, 10, 'user.comment.get', 2, '2015-10-20 15:23:25', ' Tu <a href=''snippets/view/83''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(166, 8, 10, 'user.comment.get', 2, '2015-10-20 15:23:25', 'Enhorabuena! has recibido 12 comentarios!. Has ganado <img src=''views/default/images/badges/30.png'' class=''img-rounded'' height=''48'' width=''48'' />'),
+(167, 10, 10, 'user.logout', 3, '2015-10-20 15:24:16', 'Has cerrado sesion'),
+(168, 11, 11, 'user.login', 3, '2015-10-20 15:24:21', 'Has iniciado sesion');
 
 -- --------------------------------------------------------
 
@@ -9972,7 +10251,7 @@ CREATE TABLE IF NOT EXISTS `settings` (
   `key` varchar(255) NOT NULL,
   `value` longtext NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
 
 --
 -- Volcado de datos para la tabla `settings`
@@ -9992,7 +10271,8 @@ INSERT INTO `settings` (`ID`, `key`, `value`) VALUES
 (13, 'code_close', '[xxx]'),
 (14, 'code_open_replace', '<textarea disabled class="code_replace">'),
 (15, 'code_close_replace', '</textarea>'),
-(16, 'language_path', 'views/default/images/lang/');
+(16, 'language_path', 'views/default/images/lang/'),
+(17, 'badge_path', 'views/default/images/badges/');
 
 -- --------------------------------------------------------
 
@@ -10061,7 +10341,7 @@ INSERT INTO `snippets` (`ID`, `Title`, `Code`, `description`, `ID_Category`, `ID
 (78, 'HTML5 Mobile Video with Flash, Silverlight, Java, Animated GIF and Download fallback', '<!DOCTYPE html>\r\n<html>\r\n<head>\r\n  <meta charset="utf-8" />\r\n  <title>HTML5 Video with Flash and Download fallback</title>\r\n  <!--[if lt IE 9]>\r\n     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>\r\n  <![endif]-->\r\n  <style type="text/css">\r\n      header, section, footer, aside, nav, article, figure, audio, video, canvas { display:block; }\r\n      img { border:0; vertical-align:middle; }\r\n  </style>\r\n</head>\r\n<body>\r\n<div id="movie">\r\n  <video id="movie_html5" width="320" height="240" preload controls>\r\n    <source src="video.webm" type=''video/webm; codecs="vp8, vorbis"'' />\r\n    <source src="video.ogv" type=''video/ogg; codecs="theora, vorbis"'' />\r\n    <source src="video.mp4" />\r\n    <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id="movie_object" name="movie_object" width="320" height="240" type="application/x-shockwave-flash" data="player.swf"> \r\n      <param name="movie" value="player.swf" />\r\n      <param name="wmode" value="transparent" />\r\n      <param name="allowfullscreen" value="true" />\r\n      <param name="allowscriptaccess" value="always" />\r\n      <param name="flashvars" value="file=video.flv&image=video.jpg" />\r\n      <embed type="application/x-shockwave-flash" id="movie_embed" name="movie_embed" \r\n             src="player.swf"\r\n             width="320"\r\n             height="240"\r\n             bgcolor="#000000"\r\n             allowscriptaccess="always"\r\n             allowfullscreen="true"\r\n             wmode="transparent"\r\n             flashvars="file=video.flv&image=video.jpg">\r\n        <noembed>\r\n          <!-- Java Applet OGG player, see: http://git.xiph.org/?p=cortado.git;a=blob;f=README -->\r\n          <applet id="movie_java" name="movie_java" code="com.fluendo.player.Cortado.class" archive="http://theora.org/cortado.jar" width="320" height="240"> \r\n            <param name="url" value="video.ogv" />\r\n            <param name="autoPlay" value="false" />\r\n            <!-- Mobile stream (Image can be an Animated GIF for playback with no sound) -->\r\n            <div id="movie_mobile">              \r\n              <a href="video.3gp"><img alt="PLAY" src="video.gif" width="320" height="240" /></a>\r\n            </div>\r\n          </applet>       \r\n        </noembed>       \r\n      </embed>\r\n    </object>\r\n   <!-- JW Silverlight WMV player -->\r\n    <div id="movie_silverlight" name="movie_silverlight" style="display:none; position:relative; top:8px; left:8px;">&nbsp;</div>\r\n    <script type="text/javascript" src="silverlight.js"></script>\r\n    <script type="text/javascript" src="wmvplayer.js"></script>    \r\n    <script type="text/javascript">      \r\n      var hasSilverlight = Boolean(window.Silverlight);\r\n      if (hasSilverlight) {\r\n        var cnt = document.getElementById("movie_silverlight"); //media container\r\n        cnt.style.display = ''block'';                           //show Silverlight\r\n        document.getElementById("movie_object").style.display=''none''; //hide Flash, Java and Mobile\r\n        var xaml = "wmvplayer.xaml";                            //XAML player\r\n        var cfg = { file:"video.wmv", image:"video.jpg", width:"320", height:"240" }; //configure WMV file, preview thumbnail, width/height\r\n        var ply = new jeroenwijering.Player(cnt, xaml, cfg);\r\n      }\r\n    </script>\r\n  </video>\r\n  <!-- Offer direct download link to play in Browser plugin or allow System default Media Player to take over -->\r\n  <p>\r\n  Download: <a href="video.mp4">MP4</a> | <a href="video.webm">WebM</a> | <a href="video.ogv">Ogg</a> | <a href="video.3gp">3gp</a> | <a href="video.flv">Flash</a> | <a href="video.wmv">WMV</a>\r\n  </p>\r\n</div>\r\n</body>\r\n</html>', 'Due to device capability inconsistencies and fragmentation, in order to play on the broadest range of devices, approximately 6 formats would be required:\r\nFlash - VP6 (IE 4-6, Netscape, some tablets/PDAs, legacy Desktop browsers)\r\nSilverlight - WMV (IE7+, Windows Phone)\r\nHTML5 video - Ogg Theora (FF, Fenick, Opera, Opera Mobile)\r\nHTML5 video - WebM VP8 (Chrome, Android phones/tablets)\r\nHTML5 video or Java Applet - MP4 baseline H.264 (Safari, iOS devices: iPad/iPod/iPhone, J2SE/J2ME devices)\r\nMobile video - 3GP via RTSP or HTTP ', 5, 12, '0.00', 0, 0, 2, '2014-11-13 12:32:02', 4),
 (80, 'List all images from directory', '<?php\r\n                $dir = "assets/images/";\r\n                foreach (glob($dir . ''/*'') as $filename) {\r\n                   echo "<img src=''" . $filename . "''><br/>";\r\n            }', 'List all images from directory', 4, 14, '3.50', 1, 1, 1, '2014-11-13 12:38:13', 4),
 (81, 'Listing special forms', '(keys clojure.lang.Compiler/specials)', 'Title tells everything', 17, 8, '4.00', 1, 2, 1, '2014-12-02 13:02:47', 4),
-(83, 'dgseert', 'sdfgsdfg', 'sddfgsdfgsdf', 15, 8, '3.50', 2, 2, 2, '2015-08-07 13:46:39', 4),
+(83, 'dgseert', 'sdfgsdfg', 'sddfgsdfgsdf', 15, 8, '3.50', 2, 2, 15, '2015-08-07 13:46:39', 4),
 (84, 'sdfsdf', 'asdfasdf', 'sdfasdfasdf', 5, 10, '0.00', 0, 0, 0, '2015-08-12 17:43:44', 4),
 (86, 'xddf', 'setTagName', 'dfdfdf', 17, 8, '4.00', 1, 1, 1, '2015-09-16 16:15:24', 4),
 (87, 'sdfasdf', 'adfasdfdfasdfasdf', 'asdfasdf', 20, 8, '0.00', 0, 0, 0, '2015-09-23 17:09:37', 3);
@@ -10100,7 +10380,7 @@ CREATE TABLE IF NOT EXISTS `snippet_log` (
   KEY `fk_snippetlog_snippet_idx` (`ID_Snippet`),
   KEY `fk_snippetlog_user_idx` (`ID_User`),
   KEY `fk_snippetlog_event_idx` (`event`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=218 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=233 ;
 
 --
 -- Volcado de datos para la tabla `snippet_log`
@@ -10224,7 +10504,22 @@ INSERT INTO `snippet_log` (`ID`, `ID_Snippet`, `event`, `ID_User`, `created`) VA
 (214, 81, 'user.fav.del', 10, '2015-10-14 17:50:57'),
 (215, 81, 'user.snippet.view', 10, '2015-10-14 17:51:57'),
 (216, 81, 'user.fav.del', 10, '2015-10-14 17:51:58'),
-(217, 81, 'user.fav.add', 10, '2015-10-14 17:52:00');
+(217, 81, 'user.fav.add', 10, '2015-10-14 17:52:00'),
+(218, 83, 'user.snippet.view', 10, '2015-10-20 16:32:40'),
+(219, 83, 'user.comment.add', 10, '2015-10-20 16:32:45'),
+(220, 83, 'user.snippet.view', 10, '2015-10-20 16:34:20'),
+(221, 83, 'user.comment.add', 10, '2015-10-20 16:34:25'),
+(222, 83, 'user.snippet.view', 10, '2015-10-20 16:35:55'),
+(223, 83, 'user.comment.add', 10, '2015-10-20 16:35:57'),
+(224, 83, 'user.snippet.view', 10, '2015-10-20 16:38:45'),
+(225, 83, 'user.comment.add', 10, '2015-10-20 16:38:48'),
+(226, 83, 'user.snippet.view', 10, '2015-10-20 16:40:27'),
+(227, 83, 'user.comment.add', 10, '2015-10-20 16:40:30'),
+(228, 83, 'user.snippet.view', 10, '2015-10-20 16:42:13'),
+(229, 83, 'user.comment.add', 10, '2015-10-20 16:42:17'),
+(230, 83, 'user.comment.add', 10, '2015-10-20 16:42:19'),
+(231, 83, 'user.comment.add', 10, '2015-10-20 17:22:39'),
+(232, 83, 'user.comment.add', 10, '2015-10-20 17:23:25');
 
 -- --------------------------------------------------------
 
@@ -10446,7 +10741,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`ID`, `user_login`, `user_pass`, `password_salt`, `twitter_name`, `user_email`, `user_url`, `user_registered`, `user_status`, `display_name`, `experience_points`, `reputation_points`, `level_points`, `reset_key`, `reset_expires`, `activation_key`, `user_level`, `profile_image`) VALUES
-(8, 'oscarlgarcia', '$2a$07$106c84709b2b7a5e6ef78OyF32F8K7bPfSiIbfvx3UDKZaLZZquoW', '$2a$07$106c84709b2b7a5e6ef78a7f7e226c2d656ca810e48d$', 'c_programador', 'oscarlgarcia@gmail.com', 'http://radar.oreilly.com/nat/page/123', '2014-03-06 01:26:52', 4, 'oscarlgarcia', 157, 107, 1, 'aaae94ae8bfd150102216afbecf9e3d6', '2015-10-13 14:31:30', '624e86b4c38468e7695a8ac71ebd4c61', 0, 'oscar.jpg'),
+(8, 'oscarlgarcia', '$2a$07$106c84709b2b7a5e6ef78OyF32F8K7bPfSiIbfvx3UDKZaLZZquoW', '$2a$07$106c84709b2b7a5e6ef78a7f7e226c2d656ca810e48d$', 'c_programador', 'oscarlgarcia@gmail.com', 'http://radar.oreilly.com/nat/page/123', '2014-03-06 01:26:52', 4, 'oscarlgarcia', 190, 110, 1, 'aaae94ae8bfd150102216afbecf9e3d6', '2015-10-13 14:31:30', '624e86b4c38468e7695a8ac71ebd4c61', 0, 'oscar.jpg'),
 (10, 'pedro', '$2a$07$1c173912f89d4921d411euyGh1S5gXebi9./pkETmwwIQgby5Ibty', '$2a$07$1c173912f89d4921d411e8cef1e53e9acf5c5c6839de$', NULL, 'pedroperez@ff.com', NULL, '2014-10-20 17:50:29', 4, 'pedro', 57, 7, 0, NULL, NULL, '5033fd6a244f95b9d33e4a388f0f0eb4', 0, 'user3.png'),
 (11, 'director', '$2a$07$441112768ee904e1c81bbOY6nCGoWambFLWFsBygKLjHAHuy2r6kC', '$2a$07$441112768ee904e1c81bbae0cb9110b3c473e4b6a444$', NULL, 'oscar.garcia@elclubdelprogramador.com', NULL, '2014-11-06 14:58:21', 4, 'director', 36, 5, 0, NULL, NULL, '13945b33caf58e2d7770f0637f008807', 10, 'user3.png'),
 (12, 'usuario2', '$2a$07$fb026efc8f989177cd0dduBxYBVgBgRbTEppx5C35VaQqs63noETG', '$2a$07$fb026efc8f989177cd0dd227a5a0a4d01a7ebb5bf26e$', NULL, 'usuarios2@gmsail.com', NULL, '2014-11-13 12:25:42', 4, 'usuario2', 21, 2, 0, NULL, NULL, '101be302634e6345c900ce239d5c5905', 0, 'gravatar.jpg'),
@@ -10474,7 +10769,7 @@ CREATE TABLE IF NOT EXISTS `user_event` (
   PRIMARY KEY (`ID`),
   KEY `fk2_idx` (`ID_User`),
   KEY `fk_user_event_1_idx` (`eventName`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla que almacena los eventos del site que ha realizado un  /* comment truncated */ /*usuario*/' AUTO_INCREMENT=1638 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla que almacena los eventos del site que ha realizado un  /* comment truncated */ /*usuario*/' AUTO_INCREMENT=1668 ;
 
 --
 -- Volcado de datos para la tabla `user_event`
@@ -11956,7 +12251,28 @@ INSERT INTO `user_event` (`ID`, `ID_User`, `eventName`, `ipaddress`, `data`, `da
 (1634, 8, 'user.fav.get', '127.0.0.1', '{"id_links":""24""}', '2015-10-19 17:33:52'),
 (1635, 10, 'user.fav.del', '127.0.0.1', '{"id_Links":""24""}', '2015-10-19 17:34:00'),
 (1636, 10, 'user.fav.add', '127.0.0.1', '{"id_links":""24""}', '2015-10-19 17:34:01'),
-(1637, 8, 'user.fav.get', '127.0.0.1', '{"id_links":""24""}', '2015-10-19 17:34:01');
+(1637, 8, 'user.fav.get', '127.0.0.1', '{"id_links":""24""}', '2015-10-19 17:34:01'),
+(1638, 10, 'user.login', '127.0.0.1', '', '2015-10-20 16:32:23'),
+(1639, 8, 'user.login', '::1', '', '2015-10-20 16:32:31'),
+(1640, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:32:45'),
+(1642, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:33:13'),
+(1644, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:34:25'),
+(1646, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:35:57'),
+(1648, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:36:02'),
+(1650, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:38:48'),
+(1652, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:38:53'),
+(1654, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:40:30'),
+(1656, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:40:38'),
+(1658, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:42:17'),
+(1659, 8, 'user.comment.get', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:42:17'),
+(1660, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:42:19'),
+(1661, 8, 'user.comment.get', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:42:19'),
+(1662, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 17:22:39'),
+(1663, 8, 'user.comment.get', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 17:22:39'),
+(1664, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 17:23:25'),
+(1665, 8, 'user.comment.get', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 17:23:25'),
+(1666, 10, 'user.logout', '127.0.0.1', '', '2015-10-20 17:24:16'),
+(1667, 11, 'user.login', '127.0.0.1', '', '2015-10-20 17:24:21');
 
 --
 -- Restricciones para tablas volcadas
