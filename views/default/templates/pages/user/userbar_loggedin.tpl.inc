@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="lib/notification/notification.css"/>
 <div id="wrap" class="ecpGlobal-bg">
   <div role="navigation" class="navbar navbar-inverse navbar-fixed-top ecpnavbar-bg">
     <div class="container-fluid">
@@ -84,7 +85,7 @@
 				</ul>
 	      </li>
 	       <li class="dropdown">
-              <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="fa fa-bullhorn"> <span class="label label-danger">!</span></span></a>
+              <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span id="notification-button" class="fa fa-bullhorn"> <span id="notification-label" class="label label-danger label-notif">!</span></span></a>
 			  <ul class="dropdown-menu dropdownmenu-custom">
 			    <li><a href="#"><span class="fa fa-inbox pull-right"></span> Inbox</a></li>
 				<li class="divider"></li>
@@ -118,4 +119,5 @@
 	   </div>
 	 </div> 
   </div>
-  <script type="text/javascript" src="lib/search/search_animation.js"></script>
+<script type="text/javascript" src="lib/search/search_animation.js"></script>
+<script type="text/javascript" src="lib/notification/.js"></script>
