@@ -64,14 +64,10 @@ class Notification extends Object{
       }
     
       $this->update($userID,0,1);  // separamos las q devolveremos
-      $this->paginatedResult->setLimit($this->limit);
-      $this->paginatedResult->setOffset(0);
-      $query = "select * from notification where  ID_User =".$userID." and showed = 1";
-      $this->paginatedResult->setQuery( $query );
-      $this->paginatedResult->setMethod( 'cache' );
-      $this->paginatedResult->generatePagination();
-      $this->writeOutput($this->paginatedResult);
-      $this->update($userID,1,2);  //marcamos las devueltas para no procesarlas de nuevo
+      $this->writeOutput($this->getNotifications($userID,1),"show");
+      $this->update($userID,1,2);  //marcamos las devueltas para mostrar en barra
+      $this->writeOutput($this->getNotifications($userID,2),"announce");
+      $this->update($userID,2,3);  //marcamos las devueltas para no procesarlas de nuevo
       session_write_close();
       sleep(1);
       
@@ -80,19 +76,39 @@ class Notification extends Object{
    
   }
 
-
-  public function writeOutput($cursor){
-   
-    while($value = $this->registry->getObject('db')->resultsFromCache($cursor->getCache())){
-      echo "id: " . $value["ID"] . "\n";
-      echo "data: " .$value["message"]. "\n\n";
-      ob_flush();
-      flush();
-    }
-    
+  //Busca las notificaciones en la bbdd
+  private function getNotifications($userID,$showed){
+    $this->paginatedResult->setLimit($this->limit);
+    $this->paginatedResult->setOffset(0);
+    $query = "select * from notification where  ID_User =".$userID." and showed =".$showed;
+    $this->paginatedResult->setQuery( $query );
+    $this->paginatedResult->setMethod( 'cache' );
+    $this->paginatedResult->generatePagination();
+    return $this->paginatedResult;
   }
 
 
+  // Escribe el flujo de salida para un conjunto de notificaciones
+  public function writeOutput($cursor,$eventType){
+  
+    if($eventType == "show"){ //todo poner en constante
+      while($value = $this->registry->getObject('db')->resultsFromCache($cursor->getCache())){
+        $this->flush($value["message"],$eventType);
+      }
+    }else{
+      if ($cursor->getTotalRows()>0)
+        $this->flush($cursor->getTotalRows(),$eventType);
+    }
+  }
+
+
+  // Escribe en el stream de salida
+  public function flush($message,$event){
+    echo "event:" .$event . "\n";
+    echo "data: " .$message. "\n\n";
+    ob_flush();
+    flush();
+  }
 
   /**
   * actualiza el showed de la notificacion

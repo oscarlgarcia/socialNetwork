@@ -156,12 +156,12 @@ class Links extends Object{
   public function topTags()
   {
     $this->paginatedResult->setLimit(15); 
-	$this->paginatedResult->setOffset(0);
-	$query = "SELECT count(a.tag_name) total, a.tag_name as name FROM tags a inner join list_tags_links b on a.ID = b.ID_tags inner join links l on l.id = b.ID_Links where l.id_status = 4 group by a.tag_name order by total desc";
-	$this->paginatedResult->setQuery( $query );
-	$this->paginatedResult->setMethod( 'cache' );
-	$this->paginatedResult->generatePagination();
-	return $this->paginatedResult;
+	  $this->paginatedResult->setOffset(0);
+	  $query = "SELECT count(a.tag_name) total, a.tag_name as name FROM tags a inner join list_tags_links b on a.ID = b.ID_tags inner join links l on l.id = b.ID_Links where l.id_status = 4 group by a.tag_name order by total desc";
+	  $this->paginatedResult->setQuery( $query );
+	  $this->paginatedResult->setMethod( 'cache' );
+	  $this->paginatedResult->generatePagination();
+	  return $this->paginatedResult;
   }
 	
 
@@ -185,12 +185,12 @@ class Links extends Object{
   public function search($offset = 1, $criteria = "")
   {
     $this->paginatedResult->setLimit(10);
-  $this->paginatedResult->setOffset($offset - 1);
-  $query="SELECT s.ID,s.title, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha, s.rating, s.id_status, s.totalFav as faved, s.totalComments as comments, u.user_login as author,u.id as user_id, o.status_class as class FROM links s inner join users u on s.ID_USER = u.ID inner join operational_status o on s.ID_Status = o.ID where s.title like '%".$criteria."%'  group by ID order by added desc";
-  $this->paginatedResult->setQuery( $query );
-  $this->paginatedResult->setMethod( 'cache' );
-  $this->paginatedResult->generatePagination();
-  return $this->paginatedResult;
+    $this->paginatedResult->setOffset($offset - 1);
+    $query="SELECT s.ID,s.title, DATE_FORMAT( s.added,'%d %b %Y %T') as fecha, s.rating, s.id_status, s.totalFav as faved, s.totalComments as comments, u.user_login as author,u.id as user_id, o.status_class as class FROM links s inner join users u on s.ID_USER = u.ID inner join operational_status o on s.ID_Status = o.ID where s.title like '%".$criteria."%'  group by ID order by added desc";
+    $this->paginatedResult->setQuery( $query );
+    $this->paginatedResult->setMethod( 'cache' );
+    $this->paginatedResult->generatePagination();
+    return $this->paginatedResult;
   }
 
 
