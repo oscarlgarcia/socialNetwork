@@ -1,47 +1,53 @@
     <div class="panel panel-primary">
 	   <div class="panel-heading">
-		  <h3 class="panel-title"><span class="badge">{rule_count}</span> Reglas encontradas</h3>
+		  <h3 class="panel-title"><span class="badge">{gamification_count}</span> Reglas encontradas</h3>
 		</div>
 		<div class="panel-body">
-        <form class="navbar-form" role="search" method="post" action="admin_category/search">
+        <form class="navbar-form" role="search" method="post" action="admin_gamification/search">
            <div class="col-md-6">
              <div class="input-group">
-               <input type="text" class="form-control" placeholder="Busca una Categoria" id="search" name="search" value="{category.search}">
+               <input type="text" class="form-control" placeholder="Busca una Regla" id="search" name="search" value="{gamification.search}">
                <div class="input-group-btn">
                  <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                </div>
              </div>
            </div>
            <div class="col-md-6">
-             <a class="btn btn-info pull-right" href="admin_category/add"><i class="fa fa-plus"></i> Agregar Categor&iacute;a</a>
+             <a class="btn btn-info pull-right" href="admin_gamification/add"><i class="fa fa-plus"></i> Agregar una Regla</a>
            </div>
          </form>        
         <table class="table table-hover " id="dev-table">
 		    <thead>
 		      <tr>
 			      <th><span class="fa fa-tasks"></span> ID</th>
-				    <th>Nombre</th>
-            <th>Imagen asociada</th>
-            <th>Descripci&oacute;n</th>
+				    <th>Evento</th>
+            <th>Umbral</th>
+            <th>Experiencia</th>
+            <th>Reputacion</th>
+            <th>Nivel</th>
+            <th>Insignia</th>
 			    </tr>
 		    </thead>
 		    <tbody>
-		    <!-- START category -->
+		    <!-- START gamification -->
 		      <tr>
-		        <td class="col-md-2">
+		        <td class="col-md-1">
               <div class="btn-group">
                 <button type="button" class="btn btn-info">{ID}</button>
                 <button type="button" data-toggle="dropdown" class="btn btn-info dropdown-toggle"> <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li class="deleteButton"><a id="delete" data-deleteurl="admin_category/delete/{ID}" data-toggle="modal" data-target="#delete_modal"><span class="fa fa-trash"></span> Eliminar</a></li>
+                  <li class="deleteButton"><a id="delete" data-deleteurl="admin_gamification/delete/{ID}" data-toggle="modal" data-target="#delete_modal"><span class="fa fa-trash"></span> Eliminar</a></li>
                 </ul>
               </div>
             </td>
-		  	    <td class="col-md-2">{categoryName}</td>
-            <td class="col-md-3"><img src="{categoryImage}" class="img-thumbnail" width="30%" height="30%" /></td>
-            <td class="col-md-5">{categoryDescripition}</td>
+		  	    <td class="col-md-2">{name}</td>
+            <td class="col-md-2">{threshold}</td>
+            <td class="col-md-1">{xp}</td>
+            <td class="col-md-1">{rp}</td>
+            <td class="col-md-1">{lp}</td>
+            <td class="col-md-2"><img src="{image_path}{image}" class="img-thumbnail" width="30%" height="30%" /></td>
           </tr>
-        <!-- END category -->
+        <!-- END gamification -->
 		    </tbody>
         </table>
         <div class="col-md-9">
@@ -57,11 +63,11 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Se va a eliminar esta Categor&iacute;a</h4>
+            <h4 class="modal-title">Se va a eliminar esta Regla</h4>
           </div>
           <div class="modal-body">
             <p class="text-warning">Est&aacute;s seguro? Esta operaci&oacute;n no podr&aacute; deshacerse</p>
-            <p class="text-warning">Realizar esta acci&oacute;n puede producir efectos en el Site; te aconsejo no realizarla</p>
+            <p class="text-warning">Realizar esta acci&oacute;n afectar&aacute; la forma que se asignan las insignias</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>

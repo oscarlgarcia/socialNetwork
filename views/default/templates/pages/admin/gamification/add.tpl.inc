@@ -3,7 +3,7 @@
 <script type="text/javascript" src="lib/tagging/jquery.tagsinput.js"></script>
 <div class="panel panel-primary">
   <div class="panel-heading">
-    <h3 class="panel-title">Nueva Categor&iacute;a</h3>
+    <h3 class="panel-title">Nueva Regla</h3>
 	</div>
 	<div class="panel-body">
     <!-- START errors -->
@@ -11,8 +11,11 @@
     <!-- END errors -->
     <form  method="post" action="admin_category/register" name="categoryForm" id="categoryForm">
       <div class="form-group upload_group">
-        <label  class="control-label" for="categoryName">Nombre de la Categoria</label>
-        <input name="categoryName" maxlength="400" id="categoryName" value="{categoryName}" type="text" class="form-control" />
+        <label  class="control-label" for="categoryName">Evento que dispara la regla</label>
+        <select name="eventName" id="eventName"  class="form-control">
+          <option selected></option>
+          <option>1</option>
+        </select>
       </div>
       <div class="form-group upload_group">
         <label  class="control-label" for="categoryDescription">Descripci&oacute;n de la categor&iacute;a</label>

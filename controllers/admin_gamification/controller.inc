@@ -98,37 +98,37 @@ class Admin_gamificationcontroller{
 	
 	
 	/*
-	* Metodo para buscar las categorias desde la pantalla de admin
+	* Metodo para buscar las reglas desde la pantalla de admin
 	*/
     private function search($offset)
     {   
       $offset = ($offset<=0)?1:$offset;
       
-      if (!isset($_SESSION['rule_criteria'])){
-      	$this->registry->getObject('util')->storeToSession('rule_criteria',"");
+      if (!isset($_SESSION['gamification_criteria'])){
+      	$this->registry->getObject('util')->storeToSession('gamification_criteria',"");
       }
 
       if (isset($_POST['search'])){
-      	$this->registry->getObject('util')->storeToSession('rule_criteria',$_POST['search']);
+      	$this->registry->getObject('util')->storeToSession('gamification_criteria',$_POST['search']);
       }
 
       require_once( FRAMEWORK_PATH . 'models/gamification_rules.inc');
-	    $rule = new Category( $this->registry );
-	    $pagination = $rule->search($offset,$_SESSION['rule_criteria']);
+	    $rule = new Gamification_Rules( $this->registry );
+	    $pagination = $rule->search($offset,$_SESSION['gamification_criteria']);
 	 
       if( $pagination->getTotalRows() == 0 )
       {
       	// no hay 
         $this->registry->getObject('template')->buildFromTemplates(
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'category/'.$this->registry->getObject('constants')->getNoResultsTpl(),
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'gamification/'.$this->registry->getObject('constants')->getNoResultsTpl(),
           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
         );
         
         //Cargamos la busqueda
-	      $this->registry->getObject('template')->getPage()->addTag('category.search',$_SESSION['rule_criteria']);	
+	      $this->registry->getObject('template')->getPage()->addTag('gamification.search',$_SESSION['gamification_criteria']);	
         // cargamos el total de settings
-		    $this->registry->getObject('template')->getPage()->addTag( 'category_count', $pagination->getTotalRows() );
+		    $this->registry->getObject('template')->getPage()->addTag( 'gamification_count', $pagination->getTotalRows() );
       }else
       {
          if(!$pagination->checkOffset($offset))
@@ -136,24 +136,24 @@ class Admin_gamificationcontroller{
          	  // invalid
             $this->registry->getObject('template')->buildFromTemplates(
               $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-              $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'category/'.$this->registry->getObject('constants')->getInvalidTpl(),
+              $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'gamification/'.$this->registry->getObject('constants')->getInvalidTpl(),
               $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
             );
          }else
 	     { 
           $this->registry->getObject('template')->buildFromTemplates(
 	         $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'category/'.$this->registry->getObject('constants')->getListTpl(),
+	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'gamification/'.$this->registry->getObject('constants')->getListTpl(),
 	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
 	       );
 		
-		      //cargamos la info de cada snippet
-		      $this->registry->getObject('template')->getPage()->addTag( 'category', array( 'SQL', $pagination->getCache() ) );
-          $this->registry->getObject('template')->getPage()->addTag( 'category_image_path', $this->registry->getSetting('language_path') );
+		      //cargamos la info de cada regla
+		      $this->registry->getObject('template')->getPage()->addTag( 'gamification', array( 'SQL', $pagination->getCache() ) );
+          $this->registry->getObject('template')->getPage()->addTag( 'image_path', $this->registry->getSetting('badge_path') );
 		      //Cargamos la busqueda
-          $this->registry->getObject('template')->getPage()->addTag( 'category.search',$_SESSION['rule_criteria']);	
+          $this->registry->getObject('template')->getPage()->addTag( 'gamification.search',$_SESSION['gamification_criteria']);	
           // cargamos el total de settings
-		      $this->registry->getObject('template')->getPage()->addTag( 'category_count', $pagination->getTotalRows() );		
+		      $this->registry->getObject('template')->getPage()->addTag( 'gamification_count', $pagination->getTotalRows() );		
 		      $pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
 	      }		
       }
@@ -168,7 +168,7 @@ class Admin_gamificationcontroller{
   {
     $this->registry->getObject('template')->buildFromTemplates(
 	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'category/'.$this->registry->getObject('constants')->getAddTpl(),
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'gamification/'.$this->registry->getObject('constants')->getAddTpl(),
 	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
 	  	);
     
@@ -229,20 +229,17 @@ class Admin_gamificationcontroller{
      exit();
    }
 
+ 
   /*
-  * Metodo que borra la categoria
+  * Metodo que borra la regla
   *
   **/
-  private function delete($catID)
+  private function delete($ruleID)
   {
-    require_once( FRAMEWORK_PATH . 'models/category.inc');
-    $category = new Category( $this->registry );
-
-    if ($category->canErase($catID) )
-    {
-       $category->delete( $catID );  
-    }
-    header('Location: /socialNetwork/admin_category/search');
+    require_once( FRAMEWORK_PATH . 'models/gamification_rules.inc');
+    $rule = new Gamification_Rules( $this->registry );
+    $rule->delete( $ruleID );  
+    header('Location: /socialNetwork/admin_gamification/search');
   } 
 
 

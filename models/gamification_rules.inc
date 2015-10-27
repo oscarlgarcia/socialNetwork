@@ -15,7 +15,7 @@ class Gamification_Rules extends Object{
   private $reputation_points;
   private $level_points;
   private $saveable_fields = array( 'eventName', 'id_Badge','threshold','experience_points','reputation_points','level_points'); 
-  private $limit = 500; //poner en config
+  private $limit = 10; //poner en config
    	
   /**
   * Guarda un objeto Gamification_Rules y lo retorna como objeto
@@ -62,9 +62,9 @@ class Gamification_Rules extends Object{
    */
   public function search($offset = 1, $criteria = "")
   {
-    $this->paginatedResult->setLimit(10);
+    $this->paginatedResult->setLimit($this->limit);
     $this->paginatedResult->setOffset($offset - 1);
-    $query="SELECT c.ID as ID, c.name as categoryName, md.url as categoryImage, c.description as categoryDescripition from category c inner join media md on md.ID = c.image_category where c.name like '%".$criteria."%' or c.image_category  like '%".$criteria."%' or c.description like '%".$criteria."%'";
+    $query="SELECT r.ID as ID, r.eventName as name, r.threshold as threshold, r.experience_points as xp, r.reputation_points as rp, r.level_points as lp, b.path_image as image from gamification_rules r inner join badges b on r.ID_Badge = b.ID where r.eventName like '%".$criteria."%'";
     $this->paginatedResult->setQuery( $query );
     $this->paginatedResult->setMethod( 'cache' );
     $this->paginatedResult->generatePagination();
@@ -72,6 +72,17 @@ class Gamification_Rules extends Object{
   }
 
 
+
+  /**
+  * borra una regla a partir de su ID
+  * @param int $ruleID 
+  */
+  public function delete($ruleID)
+  {
+    $this->registry->getObject('db')->deleteRecords( 'gamification_rules',' id = '.$ruleID,'1');
+    $uid = $this->registry->getObject('db')->lastInsertID();
+    return $uid;  
+  }
 
 
   public function getID(){
