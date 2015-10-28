@@ -12,6 +12,7 @@ class Upload {
   private $errorImage;
   private $fileName;
   private $fileExt;
+  private $fileSize;
   private $ramdomNumber;
   private $newFileName;
   private $registry;
@@ -32,6 +33,7 @@ class Upload {
       $this->uploadDirectory = $uploadDirectoryPath;
       $this->relative        = $relativePath;
   	  $this->errorImage      = $errorImagePath;
+      $this->fileSize        = getimagesize($_FILES['FileInput']['tmp_name']);
       $this->fileName        = strtolower($_FILES['FileInput']['name']);
       $this->fileExt         = substr($this->fileName, strrpos($this->fileName, '.'));
       $this->ramdomNumber    = rand(0, 9999999999);
@@ -42,30 +44,31 @@ class Upload {
 
       	$media->setName(htmlspecialchars($this->registry->getObject('db')->sanitizeData($_POST['imageName']),ENT_IGNORE));
         $media->setUrl($this->relative.$this->newFileName);
+        $media->setSize($this->fileSize[0]."x".$this->fileSize[1]);
         $id = $media->save();
         
         //Guardamos los Tags
-		require_once FRAMEWORK_PATH . 'models/tags.inc';
-	    // leemos los tags y los separamos por comas
-		$tags=explode(",", $this->registry->getObject('db')->sanitizeData(htmlentities($_POST['tags'])));
+		    require_once FRAMEWORK_PATH . 'models/tags.inc';
+	      // leemos los tags y los separamos por comas
+		    $tags=explode(",", $this->registry->getObject('db')->sanitizeData(htmlentities($_POST['tags'])));
         foreach($tags as $clave=>$value)
-		{
-		  $myTag = new Tags( $this->registry);
-		  $myTag->setTagName(strtolower($value));
-		  $idTags[]=$myTag->save();
-		}
+		    {
+		      $myTag = new Tags( $this->registry);
+		      $myTag->setTagName(strtolower($value));
+		      $idTags[]=$myTag->save();
+		    }
 
-		//Guardamos la relacion entre tags y media
-		require_once FRAMEWORK_PATH . 'models/tags_media.inc';
-		//Por cada Tag guardamos su relacion con el media
+		    //Guardamos la relacion entre tags y media
+		    require_once FRAMEWORK_PATH . 'models/tags_media.inc';
+		    //Por cada Tag guardamos su relacion con el media
         foreach($idTags as $clave=>$value)
-		{
-		  $myTag_media = new Tags_Media( $this->registry);
-		  $myTag_media->setIDTag($value);
-		  $myTag_media->setIDMedia($id);
-		  $idTags_snippet[]=$myTag_media->save();
-		}
-	    echo "<img id='imageUploaded' src='".$this->relative.$this->newFileName."'  style='border:1px;' class='img-thumbnail' />";
+	    	{
+		      $myTag_media = new Tags_Media( $this->registry);
+		      $myTag_media->setIDTag($value);
+		      $myTag_media->setIDMedia($id);
+		      $idTags_snippet[]=$myTag_media->save();
+		    }
+	      echo "<img id='imageUploaded' src='".$this->relative.$this->newFileName."'  style='border:1px;' class='img-thumbnail' />";
         exit();
         
       }else{

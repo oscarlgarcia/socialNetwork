@@ -178,7 +178,7 @@ class Admin_categorycontroller{
       $this->registry->getObject('template')->getPage()->addTag('error_text',''); 
       $this->registry->getObject('template')->getPage()->addTag('categoryName','');	
 	  $this->registry->getObject('template')->getPage()->addTag('categoryDescription','');
-	  $this->registry->getObject('template')->getPage()->addTag('categoryImage','');
+	  $this->registry->getObject('template')->getPage()->addTag('image','');
   }
 
  /*
@@ -205,7 +205,7 @@ class Admin_categorycontroller{
 	   $this->registry->getObject('template')->getPage()->addTag('error_text','La categoria ya existe');
 	   $this->registry->getObject('template')->getPage()->addTag('categoryName',$_POST['categoryName']);	
 	   $this->registry->getObject('template')->getPage()->addTag('categoryDescription',$_POST['categoryDescription']);
-	   $this->registry->getObject('template')->getPage()->addTag('categoryImage',$_POST['categoryImage']);
+	   $this->registry->getObject('template')->getPage()->addTag('image',$_POST['image']);
      }
 	  	
   }

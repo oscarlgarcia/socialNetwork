@@ -34,6 +34,23 @@ class Event extends Object{
     }
     return null;
   }
+
+
+  /**
+   * Genera lista de Eventos
+   * @param int $offset 
+   * @return Object pagination object
+   */
+  public function listEvent( $offset=0 )
+  {
+    $this->paginatedResult->setLimit(500);
+    $this->paginatedResult->setOffset( $offset );
+    $query = "SELECT e.eventName as name, e.description as description FROM  event e order by e.eventName ASC" ;
+    $this->paginatedResult->setQuery( $query );
+    $this->paginatedResult->setMethod( 'cache' );
+    $this->paginatedResult->generatePagination();
+    return $this->paginatedResult;
+  }
 	
    /**
    * Genera lista de Eventos que coinciden con el criterio pasado paginados 

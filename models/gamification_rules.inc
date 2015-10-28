@@ -64,7 +64,7 @@ class Gamification_Rules extends Object{
   {
     $this->paginatedResult->setLimit($this->limit);
     $this->paginatedResult->setOffset($offset - 1);
-    $query="SELECT r.ID as ID, r.eventName as name, r.threshold as threshold, r.experience_points as xp, r.reputation_points as rp, r.level_points as lp, b.path_image as image from gamification_rules r inner join badges b on r.ID_Badge = b.ID where r.eventName like '%".$criteria."%'";
+    $query="SELECT r.ID as ID, r.eventName as name, r.threshold as threshold, r.experience_points as xp, r.reputation_points as rp, r.level_points as lp, m.url as image from gamification_rules r inner join badges b on r.ID_Badge = b.ID inner join media m on m.ID = b.media_id where r.eventName like '%".$criteria."%'";
     $this->paginatedResult->setQuery( $query );
     $this->paginatedResult->setMethod( 'cache' );
     $this->paginatedResult->generatePagination();

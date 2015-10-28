@@ -149,8 +149,7 @@ class Admin_gamificationcontroller{
 		
 		      //cargamos la info de cada regla
 		      $this->registry->getObject('template')->getPage()->addTag( 'gamification', array( 'SQL', $pagination->getCache() ) );
-          $this->registry->getObject('template')->getPage()->addTag( 'image_path', $this->registry->getSetting('badge_path') );
-		      //Cargamos la busqueda
+          //Cargamos la busqueda
           $this->registry->getObject('template')->getPage()->addTag( 'gamification.search',$_SESSION['gamification_criteria']);	
           // cargamos el total de settings
 		      $this->registry->getObject('template')->getPage()->addTag( 'gamification_count', $pagination->getTotalRows() );		
@@ -172,6 +171,11 @@ class Admin_gamificationcontroller{
 	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
 	  	);
     
+      // Cargamos el evento
+      require_once( FRAMEWORK_PATH . 'models/event.inc');
+      $evento = new Event( $this->registry );
+      $pagination = $evento->listEvent();
+       $this->registry->getObject('template')->getPage()->addTag( 'event', array( 'SQL', $pagination->getCache() ) ); 
       $this->registry->getObject('template')->getPage()->addTag('error_msg','error-msg'); 
       $this->registry->getObject('template')->getPage()->addTag('error_text',''); 
       $this->registry->getObject('template')->getPage()->addTag('categoryName','');	
@@ -187,7 +191,7 @@ class Admin_gamificationcontroller{
  
     require_once FRAMEWORK_PATH . 'controllers/admin_category/registrationcontroller.inc';
     require_once( FRAMEWORK_PATH . 'models/category.inc');
-     $category = new Category( $this->registry );
+    $category = new Category( $this->registry );
      if ($category->canSave($_POST['categoryName']))
      {
        $rc = new Registrationcontroller( $this->registry,$this->registry->getObject('authenticate')->getUser()->getUserID());

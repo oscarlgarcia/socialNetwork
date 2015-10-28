@@ -20,7 +20,7 @@
       </div>
       <div class="form-group">
         <label  class="control-label" for="categoryDescription">Imagen de la categor&iacute;a: </label>
-        <input id="categoryImage" name="categoryImage"  value="{categoryImage}" placeholder="Selecciona una imagen" type="number" class="filefilter"/>
+        <input id="image" name="image"  value="{image}" placeholder="Selecciona una imagen" type="number" class="filefilter"/>
         <div class="upload_div btn btn-primary">
         <span class="fa fa-cloud-download"></span>
         <input name="categoryImageBtn" id="categoryImageBtn" class="upload" data-toggle="modal" data-target="#mediaModal" />
@@ -95,5 +95,5 @@
 <script type="text/javascript" src="lib/imageUpload/imageUpload.js"></script>
 <script type="text/javascript" src="lib/imageUpload/input-update.js"></script>
 <script type="text/javascript" src="lib/imageUpload/image-search.js"></script>
-<script type="text/javascript" src="lib/category/category-assign.js"></script>
+<script type="text/javascript" src="lib/imageUpload/image-assign.js"></script>
 <script type="text/javascript" src="lib/category/category-add.js"></script>

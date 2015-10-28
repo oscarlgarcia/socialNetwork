@@ -45,7 +45,7 @@
             <td class="col-md-1">{xp}</td>
             <td class="col-md-1">{rp}</td>
             <td class="col-md-1">{lp}</td>
-            <td class="col-md-2"><img src="{image_path}{image}" class="img-thumbnail" width="30%" height="30%" /></td>
+            <td class="col-md-2"><img src="{image}" class="img-thumbnail" width="30%" height="30%" /></td>
           </tr>
         <!-- END gamification -->
 		    </tbody>

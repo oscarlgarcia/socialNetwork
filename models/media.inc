@@ -10,8 +10,9 @@ class Media extends Object{
   private $ID;
   private $name;
   private $url;
+  private $size;
   private $limit = 1000; //TODO poner en configs
-  private $saveable_fields = array( 'name', 'url');
+  private $saveable_fields = array( 'name', 'url', 'size');
 	
   /**
    * Genera lista de imagenes paginadas
@@ -22,7 +23,7 @@ class Media extends Object{
   {
 	$this->paginatedResult->setLimit(5); //TODO poner no limit
 	$this->paginatedResult->setOffset(0);
-	$query = "SELECT id, url, name from media where name like '%".$criteria."%' " ; // poner un indice
+	$query = "SELECT id, url, name, size from media where name like '%".$criteria."%' " ; // poner un indice
 	$this->paginatedResult->setQuery( $query );
 	$this->paginatedResult->setMethod( 'cache' );
 	$this->paginatedResult->generatePagination();
@@ -31,12 +32,12 @@ class Media extends Object{
 	
 	
     /**
-	 * borra un snippet a partir de su ID
-	 * @param int $snippetID 
+	 * borra un media a partir de su ID
+	 * @param int $mediaID 
 	 */
-	public function delete($id)
+	public function delete($mediaID)
 	{
-      $this->registry->getObject('db')->deleteRecords( 'snippets',' id = '.$id,'1');
+      $this->registry->getObject('db')->deleteRecords( 'media',' id = '.$mediaID,'1');
 	   $uid = $this->registry->getObject('db')->lastInsertID();
 	   return $uid;  
 	}
@@ -62,16 +63,18 @@ class Media extends Object{
                   <th>ID</th>
                   <th>Nombre</th>
                   <th>Imagen</th>
+                  <th>Tamaño</th>
                   </thead>
                   <tbody>";
 	    while ($value = $this->registry->getObject('db')->resultsFromCache($result->getCache()))
 	    {
            $table.="<tr>
-                     <td class='col-md-2'>".$value["id"]."</td>
-                     <td class='col-md-4'>".$value["name"]."</td>
-                     <td class='col-md-6'>
-                       <img data-category='".$value["id"]."'' src='".$value["url"]."' class='img-thumbnail' width='80' height='80' />
-                     </td>
+                    <td class='col-md-2'>".$value["id"]."</td>
+                    <td class='col-md-4'>".$value["name"]."</td>
+                    <td class='col-md-4'>
+                      <img data-media='".$value["id"]."'' src='".$value["url"]."' class='img-thumbnail' width='80' height='80' />
+                    </td>
+                    <td class='col-md-2'>".$value["size"]."</td>
                     ";
       	}
       	$table.= "</tbody></table>"; 
@@ -107,6 +110,15 @@ class Media extends Object{
   public function getUrl(){
     return $this->url;
   }
+
+  public function setSize($value){
+    $this->size = $value;
+  }
+   
+  public function getSize(){
+    return $this->size;
+  }
+
 
 }
 ?>

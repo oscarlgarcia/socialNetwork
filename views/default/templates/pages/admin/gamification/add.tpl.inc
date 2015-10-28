@@ -10,28 +10,45 @@
     <div class="alert alert-danger" id="{error_msg}">{error_text}</div>
     <!-- END errors -->
     <form  method="post" action="admin_category/register" name="categoryForm" id="categoryForm">
-      <div class="form-group upload_group">
-        <label  class="control-label" for="categoryName">Evento que dispara la regla</label>
-        <select name="eventName" id="eventName"  class="form-control">
-          <option selected></option>
-          <option>1</option>
-        </select>
-      </div>
-      <div class="form-group upload_group">
-        <label  class="control-label" for="categoryDescription">Descripci&oacute;n de la categor&iacute;a</label>
-        <textarea name="categoryDescription" id="categoryDescription"  class="form-control" />{categoryDescription}</textarea>
-      </div>
+      <div class="row">
+        <div class="col-xs-6 form-group">
+          <label for="eventName" class="control-label" >Evento que dispara la regla</label>
+            <select class="form-control" id="eventName" name="eventName" tabindex="1" >
+              <option value="-1" selected="true">Selecciona un Evento</option>
+              <!-- START event -->
+              <option value="{name}">[{name}] : {description}</option>
+              <!-- END event -->
+            </select>
+        </div>
+      </div>  
       <div class="form-group">
-        <label  class="control-label" for="categoryDescription">Imagen de la categor&iacute;a: </label>
-        <input id="categoryImage" name="categoryImage"  value="{categoryImage}" placeholder="Selecciona una imagen" type="number" class="filefilter"/>
+        <label  class="control-label" for="categoryDescription">Badge de la regla </label>
+        <input id="image" name="image"  value="{image}" placeholder="Selecciona una imagen" type="number" class="filefilter"/>
         <div class="upload_div btn btn-primary">
-        <span class="fa fa-cloud-download"></span>
-        <input name="categoryImageBtn" id="categoryImageBtn" class="upload" data-toggle="modal" data-target="#mediaModal" />
-      </div>
-      </div>
-      
-      <div class="pull-right">
-        <input type="submit" value="Guardar Categor&iacute;a" name="btn" id="btn-addCat" data-loading-text="Guardando ..." class="btn btn-primary" tabindex="10"> 
+          <span class="fa fa-cloud-download"></span>
+          <input name="categoryImageBtn" id="categoryImageBtn" class="upload" data-toggle="modal" data-target="#mediaModal" />
+        </div>
+      </div> 
+      <div class="row">
+        <div class="col-xs-3 form-group">
+          <label for="threshold" class="control-label" >Umbral:</label>
+          <input type="number" id="threshold" name="threshold" min="0" class="form-control" /> 
+        </div>
+        <div class="col-xs-3 form-group">
+          <label for="xp" class="control-label" >Puntos de Experiencia:</label>
+          <input type="number" id="xp" name="xp" class="form-control" min="0" /> 
+        </div>
+        <div class="col-xs-3 form-group">
+          <label for="rp" class="control-label" >Puntos de Reputacion:</label>
+          <input type="number" id="rp" name="rp" class="form-control" min="0" /> 
+        </div>
+        <div class="col-xs-3 form-group">
+          <label for="lp" class="control-label" >Puntos de Nivel:</label>
+          <input type="number" id="lp" name="lp" class="form-control" min="0" /> 
+        </div>
+      </div>  
+    <div class="pull-right">
+        <input type="submit" value="Guardar Regla" name="btn" id="btn-addRule" data-loading-text="Guardando ..." class="btn btn-primary" tabindex="10"> 
       </div>
     </form>
   </div>
@@ -98,5 +115,4 @@
 <script type="text/javascript" src="lib/imageUpload/imageUpload.js"></script>
 <script type="text/javascript" src="lib/imageUpload/input-update.js"></script>
 <script type="text/javascript" src="lib/imageUpload/image-search.js"></script>
-<script type="text/javascript" src="lib/category/category-assign.js"></script>
-<script type="text/javascript" src="lib/category/category-add.js"></script>
+<script type="text/javascript" src="lib/imageUpload/image-assign.js"></script>
