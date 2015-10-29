@@ -24,17 +24,17 @@ class Category extends Object
   public function save()
   {
     $changes = array();
-	foreach( $this->saveable_fields as $field )
-	{
-	  $changes[ $field ] = $this->$field;
-	}
-	$this->registry->getObject('db')->insertRecords( 'category', $changes );
-	$uid = $this->registry->getObject('db')->lastInsertID();
-	return $uid;  
+	  foreach( $this->saveable_fields as $field )
+	  {
+	    $changes[ $field ] = $this->$field;
+	  }
+	  $this->registry->getObject('db')->insertRecords( 'category', $changes );
+	  $uid = $this->registry->getObject('db')->lastInsertID();
+	  return $uid;  
   }	
 
 
-    /**
+  /**
   * Metodo que valida si una categoria ya se ha guardado
   * @param $categoryName, nombre del controlador
   * @return true, si el nombre puede guardarse, false si no

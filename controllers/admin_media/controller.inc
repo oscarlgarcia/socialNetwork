@@ -1,0 +1,101 @@
+<?php
+ /**
+ * Controlador para administracion de Media  browse / edit / delete / ban
+ * @version 1.0
+ * @author  Oscar Garcia
+ */	
+class Admin_mediacontroller{
+	
+	/**
+	 * Referencia del objeto registro
+	 */
+	private $registry;
+	
+	private $controller;
+	
+	private $action;
+	
+	private $parameter1;
+	
+	private $parameter2;
+	
+	/**
+	 * Referencia del modelo
+	 */
+	private $model;
+	
+	/**
+	 * Constructor del controlador - direct call a false cuando esta embebido a traves de otro controlador
+	 * @param Registry $registry nuestro objeto registro
+	 * @param bool $directCall - TRUE si lo llamamos a traves del framework, o FALSE si es por otra via
+	 */
+	public function __construct( Registry $registry, $directCall )
+	{
+		$this->registry = $registry;
+		// leemos el url para obtener el action
+		$urlBits = $this->registry->getObject('url')->getURLBits();
+		// Comprobamos unicamente si estamos logeados
+		if( $this->registry->getObject('authenticate')->isLoggedIn() )
+    {
+	    //   $urlBits[0] -> Controlador
+		  //   $urlBits[1] -> Action
+		  //   $urlBits[2] -> Parametro 1
+		  //   $urlBits[3] -> Parametro 2
+		  $this->controller= $urlBits[0];
+   		if( isset( $urlBits[1] ) )   // Si viene algun action debemos comprobar si existe
+  	  {
+		    $this->action=$urlBits[1]; // asignamos el action 
+		   
+			  if(isset( $urlBits[2] )) { // Comprobamos el parametro 1
+  		    $this->parameter1= $urlBits[2];	
+  		  }
+			  
+			  if(isset( $urlBits[3] )) {  // Comprobamos el parametro 2
+  		    $this->parameter2= $urlBits[3];	
+  		  }
+			  
+			  switch( $urlBits[1] )
+				{
+				  case 'image_browse':
+            $this->image_browse();
+            break;
+          case 'image_upload':
+			      $this->upload();
+			      break;
+				}
+			}
+		}else 
+		{
+	    // sino esta logeado redirecciona
+	    $this->registry->getObject('template')->buildFromTemplates(
+	   	  $this->registry->getObject('constants')->getHeaderTpl(), 
+	   	  $this->registry->getObject('constants')->getMainTpl(), 
+	     	$this->registry->getObject('constants')->getFooterTpl()
+	   	);   	
+    }  
+	}
+	
+  /*
+  * Metodo AJAX para subir imagenes
+  * TODO poner en lib
+  * 
+  */
+  private function upload()
+  {
+    require_once( FRAMEWORK_PATH . 'lib/imageUpload/Upload.class.inc');
+    $upload = new Upload($this->registry);
+  }
+
+  /*
+  * Metodo para buscar imagenes por AJAX
+  */
+   private function image_browse(){
+     require_once( FRAMEWORK_PATH . 'models/media.inc');   
+     $media = new Media($this->registry);
+     echo $media->search($_POST['image_search']);
+     exit();
+   }
+
+}
+			
+?>

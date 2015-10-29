@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Controlador para el registro de reglas
+ * Controlador para el registro de Categorias
  */
 class Registrationcontroller{
 	
@@ -44,17 +44,14 @@ class Registrationcontroller{
 		$this->registry = $registry;
 		if( isset( $_POST ) && count( $_POST ) > 0 )
 		{
-		    $idRule = "";
-			// Guardamos la regla
-			require_once FRAMEWORK_PATH . 'models/gamification_rules.inc';
-			$rule = new Gamification_Rules( $this->registry);
-			$rule->setEventName( htmlentities($this->registry->getObject('db')->sanitizeData( $_POST['eventName'] ),ENT_COMPAT,'UTF-8') );
-			$rule->setIDBadge( htmlspecialchars($this->registry->getObject('db')->sanitizeData($_POST['image']),ENT_IGNORE));
-			$rule->setThreshold( htmlspecialchars($this->registry->getObject('db')->sanitizeData($_POST['threshold']),ENT_IGNORE)); 
-            $rule->setExperiencePoints( htmlspecialchars($this->registry->getObject('db')->sanitizeData($_POST['xp']),ENT_IGNORE)); 
-            $rule->setReputationPoints( htmlspecialchars($this->registry->getObject('db')->sanitizeData($_POST['rp']),ENT_IGNORE)); 
-            $rule->setLevel_points( htmlspecialchars($this->registry->getObject('db')->sanitizeData($_POST['lp']),ENT_IGNORE)); 
-			$idRule = $rule->save();		
+		    $idCategoria = "";
+			// Guardamos la categoria
+			require_once FRAMEWORK_PATH . 'models/category.inc';
+			$category = new Category( $this->registry);
+			$category->setName( htmlentities($this->registry->getObject('db')->sanitizeData( $_POST['categoryName'] ),ENT_COMPAT,'UTF-8') );
+			$category->setDescription( htmlspecialchars($this->registry->getObject('db')->sanitizeData($_POST['categoryDescription']),ENT_IGNORE));
+			$category->setImageName( htmlspecialchars($this->registry->getObject('db')->sanitizeData($_POST['image']),ENT_IGNORE)); 		
+			$idCategoria = $category->save();		
 		
 		    // TODO poner el log de administracion
          	//require_once FRAMEWORK_PATH . 'models/admin_log.inc';

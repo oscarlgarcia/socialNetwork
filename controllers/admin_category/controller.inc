@@ -36,67 +36,55 @@ class Admin_categorycontroller{
 		$urlBits = $this->registry->getObject('url')->getURLBits();
 		// Comprobamos unicamente si estamos logeados
 		if( $this->registry->getObject('authenticate')->isLoggedIn() )
-        {
-	      //   $urlBits[0] -> Controlador
+    {
+	    //   $urlBits[0] -> Controlador
 		  //   $urlBits[1] -> Action
 		  //   $urlBits[2] -> Parametro 1
 		  //   $urlBits[3] -> Parametro 2
 		  $this->controller= $urlBits[0];
-   		  if( isset( $urlBits[1] ) )   // Si viene algun action debemos comprobar si existe
-  		    {
-		      $this->action=$urlBits[1]; // asignamos el action 
+   	  if( isset( $urlBits[1] ) )   // Si viene algun action debemos comprobar si existe
+  		{
+		    $this->action=$urlBits[1]; // asignamos el action 
 			   
-			   if(isset( $urlBits[2] )) { // Comprobamos el parametro 1
-  		  	  	  $this->parameter1= $urlBits[2];	
-  		  	   }
+			  if(isset( $urlBits[2] )) { // Comprobamos el parametro 1
+  		 	  $this->parameter1= $urlBits[2];	
+  		  }
 			  
-			   if(isset( $urlBits[3] )) {  // Comprobamos el parametro 2
-  		  	  	  $this->parameter2= $urlBits[3];	
-  		  	   }
+			  if(isset( $urlBits[3] )) {  // Comprobamos el parametro 2
+  		 	  $this->parameter2= $urlBits[3];	
+  		  }
 			  
-			   switch( $urlBits[1] )
+			  switch( $urlBits[1] )
 				{
 					
 				  case 'search':
-  				    $this->search(intval($this->parameter1));
+  			    $this->search(intval($this->parameter1));
 				    break;
 
 				  case 'add':
 				    $this->add();
-					break;	
-
-				  case 'image_browse':
-                    $this->image_browse();
-                    break;
-
-                  case 'image_upload':
-			        $this->upload();
-			        break;
+					  break;	
 
 				  case 'register':
 				  	$this->register();
-					break;
+					  break;
 
-				 case 'delete':
+				  case 'delete':
 				    $this->delete(intval($this->parameter1));
 				    break;
 
 				}
-				
 			}
-		   
 		}else 
 		{
-	       // sino esta logeado redirecciona
-	       $this->registry->getObject('template')->buildFromTemplates(
-	       	$this->registry->getObject('constants')->getHeaderTpl(), 
-	       	$this->registry->getObject('constants')->getMainTpl(), 
-	       	$this->registry->getObject('constants')->getFooterTpl()
-	       	);   	
-      }
-      
+	    // sino esta logeado redirecciona
+	    $this->registry->getObject('template')->buildFromTemplates(
+	      $this->registry->getObject('constants')->getHeaderTpl(), 
+	      $this->registry->getObject('constants')->getMainTpl(), 
+	      $this->registry->getObject('constants')->getFooterTpl()
+	    );   	
+    }  
 	}
-	
 	
 	/*
 	* Metodo para buscar las categorias desde la pantalla de admin
@@ -210,27 +198,6 @@ class Admin_categorycontroller{
 	  	
   }
  
- /*
-  * Metodo para subir imagenes
-  * TODO poner en lib
-  * 
-  */
-  private function upload()
-  {
-    require_once( FRAMEWORK_PATH . 'lib/imageUpload/Upload.class.inc');
-    $upload = new Upload($this->registry);
-  }
-
-  /*
-  * Metodo para buscar imagenes
-  */
-   private function image_browse(){
-     require_once( FRAMEWORK_PATH . 'models/media.inc');   
-     $media = new Media($this->registry);
-     echo $media->search($_POST['image_search']);
-     exit();
-   }
-
   /*
   * Metodo que borra la categoria
   *

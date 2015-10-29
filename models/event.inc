@@ -51,6 +51,26 @@ class Event extends Object{
     $this->paginatedResult->generatePagination();
     return $this->paginatedResult;
   }
+
+
+    /**
+   * Genera lista de eventos con una seleccionada
+   * @param int $offset ,  $eventName
+   * @return Object pagination object
+   */
+  public function listEventSelected( $eventName )
+  {
+    $this->paginatedResult->setLimit(500);
+    $this->paginatedResult->setOffset(0);
+    $query = "SELECT e.eventName as name, e.description as description, IF( eventName = '".$eventName."','selected','') as eventSelected FROM event e order by e.eventName ASC" ;
+    $this->paginatedResult->setQuery( $query );
+    $this->paginatedResult->setMethod( 'cache' );
+    $this->paginatedResult->generatePagination();
+    return $this->paginatedResult;
+  }
+
+
+
 	
    /**
    * Genera lista de Eventos que coinciden con el criterio pasado paginados 

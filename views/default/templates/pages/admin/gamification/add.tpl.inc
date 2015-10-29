@@ -9,42 +9,42 @@
     <!-- START errors -->
     <div class="alert alert-danger" id="{error_msg}">{error_text}</div>
     <!-- END errors -->
-    <form  method="post" action="admin_category/register" name="categoryForm" id="categoryForm">
+    <form  method="post" action="admin_gamification/register" name="inputForm" id="inputForm">
       <div class="row">
         <div class="col-xs-6 form-group">
           <label for="eventName" class="control-label" >Evento que dispara la regla</label>
             <select class="form-control" id="eventName" name="eventName" tabindex="1" >
               <option value="-1" selected="true">Selecciona un Evento</option>
               <!-- START event -->
-              <option value="{name}">[{name}] : {description}</option>
+              <option value="{name}" {eventSelected} >[{name}] : {description}</option>
               <!-- END event -->
             </select>
         </div>
       </div>  
       <div class="form-group">
-        <label  class="control-label" for="categoryDescription">Badge de la regla </label>
+        <label  class="control-label" for="image">Badge de la regla </label>
         <input id="image" name="image"  value="{image}" placeholder="Selecciona una imagen" type="number" class="filefilter"/>
         <div class="upload_div btn btn-primary">
           <span class="fa fa-cloud-download"></span>
-          <input name="categoryImageBtn" id="categoryImageBtn" class="upload" data-toggle="modal" data-target="#mediaModal" />
+          <input name="imageBtn" id="imageBtn" class="upload" data-toggle="modal" data-target="#mediaModal" />
         </div>
       </div> 
       <div class="row">
         <div class="col-xs-3 form-group">
           <label for="threshold" class="control-label" >Umbral:</label>
-          <input type="number" id="threshold" name="threshold" min="0" class="form-control" /> 
+          <input type="number" id="threshold" name="threshold" min="0" class="form-control" value ="{threshold}" /> 
         </div>
         <div class="col-xs-3 form-group">
           <label for="xp" class="control-label" >Puntos de Experiencia:</label>
-          <input type="number" id="xp" name="xp" class="form-control" min="0" /> 
+          <input type="number" id="xp" name="xp" class="form-control" min="0" value ="{xp}" /> 
         </div>
         <div class="col-xs-3 form-group">
           <label for="rp" class="control-label" >Puntos de Reputacion:</label>
-          <input type="number" id="rp" name="rp" class="form-control" min="0" /> 
+          <input type="number" id="rp" name="rp" class="form-control" min="0" value ="{rp}" /> 
         </div>
         <div class="col-xs-3 form-group">
           <label for="lp" class="control-label" >Puntos de Nivel:</label>
-          <input type="number" id="lp" name="lp" class="form-control" min="0" /> 
+          <input type="number" id="lp" name="lp" class="form-control" min="0" value ="{lp}" /> 
         </div>
       </div>  
     <div class="pull-right">
@@ -73,7 +73,7 @@
         <div id="myTabContent" class="tab-content">
           <div class="tab-pane upload_tab active in" id="upload">
             <div class="alert alert-danger" id="uploadErrorMsg"></div>
-            <form action="admin_category/image_upload" class="form-inline" method="post" enctype="multipart/form-data" id="uploadImageForm">
+            <form action="admin_media/image_upload" class="form-inline" method="post" enctype="multipart/form-data" id="uploadImageForm">
               <div class="form-group upload_group">
                 <label  class="control-label" for="imageName">Nombre de la Imagen</label>
                 <input name="imageName" maxlength="400" id="imageName" type="text" class="form-control upload_width" />
@@ -94,7 +94,7 @@
             <div id="output"></div>
           </div>
           <div class="tab-pane upload_tab fade" id="browse">
-            <form action="admin_category/image_browse" class="form-inline" method="post" id="imageSearchForm">
+            <form action="admin_media/image_browse" class="form-inline" method="post" id="imageSearchForm">
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="Busca Imagenes" name="image_search" value="">
                 <div class="input-group-btn">
@@ -113,6 +113,6 @@
 </div>
 <!-- End modal-->
 <script type="text/javascript" src="lib/imageUpload/imageUpload.js"></script>
-<script type="text/javascript" src="lib/imageUpload/input-update.js"></script>
 <script type="text/javascript" src="lib/imageUpload/image-search.js"></script>
 <script type="text/javascript" src="lib/imageUpload/image-assign.js"></script>
+<script type="text/javascript" src="lib/gamification/rule_validator.js"></script>

@@ -17,14 +17,23 @@ class Gamification_Rules extends Object{
   private $saveable_fields = array( 'eventName', 'id_Badge','threshold','experience_points','reputation_points','level_points'); 
   private $limit = 10; //poner en config
    	
+
   /**
   * Guarda un objeto Gamification_Rules y lo retorna como objeto
   * return objeto Gamification_Rules 
   */
-  public function save($rule){
-     //TODO poner logica de asignacion de valores
-	 $this->registry->getObject('db')->insertRecords('gamification_rules',$ruleArray );	
-  }
+  public function save()
+  {
+    $changes = array();
+    foreach( $this->saveable_fields as $field )
+    {
+      $changes[ $field ] = $this->$field;
+    }
+    $this->registry->getObject('db')->insertRecords( 'gamification_rules', $changes );
+    $uid = $this->registry->getObject('db')->lastInsertID();
+    return $uid;  
+  } 
+
 	
   /**
   * Busca reglas relacionadas con el evento
@@ -82,6 +91,22 @@ class Gamification_Rules extends Object{
     $this->registry->getObject('db')->deleteRecords( 'gamification_rules',' id = '.$ruleID,'1');
     $uid = $this->registry->getObject('db')->lastInsertID();
     return $uid;  
+  }
+
+
+  /**
+  * Metodo que valida si una regla ya se ha guardado
+  * @param $eventName, nombre del evento
+  * @param $threshold, umbral de activacion
+  * @return true, si el nombre puede guardarse, false si no
+  */
+  public function canSave($eventName, $threshold){
+    $query = "SELECT ID FROM gamification_rules where eventName = '".$eventName."' and threshold = ".$threshold;
+    $this->registry->getObject('db')->executeQuery( $query );
+    if( $this->registry->getObject('db')->numRows() > 0 )
+      return false;
+    else
+      return true;
   }
 
 

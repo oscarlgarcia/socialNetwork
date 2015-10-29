@@ -76,14 +76,6 @@ class Admin_cmscontroller{
 				    $this->register();
 				    break;
 
-			    case 'image_upload':
-			      $this->upload();
-			      break;
-
-          case 'image_browse':
-            $this->image_browse();
-            break;
-
 					default:
 					  $this->add();
 					  break;
@@ -200,7 +192,6 @@ class Admin_cmscontroller{
   /*
 	* Metodo para buscar pages
 	*
-	*
 	*/
     private function browse()
     {   		
@@ -214,13 +205,6 @@ class Admin_cmscontroller{
       $this->registry->getObject('template')->getPage()->addTag( 'page_tree', $pages->listPagesAsTree() );
     }	
 
-
-   private function image_browse(){
-     require_once( FRAMEWORK_PATH . 'models/media.inc');   
-     $media = new Media($this->registry);
-     echo $media->search($_POST['image_search']);
-     exit();
-   }
 
   /*
    Metodo para agregar paginas    
@@ -264,18 +248,6 @@ class Admin_cmscontroller{
     require_once FRAMEWORK_PATH . 'controllers/admin_cms/registrationcontroller.inc';
 	  $rc = new Registrationcontroller( $this->registry,$this->registry->getObject('authenticate')->getUser()->getUserID());
 	  header('Location: add');  	
-  }
-
-
- /*
-  * Metodo para subir imagenes
-  * TODO poner en lib
-  * 
-  */
-  private function upload()
-  {
-    require_once( FRAMEWORK_PATH . 'lib/imageUpload/Upload.class.inc');
-    $upload = new Upload($this->registry);
   }
   
 }		

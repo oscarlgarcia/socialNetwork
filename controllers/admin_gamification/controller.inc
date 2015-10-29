@@ -65,19 +65,11 @@ class Admin_gamificationcontroller{
 				    $this->add();
 					  break;	
 
-				  case 'image_browse':
-            $this->image_browse();
-            break;
-
-          case 'image_upload':
-			      $this->upload();
-			      break;
-
 				  case 'register':
 				  	$this->register();
 					  break;
 
-				 case 'delete':
+				  case 'delete':
 				    $this->delete(intval($this->parameter1));
 				    break;
 
@@ -171,16 +163,18 @@ class Admin_gamificationcontroller{
 	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
 	  	);
     
-      // Cargamos el evento
-      require_once( FRAMEWORK_PATH . 'models/event.inc');
-      $evento = new Event( $this->registry );
-      $pagination = $evento->listEvent();
-       $this->registry->getObject('template')->getPage()->addTag( 'event', array( 'SQL', $pagination->getCache() ) ); 
-      $this->registry->getObject('template')->getPage()->addTag('error_msg','error-msg'); 
-      $this->registry->getObject('template')->getPage()->addTag('error_text',''); 
-      $this->registry->getObject('template')->getPage()->addTag('categoryName','');	
-	  $this->registry->getObject('template')->getPage()->addTag('categoryDescription','');
-	  $this->registry->getObject('template')->getPage()->addTag('categoryImage','');
+    // Cargamos el evento
+    require_once( FRAMEWORK_PATH . 'models/event.inc');
+    $evento = new Event( $this->registry );
+    $pagination = $evento->listEvent();
+    $this->registry->getObject('template')->getPage()->addTag( 'event', array( 'SQL', $pagination->getCache() ) ); 
+    $this->registry->getObject('template')->getPage()->addTag('error_msg','error-msg'); 
+    $this->registry->getObject('template')->getPage()->addTag('error_text',''); 
+    $this->registry->getObject('template')->getPage()->addTag('eventName','');	
+	  $this->registry->getObject('template')->getPage()->addTag('threshold','0');
+	  $this->registry->getObject('template')->getPage()->addTag('xp','0');
+    $this->registry->getObject('template')->getPage()->addTag('rp','0');
+    $this->registry->getObject('template')->getPage()->addTag('lp','0');
   }
 
  /*
@@ -189,49 +183,37 @@ class Admin_gamificationcontroller{
   */
   private function register(){
  
-    require_once FRAMEWORK_PATH . 'controllers/admin_category/registrationcontroller.inc';
-    require_once( FRAMEWORK_PATH . 'models/category.inc');
-    $category = new Category( $this->registry );
-     if ($category->canSave($_POST['categoryName']))
-     {
-       $rc = new Registrationcontroller( $this->registry,$this->registry->getObject('authenticate')->getUser()->getUserID());
-	   header('Location: search'); 
-     }else
-     {
-       $this->registry->getObject('template')->buildFromTemplates(
-    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'category/'.$this->registry->getObject('constants')->getAddTpl(),
-    	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+    require_once FRAMEWORK_PATH . 'controllers/admin_gamification/registrationcontroller.inc';
+    require_once( FRAMEWORK_PATH . 'models/gamification_rules.inc');
+    $rule = new Gamification_Rules( $this->registry );
+    if ($rule->canSave($_POST['eventName'],$_POST['threshold']))
+    {
+      $rc = new Registrationcontroller( $this->registry,$this->registry->getObject('authenticate')->getUser()->getUserID());
+	    header('Location: search'); 
+    }else
+    {
+      $this->registry->getObject('template')->buildFromTemplates(
+        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+    	  $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'gamification/'.$this->registry->getObject('constants')->getAddTpl(),
+    	  $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
     	);
-       $this->registry->getObject('template')->getPage()->addTag('error_msg',' ');	
-	   $this->registry->getObject('template')->getPage()->addTag('error_text','La categoria ya existe');
-	   $this->registry->getObject('template')->getPage()->addTag('categoryName',$_POST['categoryName']);	
-	   $this->registry->getObject('template')->getPage()->addTag('categoryDescription',$_POST['categoryDescription']);
-	   $this->registry->getObject('template')->getPage()->addTag('categoryImage',$_POST['categoryImage']);
-     }
-	  	
-  }
- 
- /*
-  * Metodo para subir imagenes
-  * TODO poner en lib
-  * 
-  */
-  private function upload()
-  {
-    require_once( FRAMEWORK_PATH . 'lib/imageUpload/Upload.class.inc');
-    $upload = new Upload($this->registry);
-  }
 
-  /*
-  * Metodo para buscar imagenes
-  */
-   private function image_browse(){
-     require_once( FRAMEWORK_PATH . 'models/media.inc');   
-     $media = new Media($this->registry);
-     echo $media->search($_POST['image_search']);
-     exit();
-   }
+      
+      // Cargamos el evento
+      require_once( FRAMEWORK_PATH . 'models/event.inc');
+      $evento = new Event( $this->registry );
+      $pagination = $evento->listEventSelected($_POST['eventName']);
+      $this->registry->getObject('template')->getPage()->addTag( 'event', array('SQL', $pagination->getCache() ) ); 
+      $this->registry->getObject('template')->getPage()->addTag('error_msg',''); 
+      $this->registry->getObject('template')->getPage()->addTag('error_text','La regla ya existe'); 
+      $this->registry->getObject('template')->getPage()->addTag('eventName',$_POST['eventName']);  
+      $this->registry->getObject('template')->getPage()->addTag('image',$_POST['image']);  
+      $this->registry->getObject('template')->getPage()->addTag('threshold',$_POST['threshold']);
+      $this->registry->getObject('template')->getPage()->addTag('xp',$_POST['xp']);
+      $this->registry->getObject('template')->getPage()->addTag('rp',$_POST['rp']);
+      $this->registry->getObject('template')->getPage()->addTag('lp',$_POST['lp']);
+    }  	
+  }
 
  
   /*
