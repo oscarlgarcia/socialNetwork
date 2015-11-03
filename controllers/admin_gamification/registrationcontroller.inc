@@ -54,6 +54,8 @@ class Registrationcontroller{
             $rule->setExperiencePoints( htmlspecialchars($this->registry->getObject('db')->sanitizeData($_POST['xp']),ENT_IGNORE)); 
             $rule->setReputationPoints( htmlspecialchars($this->registry->getObject('db')->sanitizeData($_POST['rp']),ENT_IGNORE)); 
             $rule->setLevel_points( htmlspecialchars($this->registry->getObject('db')->sanitizeData($_POST['lp']),ENT_IGNORE)); 
+            $rule->setTitle(htmlspecialchars($this->registry->getObject('db')->sanitizeData($_POST['title']),ENT_IGNORE));
+            $rule->setDescription(htmlspecialchars($this->registry->getObject('db')->sanitizeData($_POST['description']),ENT_IGNORE));
 			$idRule = $rule->save();		
 		
 		    // TODO poner el log de administracion

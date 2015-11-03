@@ -10,11 +10,13 @@ class Gamification_Rules extends Object{
   private $id;
   private $eventName;
   private $id_Badge;
+  private $title;
+  private $description;
   private $threshold;
   private $experience_points;
   private $reputation_points;
   private $level_points;
-  private $saveable_fields = array( 'eventName', 'id_Badge','threshold','experience_points','reputation_points','level_points'); 
+  private $saveable_fields = array( 'eventName', 'id_Badge','threshold','experience_points','reputation_points','level_points','title','description'); 
   private $limit = 10; //poner en config
    	
 
@@ -73,7 +75,7 @@ class Gamification_Rules extends Object{
   {
     $this->paginatedResult->setLimit($this->limit);
     $this->paginatedResult->setOffset($offset - 1);
-    $query="SELECT r.ID as ID, r.eventName as name, r.threshold as threshold, r.experience_points as xp, r.reputation_points as rp, r.level_points as lp, m.url as image from gamification_rules r inner join badges b on r.ID_Badge = b.ID inner join media m on m.ID = b.media_id where r.eventName like '%".$criteria."%'";
+    $query="SELECT r.ID as ID, r.eventName as name, r.title as title, r.description as description, r.threshold as threshold, r.experience_points as xp, r.reputation_points as rp, r.level_points as lp, m.url as image from gamification_rules r inner join media m on m.ID = r.id_badge where r.eventName like '%".$criteria."%'";
     $this->paginatedResult->setQuery( $query );
     $this->paginatedResult->setMethod( 'cache' );
     $this->paginatedResult->generatePagination();
@@ -167,7 +169,21 @@ class Gamification_Rules extends Object{
     $this->level_points = $value;
   }
 
+  public function getTitle(){
+    return $this->title;
+  }
 
+  public function setTitle($value){
+    $this->title = $value;
+  } 
+
+  public function getDescription(){
+    return $this->description;
+  }
+
+  public function setDescription($value){
+    $this->description = $value;
+  }
 
 
 }

@@ -21,6 +21,8 @@
 		      <tr>
 			      <th><span class="fa fa-tasks"></span> ID</th>
 				    <th>Evento</th>
+            <th>Titulo</th>
+            <th>Descripci&oacute;n</th>
             <th>Umbral</th>
             <th>Experiencia</th>
             <th>Reputacion</th>
@@ -31,7 +33,7 @@
 		    <tbody>
 		    <!-- START gamification -->
 		      <tr>
-		        <td class="col-md-1">
+		        <td class="col-md-2">
               <div class="btn-group">
                 <button type="button" class="btn btn-info">{ID}</button>
                 <button type="button" data-toggle="dropdown" class="btn btn-info dropdown-toggle"> <span class="caret"></span></button>
@@ -40,8 +42,10 @@
                 </ul>
               </div>
             </td>
-		  	    <td class="col-md-2">{name}</td>
-            <td class="col-md-2">{threshold}</td>
+		  	    <td class="col-md-1">{name}</td>
+            <td class="col-md-1">{title}</td>
+            <td class="col-md-1">{description}</td>
+            <td class="col-md-1">{threshold}</td>
             <td class="col-md-1">{xp}</td>
             <td class="col-md-1">{rp}</td>
             <td class="col-md-1">{lp}</td>

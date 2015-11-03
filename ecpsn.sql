@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.14
+-- version 4.3.3
 -- http://www.phpmyadmin.net
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 30-10-2015 a las 13:08:46
--- Versión del servidor: 5.6.17
--- Versión de PHP: 5.5.12
+-- Host: localhost
+-- Generation Time: Nov 04, 2015 at 12:39 AM
+-- Server version: 5.6.22
+-- PHP Version: 5.5.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,27 +17,25 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de datos: `ecpsn`
+-- Database: `ecpsn`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `badges`
+-- Table structure for table `badges`
 --
 
 CREATE TABLE IF NOT EXISTS `badges` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `name` varchar(100) NOT NULL,
   `title` varchar(400) NOT NULL,
   `description` varchar(200) NOT NULL,
-  `media_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `idx_badge_media` (`media_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla que almacena los badges\n' AUTO_INCREMENT=6 ;
+  `media_id` bigint(20) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='Tabla que almacena los badges\n';
 
 --
--- Volcado de datos para la tabla `badges`
+-- Dumping data for table `badges`
 --
 
 INSERT INTO `badges` (`ID`, `name`, `title`, `description`, `media_id`) VALUES
@@ -50,21 +48,18 @@ INSERT INTO `badges` (`ID`, `name`, `title`, `description`, `media_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `badges_achieved`
+-- Table structure for table `badges_achieved`
 --
 
 CREATE TABLE IF NOT EXISTS `badges_achieved` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `ID_User` bigint(20) NOT NULL,
   `ID_Badge` bigint(20) NOT NULL,
-  `showed` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID`),
-  KEY `fk1_idx` (`ID_User`),
-  KEY `fk2_idx` (`ID_Badge`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Almacena la relacion de badges por usuario\n' AUTO_INCREMENT=44 ;
+  `showed` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8 COMMENT='Almacena la relacion de badges por usuario\n';
 
 --
--- Volcado de datos para la tabla `badges_achieved`
+-- Dumping data for table `badges_achieved`
 --
 
 INSERT INTO `badges_achieved` (`ID`, `ID_User`, `ID_Badge`, `showed`) VALUES
@@ -96,21 +91,18 @@ INSERT INTO `badges_achieved` (`ID`, `ID_User`, `ID_Badge`, `showed`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `category`
+-- Table structure for table `category`
 --
 
 CREATE TABLE IF NOT EXISTS `category` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Tabla que almacena las categorias',
+  `ID` bigint(20) NOT NULL COMMENT 'Tabla que almacena las categorias',
   `name` varchar(100) NOT NULL,
   `image_category` bigint(20) NOT NULL,
-  `description` varchar(400) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `name` (`name`),
-  KEY `idx_img_cat` (`image_category`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla para guardar los lenguajes y cualquier otra categoria  /* comment truncated */ /*de snippets y otras actividades*/' AUTO_INCREMENT=29 ;
+  `description` varchar(400) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COMMENT='Tabla para guardar los lenguajes y cualquier otra categoria  /* comment truncated */ /*de snippets y otras actividades*/';
 
 --
--- Volcado de datos para la tabla `category`
+-- Dumping data for table `category`
 --
 
 INSERT INTO `category` (`ID`, `name`, `image_category`, `description`) VALUES
@@ -137,24 +129,20 @@ INSERT INTO `category` (`ID`, `name`, `image_category`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `comments_links`
+-- Table structure for table `comments_links`
 --
 
 CREATE TABLE IF NOT EXISTS `comments_links` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `added` datetime NOT NULL,
   `approved` bigint(1) NOT NULL,
   `comment` varchar(1000) NOT NULL,
   `ID_User` bigint(20) NOT NULL,
-  `ID_Link` bigint(20) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `fk_comments_links1_idx` (`ID_User`),
-  KEY `fk_comments_links2_idx` (`ID_Link`),
-  KEY `fk_comm_op` (`approved`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+  `ID_Link` bigint(20) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `comments_links`
+-- Dumping data for table `comments_links`
 --
 
 INSERT INTO `comments_links` (`ID`, `added`, `approved`, `comment`, `ID_User`, `ID_Link`) VALUES
@@ -176,37 +164,31 @@ INSERT INTO `comments_links` (`ID`, `added`, `approved`, `comment`, `ID_User`, `
 (19, '2015-10-19 17:33:39', 3, 'fggassdfgasdfasdf', 10, 24);
 
 --
--- Disparadores `comments_links`
+-- Triggers `comments_links`
 --
-DROP TRIGGER IF EXISTS `comment_links_add`;
-DELIMITER //
+DELIMITER $$
 CREATE TRIGGER `comment_links_add` AFTER INSERT ON `comments_links`
  FOR EACH ROW UPDATE links SET totalComments = (totalComments+1) WHERE links.ID = NEW.ID_Link
-//
+$$
 DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `comment_snippet`
+-- Table structure for table `comment_snippet`
 --
 
 CREATE TABLE IF NOT EXISTS `comment_snippet` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Identificador del Comentario',
+  `ID` bigint(20) NOT NULL COMMENT 'Identificador del Comentario',
   `comment` varchar(1000) NOT NULL COMMENT 'Comentario',
   `added` datetime NOT NULL COMMENT 'Fecha de Agregado ',
   `ID_User` bigint(20) NOT NULL COMMENT 'Usuario que lo realizo',
   `ID_Snippet` bigint(20) NOT NULL COMMENT 'Snippet al que pertenece',
-  `approved` bigint(1) NOT NULL DEFAULT '3',
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `ID` (`ID`),
-  KEY `ID_User` (`ID_User`),
-  KEY `FK_comment_snippet2` (`ID_Snippet`),
-  KEY `IDX_approved_comment_snippets` (`approved`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=127 ;
+  `approved` bigint(1) NOT NULL DEFAULT '3'
+) ENGINE=InnoDB AUTO_INCREMENT=127 DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `comment_snippet`
+-- Dumping data for table `comment_snippet`
 --
 
 INSERT INTO `comment_snippet` (`ID`, `comment`, `added`, `ID_User`, `ID_Snippet`, `approved`) VALUES
@@ -250,33 +232,30 @@ INSERT INTO `comment_snippet` (`ID`, `comment`, `added`, `ID_User`, `ID_Snippet`
 (126, 'sfsdfasd', '2015-10-20 17:23:25', 10, 83, 3);
 
 --
--- Disparadores `comment_snippet`
+-- Triggers `comment_snippet`
 --
-DROP TRIGGER IF EXISTS `comment_snippet_add`;
-DELIMITER //
+DELIMITER $$
 CREATE TRIGGER `comment_snippet_add` AFTER INSERT ON `comment_snippet`
  FOR EACH ROW UPDATE snippets SET totalComments = (totalComments+1) WHERE snippets.ID = NEW.ID_Snippet
-//
+$$
 DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `controllers`
+-- Table structure for table `controllers`
 --
 
 CREATE TABLE IF NOT EXISTS `controllers` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `controller` varchar(255) NOT NULL,
   `active` bigint(20) NOT NULL,
   `description` varchar(400) DEFAULT NULL,
-  `created` datetime NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `idx_ctrl` (`active`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Para registrar los controladores del site\n' AUTO_INCREMENT=32 ;
+  `created` datetime NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 COMMENT='Para registrar los controladores del site\n';
 
 --
--- Volcado de datos para la tabla `controllers`
+-- Dumping data for table `controllers`
 --
 
 INSERT INTO `controllers` (`ID`, `controller`, `active`, `description`, `created`) VALUES
@@ -304,18 +283,17 @@ INSERT INTO `controllers` (`ID`, `controller`, `active`, `description`, `created
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `event`
+-- Table structure for table `event`
 --
 
 CREATE TABLE IF NOT EXISTS `event` (
   `eventName` varchar(100) NOT NULL,
   `description` varchar(450) NOT NULL,
-  `imageEvent` varchar(400) NOT NULL,
-  PRIMARY KEY (`eventName`)
+  `imageEvent` varchar(400) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Registra los eventos de la aplicacion';
 
 --
--- Volcado de datos para la tabla `event`
+-- Dumping data for table `event`
 --
 
 INSERT INTO `event` (`eventName`, `description`, `imageEvent`) VALUES
@@ -341,43 +319,43 @@ INSERT INTO `event` (`eventName`, `description`, `imageEvent`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `gamification_rules`
+-- Table structure for table `gamification_rules`
 --
 
 CREATE TABLE IF NOT EXISTS `gamification_rules` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `eventName` varchar(100) NOT NULL,
   `ID_Badge` bigint(20) NOT NULL,
   `threshold` bigint(20) NOT NULL,
+  `title` varchar(400) NOT NULL,
+  `description` varchar(400) NOT NULL,
   `experience_points` bigint(20) NOT NULL,
   `reputation_points` bigint(20) NOT NULL,
-  `level_points` bigint(20) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `fk_gamification_rules_2_idx` (`ID_Badge`),
-  KEY `fk_gamification_rules_1_idx` (`eventName`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Almacena las reglas de asignacion de puntos y badges' AUTO_INCREMENT=10 ;
+  `level_points` bigint(20) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='Almacena las reglas de asignacion de puntos y badges';
 
 --
--- Volcado de datos para la tabla `gamification_rules`
+-- Dumping data for table `gamification_rules`
 --
 
-INSERT INTO `gamification_rules` (`ID`, `eventName`, `ID_Badge`, `threshold`, `experience_points`, `reputation_points`, `level_points`) VALUES
-(1, 'user.activate', 2, 1, 10, 1, 0),
-(2, 'user.snippet.add', 2, 1, 10, 1, 0),
-(3, 'user.snippet.add', 4, 35, 10, 1, 1),
-(4, 'user.fav.get', 3, 1, 15, 3, 0),
-(5, 'user.comment.add', 4, 1, 11, 1, 0),
-(6, 'user.comment.get', 5, 14, 11, 1, 0),
-(9, 'user.activate', 3, 2, 0, 0, 0);
+INSERT INTO `gamification_rules` (`ID`, `eventName`, `ID_Badge`, `threshold`, `title`, `description`, `experience_points`, `reputation_points`, `level_points`) VALUES
+(1, 'user.activate', 23, 1, 'Activar tu perfil', 'Has Activado tu Perfil', 10, 1, 0),
+(2, 'user.snippet.add', 23, 1, '', '', 10, 1, 0),
+(3, 'user.snippet.add', 23, 35, '', '', 10, 1, 1),
+(4, 'user.fav.get', 23, 1, '', '', 15, 3, 0),
+(5, 'user.comment.add', 23, 1, '', '', 11, 1, 0),
+(6, 'user.comment.get', 23, 14, '', '', 11, 1, 0),
+(9, 'user.activate', 23, 2, '', '', 0, 0, 0),
+(12, 'user.comment.get', 23, 0, 'fsdfsdfs', 'sdfsdf', 0, 0, 0);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `links`
+-- Table structure for table `links`
 --
 
 CREATE TABLE IF NOT EXISTS `links` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `URL` mediumtext NOT NULL,
   `Description` varchar(400) NOT NULL,
   `Title` varchar(100) NOT NULL,
@@ -388,14 +366,11 @@ CREATE TABLE IF NOT EXISTS `links` (
   `totalComments` double NOT NULL DEFAULT '0',
   `added` datetime NOT NULL,
   `totalBroken` double NOT NULL DEFAULT '0',
-  `ID_Status` bigint(20) NOT NULL DEFAULT '3',
-  PRIMARY KEY (`ID`),
-  KEY `fk_link_user_idx` (`ID_User`),
-  KEY `fk_links_operational` (`ID_Status`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
+  `ID_Status` bigint(20) NOT NULL DEFAULT '3'
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `links`
+-- Dumping data for table `links`
 --
 
 INSERT INTO `links` (`ID`, `URL`, `Description`, `Title`, `ID_User`, `rating`, `totalVotes`, `totalFav`, `totalComments`, `added`, `totalBroken`, `ID_Status`) VALUES
@@ -411,10 +386,9 @@ INSERT INTO `links` (`ID`, `URL`, `Description`, `Title`, `ID_User`, `rating`, `
 (24, 'http://yy.vom', 'setTagName', 'setTagName', 8, '0.00', 0, 1, 5, '2015-09-16 16:16:39', 0, 4);
 
 --
--- Disparadores `links`
+-- Triggers `links`
 --
-DROP TRIGGER IF EXISTS `delete_links`;
-DELIMITER //
+DELIMITER $$
 CREATE TRIGGER `delete_links` BEFORE DELETE ON `links`
  FOR EACH ROW begin
 SET @disable_trigger = 1;
@@ -425,29 +399,25 @@ DELETE from comments_links where comments_links.ID_Link = old.ID;
 DELETE from rating_links where rating_links.ID_Links = old.ID;
 SET @disable_trigger = NULL;
 END
-//
+$$
 DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `link_log`
+-- Table structure for table `link_log`
 --
 
 CREATE TABLE IF NOT EXISTS `link_log` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `ID_Link` bigint(20) NOT NULL,
   `event` varchar(100) NOT NULL,
   `ID_User` bigint(20) NOT NULL,
-  `created` datetime NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `fk_linklog_link_idx` (`ID_Link`),
-  KEY `fk_linklog_user_idx` (`ID_User`),
-  KEY `fk_linklog_event_idx` (`event`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=47 ;
+  `created` datetime NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `link_log`
+-- Dumping data for table `link_log`
 --
 
 INSERT INTO `link_log` (`ID`, `ID_Link`, `event`, `ID_User`, `created`) VALUES
@@ -501,20 +471,17 @@ INSERT INTO `link_log` (`ID`, `ID_Link`, `event`, `ID_User`, `created`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `lista_favoritos_snippets`
+-- Table structure for table `lista_favoritos_snippets`
 --
 
 CREATE TABLE IF NOT EXISTS `lista_favoritos_snippets` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `ID_Snippets` bigint(20) NOT NULL,
-  `ID_User` bigint(20) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `fk_lista_favoritos_snippets_1_idx` (`ID_Snippets`),
-  KEY `fk_lista_favoritos_snippets_2_idx` (`ID_User`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Almacena los snippets favoritos del usuario' AUTO_INCREMENT=142 ;
+  `ID_User` bigint(20) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=142 DEFAULT CHARSET=utf8 COMMENT='Almacena los snippets favoritos del usuario';
 
 --
--- Volcado de datos para la tabla `lista_favoritos_snippets`
+-- Dumping data for table `lista_favoritos_snippets`
 --
 
 INSERT INTO `lista_favoritos_snippets` (`ID`, `ID_Snippets`, `ID_User`) VALUES
@@ -535,42 +502,37 @@ INSERT INTO `lista_favoritos_snippets` (`ID`, `ID_Snippets`, `ID_User`) VALUES
 (141, 86, 10);
 
 --
--- Disparadores `lista_favoritos_snippets`
+-- Triggers `lista_favoritos_snippets`
 --
-DROP TRIGGER IF EXISTS `fav_snippet__add`;
-DELIMITER //
+DELIMITER $$
 CREATE TRIGGER `fav_snippet__add` AFTER INSERT ON `lista_favoritos_snippets`
  FOR EACH ROW UPDATE snippets SET totalFav = totalFav+1 WHERE snippets.ID = NEW.ID_Snippets
-//
+$$
 DELIMITER ;
-DROP TRIGGER IF EXISTS `fav_snippet_del`;
-DELIMITER //
+DELIMITER $$
 CREATE TRIGGER `fav_snippet_del` BEFORE DELETE ON `lista_favoritos_snippets`
  FOR EACH ROW begin
 IF @disable_trigger IS NULL THEN
 UPDATE snippets SET totalFav = IF( totalFav>0 ,totalFav-1, 0)WHERE snippets.ID = OLD.ID_Snippets;
 END IF;
 end
-//
+$$
 DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `lista_tag_snippet`
+-- Table structure for table `lista_tag_snippet`
 --
 
 CREATE TABLE IF NOT EXISTS `lista_tag_snippet` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `ID_Tag` bigint(20) NOT NULL,
-  `ID_Snippets` bigint(20) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `fk_Lista_Tag_Snippet_1_idx` (`ID_Tag`),
-  KEY `fk_Lista_Tag_Snippet_2_idx` (`ID_Snippets`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Mantiene la relacion de tags por snippet' AUTO_INCREMENT=157 ;
+  `ID_Snippets` bigint(20) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=157 DEFAULT CHARSET=utf8 COMMENT='Mantiene la relacion de tags por snippet';
 
 --
--- Volcado de datos para la tabla `lista_tag_snippet`
+-- Dumping data for table `lista_tag_snippet`
 --
 
 INSERT INTO `lista_tag_snippet` (`ID`, `ID_Tag`, `ID_Snippets`) VALUES
@@ -712,20 +674,17 @@ INSERT INTO `lista_tag_snippet` (`ID`, `ID_Tag`, `ID_Snippets`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `list_favorites_links`
+-- Table structure for table `list_favorites_links`
 --
 
 CREATE TABLE IF NOT EXISTS `list_favorites_links` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `ID_Users` bigint(20) NOT NULL,
-  `ID_Links` bigint(20) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `fk_favorites_links1_idx` (`ID_Links`),
-  KEY `fk_favorites_links2_idx` (`ID_Users`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
+  `ID_Links` bigint(20) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `list_favorites_links`
+-- Dumping data for table `list_favorites_links`
 --
 
 INSERT INTO `list_favorites_links` (`ID`, `ID_Users`, `ID_Links`) VALUES
@@ -737,57 +696,49 @@ INSERT INTO `list_favorites_links` (`ID`, `ID_Users`, `ID_Links`) VALUES
 (29, 10, 24);
 
 --
--- Disparadores `list_favorites_links`
+-- Triggers `list_favorites_links`
 --
-DROP TRIGGER IF EXISTS `fav_link_add`;
-DELIMITER //
+DELIMITER $$
 CREATE TRIGGER `fav_link_add` AFTER INSERT ON `list_favorites_links`
  FOR EACH ROW UPDATE links SET totalFav = totalFav+1 WHERE links.ID = NEW.ID_Links
-//
+$$
 DELIMITER ;
-DROP TRIGGER IF EXISTS `fav_links_del`;
-DELIMITER //
+DELIMITER $$
 CREATE TRIGGER `fav_links_del` BEFORE DELETE ON `list_favorites_links`
  FOR EACH ROW begin
 IF @disable_trigger IS NULL THEN
 UPDATE links SET totalFav = IF( totalFav>0 ,totalFav-1, 0)WHERE links.ID = OLD.ID_Links;
 END IF;
 end
-//
+$$
 DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `list_favorite_page`
+-- Table structure for table `list_favorite_page`
 --
 
 CREATE TABLE IF NOT EXISTS `list_favorite_page` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `ID_Page` bigint(20) NOT NULL,
-  `ID_User` bigint(20) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `fk_favorite_page_1_idx` (`ID_Page`),
-  KEY `fk_favorite_page_2_idx` (`ID_User`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `ID_User` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `list_media_tags`
+-- Table structure for table `list_media_tags`
 --
 
 CREATE TABLE IF NOT EXISTS `list_media_tags` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `ID_media` bigint(20) NOT NULL,
-  `ID_tag` bigint(20) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `FK_list_tags_idx` (`ID_tag`),
-  KEY `FK_listmedia_media_idx` (`ID_media`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=39 ;
+  `ID_tag` bigint(20) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `list_media_tags`
+-- Dumping data for table `list_media_tags`
 --
 
 INSERT INTO `list_media_tags` (`ID`, `ID_media`, `ID_tag`) VALUES
@@ -831,20 +782,17 @@ INSERT INTO `list_media_tags` (`ID`, `ID_media`, `ID_tag`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `list_tags_links`
+-- Table structure for table `list_tags_links`
 --
 
 CREATE TABLE IF NOT EXISTS `list_tags_links` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `ID_Tags` bigint(20) NOT NULL,
-  `ID_Links` bigint(20) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `fk_list_tags_links1_idx` (`ID_Tags`),
-  KEY `fk_list_tags_links2_idx` (`ID_Links`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=26 ;
+  `ID_Links` bigint(20) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `list_tags_links`
+-- Dumping data for table `list_tags_links`
 --
 
 INSERT INTO `list_tags_links` (`ID`, `ID_Tags`, `ID_Links`) VALUES
@@ -873,20 +821,17 @@ INSERT INTO `list_tags_links` (`ID`, `ID_Tags`, `ID_Links`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `list_tag_page`
+-- Table structure for table `list_tag_page`
 --
 
 CREATE TABLE IF NOT EXISTS `list_tag_page` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `ID_Page` bigint(20) NOT NULL,
-  `ID_Tag` bigint(20) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `fk_tag_page_1_idx` (`ID_Page`),
-  KEY `fk_tag_page_2_idx` (`ID_Tag`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=34 ;
+  `ID_Tag` bigint(20) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `list_tag_page`
+-- Dumping data for table `list_tag_page`
 --
 
 INSERT INTO `list_tag_page` (`ID`, `ID_Page`, `ID_Tag`) VALUES
@@ -913,22 +858,21 @@ INSERT INTO `list_tag_page` (`ID`, `ID_Page`, `ID_Tag`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `logger`
+-- Table structure for table `logger`
 --
 
 CREATE TABLE IF NOT EXISTS `logger` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `ipAddress` varchar(100) CHARACTER SET latin1 NOT NULL,
   `route` longtext CHARACTER SET latin1 NOT NULL,
   `date` datetime NOT NULL,
   `session` varchar(100) CHARACTER SET latin1 NOT NULL DEFAULT 'NOSESSION',
   `browser` longtext CHARACTER SET latin1 NOT NULL,
-  `sessionID` varchar(100) CHARACTER SET latin1 NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla para registrar las entradas al siteRegistrará ' AUTO_INCREMENT=11990 ;
+  `sessionID` varchar(100) CHARACTER SET latin1 NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=12017 DEFAULT CHARSET=utf8 COMMENT='Tabla para registrar las entradas al siteRegistrará ';
 
 --
--- Volcado de datos para la tabla `logger`
+-- Dumping data for table `logger`
 --
 
 INSERT INTO `logger` (`ID`, `ipAddress`, `route`, `date`, `session`, `browser`, `sessionID`) VALUES
@@ -12959,24 +12903,50 @@ INSERT INTO `logger` (`ID`, `ipAddress`, `route`, `date`, `session`, `browser`, 
 (11986, '::1', 'admin_gamification/add', '2015-10-29 17:02:27', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '87e1dlaanpkb4fq3bsbvuanrp6'),
 (11987, '::1', 'admin_media/image_browse', '2015-10-29 17:02:37', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '87e1dlaanpkb4fq3bsbvuanrp6'),
 (11988, '::1', 'admin_media/image_browse', '2015-10-29 17:02:41', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '87e1dlaanpkb4fq3bsbvuanrp6'),
-(11989, '::1', 'admin_gamification/register', '2015-10-29 17:02:48', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '87e1dlaanpkb4fq3bsbvuanrp6');
+(11989, '::1', 'admin_gamification/register', '2015-10-29 17:02:48', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '87e1dlaanpkb4fq3bsbvuanrp6'),
+(11990, '::1', 'authenticate/logout', '2015-10-31 18:59:19', '8', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', '53ck03km0urn66qmdq4dt36jo1'),
+(11991, '::1', 'authenticate/login', '2015-10-31 20:37:17', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(11992, '::1', 'home', '2015-10-31 20:37:18', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(11993, '::1', 'admin_gamification/search', '2015-10-31 20:37:23', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(11994, '::1', 'admin_gamification/add', '2015-10-31 20:37:25', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(11995, '::1', 'admin_gamification/add', '2015-10-31 20:38:39', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(11996, '::1', 'admin_gamification/add', '2015-10-31 20:41:48', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(11997, '::1', 'admin_gamification/add', '2015-10-31 20:42:01', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(11998, '::1', 'admin_gamification/add', '2015-10-31 20:46:16', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(11999, '::1', 'admin_gamification/add', '2015-10-31 20:49:02', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(12000, '::1', 'admin_gamification/add', '2015-10-31 20:51:47', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(12001, '::1', 'admin_gamification/register', '2015-10-31 20:52:07', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(12002, '::1', 'admin_gamification/add', '2015-10-31 21:01:08', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(12003, '::1', 'admin_gamification/search', '2015-10-31 21:01:09', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(12004, '::1', 'admin_gamification/search', '2015-10-31 21:01:10', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(12005, '::1', 'admin_gamification/search', '2015-10-31 21:01:54', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(12006, '::1', 'admin_gamification/search', '2015-10-31 21:02:24', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(12007, '::1', 'admin_gamification/search', '2015-10-31 21:03:06', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(12008, '::1', 'admin_gamification/search', '2015-10-31 21:03:50', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(12009, '::1', 'admin_gamification/add', '2015-10-31 21:05:14', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(12010, '::1', 'admin_gamification/register', '2015-10-31 21:05:26', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(12011, '::1', 'admin_gamification/register', '2015-10-31 21:10:35', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(12012, '::1', 'admin_gamification/search', '2015-10-31 21:10:35', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(12013, '::1', 'admin_gamification/search', '2015-10-31 21:10:40', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(12014, '::1', 'admin_gamification/', '2015-10-31 21:10:44', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(12015, '::1', 'admin_gamification/search', '2015-10-31 21:10:47', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(12016, '::1', 'admin_gamification/search', '2015-11-03 14:41:59', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `media`
+-- Table structure for table `media`
 --
 
 CREATE TABLE IF NOT EXISTS `media` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `name` varchar(400) CHARACTER SET latin1 NOT NULL,
   `url` text CHARACTER SET latin1 NOT NULL,
-  `size` varchar(45) NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ;
+  `size` varchar(45) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `media`
+-- Dumping data for table `media`
 --
 
 INSERT INTO `media` (`ID`, `name`, `url`, `size`) VALUES
@@ -13010,25 +12980,21 @@ INSERT INTO `media` (`ID`, `name`, `url`, `size`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `notification`
+-- Table structure for table `notification`
 --
 
 CREATE TABLE IF NOT EXISTS `notification` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `ID_User` bigint(20) NOT NULL COMMENT 'El usuario que recibe la notificacion\n',
   `ID_User_From` bigint(20) NOT NULL COMMENT 'El usuario que genera la notificacion\n',
   `notification` varchar(100) NOT NULL COMMENT 'La notificacion generada, es un evento\n\n',
   `showed` tinyint(1) NOT NULL,
-  `timestamp` timestamp NOT NULL COMMENT 'Cuando ocurrió la notificación\n',
-  `message` varchar(400) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `fk_notifications_1_idx` (`ID_User`),
-  KEY `fk_notification_eventtype_idx` (`notification`),
-  KEY `idx_userfrom` (`ID_User_From`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=213 ;
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Cuando ocurrió la notificación\n',
+  `message` varchar(400) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=215 DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `notification`
+-- Dumping data for table `notification`
 --
 
 INSERT INTO `notification` (`ID`, `ID_User`, `ID_User_From`, `notification`, `showed`, `timestamp`, `message`) VALUES
@@ -13210,23 +13176,24 @@ INSERT INTO `notification` (`ID`, `ID_User`, `ID_User_From`, `notification`, `sh
 (208, 8, 10, 'user.fav.get', 3, '2015-10-26 16:08:37', ' Tu <a href=''snippets/view/86''>Snippet </a>El usuario recibe un favorito de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
 (209, 8, 8, 'user.logout', 3, '2015-10-26 16:18:01', 'Has cerrado sesion'),
 (210, 11, 11, 'user.login', 3, '2015-10-26 16:18:04', 'Has iniciado sesion'),
-(212, 10, 10, 'user.login', 3, '2015-10-29 15:16:10', 'Has iniciado sesion');
+(212, 10, 10, 'user.login', 3, '2015-10-29 15:16:10', 'Has iniciado sesion'),
+(213, 8, 8, 'user.logout', 3, '2015-10-31 17:59:19', 'Has cerrado sesion'),
+(214, 11, 11, 'user.login', 3, '2015-10-31 19:37:17', 'Has iniciado sesion');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `operational_status`
+-- Table structure for table `operational_status`
 --
 
 CREATE TABLE IF NOT EXISTS `operational_status` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `status_name` varchar(45) CHARACTER SET latin1 NOT NULL,
-  `status_class` varchar(100) CHARACTER SET latin1 NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla para almacenar los status de los diferentes elememtos ' AUTO_INCREMENT=6 ;
+  `status_class` varchar(100) CHARACTER SET latin1 NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='Tabla para almacenar los status de los diferentes elememtos ';
 
 --
--- Volcado de datos para la tabla `operational_status`
+-- Dumping data for table `operational_status`
 --
 
 INSERT INTO `operational_status` (`ID`, `status_name`, `status_class`) VALUES
@@ -13237,11 +13204,11 @@ INSERT INTO `operational_status` (`ID`, `status_name`, `status_class`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `page`
+-- Table structure for table `page`
 --
 
 CREATE TABLE IF NOT EXISTS `page` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `url` text CHARACTER SET latin1 NOT NULL,
   `body` longtext CHARACTER SET latin1 NOT NULL,
   `parent` bigint(20) NOT NULL,
@@ -13256,15 +13223,11 @@ CREATE TABLE IF NOT EXISTS `page` (
   `description_se` text CHARACTER SET latin1 NOT NULL,
   `associated` datetime DEFAULT NULL,
   `vars` text CHARACTER SET latin1,
-  `category` bigint(20) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `fk_page_type_idx` (`type`),
-  KEY `fk_page_category_idx` (`category`),
-  KEY `fk_page_pagelevel_idx` (`level`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
+  `category` bigint(20) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `page`
+-- Dumping data for table `page`
 --
 
 INSERT INTO `page` (`ID`, `url`, `body`, `parent`, `created`, `ordenation`, `published`, `updated`, `title`, `type`, `level`, `keywords_se`, `description_se`, `associated`, `vars`, `category`) VALUES
@@ -13300,18 +13263,17 @@ INSERT INTO `page` (`ID`, `url`, `body`, `parent`, `created`, `ordenation`, `pub
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `page_level`
+-- Table structure for table `page_level`
 --
 
 CREATE TABLE IF NOT EXISTS `page_level` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `name` varchar(45) CHARACTER SET latin1 NOT NULL,
-  `description` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+  `description` varchar(100) CHARACTER SET latin1 DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `page_level`
+-- Dumping data for table `page_level`
 --
 
 INSERT INTO `page_level` (`ID`, `name`, `description`) VALUES
@@ -13322,17 +13284,16 @@ INSERT INTO `page_level` (`ID`, `name`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `page_type`
+-- Table structure for table `page_type`
 --
 
 CREATE TABLE IF NOT EXISTS `page_type` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+  `ID` bigint(20) NOT NULL,
+  `name` varchar(100) CHARACTER SET latin1 DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `page_type`
+-- Dumping data for table `page_type`
 --
 
 INSERT INTO `page_type` (`ID`, `name`) VALUES
@@ -13343,21 +13304,18 @@ INSERT INTO `page_type` (`ID`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `rating_links`
+-- Table structure for table `rating_links`
 --
 
 CREATE TABLE IF NOT EXISTS `rating_links` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `ID_Links` bigint(20) NOT NULL,
   `ID_Users` bigint(20) NOT NULL,
-  `vote` decimal(10,2) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `fk_rating_links1_idx` (`ID_Links`),
-  KEY `fk_rating_links2_idx` (`ID_Users`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+  `vote` decimal(10,2) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `rating_links`
+-- Dumping data for table `rating_links`
 --
 
 INSERT INTO `rating_links` (`ID`, `ID_Links`, `ID_Users`, `vote`) VALUES
@@ -13368,34 +13326,30 @@ INSERT INTO `rating_links` (`ID`, `ID_Links`, `ID_Users`, `vote`) VALUES
 (7, 21, 10, '4.50');
 
 --
--- Disparadores `rating_links`
+-- Triggers `rating_links`
 --
-DROP TRIGGER IF EXISTS `rating_link_update_avg`;
-DELIMITER //
+DELIMITER $$
 CREATE TRIGGER `rating_link_update_avg` AFTER INSERT ON `rating_links`
  FOR EACH ROW UPDATE links SET rating = ( SELECT AVG(vote) from rating_links where rating_links.ID_Links=Links.ID) 
 , totalVotes=totalVotes+1 WHERE Links.ID=NEW.ID_Links
-//
+$$
 DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `rating_snippet`
+-- Table structure for table `rating_snippet`
 --
 
 CREATE TABLE IF NOT EXISTS `rating_snippet` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `ID_User` bigint(20) NOT NULL,
   `ID_Snippet` bigint(20) NOT NULL,
-  `voto` decimal(10,2) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `FK_rating_snippet1` (`ID_Snippet`),
-  KEY `FK_rating_snippet2` (`ID_User`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla para almacenar las valoraciones' AUTO_INCREMENT=37 ;
+  `voto` decimal(10,2) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 COMMENT='Tabla para almacenar las valoraciones';
 
 --
--- Volcado de datos para la tabla `rating_snippet`
+-- Dumping data for table `rating_snippet`
 --
 
 INSERT INTO `rating_snippet` (`ID`, `ID_User`, `ID_Snippet`, `voto`) VALUES
@@ -13415,57 +13369,52 @@ INSERT INTO `rating_snippet` (`ID`, `ID_User`, `ID_Snippet`, `voto`) VALUES
 (36, 10, 74, '4.50');
 
 --
--- Disparadores `rating_snippet`
+-- Triggers `rating_snippet`
 --
-DROP TRIGGER IF EXISTS `rating_snippet_update_avg`;
-DELIMITER //
+DELIMITER $$
 CREATE TRIGGER `rating_snippet_update_avg` AFTER INSERT ON `rating_snippet`
  FOR EACH ROW UPDATE snippets SET rating = ( SELECT AVG(voto) from rating_snippet where rating_snippet.ID_Snippet=snippets.ID) 
 , totalVotes=totalVotes+1 WHERE snippets.ID=NEW.ID_Snippet
-//
+$$
 DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `search_stat`
+-- Table structure for table `search_stat`
 --
 
 CREATE TABLE IF NOT EXISTS `search_stat` (
   `search_date` date NOT NULL,
   `search_term_id` bigint(20) NOT NULL,
-  `hit` bigint(20) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`search_date`),
-  KEY `fk_stat_term_idx` (`search_term_id`)
+  `hit` bigint(20) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `search_term`
+-- Table structure for table `search_term`
 --
 
 CREATE TABLE IF NOT EXISTS `search_term` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `term` varchar(255) CHARACTER SET latin1 NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `ID` bigint(20) NOT NULL,
+  `term` varchar(255) CHARACTER SET latin1 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `settings`
+-- Table structure for table `settings`
 --
 
 CREATE TABLE IF NOT EXISTS `settings` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `key` varchar(255) NOT NULL,
-  `value` longtext NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
+  `value` longtext NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `settings`
+-- Dumping data for table `settings`
 --
 
 INSERT INTO `settings` (`ID`, `key`, `value`) VALUES
@@ -13488,11 +13437,11 @@ INSERT INTO `settings` (`ID`, `key`, `value`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `snippets`
+-- Table structure for table `snippets`
 --
 
 CREATE TABLE IF NOT EXISTS `snippets` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `Title` varchar(100) NOT NULL,
   `Code` longtext NOT NULL,
   `description` varchar(600) NOT NULL DEFAULT 'Sin Descripcion',
@@ -13503,16 +13452,11 @@ CREATE TABLE IF NOT EXISTS `snippets` (
   `totalFav` int(11) NOT NULL DEFAULT '0',
   `totalComments` int(11) NOT NULL DEFAULT '0',
   `added` datetime NOT NULL,
-  `ID_Status` bigint(20) NOT NULL,
-  PRIMARY KEY (`ID`,`ID_Category`,`ID_USER`),
-  KEY `fk_snippets_2` (`ID_Category`),
-  KEY `fk_snippets_3` (`ID_USER`),
-  KEY `ID_Status` (`ID_Status`),
-  KEY `ID_Status_2` (`ID_Status`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Almacena los snippets que se registran en el site\n' AUTO_INCREMENT=88 ;
+  `ID_Status` bigint(20) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8 COMMENT='Almacena los snippets que se registran en el site\n';
 
 --
--- Volcado de datos para la tabla `snippets`
+-- Dumping data for table `snippets`
 --
 
 INSERT INTO `snippets` (`ID`, `Title`, `Code`, `description`, `ID_Category`, `ID_USER`, `rating`, `totalVotes`, `totalFav`, `totalComments`, `added`, `ID_Status`) VALUES
@@ -13558,10 +13502,9 @@ INSERT INTO `snippets` (`ID`, `Title`, `Code`, `description`, `ID_Category`, `ID
 (87, 'sdfasdf', 'adfasdfdfasdfasdf', 'asdfasdf', 20, 8, '0.00', 0, 0, 0, '2015-09-23 17:09:37', 3);
 
 --
--- Disparadores `snippets`
+-- Triggers `snippets`
 --
-DROP TRIGGER IF EXISTS `delete_snippet`;
-DELIMITER //
+DELIMITER $$
 CREATE TRIGGER `delete_snippet` BEFORE DELETE ON `snippets`
  FOR EACH ROW begin
 SET @disable_trigger = 1;
@@ -13572,29 +13515,25 @@ DELETE from comment_snippet where comment_snippet.ID_Snippet = old.ID;
 DELETE from rating_snippet where rating_snippet.ID_Snippet = old.ID;
 SET @disable_trigger = NULL;
 END
-//
+$$
 DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `snippet_log`
+-- Table structure for table `snippet_log`
 --
 
 CREATE TABLE IF NOT EXISTS `snippet_log` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `ID_Snippet` bigint(20) NOT NULL,
   `event` varchar(100) NOT NULL,
   `ID_User` bigint(20) NOT NULL,
-  `created` datetime NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `fk_snippetlog_snippet_idx` (`ID_Snippet`),
-  KEY `fk_snippetlog_user_idx` (`ID_User`),
-  KEY `fk_snippetlog_event_idx` (`event`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=262 ;
+  `created` datetime NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=262 DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `snippet_log`
+-- Dumping data for table `snippet_log`
 --
 
 INSERT INTO `snippet_log` (`ID`, `ID_Snippet`, `event`, `ID_User`, `created`) VALUES
@@ -13764,17 +13703,16 @@ INSERT INTO `snippet_log` (`ID`, `ID_Snippet`, `event`, `ID_User`, `created`) VA
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tags`
+-- Table structure for table `tags`
 --
 
 CREATE TABLE IF NOT EXISTS `tags` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `tag_name` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla que almacena las etiquetas con las que se catalogan cu /* comment truncated */ /*alquier cosa en el site\n*/' AUTO_INCREMENT=176 ;
+  `ID` bigint(20) NOT NULL,
+  `tag_name` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=176 DEFAULT CHARSET=utf8 COMMENT='Tabla que almacena las etiquetas con las que se catalogan cu /* comment truncated */ /*alquier cosa en el site\n*/';
 
 --
--- Volcado de datos para la tabla `tags`
+-- Dumping data for table `tags`
 --
 
 INSERT INTO `tags` (`ID`, `tag_name`) VALUES
@@ -13954,11 +13892,11 @@ INSERT INTO `tags` (`ID`, `tag_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE IF NOT EXISTS `users` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Tabla que almacena toda la información referente al usuario',
+  `ID` bigint(20) NOT NULL COMMENT 'Tabla que almacena toda la información referente al usuario',
   `user_login` varchar(60) NOT NULL COMMENT 'login\n',
   `user_pass` varchar(100) NOT NULL COMMENT 'password',
   `password_salt` varchar(100) NOT NULL COMMENT 'semilla del password',
@@ -13975,13 +13913,11 @@ CREATE TABLE IF NOT EXISTS `users` (
   `reset_expires` datetime DEFAULT NULL COMMENT 'Fecha de expiración para la solicitud de reset de password',
   `activation_key` varchar(100) DEFAULT NULL COMMENT 'Almacena la clave para la activacióndel usuario cuando se registra',
   `user_level` int(11) NOT NULL DEFAULT '0' COMMENT 'Define los niveles del  usuario  basico 0  - admin 10',
-  `profile_image` varchar(500) NOT NULL DEFAULT 'comment.png',
-  PRIMARY KEY (`ID`),
-  KEY `user_status_idx` (`user_status`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+  `profile_image` varchar(500) NOT NULL DEFAULT 'comment.png'
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`ID`, `user_login`, `user_pass`, `password_salt`, `twitter_name`, `user_email`, `user_url`, `user_registered`, `user_status`, `display_name`, `experience_points`, `reputation_points`, `level_points`, `reset_key`, `reset_expires`, `activation_key`, `user_level`, `profile_image`) VALUES
@@ -14000,23 +13936,20 @@ INSERT INTO `users` (`ID`, `user_login`, `user_pass`, `password_salt`, `twitter_
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `user_event`
+-- Table structure for table `user_event`
 --
 
 CREATE TABLE IF NOT EXISTS `user_event` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Son las acciones que determinado usuario puede realizar, estas acciones se van añadiendo a medida que el usuario avance de niveles\n',
+  `ID` bigint(20) NOT NULL COMMENT 'Son las acciones que determinado usuario puede realizar, estas acciones se van añadiendo a medida que el usuario avance de niveles\n',
   `ID_User` bigint(20) NOT NULL,
   `eventName` varchar(100) NOT NULL,
   `ipaddress` varchar(60) DEFAULT NULL,
   `data` varchar(400) DEFAULT NULL,
-  `dateExecuted` datetime NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `fk2_idx` (`ID_User`),
-  KEY `fk_user_event_1_idx` (`eventName`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla que almacena los eventos del site que ha realizado un  /* comment truncated */ /*usuario*/' AUTO_INCREMENT=1712 ;
+  `dateExecuted` datetime NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=1714 DEFAULT CHARSET=utf8 COMMENT='Tabla que almacena los eventos del site que ha realizado un  /* comment truncated */ /*usuario*/';
 
 --
--- Volcado de datos para la tabla `user_event`
+-- Dumping data for table `user_event`
 --
 
 INSERT INTO `user_event` (`ID`, `ID_User`, `eventName`, `ipaddress`, `data`, `dateExecuted`) VALUES
@@ -15560,188 +15493,562 @@ INSERT INTO `user_event` (`ID`, `ID_User`, `eventName`, `ipaddress`, `data`, `da
 (1708, 8, 'user.logout', '::1', '', '2015-10-26 17:18:01'),
 (1709, 11, 'user.login', '::1', '', '2015-10-26 17:18:04'),
 (1710, 11, 'user.page.add', '::1', '{"page_title":""dfgvasdgf""}', '2015-10-29 13:08:55'),
-(1711, 10, 'user.login', '127.0.0.1', '', '2015-10-29 16:16:10');
+(1711, 10, 'user.login', '127.0.0.1', '', '2015-10-29 16:16:10'),
+(1712, 8, 'user.logout', '::1', '', '2015-10-31 18:59:19'),
+(1713, 11, 'user.login', '::1', '', '2015-10-31 20:37:17');
 
 --
--- Restricciones para tablas volcadas
+-- Indexes for dumped tables
 --
 
 --
--- Filtros para la tabla `badges`
+-- Indexes for table `badges`
 --
 ALTER TABLE `badges`
-  ADD CONSTRAINT `fk_media_badge` FOREIGN KEY (`media_id`) REFERENCES `media` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD PRIMARY KEY (`ID`), ADD KEY `idx_badge_media` (`media_id`);
 
 --
--- Filtros para la tabla `badges_achieved`
+-- Indexes for table `badges_achieved`
 --
 ALTER TABLE `badges_achieved`
-  ADD CONSTRAINT `fk1` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk2` FOREIGN KEY (`ID_Badge`) REFERENCES `badges` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD PRIMARY KEY (`ID`), ADD KEY `fk1_idx` (`ID_User`), ADD KEY `fk2_idx` (`ID_Badge`);
 
 --
--- Filtros para la tabla `category`
+-- Indexes for table `category`
 --
 ALTER TABLE `category`
-  ADD CONSTRAINT `FK_media_imgcat` FOREIGN KEY (`image_category`) REFERENCES `media` (`ID`);
+  ADD PRIMARY KEY (`ID`), ADD UNIQUE KEY `name` (`name`), ADD KEY `idx_img_cat` (`image_category`);
 
 --
--- Filtros para la tabla `comments_links`
+-- Indexes for table `comments_links`
 --
 ALTER TABLE `comments_links`
-  ADD CONSTRAINT `fk_commentlinks_operational` FOREIGN KEY (`approved`) REFERENCES `operational_status` (`ID`),
-  ADD CONSTRAINT `fk_comments_links1` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_comments_links2` FOREIGN KEY (`ID_Link`) REFERENCES `links` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD PRIMARY KEY (`ID`), ADD KEY `fk_comments_links1_idx` (`ID_User`), ADD KEY `fk_comments_links2_idx` (`ID_Link`), ADD KEY `fk_comm_op` (`approved`);
 
 --
--- Filtros para la tabla `comment_snippet`
+-- Indexes for table `comment_snippet`
 --
 ALTER TABLE `comment_snippet`
-  ADD CONSTRAINT `FK_commentsnippet_operational` FOREIGN KEY (`approved`) REFERENCES `operational_status` (`ID`),
-  ADD CONSTRAINT `FK_comment_snippet1` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`),
-  ADD CONSTRAINT `FK_comment_snippet2` FOREIGN KEY (`ID_Snippet`) REFERENCES `snippets` (`ID`);
+  ADD PRIMARY KEY (`ID`), ADD UNIQUE KEY `ID` (`ID`), ADD KEY `ID_User` (`ID_User`), ADD KEY `FK_comment_snippet2` (`ID_Snippet`), ADD KEY `IDX_approved_comment_snippets` (`approved`);
 
 --
--- Filtros para la tabla `controllers`
+-- Indexes for table `controllers`
 --
 ALTER TABLE `controllers`
-  ADD CONSTRAINT `fk_controller_operational` FOREIGN KEY (`active`) REFERENCES `operational_status` (`ID`);
+  ADD PRIMARY KEY (`ID`), ADD KEY `idx_ctrl` (`active`);
 
 --
--- Filtros para la tabla `gamification_rules`
+-- Indexes for table `event`
+--
+ALTER TABLE `event`
+  ADD PRIMARY KEY (`eventName`);
+
+--
+-- Indexes for table `gamification_rules`
 --
 ALTER TABLE `gamification_rules`
-  ADD CONSTRAINT `fk_gamification_rules_1` FOREIGN KEY (`eventName`) REFERENCES `event` (`eventName`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_gamification_rules_2` FOREIGN KEY (`ID_Badge`) REFERENCES `badges` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD PRIMARY KEY (`ID`), ADD KEY `fk_gamification_rules_2_idx` (`ID_Badge`), ADD KEY `fk_gamification_rules_1_idx` (`eventName`);
 
 --
--- Filtros para la tabla `links`
+-- Indexes for table `links`
 --
 ALTER TABLE `links`
-  ADD CONSTRAINT `fk_links_operational` FOREIGN KEY (`ID_Status`) REFERENCES `operational_status` (`ID`),
-  ADD CONSTRAINT `fk_link_user` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD PRIMARY KEY (`ID`), ADD KEY `fk_link_user_idx` (`ID_User`), ADD KEY `fk_links_operational` (`ID_Status`);
 
 --
--- Filtros para la tabla `link_log`
+-- Indexes for table `link_log`
 --
 ALTER TABLE `link_log`
-  ADD CONSTRAINT `fk_linklog_event` FOREIGN KEY (`event`) REFERENCES `event` (`eventName`),
-  ADD CONSTRAINT `fk_linklog_link` FOREIGN KEY (`ID_Link`) REFERENCES `links` (`ID`),
-  ADD CONSTRAINT `fk_linklog_user` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`);
+  ADD PRIMARY KEY (`ID`), ADD KEY `fk_linklog_link_idx` (`ID_Link`), ADD KEY `fk_linklog_user_idx` (`ID_User`), ADD KEY `fk_linklog_event_idx` (`event`);
 
 --
--- Filtros para la tabla `lista_favoritos_snippets`
+-- Indexes for table `lista_favoritos_snippets`
 --
 ALTER TABLE `lista_favoritos_snippets`
-  ADD CONSTRAINT `fk_lista_favoritos_snippets_1` FOREIGN KEY (`ID_Snippets`) REFERENCES `snippets` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_lista_favoritos_snippets_2` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD PRIMARY KEY (`ID`), ADD KEY `fk_lista_favoritos_snippets_1_idx` (`ID_Snippets`), ADD KEY `fk_lista_favoritos_snippets_2_idx` (`ID_User`);
 
 --
--- Filtros para la tabla `lista_tag_snippet`
+-- Indexes for table `lista_tag_snippet`
 --
 ALTER TABLE `lista_tag_snippet`
-  ADD CONSTRAINT `fk_Lista_Tag_Snippet_1` FOREIGN KEY (`ID_Tag`) REFERENCES `tags` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_Lista_Tag_Snippet_2` FOREIGN KEY (`ID_Snippets`) REFERENCES `snippets` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD PRIMARY KEY (`ID`), ADD KEY `fk_Lista_Tag_Snippet_1_idx` (`ID_Tag`), ADD KEY `fk_Lista_Tag_Snippet_2_idx` (`ID_Snippets`);
 
 --
--- Filtros para la tabla `list_favorites_links`
+-- Indexes for table `list_favorites_links`
 --
 ALTER TABLE `list_favorites_links`
-  ADD CONSTRAINT `fk_favorites_links1` FOREIGN KEY (`ID_Links`) REFERENCES `links` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_favorites_links2` FOREIGN KEY (`ID_Users`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD PRIMARY KEY (`ID`), ADD KEY `fk_favorites_links1_idx` (`ID_Links`), ADD KEY `fk_favorites_links2_idx` (`ID_Users`);
 
 --
--- Filtros para la tabla `list_favorite_page`
+-- Indexes for table `list_favorite_page`
 --
 ALTER TABLE `list_favorite_page`
-  ADD CONSTRAINT `fk_favorite_page_1` FOREIGN KEY (`ID_Page`) REFERENCES `page` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_favorite_page_2` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD PRIMARY KEY (`ID`), ADD KEY `fk_favorite_page_1_idx` (`ID_Page`), ADD KEY `fk_favorite_page_2_idx` (`ID_User`);
 
 --
--- Filtros para la tabla `list_media_tags`
+-- Indexes for table `list_media_tags`
 --
 ALTER TABLE `list_media_tags`
-  ADD CONSTRAINT `FK_listmedia_media` FOREIGN KEY (`ID_media`) REFERENCES `media` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_listmedia_tags` FOREIGN KEY (`ID_tag`) REFERENCES `tags` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD PRIMARY KEY (`ID`), ADD KEY `FK_list_tags_idx` (`ID_tag`), ADD KEY `FK_listmedia_media_idx` (`ID_media`);
 
 --
--- Filtros para la tabla `list_tags_links`
+-- Indexes for table `list_tags_links`
 --
 ALTER TABLE `list_tags_links`
-  ADD CONSTRAINT `fk_list_tags_links1` FOREIGN KEY (`ID_Tags`) REFERENCES `tags` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_list_tags_links2` FOREIGN KEY (`ID_Links`) REFERENCES `links` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD PRIMARY KEY (`ID`), ADD KEY `fk_list_tags_links1_idx` (`ID_Tags`), ADD KEY `fk_list_tags_links2_idx` (`ID_Links`);
 
 --
--- Filtros para la tabla `list_tag_page`
+-- Indexes for table `list_tag_page`
 --
 ALTER TABLE `list_tag_page`
-  ADD CONSTRAINT `fk_tag_page_1` FOREIGN KEY (`ID_Page`) REFERENCES `page` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_tag_page_2` FOREIGN KEY (`ID_Tag`) REFERENCES `tags` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD PRIMARY KEY (`ID`), ADD KEY `fk_tag_page_1_idx` (`ID_Page`), ADD KEY `fk_tag_page_2_idx` (`ID_Tag`);
 
 --
--- Filtros para la tabla `notification`
+-- Indexes for table `logger`
+--
+ALTER TABLE `logger`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `media`
+--
+ALTER TABLE `media`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `notification`
 --
 ALTER TABLE `notification`
-  ADD CONSTRAINT `fk_notifications_1` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_notifications_2` FOREIGN KEY (`ID_User_From`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_notification_eventtype` FOREIGN KEY (`notification`) REFERENCES `event` (`eventName`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD PRIMARY KEY (`ID`), ADD KEY `fk_notifications_1_idx` (`ID_User`), ADD KEY `fk_notification_eventtype_idx` (`notification`), ADD KEY `idx_userfrom` (`ID_User_From`);
 
 --
--- Filtros para la tabla `page`
+-- Indexes for table `operational_status`
+--
+ALTER TABLE `operational_status`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `page`
 --
 ALTER TABLE `page`
-  ADD CONSTRAINT `fk_page_category` FOREIGN KEY (`category`) REFERENCES `category` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_page_pagelevel` FOREIGN KEY (`level`) REFERENCES `page_level` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_page_type` FOREIGN KEY (`type`) REFERENCES `page_type` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD PRIMARY KEY (`ID`), ADD KEY `fk_page_type_idx` (`type`), ADD KEY `fk_page_category_idx` (`category`), ADD KEY `fk_page_pagelevel_idx` (`level`);
 
 --
--- Filtros para la tabla `rating_links`
+-- Indexes for table `page_level`
+--
+ALTER TABLE `page_level`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `page_type`
+--
+ALTER TABLE `page_type`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `rating_links`
 --
 ALTER TABLE `rating_links`
-  ADD CONSTRAINT `fk_rating_links1` FOREIGN KEY (`ID_Links`) REFERENCES `links` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_rating_links2` FOREIGN KEY (`ID_Users`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD PRIMARY KEY (`ID`), ADD KEY `fk_rating_links1_idx` (`ID_Links`), ADD KEY `fk_rating_links2_idx` (`ID_Users`);
 
 --
--- Filtros para la tabla `rating_snippet`
+-- Indexes for table `rating_snippet`
 --
 ALTER TABLE `rating_snippet`
-  ADD CONSTRAINT `FK_rating_snippet1` FOREIGN KEY (`ID_Snippet`) REFERENCES `snippets` (`ID`),
-  ADD CONSTRAINT `FK_rating_snippet2` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`);
+  ADD PRIMARY KEY (`ID`), ADD KEY `FK_rating_snippet1` (`ID_Snippet`), ADD KEY `FK_rating_snippet2` (`ID_User`);
 
 --
--- Filtros para la tabla `search_stat`
+-- Indexes for table `search_stat`
 --
 ALTER TABLE `search_stat`
-  ADD CONSTRAINT `fk_stat_term` FOREIGN KEY (`search_term_id`) REFERENCES `search_term` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD PRIMARY KEY (`search_date`), ADD KEY `fk_stat_term_idx` (`search_term_id`);
 
 --
--- Filtros para la tabla `snippets`
+-- Indexes for table `search_term`
+--
+ALTER TABLE `search_term`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `settings`
+--
+ALTER TABLE `settings`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `snippets`
 --
 ALTER TABLE `snippets`
-  ADD CONSTRAINT `fk_snippets_2` FOREIGN KEY (`ID_Category`) REFERENCES `category` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_snippets_3` FOREIGN KEY (`ID_USER`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_snippets_operational` FOREIGN KEY (`ID_Status`) REFERENCES `operational_status` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD PRIMARY KEY (`ID`,`ID_Category`,`ID_USER`), ADD KEY `fk_snippets_2` (`ID_Category`), ADD KEY `fk_snippets_3` (`ID_USER`), ADD KEY `ID_Status` (`ID_Status`), ADD KEY `ID_Status_2` (`ID_Status`);
 
 --
--- Filtros para la tabla `snippet_log`
+-- Indexes for table `snippet_log`
 --
 ALTER TABLE `snippet_log`
-  ADD CONSTRAINT `fk_snippetlog_event` FOREIGN KEY (`event`) REFERENCES `event` (`eventName`),
-  ADD CONSTRAINT `fk_snippetlog_snippet` FOREIGN KEY (`ID_Snippet`) REFERENCES `snippets` (`ID`),
-  ADD CONSTRAINT `fk_snippetlog_user` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`);
+  ADD PRIMARY KEY (`ID`), ADD KEY `fk_snippetlog_snippet_idx` (`ID_Snippet`), ADD KEY `fk_snippetlog_user_idx` (`ID_User`), ADD KEY `fk_snippetlog_event_idx` (`event`);
 
 --
--- Filtros para la tabla `users`
+-- Indexes for table `tags`
+--
+ALTER TABLE `tags`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD CONSTRAINT `fk_operational_user` FOREIGN KEY (`user_status`) REFERENCES `operational_status` (`ID`);
+  ADD PRIMARY KEY (`ID`), ADD KEY `user_status_idx` (`user_status`);
 
 --
--- Filtros para la tabla `user_event`
+-- Indexes for table `user_event`
 --
 ALTER TABLE `user_event`
-  ADD CONSTRAINT `fk_user_event_1` FOREIGN KEY (`eventName`) REFERENCES `event` (`eventName`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_user_event_2` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD PRIMARY KEY (`ID`), ADD KEY `fk2_idx` (`ID_User`), ADD KEY `fk_user_event_1_idx` (`eventName`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `badges`
+--
+ALTER TABLE `badges`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `badges_achieved`
+--
+ALTER TABLE `badges_achieved`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=44;
+--
+-- AUTO_INCREMENT for table `category`
+--
+ALTER TABLE `category`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Tabla que almacena las categorias',AUTO_INCREMENT=29;
+--
+-- AUTO_INCREMENT for table `comments_links`
+--
+ALTER TABLE `comments_links`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=20;
+--
+-- AUTO_INCREMENT for table `comment_snippet`
+--
+ALTER TABLE `comment_snippet`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Identificador del Comentario',AUTO_INCREMENT=127;
+--
+-- AUTO_INCREMENT for table `controllers`
+--
+ALTER TABLE `controllers`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=32;
+--
+-- AUTO_INCREMENT for table `gamification_rules`
+--
+ALTER TABLE `gamification_rules`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+--
+-- AUTO_INCREMENT for table `links`
+--
+ALTER TABLE `links`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=25;
+--
+-- AUTO_INCREMENT for table `link_log`
+--
+ALTER TABLE `link_log`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=47;
+--
+-- AUTO_INCREMENT for table `lista_favoritos_snippets`
+--
+ALTER TABLE `lista_favoritos_snippets`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=142;
+--
+-- AUTO_INCREMENT for table `lista_tag_snippet`
+--
+ALTER TABLE `lista_tag_snippet`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=157;
+--
+-- AUTO_INCREMENT for table `list_favorites_links`
+--
+ALTER TABLE `list_favorites_links`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=30;
+--
+-- AUTO_INCREMENT for table `list_favorite_page`
+--
+ALTER TABLE `list_favorite_page`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `list_media_tags`
+--
+ALTER TABLE `list_media_tags`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=39;
+--
+-- AUTO_INCREMENT for table `list_tags_links`
+--
+ALTER TABLE `list_tags_links`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=26;
+--
+-- AUTO_INCREMENT for table `list_tag_page`
+--
+ALTER TABLE `list_tag_page`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=34;
+--
+-- AUTO_INCREMENT for table `logger`
+--
+ALTER TABLE `logger`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12017;
+--
+-- AUTO_INCREMENT for table `media`
+--
+ALTER TABLE `media`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=29;
+--
+-- AUTO_INCREMENT for table `notification`
+--
+ALTER TABLE `notification`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=215;
+--
+-- AUTO_INCREMENT for table `operational_status`
+--
+ALTER TABLE `operational_status`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `page`
+--
+ALTER TABLE `page`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=30;
+--
+-- AUTO_INCREMENT for table `page_level`
+--
+ALTER TABLE `page_level`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `page_type`
+--
+ALTER TABLE `page_type`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `rating_links`
+--
+ALTER TABLE `rating_links`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT for table `rating_snippet`
+--
+ALTER TABLE `rating_snippet`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=37;
+--
+-- AUTO_INCREMENT for table `search_term`
+--
+ALTER TABLE `search_term`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `settings`
+--
+ALTER TABLE `settings`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=18;
+--
+-- AUTO_INCREMENT for table `snippets`
+--
+ALTER TABLE `snippets`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=88;
+--
+-- AUTO_INCREMENT for table `snippet_log`
+--
+ALTER TABLE `snippet_log`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=262;
+--
+-- AUTO_INCREMENT for table `tags`
+--
+ALTER TABLE `tags`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=176;
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Tabla que almacena toda la información referente al usuario',AUTO_INCREMENT=20;
+--
+-- AUTO_INCREMENT for table `user_event`
+--
+ALTER TABLE `user_event`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Son las acciones que determinado usuario puede realizar, estas acciones se van añadiendo a medida que el usuario avance de niveles\n',AUTO_INCREMENT=1714;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `badges`
+--
+ALTER TABLE `badges`
+ADD CONSTRAINT `fk_media_badge` FOREIGN KEY (`media_id`) REFERENCES `media` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `badges_achieved`
+--
+ALTER TABLE `badges_achieved`
+ADD CONSTRAINT `fk1` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk2` FOREIGN KEY (`ID_Badge`) REFERENCES `badges` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `category`
+--
+ALTER TABLE `category`
+ADD CONSTRAINT `FK_media_imgcat` FOREIGN KEY (`image_category`) REFERENCES `media` (`ID`);
+
+--
+-- Constraints for table `comments_links`
+--
+ALTER TABLE `comments_links`
+ADD CONSTRAINT `fk_commentlinks_operational` FOREIGN KEY (`approved`) REFERENCES `operational_status` (`ID`),
+ADD CONSTRAINT `fk_comments_links1` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_comments_links2` FOREIGN KEY (`ID_Link`) REFERENCES `links` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `comment_snippet`
+--
+ALTER TABLE `comment_snippet`
+ADD CONSTRAINT `FK_comment_snippet1` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`),
+ADD CONSTRAINT `FK_comment_snippet2` FOREIGN KEY (`ID_Snippet`) REFERENCES `snippets` (`ID`),
+ADD CONSTRAINT `FK_commentsnippet_operational` FOREIGN KEY (`approved`) REFERENCES `operational_status` (`ID`);
+
+--
+-- Constraints for table `controllers`
+--
+ALTER TABLE `controllers`
+ADD CONSTRAINT `fk_controller_operational` FOREIGN KEY (`active`) REFERENCES `operational_status` (`ID`);
+
+--
+-- Constraints for table `gamification_rules`
+--
+ALTER TABLE `gamification_rules`
+ADD CONSTRAINT `fk_gamification_media` FOREIGN KEY (`ID_Badge`) REFERENCES `media` (`ID`),
+ADD CONSTRAINT `fk_gamification_rules_1` FOREIGN KEY (`eventName`) REFERENCES `event` (`eventName`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `links`
+--
+ALTER TABLE `links`
+ADD CONSTRAINT `fk_link_user` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_links_operational` FOREIGN KEY (`ID_Status`) REFERENCES `operational_status` (`ID`);
+
+--
+-- Constraints for table `link_log`
+--
+ALTER TABLE `link_log`
+ADD CONSTRAINT `fk_linklog_event` FOREIGN KEY (`event`) REFERENCES `event` (`eventName`),
+ADD CONSTRAINT `fk_linklog_link` FOREIGN KEY (`ID_Link`) REFERENCES `links` (`ID`),
+ADD CONSTRAINT `fk_linklog_user` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`);
+
+--
+-- Constraints for table `lista_favoritos_snippets`
+--
+ALTER TABLE `lista_favoritos_snippets`
+ADD CONSTRAINT `fk_lista_favoritos_snippets_1` FOREIGN KEY (`ID_Snippets`) REFERENCES `snippets` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_lista_favoritos_snippets_2` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `lista_tag_snippet`
+--
+ALTER TABLE `lista_tag_snippet`
+ADD CONSTRAINT `fk_Lista_Tag_Snippet_1` FOREIGN KEY (`ID_Tag`) REFERENCES `tags` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_Lista_Tag_Snippet_2` FOREIGN KEY (`ID_Snippets`) REFERENCES `snippets` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `list_favorites_links`
+--
+ALTER TABLE `list_favorites_links`
+ADD CONSTRAINT `fk_favorites_links1` FOREIGN KEY (`ID_Links`) REFERENCES `links` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_favorites_links2` FOREIGN KEY (`ID_Users`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `list_favorite_page`
+--
+ALTER TABLE `list_favorite_page`
+ADD CONSTRAINT `fk_favorite_page_1` FOREIGN KEY (`ID_Page`) REFERENCES `page` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_favorite_page_2` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `list_media_tags`
+--
+ALTER TABLE `list_media_tags`
+ADD CONSTRAINT `FK_listmedia_media` FOREIGN KEY (`ID_media`) REFERENCES `media` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `FK_listmedia_tags` FOREIGN KEY (`ID_tag`) REFERENCES `tags` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `list_tags_links`
+--
+ALTER TABLE `list_tags_links`
+ADD CONSTRAINT `fk_list_tags_links1` FOREIGN KEY (`ID_Tags`) REFERENCES `tags` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_list_tags_links2` FOREIGN KEY (`ID_Links`) REFERENCES `links` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `list_tag_page`
+--
+ALTER TABLE `list_tag_page`
+ADD CONSTRAINT `fk_tag_page_1` FOREIGN KEY (`ID_Page`) REFERENCES `page` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_tag_page_2` FOREIGN KEY (`ID_Tag`) REFERENCES `tags` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `notification`
+--
+ALTER TABLE `notification`
+ADD CONSTRAINT `fk_notification_eventtype` FOREIGN KEY (`notification`) REFERENCES `event` (`eventName`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_notifications_1` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_notifications_2` FOREIGN KEY (`ID_User_From`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `page`
+--
+ALTER TABLE `page`
+ADD CONSTRAINT `fk_page_category` FOREIGN KEY (`category`) REFERENCES `category` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_page_pagelevel` FOREIGN KEY (`level`) REFERENCES `page_level` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_page_type` FOREIGN KEY (`type`) REFERENCES `page_type` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `rating_links`
+--
+ALTER TABLE `rating_links`
+ADD CONSTRAINT `fk_rating_links1` FOREIGN KEY (`ID_Links`) REFERENCES `links` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_rating_links2` FOREIGN KEY (`ID_Users`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `rating_snippet`
+--
+ALTER TABLE `rating_snippet`
+ADD CONSTRAINT `FK_rating_snippet1` FOREIGN KEY (`ID_Snippet`) REFERENCES `snippets` (`ID`),
+ADD CONSTRAINT `FK_rating_snippet2` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`);
+
+--
+-- Constraints for table `search_stat`
+--
+ALTER TABLE `search_stat`
+ADD CONSTRAINT `fk_stat_term` FOREIGN KEY (`search_term_id`) REFERENCES `search_term` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `snippets`
+--
+ALTER TABLE `snippets`
+ADD CONSTRAINT `fk_snippets_2` FOREIGN KEY (`ID_Category`) REFERENCES `category` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_snippets_3` FOREIGN KEY (`ID_USER`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_snippets_operational` FOREIGN KEY (`ID_Status`) REFERENCES `operational_status` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `snippet_log`
+--
+ALTER TABLE `snippet_log`
+ADD CONSTRAINT `fk_snippetlog_event` FOREIGN KEY (`event`) REFERENCES `event` (`eventName`),
+ADD CONSTRAINT `fk_snippetlog_snippet` FOREIGN KEY (`ID_Snippet`) REFERENCES `snippets` (`ID`),
+ADD CONSTRAINT `fk_snippetlog_user` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`);
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+ADD CONSTRAINT `fk_operational_user` FOREIGN KEY (`user_status`) REFERENCES `operational_status` (`ID`);
+
+--
+-- Constraints for table `user_event`
+--
+ALTER TABLE `user_event`
+ADD CONSTRAINT `fk_user_event_1` FOREIGN KEY (`eventName`) REFERENCES `event` (`eventName`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_user_event_2` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -18,7 +18,6 @@ class Snippets extends Object{
   private $totalVotes;
   private $added;
   private $ID_status;
-
   private $limit = 10; //TODO poner en configs
   private $saveable_fields = array( 'title', 'description', 'code', 'ID_category', 'ID_User','rating','totalVotes','added','ID_status');
   /**

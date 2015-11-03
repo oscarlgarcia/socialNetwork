@@ -22,6 +22,14 @@
         </div>
       </div>  
       <div class="form-group">
+        <label  class="control-label" for="image">Titulo de la Regla </label>
+        <input  class="form-control" id="title" name="title" value="{title}" />
+      </div> 
+      <div class="form-group">
+        <label  class="control-label" for="image">Descripci&oacute;n de la Regla </label>
+        <textarea  class="form-control" id="description" name="description" >{description}</textarea>
+      </div> 
+      <div class="form-group">
         <label  class="control-label" for="image">Badge de la regla </label>
         <input id="image" name="image"  value="{image}" placeholder="Selecciona una imagen" type="number" class="filefilter"/>
         <div class="upload_div btn btn-primary">
