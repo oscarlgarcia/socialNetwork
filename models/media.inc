@@ -21,15 +21,30 @@ class Media extends Object{
    */
   public function search($criteria)
   {
-	$this->paginatedResult->setLimit(5); //TODO poner no limit
-	$this->paginatedResult->setOffset(0);
-	$query = "SELECT id, url, name, size from media where name like '%".$criteria."%' " ; // poner un indice
-	$this->paginatedResult->setQuery( $query );
-	$this->paginatedResult->setMethod( 'cache' );
-	$this->paginatedResult->generatePagination();
-	return $this->getAsTable($this->paginatedResult);
+	  $this->paginatedResult->setLimit(5); //TODO poner no limit
+	  $this->paginatedResult->setOffset(0);
+	  $query = "SELECT id, url, name, size from media where name like '%".$criteria."%' " ; // poner un indice
+	  $this->paginatedResult->setQuery( $query );
+	  $this->paginatedResult->setMethod( 'cache' );
+	  $this->paginatedResult->generatePagination();
+	  return $this->getAsTable($this->paginatedResult);
   }
 	
+  /*
+  * Permite cargar una imagen de media
+  */
+  public function loadImage($mediaID){
+    $query = "SELECT url FROM media where ID =".$mediaID ;
+    $this->registry->getObject('db')->executeQuery( $query );
+    if( $this->registry->getObject('db')->numRows() > 0 )
+    {
+      $data = $this->registry->getObject('db')->getRows();
+      $this->setUrl($data['url']);
+    }
+    return false;
+
+
+  }
 	
     /**
 	 * borra un media a partir de su ID
@@ -104,7 +119,7 @@ class Media extends Object{
   }
    
   public function setUrl($url){
-    $this->url=$url;
+    $this->url = $url;
   }
    
   public function getUrl(){

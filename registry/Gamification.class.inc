@@ -52,7 +52,7 @@ class Gamification extends AbstractObserver{
           $notification->setNotificationType($subject->getEvent());
           $notification->setShow($subject->isShowed());
           $notification->setTimestamp($subject->getTimestamp());
-          $notification->setMessage($this->registry->getObject('db')->sanitizeData($this->registry->getObject('util')->getBadgeNotification($row['threshold'],$row['ID_Badge'])));
+          $notification->setMessage($this->registry->getObject('db')->sanitizeData($this->registry->getObject('util')->getBadgeNotification($row['description'],$row['ID_Badge'])));
           $notification->save();
         	
           require_once( FRAMEWORK_PATH . 'models/badges_achieved.inc');

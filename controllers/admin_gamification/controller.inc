@@ -170,8 +170,10 @@ class Admin_gamificationcontroller{
     $this->registry->getObject('template')->getPage()->addTag( 'event', array( 'SQL', $pagination->getCache() ) ); 
     $this->registry->getObject('template')->getPage()->addTag('error_msg','error-msg'); 
     $this->registry->getObject('template')->getPage()->addTag('error_text',''); 
-    $this->registry->getObject('template')->getPage()->addTag('eventName','');	
-	  $this->registry->getObject('template')->getPage()->addTag('threshold','0');
+    $this->registry->getObject('template')->getPage()->addTag('eventName','');  
+    $this->registry->getObject('template')->getPage()->addTag('threshold','0');
+    $this->registry->getObject('template')->getPage()->addTag('title','');	
+	  $this->registry->getObject('template')->getPage()->addTag('description','');
 	  $this->registry->getObject('template')->getPage()->addTag('xp','0');
     $this->registry->getObject('template')->getPage()->addTag('rp','0');
     $this->registry->getObject('template')->getPage()->addTag('lp','0');
@@ -209,6 +211,8 @@ class Admin_gamificationcontroller{
       $this->registry->getObject('template')->getPage()->addTag('eventName',$_POST['eventName']);  
       $this->registry->getObject('template')->getPage()->addTag('image',$_POST['image']);  
       $this->registry->getObject('template')->getPage()->addTag('threshold',$_POST['threshold']);
+      $this->registry->getObject('template')->getPage()->addTag('title',$_POST['title']);  
+      $this->registry->getObject('template')->getPage()->addTag('description',$_POST['description']);
       $this->registry->getObject('template')->getPage()->addTag('xp',$_POST['xp']);
       $this->registry->getObject('template')->getPage()->addTag('rp',$_POST['rp']);
       $this->registry->getObject('template')->getPage()->addTag('lp',$_POST['lp']);
