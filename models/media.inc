@@ -19,7 +19,7 @@ class Media extends Object{
    * @param int $criteria
    * @return Object pagination object
    */
-  public function search($criteria)
+  public function browse($criteria)
   {
 	  $this->paginatedResult->setLimit(5); //TODO poner no limit
 	  $this->paginatedResult->setOffset(0);
@@ -29,6 +29,27 @@ class Media extends Object{
 	  $this->paginatedResult->generatePagination();
 	  return $this->getAsTable($this->paginatedResult);
   }
+
+
+  /**
+   * Genera lista de categorias que coinciden con el criterio pasado paginados 
+   * Este metodo se llama en Admin_media desde el administrador
+   * Devuelve un ResulSet con la siguiente informacion en caché:
+   * @param int $offset, pagina de la busqueda
+   * @param String $criteria, cadena de busqueda 
+   * @return Object pagination object
+   */
+  public function search($offset = 1, $criteria = "")
+  {
+    $this->paginatedResult->setLimit(10);
+    $this->paginatedResult->setOffset($offset - 1);
+    $query="SELECT c.ID as ID, c.name as categoryName, md.url as categoryImage, c.description as categoryDescripition from category c inner join media md on md.ID = c.image_category where c.name like '%".$criteria."%' or c.image_category  like '%".$criteria."%' or c.description like '%".$criteria."%'";
+    $this->paginatedResult->setQuery( $query );
+    $this->paginatedResult->setMethod( 'cache' );
+    $this->paginatedResult->generatePagination();
+    return $this->paginatedResult;
+  }
+
 	
   /*
   * Permite cargar una imagen de media

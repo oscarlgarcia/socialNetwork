@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Controlador para el registro de Categorias
+ * Controlador para el registro de Media
  */
 class Registrationcontroller{
 	

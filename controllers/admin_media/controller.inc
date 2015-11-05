@@ -56,12 +56,15 @@ class Admin_mediacontroller{
 			  
 			  switch( $urlBits[1] )
 				{
+				   case 'search':
+  			        $this->search(intval($this->parameter1));
+				    break;
 				  case 'image_browse':
-            $this->image_browse();
-            break;
-          case 'image_upload':
-			      $this->upload();
-			      break;
+                    $this->image_browse();
+                    break;
+                  case 'image_upload':
+			        $this->upload();
+			        break;
 				}
 			}
 		}else 
@@ -74,6 +77,71 @@ class Admin_mediacontroller{
 	   	);   	
     }  
 	}
+
+
+  /*
+  * Metodo para buscar las categorias desde la pantalla de admin
+  */
+  private function search($offset)
+  {   
+    $offset = ($offset<=0)?1:$offset;
+      
+    if (!isset($_SESSION['media_criteria'])){
+      $this->registry->getObject('util')->storeToSession('media_criteria',"");
+    }
+
+    if (isset($_POST['search'])){
+      $this->registry->getObject('util')->storeToSession('media_criteria',$_POST['search']);
+    }
+
+    require_once( FRAMEWORK_PATH . 'models/media.inc');
+	$media = new Media( $this->registry );
+	$pagination = $media->search($offset,$_SESSION['media_criteria']);
+	 
+    if( $pagination->getTotalRows() == 0 )
+    {
+      // no hay 
+      $this->registry->getObject('template')->buildFromTemplates(
+        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'media/'.$this->registry->getObject('constants')->getNoResultsTpl(),
+        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+      );
+        
+      //Cargamos la busqueda
+	  $this->registry->getObject('template')->getPage()->addTag('media.search',$_SESSION['media_criteria']);	
+      // cargamos el total de settings
+	  $this->registry->getObject('template')->getPage()->addTag( 'media_count', $pagination->getTotalRows() );
+    }else
+    {
+      if(!$pagination->checkOffset($offset))
+      {
+        // invalid
+        $this->registry->getObject('template')->buildFromTemplates(
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'media/'.$this->registry->getObject('constants')->getInvalidTpl(),
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+        );
+      }else
+	  { 
+        $this->registry->getObject('template')->buildFromTemplates(
+	      $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+	      $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'media/'.$this->registry->getObject('constants')->getListTpl(),
+	      $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+	    );
+		
+		//cargamos la info de cada snippet
+		$this->registry->getObject('template')->getPage()->addTag( 'media', array( 'SQL', $pagination->getCache() ) );
+
+        $this->registry->getObject('template')->getPage()->addTag( 'media_image_path', $this->registry->getSetting('language_path') );
+		//Cargamos la busqueda
+	    $this->registry->getObject('template')->getPage()->addTag( 'media.search',$_SESSION['media_criteria']);	
+        // cargamos el total de settings
+		$this->registry->getObject('template')->getPage()->addTag( 'media_count', $pagination->getTotalRows() );		
+		$pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
+	  }		
+    }
+  }
+
 	
   /*
   * Metodo AJAX para subir imagenes
@@ -92,7 +160,7 @@ class Admin_mediacontroller{
    private function image_browse(){
      require_once( FRAMEWORK_PATH . 'models/media.inc');   
      $media = new Media($this->registry);
-     echo $media->search($_POST['image_search']);
+     echo $media->browse($_POST['image_search']);
      exit();
    }
 

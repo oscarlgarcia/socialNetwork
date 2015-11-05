@@ -58,7 +58,7 @@ class Admin_categorycontroller{
 				{
 					
 				  case 'search':
-  			    $this->search(intval($this->parameter1));
+  			        $this->search(intval($this->parameter1));
 				    break;
 
 				  case 'add':
