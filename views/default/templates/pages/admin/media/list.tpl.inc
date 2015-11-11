@@ -1,4 +1,7 @@
-    <div class="panel panel-primary">
+<link rel="stylesheet" type="text/css" href="lib/imageUpload/imageUpload.css"/>
+<link rel="stylesheet" href="lib/tagging/jquery.tagsinput.css" />
+<script type="text/javascript" src="lib/tagging/jquery.tagsinput.js"></script>
+  <div class="panel panel-primary">
 	   <div class="panel-heading">
 		  <h3 class="panel-title"><span class="badge">{media_count}</span> Im&aacute;genes encontradas</h3>
 		</div>
@@ -13,7 +16,10 @@
              </div>
            </div>
            <div class="col-md-6">
-             <a class="btn btn-info pull-right" href="admin_category/add"><i class="fa fa-plus"></i> Agregar Im&aacute;gen</a>
+            <div class="upload_div btn btn-primary pull-right">
+              <span class="fa fa-cloud-upload"></span> Agregar una Imagen
+               <input name="ImageBtn" id="ImageBtn" class="upload" data-toggle="modal" data-target="#mediaModal" />
+            </div>
            </div>
          </form>        
         <table class="table table-hover " id="dev-table">
@@ -21,12 +27,14 @@
 		      <tr>
 			      <th><span class="fa fa-tasks"></span> ID</th>
 				    <th>Nombre</th>
-            <th>Imagen asociada</th>
-            <th>Descripci&oacute;n</th>
+            <th>URL</th>
+            <th>Imagen</th>
+            <th>Tama&ntilde;o</th>
+            <th>Tags</th>
 			    </tr>
 		    </thead>
 		    <tbody>
-		    <!-- START category -->
+		    <!-- START media -->
 		      <tr>
 		        <td class="col-md-2">
               <div class="btn-group">
@@ -37,11 +45,13 @@
                 </ul>
               </div>
             </td>
-		  	    <td class="col-md-2">{categoryName}</td>
-            <td class="col-md-3"><img src="{categoryImage}" class="img-thumbnail" width="30%" height="30%" /></td>
-            <td class="col-md-5">{categoryDescripition}</td>
+		  	    <td class="col-md-2">{name}</td>
+            <td class="col-md-2">{url}</td>
+            <td class="col-md-2"><img src="{url}" class="img-thumbnail" width="30%" height="30%" /></td>
+            <td class="col-md-2">{size}</td>
+            <td class="col-md-2">{all_tags}</td>
           </tr>
-        <!-- END category -->
+        <!-- END media -->
 		    </tbody>
         </table>
         <div class="col-md-9">
@@ -51,7 +61,7 @@
         </div>
         </div>
     </div>
-    <!-- MODAL -->
+    <!-- MODAL delete -->
     <div id="delete_modal" class="modal fade">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -70,6 +80,53 @@
         </div>
       </div>
     </div>
-    <!-- fin MODAL -->
+<!-- fin MODAL -->
+
+<!-- Modal MEDIA -->
+<div id="mediaModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">x</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title"> Media Wizard</h4>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#upload" data-toggle="tab">Subir Im&aacute;genes</a></li>
+        </ul>
+        <!-- Tab content-->
+        <div id="myTabContent" class="tab-content">
+          <div class="tab-pane upload_tab active in" id="upload">
+            <div class="alert alert-danger" id="uploadErrorMsg"></div>
+            <form action="admin_media/image_upload" class="form-inline" method="post" enctype="multipart/form-data" id="uploadImageForm">
+              <div class="form-group upload_group">
+                <label  class="control-label" for="imageName">Nombre de la Imagen</label>
+                <input name="imageName" maxlength="400" id="imageName" type="text" class="form-control upload_width" />
+              </div>
+              <div class="form-group upload_group">
+                <label  class="control-label" for="tags">Tags</label>
+                <input name="tags" id="tags" type="text" class="form-control upload_width" />
+              </div>
+              <input id="fileName" placeholder="Busca imagenes" disabled="disabled" class="form-control"/>
+              <div class="upload_div btn btn-primary">
+                <span class="fa fa-folder-open-o"></span>
+                <input name="FileInput" id="FileInput" type="file" class="upload" />
+              </div>
+              <div class="form-group upload_group">
+                <button type="button" class="btn btn-primary" id="uploadbtn" data-loading-text="Subiendo..." data-toggle="button"><span class="fa fa-cloud-upload"></span> Cargar Imagen</button>
+              </div>
+            </form>
+            <div id="output"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End modal-->
+<script type="text/javascript" src="lib/imageUpload/imageUpload.js"></script>
 <script type="text/javascript" src="lib/menuOps/delete_confirm.js"></script>
 <script type="text/javascript" src="lib/search/search_animation.js"></script>

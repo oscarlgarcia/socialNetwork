@@ -43,7 +43,8 @@ class Media extends Object{
   {
     $this->paginatedResult->setLimit(10);
     $this->paginatedResult->setOffset($offset - 1);
-    $query="SELECT c.ID as ID, c.name as categoryName, md.url as categoryImage, c.description as categoryDescripition from category c inner join media md on md.ID = c.image_category where c.name like '%".$criteria."%' or c.image_category  like '%".$criteria."%' or c.description like '%".$criteria."%'";
+    $query=" SELECT tbl.*, GROUP_CONCAT(DISTINCT tagName SEPARATOR ',') 
+    As all_tags FROM(SELECT m.ID as ID, m.name as name, m.url as url, m.size as size, t.tag_name as tagName from media m inner join list_media_tags l on l.ID_media = m.ID inner join tags t on t.ID = l.ID_tag where name like '%".$criteria."%') tbl GROUP BY tbl.id ";
     $this->paginatedResult->setQuery( $query );
     $this->paginatedResult->setMethod( 'cache' );
     $this->paginatedResult->generatePagination();
