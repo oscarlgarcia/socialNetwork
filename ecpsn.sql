@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.3.3
+-- version 4.1.14
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Nov 04, 2015 at 12:39 AM
--- Server version: 5.6.22
--- PHP Version: 5.5.29
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 12-11-2015 a las 17:15:19
+-- Versión del servidor: 5.6.17
+-- Versión de PHP: 5.5.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,92 +17,53 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `ecpsn`
+-- Base de datos: `ecpsn`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `badges`
---
-
-CREATE TABLE IF NOT EXISTS `badges` (
-  `ID` bigint(20) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `title` varchar(400) NOT NULL,
-  `description` varchar(200) NOT NULL,
-  `media_id` bigint(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='Tabla que almacena los badges\n';
-
---
--- Dumping data for table `badges`
---
-
-INSERT INTO `badges` (`ID`, `name`, `title`, `description`, `media_id`) VALUES
-(1, 'Basic.badge', 'Badge BAsico', 'Very basic badge', 3),
-(2, 'user.activate', 'Activar tu perfil', 'has activado el perfil', 3),
-(3, 'user.fav.get', 'Recibir tu primer favorito', 'Enhorabuena! Has recibido un favorito', 3),
-(4, 'user.comment.add', 'Agregar tu primer comentario', 'has realizado un comentario', 3),
-(5, 'user.comment.get', 'Recibir 12 comentarios', 'Enhorabuena! has recibido 12 comentarios!', 3);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `badges_achieved`
+-- Estructura de tabla para la tabla `badges_achieved`
 --
 
 CREATE TABLE IF NOT EXISTS `badges_achieved` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `ID_User` bigint(20) NOT NULL,
   `ID_Badge` bigint(20) NOT NULL,
-  `showed` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8 COMMENT='Almacena la relacion de badges por usuario\n';
+  `showed` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID`),
+  KEY `fk1_idx` (`ID_User`),
+  KEY `fk2_idx` (`ID_Badge`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Almacena la relacion de badges por usuario\n' AUTO_INCREMENT=49 ;
 
 --
--- Dumping data for table `badges_achieved`
+-- Volcado de datos para la tabla `badges_achieved`
 --
 
 INSERT INTO `badges_achieved` (`ID`, `ID_User`, `ID_Badge`, `showed`) VALUES
-(20, 8, 2, 0),
-(21, 8, 2, 0),
-(22, 10, 2, 0),
-(23, 8, 3, 0),
-(24, 8, 4, 0),
-(25, 10, 4, 0),
-(26, 8, 5, 0),
-(27, 11, 2, 0),
-(28, 10, 2, 0),
-(29, 12, 2, 0),
-(30, 13, 2, 0),
-(31, 14, 2, 0),
-(32, 13, 3, 0),
-(33, 13, 5, 0),
-(34, 10, 5, 0),
-(35, 10, 3, 0),
-(36, 14, 3, 0),
-(37, 14, 5, 0),
-(38, 11, 3, 0),
-(39, 11, 5, 0),
-(40, 12, 5, 0),
-(41, 8, 5, 0),
-(42, 8, 5, 0),
-(43, 8, 5, 0);
+(45, 10, 23, 0),
+(46, 8, 28, 0),
+(47, 10, 23, 0),
+(48, 8, 28, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `category`
+-- Estructura de tabla para la tabla `category`
 --
 
 CREATE TABLE IF NOT EXISTS `category` (
-  `ID` bigint(20) NOT NULL COMMENT 'Tabla que almacena las categorias',
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Tabla que almacena las categorias',
   `name` varchar(100) NOT NULL,
   `image_category` bigint(20) NOT NULL,
-  `description` varchar(400) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COMMENT='Tabla para guardar los lenguajes y cualquier otra categoria  /* comment truncated */ /*de snippets y otras actividades*/';
+  `description` varchar(400) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `name` (`name`),
+  KEY `idx_img_cat` (`image_category`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla para guardar los lenguajes y cualquier otra categoria  /* comment truncated */ /*de snippets y otras actividades*/' AUTO_INCREMENT=30 ;
 
 --
--- Dumping data for table `category`
+-- Volcado de datos para la tabla `category`
 --
 
 INSERT INTO `category` (`ID`, `name`, `image_category`, `description`) VALUES
@@ -124,25 +85,29 @@ INSERT INTO `category` (`ID`, `name`, `image_category`, `description`) VALUES
 (25, 'Github', 23, 'prueba'),
 (26, 'Gema', 27, 'Gema'),
 (27, 'Marshall', 28, 'Marshall'),
-(28, '', 28, '');
+(29, 'Google Maps', 29, 'Maps');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `comments_links`
+-- Estructura de tabla para la tabla `comments_links`
 --
 
 CREATE TABLE IF NOT EXISTS `comments_links` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `added` datetime NOT NULL,
   `approved` bigint(1) NOT NULL,
   `comment` varchar(1000) NOT NULL,
   `ID_User` bigint(20) NOT NULL,
-  `ID_Link` bigint(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+  `ID_Link` bigint(20) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `fk_comments_links1_idx` (`ID_User`),
+  KEY `fk_comments_links2_idx` (`ID_Link`),
+  KEY `fk_comm_op` (`approved`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
 
 --
--- Dumping data for table `comments_links`
+-- Volcado de datos para la tabla `comments_links`
 --
 
 INSERT INTO `comments_links` (`ID`, `added`, `approved`, `comment`, `ID_User`, `ID_Link`) VALUES
@@ -164,31 +129,37 @@ INSERT INTO `comments_links` (`ID`, `added`, `approved`, `comment`, `ID_User`, `
 (19, '2015-10-19 17:33:39', 3, 'fggassdfgasdfasdf', 10, 24);
 
 --
--- Triggers `comments_links`
+-- Disparadores `comments_links`
 --
-DELIMITER $$
+DROP TRIGGER IF EXISTS `comment_links_add`;
+DELIMITER //
 CREATE TRIGGER `comment_links_add` AFTER INSERT ON `comments_links`
  FOR EACH ROW UPDATE links SET totalComments = (totalComments+1) WHERE links.ID = NEW.ID_Link
-$$
+//
 DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `comment_snippet`
+-- Estructura de tabla para la tabla `comment_snippet`
 --
 
 CREATE TABLE IF NOT EXISTS `comment_snippet` (
-  `ID` bigint(20) NOT NULL COMMENT 'Identificador del Comentario',
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Identificador del Comentario',
   `comment` varchar(1000) NOT NULL COMMENT 'Comentario',
   `added` datetime NOT NULL COMMENT 'Fecha de Agregado ',
   `ID_User` bigint(20) NOT NULL COMMENT 'Usuario que lo realizo',
   `ID_Snippet` bigint(20) NOT NULL COMMENT 'Snippet al que pertenece',
-  `approved` bigint(1) NOT NULL DEFAULT '3'
-) ENGINE=InnoDB AUTO_INCREMENT=127 DEFAULT CHARSET=utf8;
+  `approved` bigint(1) NOT NULL DEFAULT '3',
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID` (`ID`),
+  KEY `ID_User` (`ID_User`),
+  KEY `FK_comment_snippet2` (`ID_Snippet`),
+  KEY `IDX_approved_comment_snippets` (`approved`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=161 ;
 
 --
--- Dumping data for table `comment_snippet`
+-- Volcado de datos para la tabla `comment_snippet`
 --
 
 INSERT INTO `comment_snippet` (`ID`, `comment`, `added`, `ID_User`, `ID_Snippet`, `approved`) VALUES
@@ -212,7 +183,6 @@ INSERT INTO `comment_snippet` (`ID`, `comment`, `added`, `ID_User`, `ID_Snippet`
 (96, 'sdfthsrty srthger sy\r\nhgw trg\r\ns d\r\nffgs\r\ndffg \r\n', '2014-11-04 18:06:05', 8, 71, 3),
 (104, 'Test', '2015-03-01 21:06:23', 8, 41, 3),
 (107, 'fsdfsdf', '2015-05-13 17:07:57', 8, 80, 3),
-(108, 'comento algo', '2015-08-07 14:08:14', 8, 83, 3),
 (109, 'otro link\r\n', '2015-08-07 14:18:22', 10, 83, 3),
 (111, 'Clap your hand', '2015-08-17 13:50:09', 10, 78, 4),
 (112, 'comentario', '2015-10-13 16:09:07', 10, 86, 3),
@@ -229,33 +199,69 @@ INSERT INTO `comment_snippet` (`ID`, `comment`, `added`, `ID_User`, `ID_Snippet`
 (123, 'dgzdfgsdfg', '2015-10-20 16:42:17', 10, 83, 3),
 (124, 'sdfgsdfgsdgf', '2015-10-20 16:42:19', 10, 83, 3),
 (125, 'sdfasdfasf', '2015-10-20 17:22:39', 10, 83, 3),
-(126, 'sfsdfasd', '2015-10-20 17:23:25', 10, 83, 3);
+(126, 'sfsdfasd', '2015-10-20 17:23:25', 10, 83, 3),
+(127, '1', '2015-11-04 12:28:50', 10, 86, 3),
+(128, '1', '2015-11-04 12:28:54', 10, 86, 3),
+(129, '1', '2015-11-04 12:28:57', 10, 86, 3),
+(130, '1', '2015-11-04 12:29:03', 10, 86, 3),
+(131, '2', '2015-11-04 12:29:05', 10, 86, 3),
+(132, '2', '2015-11-04 12:29:08', 10, 86, 3),
+(133, '3', '2015-11-04 12:29:10', 10, 86, 3),
+(134, '4', '2015-11-04 12:29:18', 10, 86, 3),
+(135, '7', '2015-11-04 12:29:22', 10, 86, 3),
+(136, '8', '2015-11-04 12:29:27', 10, 86, 3),
+(137, '88', '2015-11-04 12:29:31', 10, 86, 3),
+(138, '88', '2015-11-04 12:29:33', 10, 86, 3),
+(139, '88', '2015-11-04 12:29:36', 10, 86, 3),
+(140, '88', '2015-11-04 12:29:44', 10, 86, 3),
+(141, '8', '2015-11-04 12:29:50', 10, 86, 3),
+(142, '30!', '2015-11-04 12:40:39', 10, 86, 3),
+(143, '1', '2015-11-04 13:57:15', 10, 86, 3),
+(144, '1', '2015-11-04 13:57:19', 10, 86, 3),
+(145, '2', '2015-11-04 13:57:22', 10, 86, 3),
+(146, '2', '2015-11-04 13:57:24', 10, 86, 3),
+(147, '2', '2015-11-04 13:57:26', 10, 86, 3),
+(149, '4', '2015-11-04 13:57:30', 10, 86, 3),
+(150, '4', '2015-11-04 13:57:32', 10, 86, 3),
+(151, '7', '2015-11-04 13:57:34', 10, 86, 3),
+(152, '7', '2015-11-04 13:57:37', 10, 86, 3),
+(153, '77', '2015-11-04 13:57:40', 10, 86, 3),
+(154, '12', '2015-11-04 13:57:43', 10, 86, 3),
+(155, '12', '2015-11-04 13:57:46', 10, 86, 3),
+(156, '14', '2015-11-04 13:57:50', 10, 86, 3),
+(157, '12', '2015-11-04 13:57:58', 10, 86, 3),
+(158, '11', '2015-11-04 14:02:54', 10, 86, 3),
+(159, 's', '2015-11-04 15:58:37', 10, 86, 3),
+(160, 'dfghfcfgh', '2015-11-04 16:22:52', 10, 86, 3);
 
 --
--- Triggers `comment_snippet`
+-- Disparadores `comment_snippet`
 --
-DELIMITER $$
+DROP TRIGGER IF EXISTS `comment_snippet_add`;
+DELIMITER //
 CREATE TRIGGER `comment_snippet_add` AFTER INSERT ON `comment_snippet`
  FOR EACH ROW UPDATE snippets SET totalComments = (totalComments+1) WHERE snippets.ID = NEW.ID_Snippet
-$$
+//
 DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `controllers`
+-- Estructura de tabla para la tabla `controllers`
 --
 
 CREATE TABLE IF NOT EXISTS `controllers` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `controller` varchar(255) NOT NULL,
   `active` bigint(20) NOT NULL,
   `description` varchar(400) DEFAULT NULL,
-  `created` datetime NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 COMMENT='Para registrar los controladores del site\n';
+  `created` datetime NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `idx_ctrl` (`active`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Para registrar los controladores del site\n' AUTO_INCREMENT=32 ;
 
 --
--- Dumping data for table `controllers`
+-- Volcado de datos para la tabla `controllers`
 --
 
 INSERT INTO `controllers` (`ID`, `controller`, `active`, `description`, `created`) VALUES
@@ -283,17 +289,18 @@ INSERT INTO `controllers` (`ID`, `controller`, `active`, `description`, `created
 -- --------------------------------------------------------
 
 --
--- Table structure for table `event`
+-- Estructura de tabla para la tabla `event`
 --
 
 CREATE TABLE IF NOT EXISTS `event` (
   `eventName` varchar(100) NOT NULL,
   `description` varchar(450) NOT NULL,
-  `imageEvent` varchar(400) NOT NULL
+  `imageEvent` varchar(400) NOT NULL,
+  PRIMARY KEY (`eventName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Registra los eventos de la aplicacion';
 
 --
--- Dumping data for table `event`
+-- Volcado de datos para la tabla `event`
 --
 
 INSERT INTO `event` (`eventName`, `description`, `imageEvent`) VALUES
@@ -319,11 +326,11 @@ INSERT INTO `event` (`eventName`, `description`, `imageEvent`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `gamification_rules`
+-- Estructura de tabla para la tabla `gamification_rules`
 --
 
 CREATE TABLE IF NOT EXISTS `gamification_rules` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `eventName` varchar(100) NOT NULL,
   `ID_Badge` bigint(20) NOT NULL,
   `threshold` bigint(20) NOT NULL,
@@ -331,11 +338,14 @@ CREATE TABLE IF NOT EXISTS `gamification_rules` (
   `description` varchar(400) NOT NULL,
   `experience_points` bigint(20) NOT NULL,
   `reputation_points` bigint(20) NOT NULL,
-  `level_points` bigint(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='Almacena las reglas de asignacion de puntos y badges';
+  `level_points` bigint(20) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `fk_gamification_rules_2_idx` (`ID_Badge`),
+  KEY `fk_gamification_rules_1_idx` (`eventName`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Almacena las reglas de asignacion de puntos y badges' AUTO_INCREMENT=16 ;
 
 --
--- Dumping data for table `gamification_rules`
+-- Volcado de datos para la tabla `gamification_rules`
 --
 
 INSERT INTO `gamification_rules` (`ID`, `eventName`, `ID_Badge`, `threshold`, `title`, `description`, `experience_points`, `reputation_points`, `level_points`) VALUES
@@ -344,18 +354,17 @@ INSERT INTO `gamification_rules` (`ID`, `eventName`, `ID_Badge`, `threshold`, `t
 (3, 'user.snippet.add', 23, 35, '', '', 10, 1, 1),
 (4, 'user.fav.get', 23, 1, '', '', 15, 3, 0),
 (5, 'user.comment.add', 23, 1, '', '', 11, 1, 0),
-(6, 'user.comment.get', 23, 14, '', '', 11, 1, 0),
-(9, 'user.activate', 23, 2, '', '', 0, 0, 0),
-(12, 'user.comment.get', 23, 0, 'fsdfsdfs', 'sdfsdf', 0, 0, 0);
+(14, 'user.comment.get', 28, 30, 'Felices 30!', 'Felices 30!', 0, 0, 0),
+(15, 'user.comment.get', 28, 1, 'Nuestro primer comentario', 'Nuestro primer comentario', 0, 0, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `links`
+-- Estructura de tabla para la tabla `links`
 --
 
 CREATE TABLE IF NOT EXISTS `links` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `URL` mediumtext NOT NULL,
   `Description` varchar(400) NOT NULL,
   `Title` varchar(100) NOT NULL,
@@ -366,11 +375,14 @@ CREATE TABLE IF NOT EXISTS `links` (
   `totalComments` double NOT NULL DEFAULT '0',
   `added` datetime NOT NULL,
   `totalBroken` double NOT NULL DEFAULT '0',
-  `ID_Status` bigint(20) NOT NULL DEFAULT '3'
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+  `ID_Status` bigint(20) NOT NULL DEFAULT '3',
+  PRIMARY KEY (`ID`),
+  KEY `fk_link_user_idx` (`ID_User`),
+  KEY `fk_links_operational` (`ID_Status`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
 
 --
--- Dumping data for table `links`
+-- Volcado de datos para la tabla `links`
 --
 
 INSERT INTO `links` (`ID`, `URL`, `Description`, `Title`, `ID_User`, `rating`, `totalVotes`, `totalFav`, `totalComments`, `added`, `totalBroken`, `ID_Status`) VALUES
@@ -386,9 +398,10 @@ INSERT INTO `links` (`ID`, `URL`, `Description`, `Title`, `ID_User`, `rating`, `
 (24, 'http://yy.vom', 'setTagName', 'setTagName', 8, '0.00', 0, 1, 5, '2015-09-16 16:16:39', 0, 4);
 
 --
--- Triggers `links`
+-- Disparadores `links`
 --
-DELIMITER $$
+DROP TRIGGER IF EXISTS `delete_links`;
+DELIMITER //
 CREATE TRIGGER `delete_links` BEFORE DELETE ON `links`
  FOR EACH ROW begin
 SET @disable_trigger = 1;
@@ -399,25 +412,29 @@ DELETE from comments_links where comments_links.ID_Link = old.ID;
 DELETE from rating_links where rating_links.ID_Links = old.ID;
 SET @disable_trigger = NULL;
 END
-$$
+//
 DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `link_log`
+-- Estructura de tabla para la tabla `link_log`
 --
 
 CREATE TABLE IF NOT EXISTS `link_log` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `ID_Link` bigint(20) NOT NULL,
   `event` varchar(100) NOT NULL,
   `ID_User` bigint(20) NOT NULL,
-  `created` datetime NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
+  `created` datetime NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `fk_linklog_link_idx` (`ID_Link`),
+  KEY `fk_linklog_user_idx` (`ID_User`),
+  KEY `fk_linklog_event_idx` (`event`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=47 ;
 
 --
--- Dumping data for table `link_log`
+-- Volcado de datos para la tabla `link_log`
 --
 
 INSERT INTO `link_log` (`ID`, `ID_Link`, `event`, `ID_User`, `created`) VALUES
@@ -471,17 +488,20 @@ INSERT INTO `link_log` (`ID`, `ID_Link`, `event`, `ID_User`, `created`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `lista_favoritos_snippets`
+-- Estructura de tabla para la tabla `lista_favoritos_snippets`
 --
 
 CREATE TABLE IF NOT EXISTS `lista_favoritos_snippets` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `ID_Snippets` bigint(20) NOT NULL,
-  `ID_User` bigint(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=142 DEFAULT CHARSET=utf8 COMMENT='Almacena los snippets favoritos del usuario';
+  `ID_User` bigint(20) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `fk_lista_favoritos_snippets_1_idx` (`ID_Snippets`),
+  KEY `fk_lista_favoritos_snippets_2_idx` (`ID_User`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Almacena los snippets favoritos del usuario' AUTO_INCREMENT=142 ;
 
 --
--- Dumping data for table `lista_favoritos_snippets`
+-- Volcado de datos para la tabla `lista_favoritos_snippets`
 --
 
 INSERT INTO `lista_favoritos_snippets` (`ID`, `ID_Snippets`, `ID_User`) VALUES
@@ -502,37 +522,42 @@ INSERT INTO `lista_favoritos_snippets` (`ID`, `ID_Snippets`, `ID_User`) VALUES
 (141, 86, 10);
 
 --
--- Triggers `lista_favoritos_snippets`
+-- Disparadores `lista_favoritos_snippets`
 --
-DELIMITER $$
+DROP TRIGGER IF EXISTS `fav_snippet__add`;
+DELIMITER //
 CREATE TRIGGER `fav_snippet__add` AFTER INSERT ON `lista_favoritos_snippets`
  FOR EACH ROW UPDATE snippets SET totalFav = totalFav+1 WHERE snippets.ID = NEW.ID_Snippets
-$$
+//
 DELIMITER ;
-DELIMITER $$
+DROP TRIGGER IF EXISTS `fav_snippet_del`;
+DELIMITER //
 CREATE TRIGGER `fav_snippet_del` BEFORE DELETE ON `lista_favoritos_snippets`
  FOR EACH ROW begin
 IF @disable_trigger IS NULL THEN
 UPDATE snippets SET totalFav = IF( totalFav>0 ,totalFav-1, 0)WHERE snippets.ID = OLD.ID_Snippets;
 END IF;
 end
-$$
+//
 DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `lista_tag_snippet`
+-- Estructura de tabla para la tabla `lista_tag_snippet`
 --
 
 CREATE TABLE IF NOT EXISTS `lista_tag_snippet` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `ID_Tag` bigint(20) NOT NULL,
-  `ID_Snippets` bigint(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=157 DEFAULT CHARSET=utf8 COMMENT='Mantiene la relacion de tags por snippet';
+  `ID_Snippets` bigint(20) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `fk_Lista_Tag_Snippet_1_idx` (`ID_Tag`),
+  KEY `fk_Lista_Tag_Snippet_2_idx` (`ID_Snippets`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Mantiene la relacion de tags por snippet' AUTO_INCREMENT=158 ;
 
 --
--- Dumping data for table `lista_tag_snippet`
+-- Volcado de datos para la tabla `lista_tag_snippet`
 --
 
 INSERT INTO `lista_tag_snippet` (`ID`, `ID_Tag`, `ID_Snippets`) VALUES
@@ -669,22 +694,26 @@ INSERT INTO `lista_tag_snippet` (`ID`, `ID_Tag`, `ID_Snippets`) VALUES
 (153, 130, 83),
 (154, 145, 84),
 (155, 158, 86),
-(156, 136, 87);
+(156, 136, 87),
+(157, 177, 88);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `list_favorites_links`
+-- Estructura de tabla para la tabla `list_favorites_links`
 --
 
 CREATE TABLE IF NOT EXISTS `list_favorites_links` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `ID_Users` bigint(20) NOT NULL,
-  `ID_Links` bigint(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+  `ID_Links` bigint(20) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `fk_favorites_links1_idx` (`ID_Links`),
+  KEY `fk_favorites_links2_idx` (`ID_Users`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
 
 --
--- Dumping data for table `list_favorites_links`
+-- Volcado de datos para la tabla `list_favorites_links`
 --
 
 INSERT INTO `list_favorites_links` (`ID`, `ID_Users`, `ID_Links`) VALUES
@@ -696,49 +725,57 @@ INSERT INTO `list_favorites_links` (`ID`, `ID_Users`, `ID_Links`) VALUES
 (29, 10, 24);
 
 --
--- Triggers `list_favorites_links`
+-- Disparadores `list_favorites_links`
 --
-DELIMITER $$
+DROP TRIGGER IF EXISTS `fav_link_add`;
+DELIMITER //
 CREATE TRIGGER `fav_link_add` AFTER INSERT ON `list_favorites_links`
  FOR EACH ROW UPDATE links SET totalFav = totalFav+1 WHERE links.ID = NEW.ID_Links
-$$
+//
 DELIMITER ;
-DELIMITER $$
+DROP TRIGGER IF EXISTS `fav_links_del`;
+DELIMITER //
 CREATE TRIGGER `fav_links_del` BEFORE DELETE ON `list_favorites_links`
  FOR EACH ROW begin
 IF @disable_trigger IS NULL THEN
 UPDATE links SET totalFav = IF( totalFav>0 ,totalFav-1, 0)WHERE links.ID = OLD.ID_Links;
 END IF;
 end
-$$
+//
 DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `list_favorite_page`
+-- Estructura de tabla para la tabla `list_favorite_page`
 --
 
 CREATE TABLE IF NOT EXISTS `list_favorite_page` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `ID_Page` bigint(20) NOT NULL,
-  `ID_User` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `ID_User` bigint(20) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `fk_favorite_page_1_idx` (`ID_Page`),
+  KEY `fk_favorite_page_2_idx` (`ID_User`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `list_media_tags`
+-- Estructura de tabla para la tabla `list_media_tags`
 --
 
 CREATE TABLE IF NOT EXISTS `list_media_tags` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `ID_media` bigint(20) NOT NULL,
-  `ID_tag` bigint(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
+  `ID_tag` bigint(20) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `FK_list_tags_idx` (`ID_tag`),
+  KEY `FK_listmedia_media_idx` (`ID_media`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=45 ;
 
 --
--- Dumping data for table `list_media_tags`
+-- Volcado de datos para la tabla `list_media_tags`
 --
 
 INSERT INTO `list_media_tags` (`ID`, `ID_media`, `ID_tag`) VALUES
@@ -777,22 +814,31 @@ INSERT INTO `list_media_tags` (`ID`, `ID_media`, `ID_tag`) VALUES
 (35, 25, 53),
 (36, 26, 173),
 (37, 27, 174),
-(38, 28, 175);
+(38, 28, 175),
+(39, 29, 176),
+(40, 30, 151),
+(41, 30, 14),
+(42, 30, 118),
+(43, 30, 10),
+(44, 30, 6);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `list_tags_links`
+-- Estructura de tabla para la tabla `list_tags_links`
 --
 
 CREATE TABLE IF NOT EXISTS `list_tags_links` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `ID_Tags` bigint(20) NOT NULL,
-  `ID_Links` bigint(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+  `ID_Links` bigint(20) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `fk_list_tags_links1_idx` (`ID_Tags`),
+  KEY `fk_list_tags_links2_idx` (`ID_Links`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=26 ;
 
 --
--- Dumping data for table `list_tags_links`
+-- Volcado de datos para la tabla `list_tags_links`
 --
 
 INSERT INTO `list_tags_links` (`ID`, `ID_Tags`, `ID_Links`) VALUES
@@ -821,17 +867,20 @@ INSERT INTO `list_tags_links` (`ID`, `ID_Tags`, `ID_Links`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `list_tag_page`
+-- Estructura de tabla para la tabla `list_tag_page`
 --
 
 CREATE TABLE IF NOT EXISTS `list_tag_page` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `ID_Page` bigint(20) NOT NULL,
-  `ID_Tag` bigint(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
+  `ID_Tag` bigint(20) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `fk_tag_page_1_idx` (`ID_Page`),
+  KEY `fk_tag_page_2_idx` (`ID_Tag`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=34 ;
 
 --
--- Dumping data for table `list_tag_page`
+-- Volcado de datos para la tabla `list_tag_page`
 --
 
 INSERT INTO `list_tag_page` (`ID`, `ID_Page`, `ID_Tag`) VALUES
@@ -858,21 +907,22 @@ INSERT INTO `list_tag_page` (`ID`, `ID_Page`, `ID_Tag`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `logger`
+-- Estructura de tabla para la tabla `logger`
 --
 
 CREATE TABLE IF NOT EXISTS `logger` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `ipAddress` varchar(100) CHARACTER SET latin1 NOT NULL,
   `route` longtext CHARACTER SET latin1 NOT NULL,
   `date` datetime NOT NULL,
   `session` varchar(100) CHARACTER SET latin1 NOT NULL DEFAULT 'NOSESSION',
   `browser` longtext CHARACTER SET latin1 NOT NULL,
-  `sessionID` varchar(100) CHARACTER SET latin1 NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=12017 DEFAULT CHARSET=utf8 COMMENT='Tabla para registrar las entradas al siteRegistrará ';
+  `sessionID` varchar(100) CHARACTER SET latin1 NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla para registrar las entradas al siteRegistrará ' AUTO_INCREMENT=12624 ;
 
 --
--- Dumping data for table `logger`
+-- Volcado de datos para la tabla `logger`
 --
 
 INSERT INTO `logger` (`ID`, `ipAddress`, `route`, `date`, `session`, `browser`, `sessionID`) VALUES
@@ -12930,23 +12980,633 @@ INSERT INTO `logger` (`ID`, `ipAddress`, `route`, `date`, `session`, `browser`, 
 (12013, '::1', 'admin_gamification/search', '2015-10-31 21:10:40', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
 (12014, '::1', 'admin_gamification/', '2015-10-31 21:10:44', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
 (12015, '::1', 'admin_gamification/search', '2015-10-31 21:10:47', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
-(12016, '::1', 'admin_gamification/search', '2015-11-03 14:41:59', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7');
+(12016, '::1', 'admin_gamification/search', '2015-11-03 14:41:59', '11', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"', 'jjn98m22iqj3jlutkvk46gm8h7'),
+(12017, '::1', 'admin_gamification/search', '2015-11-04 09:42:08', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '87e1dlaanpkb4fq3bsbvuanrp6'),
+(12018, '::1', 'admin_gamification/add', '2015-11-04 12:09:03', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '87e1dlaanpkb4fq3bsbvuanrp6'),
+(12019, '::1', 'admin_gamification/search', '2015-11-04 12:10:05', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '87e1dlaanpkb4fq3bsbvuanrp6'),
+(12020, '::1', 'admin_gamification/search', '2015-11-04 12:10:07', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '87e1dlaanpkb4fq3bsbvuanrp6'),
+(12021, '::1', 'admin_gamification/add', '2015-11-04 12:10:07', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '87e1dlaanpkb4fq3bsbvuanrp6'),
+(12022, '::1', 'admin_gamification/add', '2015-11-04 12:10:47', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '87e1dlaanpkb4fq3bsbvuanrp6'),
+(12023, '::1', 'admin_gamification/register', '2015-11-04 12:10:59', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '87e1dlaanpkb4fq3bsbvuanrp6'),
+(12024, '::1', 'admin_gamification/register', '2015-11-04 12:11:09', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '87e1dlaanpkb4fq3bsbvuanrp6'),
+(12025, '::1', 'admin_gamification/search', '2015-11-04 12:11:09', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '87e1dlaanpkb4fq3bsbvuanrp6'),
+(12026, '::1', 'admin_gamification/delete/13', '2015-11-04 12:11:16', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '87e1dlaanpkb4fq3bsbvuanrp6'),
+(12027, '::1', 'admin_gamification/search', '2015-11-04 12:11:16', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '87e1dlaanpkb4fq3bsbvuanrp6'),
+(12028, '::1', 'admin_gamification/add', '2015-11-04 12:11:21', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '87e1dlaanpkb4fq3bsbvuanrp6'),
+(12029, '::1', 'admin_gamification/add', '2015-11-04 12:25:37', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '87e1dlaanpkb4fq3bsbvuanrp6'),
+(12030, '::1', 'admin_gamification/search', '2015-11-04 12:25:41', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '87e1dlaanpkb4fq3bsbvuanrp6'),
+(12031, '::1', 'admin_gamification/delete/9', '2015-11-04 12:27:59', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '87e1dlaanpkb4fq3bsbvuanrp6'),
+(12032, '::1', 'admin_gamification/search', '2015-11-04 12:27:59', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '87e1dlaanpkb4fq3bsbvuanrp6'),
+(12033, '::1', 'admin_gamification/delete/12', '2015-11-04 12:28:04', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '87e1dlaanpkb4fq3bsbvuanrp6'),
+(12034, '::1', 'admin_gamification/search', '2015-11-04 12:28:04', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '87e1dlaanpkb4fq3bsbvuanrp6'),
+(12035, '::1', 'authenticate/logout', '2015-11-04 12:28:28', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '87e1dlaanpkb4fq3bsbvuanrp6'),
+(12036, '::1', 'authenticate/login', '2015-11-04 12:28:31', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'nfarg59a5p6q0q3duj1fnh69u7'),
+(12037, '::1', 'home', '2015-11-04 12:28:32', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'nfarg59a5p6q0q3duj1fnh69u7'),
+(12038, '::1', 'notification', '2015-11-04 12:28:33', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'nfarg59a5p6q0q3duj1fnh69u7'),
+(12039, '::1', 'notification', '2015-11-04 12:28:33', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'nfarg59a5p6q0q3duj1fnh69u7'),
+(12040, '127.0.0.1', 'home', '2015-11-04 12:28:40', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12041, '127.0.0.1', 'notification', '2015-11-04 12:28:40', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12042, '127.0.0.1', 'notification', '2015-11-04 12:28:40', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12043, '127.0.0.1', 'snippets', '2015-11-04 12:28:42', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12044, '127.0.0.1', 'notification', '2015-11-04 12:28:42', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12045, '127.0.0.1', 'snippets/view/86', '2015-11-04 12:28:46', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12046, '127.0.0.1', 'snippets/show_comment', '2015-11-04 12:28:46', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12047, '127.0.0.1', 'notification', '2015-11-04 12:28:46', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12048, '127.0.0.1', 'snippets/comment', '2015-11-04 12:28:50', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12049, '127.0.0.1', 'snippets/comment', '2015-11-04 12:28:54', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12050, '127.0.0.1', 'snippets/comment', '2015-11-04 12:28:57', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12051, '127.0.0.1', 'snippets/comment', '2015-11-04 12:29:03', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12052, '127.0.0.1', 'snippets/comment', '2015-11-04 12:29:05', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12053, '127.0.0.1', 'snippets/comment', '2015-11-04 12:29:08', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12054, '127.0.0.1', 'snippets/comment', '2015-11-04 12:29:10', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12055, '127.0.0.1', 'snippets/comment', '2015-11-04 12:29:18', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12056, '127.0.0.1', 'snippets/comment', '2015-11-04 12:29:22', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12057, '127.0.0.1', 'snippets/comment', '2015-11-04 12:29:27', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12058, '127.0.0.1', 'snippets/comment', '2015-11-04 12:29:31', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12059, '127.0.0.1', 'snippets/comment', '2015-11-04 12:29:33', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12060, '127.0.0.1', 'snippets/comment', '2015-11-04 12:29:36', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12061, '127.0.0.1', 'snippets/comment', '2015-11-04 12:29:44', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12062, '127.0.0.1', 'snippets/comment', '2015-11-04 12:29:50', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12063, '::1', '10', '2015-11-04 12:29:53', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'nfarg59a5p6q0q3duj1fnh69u7'),
+(12064, '::1', 'notification', '2015-11-04 12:29:53', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'nfarg59a5p6q0q3duj1fnh69u7'),
+(12065, '::1', 'notification', '2015-11-04 12:29:53', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'nfarg59a5p6q0q3duj1fnh69u7'),
+(12066, '::1', 'home', '2015-11-04 12:29:55', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'nfarg59a5p6q0q3duj1fnh69u7'),
+(12067, '::1', 'notification', '2015-11-04 12:29:56', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'nfarg59a5p6q0q3duj1fnh69u7'),
+(12068, '::1', 'notification', '2015-11-04 12:29:56', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'nfarg59a5p6q0q3duj1fnh69u7'),
+(12069, '::1', 'authenticate/logout', '2015-11-04 12:29:59', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'nfarg59a5p6q0q3duj1fnh69u7'),
+(12070, '::1', 'authenticate/login', '2015-11-04 12:30:03', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'n6lvg4ribpaepoh8meh2hdmgo2'),
+(12071, '::1', 'home', '2015-11-04 12:30:04', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'n6lvg4ribpaepoh8meh2hdmgo2'),
+(12072, '::1', 'admin_gamification/search', '2015-11-04 12:31:26', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'n6lvg4ribpaepoh8meh2hdmgo2'),
+(12073, '::1', 'admin_gamification/delete/6', '2015-11-04 12:39:51', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'n6lvg4ribpaepoh8meh2hdmgo2'),
+(12074, '::1', 'admin_gamification/search', '2015-11-04 12:39:51', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'n6lvg4ribpaepoh8meh2hdmgo2'),
+(12075, '::1', 'admin_gamification/add', '2015-11-04 12:39:52', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'n6lvg4ribpaepoh8meh2hdmgo2'),
+(12076, '::1', 'admin_media/image_browse', '2015-11-04 12:40:13', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'n6lvg4ribpaepoh8meh2hdmgo2'),
+(12077, '::1', 'admin_gamification/register', '2015-11-04 12:40:18', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'n6lvg4ribpaepoh8meh2hdmgo2'),
+(12078, '::1', 'admin_gamification/search', '2015-11-04 12:40:18', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'n6lvg4ribpaepoh8meh2hdmgo2'),
+(12079, '::1', 'authenticate/logout', '2015-11-04 12:40:27', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'n6lvg4ribpaepoh8meh2hdmgo2'),
+(12080, '::1', 'authenticate/login', '2015-11-04 12:40:31', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12081, '::1', 'home', '2015-11-04 12:40:32', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12082, '::1', 'notification', '2015-11-04 12:40:32', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12083, '::1', 'notification', '2015-11-04 12:40:32', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12084, '127.0.0.1', 'snippets/view/86', '2015-11-04 12:40:35', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12085, '127.0.0.1', 'notification', '2015-11-04 12:40:36', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12086, '127.0.0.1', 'snippets/show_comment', '2015-11-04 12:40:36', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12087, '127.0.0.1', 'snippets/comment', '2015-11-04 12:40:39', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12088, '::1', 'home', '2015-11-04 12:40:40', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12089, '::1', 'notification', '2015-11-04 12:42:34', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12090, '::1', 'notification', '2015-11-04 12:42:34', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12091, '::1', 'notification', '2015-11-04 12:44:37', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12092, '::1', 'notification', '2015-11-04 12:44:37', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12093, '::1', 'notification', '2015-11-04 12:46:40', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12094, '::1', 'notification', '2015-11-04 12:46:40', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12095, '::1', 'notification', '2015-11-04 12:48:42', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12096, '::1', 'notification', '2015-11-04 12:48:42', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12097, '::1', 'notification', '2015-11-04 12:50:45', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12098, '::1', 'notification', '2015-11-04 12:50:45', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12099, '::1', 'notification', '2015-11-04 12:52:47', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12100, '::1', 'notification', '2015-11-04 12:52:48', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12101, '::1', 'notification', '2015-11-04 12:54:50', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12102, '::1', 'notification', '2015-11-04 12:54:50', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12103, '::1', 'notification', '2015-11-04 12:56:53', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12104, '::1', 'notification', '2015-11-04 12:56:53', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12105, '::1', 'notification', '2015-11-04 12:58:55', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12106, '::1', 'notification', '2015-11-04 12:58:56', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12107, '::1', 'notification', '2015-11-04 13:00:58', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12108, '::1', 'notification', '2015-11-04 13:00:58', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12109, '::1', 'notification', '2015-11-04 13:03:01', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12110, '::1', 'notification', '2015-11-04 13:03:01', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12111, '::1', 'notification', '2015-11-04 13:05:03', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12112, '::1', 'notification', '2015-11-04 13:05:04', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12113, '::1', 'notification', '2015-11-04 13:07:06', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12114, '::1', 'notification', '2015-11-04 13:07:06', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12115, '::1', 'notification', '2015-11-04 13:09:09', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12116, '::1', 'notification', '2015-11-04 13:09:09', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12117, '::1', 'notification', '2015-11-04 13:11:11', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12118, '::1', 'notification', '2015-11-04 13:11:11', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12119, '::1', 'notification', '2015-11-04 13:13:14', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12120, '::1', 'notification', '2015-11-04 13:13:14', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12121, '::1', 'notification', '2015-11-04 13:15:16', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12122, '::1', 'notification', '2015-11-04 13:15:17', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12123, '::1', 'notification', '2015-11-04 13:17:19', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12124, '::1', 'notification', '2015-11-04 13:17:19', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12125, '::1', 'notification', '2015-11-04 13:19:22', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12126, '::1', 'notification', '2015-11-04 13:19:22', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12127, '::1', 'notification', '2015-11-04 13:21:24', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12128, '::1', 'notification', '2015-11-04 13:21:24', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12129, '::1', 'notification', '2015-11-04 13:23:27', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12130, '::1', 'notification', '2015-11-04 13:23:27', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12131, '::1', 'notification', '2015-11-04 13:25:29', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12132, '::1', 'notification', '2015-11-04 13:25:29', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12133, '::1', 'notification', '2015-11-04 13:27:32', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12134, '::1', 'notification', '2015-11-04 13:27:32', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12135, '::1', 'notification', '2015-11-04 13:29:34', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12136, '::1', 'notification', '2015-11-04 13:29:35', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12137, '::1', 'notification', '2015-11-04 13:31:37', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12138, '::1', 'notification', '2015-11-04 13:31:37', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12139, '::1', 'notification', '2015-11-04 13:33:40', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12140, '::1', 'notification', '2015-11-04 13:33:40', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12141, '::1', 'notification', '2015-11-04 13:35:42', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12142, '::1', 'notification', '2015-11-04 13:35:42', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12143, '::1', 'notification', '2015-11-04 13:37:45', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12144, '::1', 'notification', '2015-11-04 13:37:45', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12145, '::1', 'notification', '2015-11-04 13:39:47', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12146, '::1', 'notification', '2015-11-04 13:39:47', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12147, '::1', 'notification', '2015-11-04 13:41:50', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12148, '::1', 'notification', '2015-11-04 13:41:50', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12149, '::1', 'notification', '2015-11-04 13:43:53', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12150, '::1', 'notification', '2015-11-04 13:43:53', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12151, '::1', 'notification', '2015-11-04 13:45:55', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12152, '::1', 'notification', '2015-11-04 13:45:55', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12153, '::1', 'notification', '2015-11-04 13:47:58', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12154, '::1', 'notification', '2015-11-04 13:47:58', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12155, '::1', 'notification', '2015-11-04 13:50:00', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12156, '::1', 'notification', '2015-11-04 13:50:00', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12157, '::1', 'notification', '2015-11-04 13:52:03', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12158, '::1', 'notification', '2015-11-04 13:52:03', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12159, '::1', 'notification', '2015-11-04 13:54:06', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12160, '::1', 'notification', '2015-11-04 13:54:06', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12161, '::1', 'notification', '2015-11-04 13:56:08', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12162, '::1', 'notification', '2015-11-04 13:56:09', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12163, '127.0.0.1', 'snippets/view/86', '2015-11-04 13:57:11', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12164, '127.0.0.1', 'notification', '2015-11-04 13:57:11', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12165, '127.0.0.1', 'snippets/show_comment', '2015-11-04 13:57:11', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12166, '127.0.0.1', 'snippets/comment', '2015-11-04 13:57:15', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12167, '127.0.0.1', 'snippets/comment', '2015-11-04 13:57:19', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12168, '127.0.0.1', 'snippets/comment', '2015-11-04 13:57:22', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12169, '127.0.0.1', 'snippets/comment', '2015-11-04 13:57:24', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12170, '127.0.0.1', 'snippets/comment', '2015-11-04 13:57:26', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12171, '127.0.0.1', 'snippets/comment', '2015-11-04 13:57:28', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12172, '127.0.0.1', 'snippets/comment', '2015-11-04 13:57:30', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12173, '127.0.0.1', 'snippets/comment', '2015-11-04 13:57:32', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12174, '127.0.0.1', 'snippets/comment', '2015-11-04 13:57:34', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12175, '127.0.0.1', 'snippets/comment', '2015-11-04 13:57:37', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12176, '127.0.0.1', 'snippets/comment', '2015-11-04 13:57:40', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12177, '127.0.0.1', 'snippets/comment', '2015-11-04 13:57:43', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12178, '127.0.0.1', 'snippets/comment', '2015-11-04 13:57:46', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12179, '127.0.0.1', 'snippets/comment', '2015-11-04 13:57:50', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12180, '127.0.0.1', 'snippets/comment', '2015-11-04 13:57:58', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12181, '::1', 'notification', '2015-11-04 13:58:11', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12182, '::1', 'notification', '2015-11-04 13:58:11', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12183, '::1', 'notification', '2015-11-04 14:00:14', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12184, '::1', 'notification', '2015-11-04 14:00:14', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12185, '::1', 'authenticate/logout', '2015-11-04 14:02:06', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'atga8kis1lgpft5mon8snvotg1'),
+(12186, '::1', 'authenticate/login', '2015-11-04 14:02:10', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'p2pt65ufo7bji326i8auopd6s2'),
+(12187, '::1', 'home', '2015-11-04 14:02:11', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'p2pt65ufo7bji326i8auopd6s2'),
+(12188, '::1', 'admin_gamification/search', '2015-11-04 14:02:13', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'p2pt65ufo7bji326i8auopd6s2'),
+(12189, '::1', 'admin_gamification/add', '2015-11-04 14:02:15', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'p2pt65ufo7bji326i8auopd6s2'),
+(12190, '::1', 'admin_media/image_browse', '2015-11-04 14:02:37', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'p2pt65ufo7bji326i8auopd6s2'),
+(12191, '::1', 'admin_gamification/register', '2015-11-04 14:02:41', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'p2pt65ufo7bji326i8auopd6s2'),
+(12192, '::1', 'admin_gamification/search', '2015-11-04 14:02:41', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'p2pt65ufo7bji326i8auopd6s2'),
+(12193, '::1', 'authenticate/logout', '2015-11-04 14:02:44', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'p2pt65ufo7bji326i8auopd6s2'),
+(12194, '::1', 'authenticate/login', '2015-11-04 14:02:47', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12195, '::1', 'home', '2015-11-04 14:02:48', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12196, '::1', 'notification', '2015-11-04 14:02:48', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12197, '::1', 'notification', '2015-11-04 14:02:48', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12198, '127.0.0.1', 'snippets/comment', '2015-11-04 14:02:54', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12199, '::1', 'home', '2015-11-04 14:02:55', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12200, '::1', 'notification', '2015-11-04 14:04:51', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7');
+INSERT INTO `logger` (`ID`, `ipAddress`, `route`, `date`, `session`, `browser`, `sessionID`) VALUES
+(12201, '::1', 'notification', '2015-11-04 14:04:51', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12202, '::1', 'notification', '2015-11-04 14:06:54', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12203, '::1', 'notification', '2015-11-04 14:06:54', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12204, '::1', 'notification', '2015-11-04 14:08:56', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12205, '::1', 'notification', '2015-11-04 14:08:56', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12206, '::1', 'notification', '2015-11-04 14:10:59', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12207, '::1', 'notification', '2015-11-04 14:10:59', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12208, '::1', 'notification', '2015-11-04 14:13:02', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12209, '::1', 'notification', '2015-11-04 14:13:02', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12210, '::1', 'notification', '2015-11-04 14:15:04', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12211, '::1', 'notification', '2015-11-04 14:15:04', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12212, '::1', 'notification', '2015-11-04 14:17:07', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12213, '::1', 'notification', '2015-11-04 14:17:07', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12214, '::1', 'notification', '2015-11-04 14:19:10', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12215, '::1', 'notification', '2015-11-04 14:19:10', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12216, '::1', 'notification', '2015-11-04 14:21:12', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12217, '::1', 'notification', '2015-11-04 14:21:12', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12218, '::1', 'notification', '2015-11-04 14:23:15', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12219, '::1', 'notification', '2015-11-04 14:23:15', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12220, '::1', 'notification', '2015-11-04 14:25:18', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12221, '::1', 'notification', '2015-11-04 14:25:18', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12222, '::1', 'notification', '2015-11-04 14:27:20', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12223, '::1', 'notification', '2015-11-04 14:27:20', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12224, '::1', 'notification', '2015-11-04 14:29:23', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12225, '::1', 'notification', '2015-11-04 14:29:23', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12226, '::1', 'notification', '2015-11-04 14:31:25', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12227, '::1', 'notification', '2015-11-04 14:31:25', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12228, '::1', 'notification', '2015-11-04 14:33:28', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12229, '::1', 'notification', '2015-11-04 14:33:28', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12230, '::1', 'notification', '2015-11-04 14:35:31', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12231, '::1', 'notification', '2015-11-04 14:35:31', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12232, '::1', 'notification', '2015-11-04 14:37:33', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12233, '::1', 'notification', '2015-11-04 14:37:33', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12234, '::1', 'notification', '2015-11-04 14:39:36', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12235, '::1', 'notification', '2015-11-04 14:39:36', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12236, '::1', 'notification', '2015-11-04 14:41:39', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12237, '::1', 'notification', '2015-11-04 14:41:39', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12238, '::1', 'notification', '2015-11-04 14:43:41', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12239, '::1', 'notification', '2015-11-04 14:43:41', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12240, '::1', 'notification', '2015-11-04 14:45:44', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12241, '::1', 'notification', '2015-11-04 14:45:44', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12242, '::1', 'notification', '2015-11-04 14:47:46', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12243, '::1', 'notification', '2015-11-04 14:47:46', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12244, '::1', 'notification', '2015-11-04 14:49:49', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12245, '::1', 'notification', '2015-11-04 14:49:49', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12246, '::1', 'notification', '2015-11-04 14:51:52', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12247, '::1', 'notification', '2015-11-04 14:51:52', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12248, '::1', 'notification', '2015-11-04 14:53:54', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12249, '::1', 'notification', '2015-11-04 14:53:54', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12250, '::1', 'notification', '2015-11-04 14:55:57', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12251, '::1', 'notification', '2015-11-04 14:55:57', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12252, '::1', 'notification', '2015-11-04 14:58:00', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12253, '::1', 'notification', '2015-11-04 14:58:00', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12254, '::1', 'notification', '2015-11-04 15:00:02', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12255, '::1', 'notification', '2015-11-04 15:00:02', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12256, '::1', 'notification', '2015-11-04 15:02:05', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12257, '::1', 'notification', '2015-11-04 15:02:05', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12258, '::1', 'notification', '2015-11-04 15:04:07', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12259, '::1', 'notification', '2015-11-04 15:04:08', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12260, '::1', 'notification', '2015-11-04 15:06:10', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12261, '::1', 'notification', '2015-11-04 15:06:10', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12262, '::1', 'notification', '2015-11-04 15:08:13', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12263, '::1', 'notification', '2015-11-04 15:08:13', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12264, '::1', 'notification', '2015-11-04 15:10:15', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12265, '::1', 'notification', '2015-11-04 15:10:15', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12266, '::1', 'notification', '2015-11-04 15:12:18', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12267, '::1', 'notification', '2015-11-04 15:12:18', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12268, '::1', 'notification', '2015-11-04 15:14:21', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12269, '::1', 'notification', '2015-11-04 15:14:21', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12270, '::1', 'notification', '2015-11-04 15:16:23', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12271, '::1', 'notification', '2015-11-04 15:16:23', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12272, '::1', 'notification', '2015-11-04 15:18:26', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12273, '::1', 'notification', '2015-11-04 15:18:26', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12274, '::1', 'notification', '2015-11-04 15:20:29', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12275, '::1', 'notification', '2015-11-04 15:20:29', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12276, '::1', 'notification', '2015-11-04 15:22:32', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12277, '::1', 'notification', '2015-11-04 15:22:32', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12278, '::1', 'notification', '2015-11-04 15:24:34', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12279, '::1', 'notification', '2015-11-04 15:24:34', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12280, '::1', 'notification', '2015-11-04 15:26:37', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12281, '::1', 'notification', '2015-11-04 15:26:37', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12282, '::1', 'notification', '2015-11-04 15:28:40', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12283, '::1', 'notification', '2015-11-04 15:28:40', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12284, '::1', 'notification', '2015-11-04 15:30:42', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12285, '::1', 'notification', '2015-11-04 15:30:42', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12286, '::1', 'notification', '2015-11-04 15:32:45', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12287, '::1', 'notification', '2015-11-04 15:32:45', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12288, '::1', 'notification', '2015-11-04 15:34:48', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12289, '::1', 'notification', '2015-11-04 15:34:48', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12290, '::1', 'notification', '2015-11-04 15:36:51', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12291, '::1', 'notification', '2015-11-04 15:36:51', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12292, '::1', 'notification', '2015-11-04 15:38:53', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12293, '::1', 'notification', '2015-11-04 15:38:53', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12294, '::1', 'notification', '2015-11-04 15:40:56', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12295, '::1', 'notification', '2015-11-04 15:40:56', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12296, '::1', 'notification', '2015-11-04 15:42:59', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12297, '::1', 'notification', '2015-11-04 15:42:59', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12298, '::1', 'notification', '2015-11-04 15:45:02', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12299, '::1', 'notification', '2015-11-04 15:45:02', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12300, '::1', 'notification', '2015-11-04 15:47:04', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12301, '::1', 'notification', '2015-11-04 15:47:04', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12302, '::1', 'notification', '2015-11-04 15:49:07', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12303, '::1', 'notification', '2015-11-04 15:49:07', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12304, '::1', 'notification', '2015-11-04 15:51:10', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12305, '::1', 'notification', '2015-11-04 15:51:10', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12306, '::1', 'notification', '2015-11-04 15:53:12', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12307, '::1', 'notification', '2015-11-04 15:53:12', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12308, '::1', 'notification', '2015-11-04 15:55:15', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12309, '::1', 'notification', '2015-11-04 15:55:15', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12310, '::1', 'notification', '2015-11-04 15:57:18', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12311, '::1', 'notification', '2015-11-04 15:57:18', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12312, '::1', 'home', '2015-11-04 15:58:32', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12313, '::1', 'notification', '2015-11-04 15:58:33', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12314, '::1', 'notification', '2015-11-04 15:58:33', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12315, '127.0.0.1', 'snippets/view/86', '2015-11-04 15:58:35', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12316, '127.0.0.1', 'notification', '2015-11-04 15:58:36', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12317, '127.0.0.1', 'snippets/show_comment', '2015-11-04 15:58:36', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12318, '127.0.0.1', 'snippets/comment', '2015-11-04 15:58:37', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12319, '::1', 'notification', '2015-11-04 16:00:35', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12320, '::1', 'notification', '2015-11-04 16:00:35', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12321, '::1', 'notification', '2015-11-04 16:02:38', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12322, '::1', 'notification', '2015-11-04 16:02:38', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12323, '::1', 'notification', '2015-11-04 16:04:41', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12324, '::1', 'notification', '2015-11-04 16:04:41', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12325, '::1', 'notification', '2015-11-04 16:06:43', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12326, '::1', 'notification', '2015-11-04 16:06:43', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12327, '::1', 'notification', '2015-11-04 16:08:46', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12328, '::1', 'notification', '2015-11-04 16:08:46', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12329, '::1', 'notification', '2015-11-04 16:10:48', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12330, '::1', 'notification', '2015-11-04 16:10:49', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12331, '::1', 'notification', '2015-11-04 16:12:51', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12332, '::1', 'notification', '2015-11-04 16:12:51', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12333, '::1', 'notification', '2015-11-04 16:14:54', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12334, '::1', 'notification', '2015-11-04 16:14:54', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12335, '::1', 'notification', '2015-11-04 16:16:56', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12336, '::1', 'notification', '2015-11-04 16:16:56', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12337, '::1', 'notification', '2015-11-04 16:18:59', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12338, '::1', 'notification', '2015-11-04 16:18:59', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12339, '::1', 'notification', '2015-11-04 16:21:02', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12340, '::1', 'notification', '2015-11-04 16:21:02', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12341, '::1', 'home', '2015-11-04 16:22:45', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12342, '::1', 'notification', '2015-11-04 16:22:45', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12343, '::1', 'notification', '2015-11-04 16:22:45', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12344, '127.0.0.1', 'snippets/view/86', '2015-11-04 16:22:48', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12345, '127.0.0.1', 'notification', '2015-11-04 16:22:49', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12346, '127.0.0.1', 'snippets/show_comment', '2015-11-04 16:22:49', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12347, '127.0.0.1', 'snippets/comment', '2015-11-04 16:22:52', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12348, '::1', 'home', '2015-11-04 16:23:32', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12349, '::1', 'notification', '2015-11-04 16:23:32', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12350, '::1', 'notification', '2015-11-04 16:23:32', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12351, '::1', 'authenticate/logout', '2015-11-04 16:23:51', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'ut0na674ejgrrvcnc9jaj83af7'),
+(12352, '::1', 'authenticate/login', '2015-11-04 16:23:54', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'qhun6886cpfp7u0tbdlshosml1'),
+(12353, '::1', 'home', '2015-11-04 16:23:55', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'qhun6886cpfp7u0tbdlshosml1'),
+(12354, '::1', 'admin_comments_snippet/search', '2015-11-04 16:23:59', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'qhun6886cpfp7u0tbdlshosml1'),
+(12355, '::1', 'admin_comments_snippet/search', '2015-11-04 16:24:07', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'qhun6886cpfp7u0tbdlshosml1'),
+(12356, '::1', 'admin_comments_snippet/search/3', '2015-11-04 16:24:12', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'qhun6886cpfp7u0tbdlshosml1'),
+(12357, '::1', 'admin_comments_snippet/search/5', '2015-11-04 16:24:16', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'qhun6886cpfp7u0tbdlshosml1'),
+(12358, '::1', 'admin_comments_snippet/search/6', '2015-11-04 16:24:20', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'qhun6886cpfp7u0tbdlshosml1'),
+(12359, '::1', 'admin_comments_snippet/delete/148', '2015-11-04 16:24:36', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'qhun6886cpfp7u0tbdlshosml1'),
+(12360, '::1', 'admin_comments_snippet/search', '2015-11-04 16:24:37', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'qhun6886cpfp7u0tbdlshosml1'),
+(12361, '::1', 'admin_comments_snippet/search/3', '2015-11-04 16:24:39', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'qhun6886cpfp7u0tbdlshosml1'),
+(12362, '::1', 'admin_comments_snippet/delete/108', '2015-11-04 16:24:46', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'qhun6886cpfp7u0tbdlshosml1'),
+(12363, '::1', 'admin_comments_snippet/search', '2015-11-04 16:24:46', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'qhun6886cpfp7u0tbdlshosml1'),
+(12364, '::1', 'admin_media/search', '2015-11-04 16:24:49', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'qhun6886cpfp7u0tbdlshosml1'),
+(12365, '::1', 'admin_gamification/search', '2015-11-04 16:24:53', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'qhun6886cpfp7u0tbdlshosml1'),
+(12366, '::1', 'admin_users/search', '2015-11-04 16:27:56', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'qhun6886cpfp7u0tbdlshosml1'),
+(12367, '::1', 'admin_users/search/2', '2015-11-04 16:27:57', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'qhun6886cpfp7u0tbdlshosml1'),
+(12368, '::1', 'admin_users/view/8', '2015-11-04 16:28:00', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'qhun6886cpfp7u0tbdlshosml1'),
+(12369, '::1', 'authenticate/logout', '2015-11-04 16:28:07', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'qhun6886cpfp7u0tbdlshosml1'),
+(12370, '::1', 'authenticate/login', '2015-11-04 16:28:13', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'jamfppi5jniql6r37m019mvc06'),
+(12371, '::1', 'home', '2015-11-04 16:28:14', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'jamfppi5jniql6r37m019mvc06'),
+(12372, '::1', 'notification', '2015-11-04 16:28:14', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'jamfppi5jniql6r37m019mvc06'),
+(12373, '::1', 'notification', '2015-11-04 16:28:14', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'jamfppi5jniql6r37m019mvc06'),
+(12374, '::1', 'authenticate/logout', '2015-11-04 16:28:16', '8', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'jamfppi5jniql6r37m019mvc06'),
+(12375, '::1', 'authenticate/login', '2015-11-04 16:28:19', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12376, '::1', 'home', '2015-11-04 16:28:20', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12377, '::1', 'admin_users/search', '2015-11-04 16:28:22', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12378, '::1', 'admin_users/search/2', '2015-11-04 16:28:23', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12379, '::1', 'admin_users/view/8', '2015-11-04 16:28:27', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12380, '::1', 'home', '2015-11-04 16:28:58', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12381, '::1', 'home', '2015-11-04 16:28:59', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12382, '::1', 'admin_cms/browse', '2015-11-05 14:17:10', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12383, '127.0.0.1', 'home', '2015-11-05 16:40:33', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12384, '127.0.0.1', 'notification', '2015-11-05 16:40:33', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12385, '127.0.0.1', 'notification', '2015-11-05 16:40:33', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12386, '127.0.0.1', 'tuts', '2015-11-05 16:56:55', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12387, '127.0.0.1', 'notification', '2015-11-05 16:56:55', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12388, '127.0.0.1', 'tuts/AngularJs', '2015-11-05 16:57:00', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12389, '127.0.0.1', 'notification', '2015-11-05 16:57:00', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12390, '127.0.0.1', 'tuts/AngularJs/Principiante', '2015-11-05 16:57:06', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12391, '127.0.0.1', 'notification', '2015-11-05 16:57:06', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12392, '127.0.0.1', 'tuts/AngularJs', '2015-11-05 16:57:09', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12393, '127.0.0.1', 'notification', '2015-11-05 16:57:10', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12394, '127.0.0.1', 'tuts/AngularJs/Principiante', '2015-11-05 16:57:14', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12395, '127.0.0.1', 'notification', '2015-11-05 16:57:14', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12396, '127.0.0.1', 'tuts/AngularJs', '2015-11-05 16:57:25', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12397, '127.0.0.1', 'notification', '2015-11-05 16:57:25', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12398, '127.0.0.1', 'tuts', '2015-11-05 16:57:27', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12399, '127.0.0.1', 'notification', '2015-11-05 16:57:27', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12400, '::1', 'admin_category/search', '2015-11-05 17:05:31', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12401, '127.0.0.1', 'tuts/Clojure', '2015-11-05 17:05:43', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12402, '127.0.0.1', 'notification', '2015-11-05 17:05:43', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12403, '127.0.0.1', 'tuts', '2015-11-05 17:05:46', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12404, '127.0.0.1', 'notification', '2015-11-05 17:05:46', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12405, '::1', 'admin_category/search/2', '2015-11-05 17:05:50', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12406, '::1', 'admin_category/delete/28', '2015-11-05 17:05:59', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12407, '::1', 'admin_category/search', '2015-11-05 17:05:59', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12408, '127.0.0.1', 'snippets', '2015-11-05 17:06:06', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12409, '127.0.0.1', 'notification', '2015-11-05 17:06:07', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12410, '127.0.0.1', 'tuts', '2015-11-05 17:11:14', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12411, '127.0.0.1', 'notification', '2015-11-05 17:11:14', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12412, '127.0.0.1', 'tuts/MySQL', '2015-11-05 17:11:23', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12413, '127.0.0.1', 'notification', '2015-11-05 17:11:23', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12414, '127.0.0.1', 'tuts/MySQL/Principiante', '2015-11-05 17:11:24', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12415, '127.0.0.1', 'notification', '2015-11-05 17:11:25', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12416, '127.0.0.1', 'tuts/parara111', '2015-11-05 17:11:29', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12417, '127.0.0.1', 'notification', '2015-11-05 17:11:29', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12418, '127.0.0.1', 'tuts/', '2015-11-05 17:11:39', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12419, '127.0.0.1', 'notification', '2015-11-05 17:11:39', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12420, '127.0.0.1', 'tuts/AngularJs', '2015-11-05 17:11:40', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12421, '127.0.0.1', 'notification', '2015-11-05 17:11:40', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12422, '127.0.0.1', 'tuts/AngularJs/Principiante', '2015-11-05 17:11:41', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12423, '127.0.0.1', 'notification', '2015-11-05 17:11:42', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12424, '127.0.0.1', 'tuts/angular-1', '2015-11-05 17:11:43', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12425, '127.0.0.1', 'notification', '2015-11-05 17:11:43', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12426, '127.0.0.1', 'tuts/AngularJs/Principiante', '2015-11-05 17:11:45', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12427, '127.0.0.1', 'notification', '2015-11-05 17:11:45', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12428, '127.0.0.1', 'tuts/AngularJs', '2015-11-05 17:11:47', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12429, '127.0.0.1', 'notification', '2015-11-05 17:11:48', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12430, '127.0.0.1', 'tuts/AngularJs/Avanzado', '2015-11-05 17:11:49', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12431, '127.0.0.1', 'notification', '2015-11-05 17:11:49', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12432, '127.0.0.1', 'tuts/AngularJs', '2015-11-05 17:11:50', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12433, '127.0.0.1', 'notification', '2015-11-05 17:11:51', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12434, '127.0.0.1', 'tuts/', '2015-11-05 17:11:51', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12435, '127.0.0.1', 'notification', '2015-11-05 17:11:51', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12436, '127.0.0.1', 'tuts/PHP', '2015-11-05 17:11:53', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12437, '127.0.0.1', 'notification', '2015-11-05 17:11:53', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12438, '127.0.0.1', 'tuts/PHP/Intermedio', '2015-11-05 17:11:54', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12439, '127.0.0.1', 'notification', '2015-11-05 17:11:54', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12440, '127.0.0.1', 'tuts/zlib-configuration', '2015-11-05 17:11:55', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12441, '127.0.0.1', '{related_image}', '2015-11-05 17:11:55', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12442, '127.0.0.1', '{related_image}', '2015-11-05 17:11:56', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12443, '127.0.0.1', 'notification', '2015-11-05 17:11:56', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12444, '127.0.0.1', 'tuts/PHP', '2015-11-05 17:12:03', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12445, '127.0.0.1', 'notification', '2015-11-05 17:12:03', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12446, '127.0.0.1', 'tuts/PHP/Intermedio', '2015-11-05 17:12:07', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12447, '127.0.0.1', 'notification', '2015-11-05 17:12:07', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12448, '127.0.0.1', 'tuts', '2015-11-05 17:12:13', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12449, '127.0.0.1', 'notification', '2015-11-05 17:12:13', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12450, '127.0.0.1', 'snippets', '2015-11-05 17:15:25', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12451, '127.0.0.1', 'notification', '2015-11-05 17:15:25', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12452, '127.0.0.1', 'snippets/add', '2015-11-05 17:15:49', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12453, '127.0.0.1', 'notification', '2015-11-05 17:15:49', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12454, '127.0.0.1', 'links', '2015-11-05 17:16:03', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12455, '127.0.0.1', 'notification', '2015-11-05 17:16:03', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12456, '127.0.0.1', 'snippets', '2015-11-05 17:17:50', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0');
+INSERT INTO `logger` (`ID`, `ipAddress`, `route`, `date`, `session`, `browser`, `sessionID`) VALUES
+(12457, '127.0.0.1', 'notification', '2015-11-05 17:17:50', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12458, '127.0.0.1', 'snippets/view/75', '2015-11-05 17:17:55', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12459, '127.0.0.1', 'snippets/show_comment', '2015-11-05 17:17:55', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12460, '127.0.0.1', 'notification', '2015-11-05 17:17:55', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12461, '127.0.0.1', 'snippets', '2015-11-05 17:17:58', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12462, '127.0.0.1', 'notification', '2015-11-05 17:17:58', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12463, '127.0.0.1', 'snippets/view/78', '2015-11-05 17:18:00', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12464, '127.0.0.1', 'notification', '2015-11-05 17:18:00', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12465, '127.0.0.1', 'snippets/show_comment', '2015-11-05 17:18:01', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12466, '127.0.0.1', 'snippets', '2015-11-05 17:18:29', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12467, '127.0.0.1', 'notification', '2015-11-05 17:18:29', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12468, '127.0.0.1', 'home', '2015-11-05 17:22:00', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12469, '127.0.0.1', 'notification', '2015-11-05 17:22:01', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12470, '127.0.0.1', 'notification', '2015-11-05 17:22:01', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12471, '::1', 'admin_media/search', '2015-11-05 17:22:59', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12472, '::1', 'admin_controllers/search', '2015-11-05 17:23:05', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12473, '::1', 'admin_controllers/add', '2015-11-05 17:23:07', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12474, '::1', 'admin_controllers/register', '2015-11-05 17:23:19', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12475, '::1', 'admin_controllers/add', '2015-11-05 17:23:23', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12476, '::1', 'admin_controllers/search', '2015-11-05 17:23:25', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12477, '::1', 'admin_media/search', '2015-11-05 17:23:33', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12478, '::1', 'admin_media/search', '2015-11-05 17:33:23', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12479, '::1', 'admin_media/search', '2015-11-10 09:59:38', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12480, '::1', '{categoryImage}', '2015-11-10 09:59:38', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12481, '::1', 'admin_media/search', '2015-11-10 12:13:35', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12482, '::1', '{categoryImage}', '2015-11-10 12:13:35', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12483, '::1', 'admin_media/search', '2015-11-11 16:47:36', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12484, '::1', 'admin_media/search', '2015-11-11 16:48:05', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12485, '::1', 'admin_media/search', '2015-11-11 16:48:47', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12486, '::1', 'admin_media/search/3', '2015-11-11 16:49:17', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12487, '::1', 'admin_media/search/2', '2015-11-11 16:49:21', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12488, '::1', 'admin_tags/search', '2015-11-11 16:58:28', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12489, '::1', 'admin_tags/view/template', '2015-11-11 16:58:32', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12490, '::1', 'admin_snippets/view/38', '2015-11-11 16:58:38', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12491, '::1', 'admin_tags/view/template', '2015-11-11 16:58:40', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12492, '::1', 'admin_tags/search', '2015-11-11 16:58:42', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12493, '::1', 'admin_tags/view/html5', '2015-11-11 16:58:44', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12494, '::1', 'admin_media/search', '2015-11-11 16:58:58', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12495, '::1', 'admin_category/search', '2015-11-11 16:59:24', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12496, '::1', 'admin_media/search', '2015-11-11 16:59:30', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12497, '::1', 'admin_media/search', '2015-11-11 17:00:28', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12498, '::1', 'admin_category/search', '2015-11-11 17:00:37', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12499, '::1', 'admin_category/add', '2015-11-11 17:00:38', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12500, '::1', 'admin_media/image_upload', '2015-11-11 17:01:07', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12501, '::1', 'admin_media/image_browse', '2015-11-11 17:01:11', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12502, '::1', 'admin_category/register', '2015-11-11 17:01:26', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12503, '::1', 'admin_category/search', '2015-11-11 17:01:26', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12504, '::1', 'admin_category/search/2', '2015-11-11 17:01:28', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12505, '127.0.0.1', 'snippets', '2015-11-11 17:01:36', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12506, '127.0.0.1', 'notification', '2015-11-11 17:01:36', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12507, '127.0.0.1', 'snippets/add', '2015-11-11 17:01:37', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12508, '127.0.0.1', 'notification', '2015-11-11 17:01:38', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12509, '127.0.0.1', 'snippets/register', '2015-11-11 17:01:56', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"', '3chshpd05hfibphn0cj83bs8u0'),
+(12510, '::1', 'admin_media/search', '2015-11-11 17:02:31', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12511, '::1', 'admin_media/search/3', '2015-11-11 17:02:33', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12512, '::1', 'admin_tags/search', '2015-11-11 17:02:41', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12513, '::1', 'admin_tags/view/html5', '2015-11-11 17:02:44', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12514, '::1', 'admin_media/search', '2015-11-11 17:15:49', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12515, '::1', 'admin_tags/search', '2015-11-11 17:16:04', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12516, '::1', 'admin_tags/view/starter12', '2015-11-11 17:16:06', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12517, '::1', 'admin_media/search', '2015-11-11 17:16:58', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12518, '::1', 'admin_category/search', '2015-11-11 17:17:07', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12519, '::1', 'admin_category/add', '2015-11-11 17:17:08', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12520, '::1', 'admin_media/search', '2015-11-11 17:21:44', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12521, '::1', 'admin_media/search', '2015-11-11 17:22:17', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12522, '::1', 'admin_media/search', '2015-11-11 17:22:41', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12523, '::1', 'admin_media/search', '2015-11-11 17:23:04', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12524, '::1', 'admin_media/search', '2015-11-11 17:23:23', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12525, '::1', 'admin_media/search', '2015-11-11 17:23:38', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12526, '::1', 'admin_media/search', '2015-11-11 17:23:50', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12527, '::1', 'admin_settings/search', '2015-11-11 17:23:53', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12528, '::1', 'admin_media/search', '2015-11-11 17:23:56', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12529, '::1', 'admin_media/search', '2015-11-11 17:24:30', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12530, '::1', 'admin_media/search', '2015-11-11 17:26:12', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12531, '::1', 'admin_media/search', '2015-11-11 17:27:05', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12532, '::1', 'admin_media/search', '2015-11-11 17:28:57', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12533, '::1', 'admin_media/search', '2015-11-11 17:29:01', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12534, '::1', 'admin_media/search/2', '2015-11-11 17:29:25', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12535, '::1', 'admin_media/search/3', '2015-11-11 17:29:29', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12536, '::1', 'admin_media/search/1', '2015-11-11 17:29:53', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12537, '::1', 'admin_media/search/1', '2015-11-11 17:30:15', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12538, '::1', 'admin_media/search/1', '2015-11-11 17:30:33', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12539, '::1', 'admin_snippets/search', '2015-11-11 17:31:57', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12540, '::1', 'authenticate/logout', '2015-11-11 17:32:21', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lokig7rhee7aq66o2gpbq8cko1'),
+(12541, '::1', 'authenticate/login', '2015-11-11 17:32:24', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'e95cuhu9rr6lptddc2487lma22'),
+(12542, '::1', 'home', '2015-11-11 17:32:25', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'e95cuhu9rr6lptddc2487lma22'),
+(12543, '::1', 'notification', '2015-11-11 17:32:25', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'e95cuhu9rr6lptddc2487lma22'),
+(12544, '::1', 'notification', '2015-11-11 17:32:25', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'e95cuhu9rr6lptddc2487lma22'),
+(12545, '::1', 'snippets', '2015-11-11 17:32:27', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'e95cuhu9rr6lptddc2487lma22'),
+(12546, '::1', 'notification', '2015-11-11 17:32:27', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'e95cuhu9rr6lptddc2487lma22'),
+(12547, '::1', 'authenticate/logout', '2015-11-11 17:32:39', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'e95cuhu9rr6lptddc2487lma22'),
+(12548, '::1', 'authenticate/login', '2015-11-11 17:32:41', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '1gcbtu9uoseqlerd2bm8umsda2'),
+(12549, '::1', 'home', '2015-11-11 17:32:42', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '1gcbtu9uoseqlerd2bm8umsda2'),
+(12550, '::1', 'admin_media/search', '2015-11-11 17:32:45', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '1gcbtu9uoseqlerd2bm8umsda2'),
+(12551, '::1', 'authenticate/logout', '2015-11-11 17:37:57', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '1gcbtu9uoseqlerd2bm8umsda2'),
+(12552, '::1', 'authenticate/login', '2015-11-11 17:37:59', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '7f47jgntsr13t6f3glip0urgo4'),
+(12553, '::1', 'home', '2015-11-11 17:38:00', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '7f47jgntsr13t6f3glip0urgo4'),
+(12554, '::1', 'notification', '2015-11-11 17:38:00', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '7f47jgntsr13t6f3glip0urgo4'),
+(12555, '::1', 'notification', '2015-11-11 17:38:01', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '7f47jgntsr13t6f3glip0urgo4'),
+(12556, '::1', 'snippets', '2015-11-11 17:38:04', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '7f47jgntsr13t6f3glip0urgo4'),
+(12557, '::1', 'notification', '2015-11-11 17:38:04', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '7f47jgntsr13t6f3glip0urgo4'),
+(12558, '::1', 'notification', '2015-11-11 17:40:07', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '7f47jgntsr13t6f3glip0urgo4'),
+(12559, '::1', 'notification', '2015-11-11 17:42:09', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '7f47jgntsr13t6f3glip0urgo4'),
+(12560, '::1', 'authenticate/logout', '2015-11-11 17:42:16', '10', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', '7f47jgntsr13t6f3glip0urgo4'),
+(12561, '::1', 'authenticate/login', '2015-11-11 17:42:21', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12562, '::1', 'home', '2015-11-11 17:42:22', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12563, '::1', 'admin_media/search', '2015-11-11 17:42:24', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12564, '::1', 'admin_media/search', '2015-11-11 17:42:49', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12565, '::1', 'admin_media/search/2', '2015-11-11 17:42:57', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12566, '::1', 'admin_media/image_upload', '2015-11-11 17:43:26', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12567, '::1', 'admin_media/search/4', '2015-11-11 17:43:29', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12568, '::1', 'admin_media/search/5', '2015-11-11 17:43:33', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12569, '::1', 'admin_media/search/', '2015-11-11 17:43:38', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12570, '::1', 'admin_media/search/', '2015-11-11 17:44:58', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12571, '::1', 'admin_media/search/', '2015-11-11 17:45:10', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12572, '::1', 'admin_media/search/', '2015-11-11 17:45:16', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12573, '::1', 'admin_media/search/', '2015-11-12 10:26:00', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12574, '::1', 'admin_tags/search', '2015-11-12 13:24:35', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12575, '::1', 'admin_tags/view/starter12', '2015-11-12 13:24:36', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12576, '::1', 'admin_tags/search', '2015-11-12 13:25:10', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12577, '::1', 'admin_media/search/', '2015-11-12 13:25:11', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12578, '::1', 'admin_media/search/', '2015-11-12 13:25:13', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12579, '::1', 'admin_media/search/', '2015-11-12 13:25:21', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12580, '::1', 'admin_tags/view/angular', '2015-11-12 13:25:31', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12581, '::1', 'admin_media/search/', '2015-11-12 13:25:38', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12582, '::1', 'admin_media/search', '2015-11-12 13:25:41', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12583, '::1', 'admin_media/search/', '2015-11-12 13:25:45', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12584, '::1', 'admin_media/search/5', '2015-11-12 13:25:48', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12585, '::1', 'admin_media/search/', '2015-11-12 13:25:51', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12586, '::1', 'admin_media/search', '2015-11-12 13:25:53', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12587, '::1', 'admin_media/search/3', '2015-11-12 13:40:09', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12588, '::1', 'admin_media/search/1', '2015-11-12 13:40:13', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12589, '::1', 'admin_media/search/1', '2015-11-12 13:41:06', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12590, '::1', 'admin_media/view/Logo de Clojure', '2015-11-12 13:41:10', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12591, '::1', 'admin_media/search/1', '2015-11-12 13:41:12', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12592, '::1', 'admin_media/search/1', '2015-11-12 13:41:24', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12593, '::1', 'admin_media/view/3', '2015-11-12 13:41:27', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12594, '::1', 'admin_media/search/1', '2015-11-12 13:41:30', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12595, '::1', 'admin_tags/view/dart', '2015-11-12 13:41:44', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12596, '::1', 'admin_media/search/1', '2015-11-12 13:41:48', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12597, '::1', 'admin_media/search/1', '2015-11-12 16:55:33', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12598, '::1', 'admin_category/search', '2015-11-12 17:01:35', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12599, '::1', 'admin_category/add', '2015-11-12 17:01:36', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12600, '::1', 'admin_media/image_browse', '2015-11-12 17:01:40', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12601, '::1', 'admin_media/search', '2015-11-12 17:04:05', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12602, '::1', 'admin_media/search', '2015-11-12 17:05:01', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12603, '::1', 'admin_media/search', '2015-11-12 17:06:30', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12604, '::1', 'admin_media/search', '2015-11-12 17:06:35', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12605, '::1', 'admin_media/search', '2015-11-12 17:06:35', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12606, '::1', 'admin_media/search', '2015-11-12 17:06:36', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12607, '::1', 'admin_media/search', '2015-11-12 17:06:36', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12608, '::1', 'admin_media/search', '2015-11-12 17:06:36', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12609, '::1', 'admin_media/search', '2015-11-12 17:08:19', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12610, '::1', 'admin_media/search', '2015-11-12 17:08:20', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12611, '::1', 'admin_media/search', '2015-11-12 17:08:55', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12612, '::1', 'admin_media/search', '2015-11-12 17:08:59', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12613, '::1', 'admin_media/search', '2015-11-12 17:09:04', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12614, '::1', 'admin_media/search', '2015-11-12 17:09:04', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12615, '::1', 'admin_media/search', '2015-11-12 17:09:05', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12616, '::1', 'admin_media/search', '2015-11-12 17:09:05', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12617, '::1', 'admin_media/search', '2015-11-12 17:09:18', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12618, '::1', 'admin_media/search', '2015-11-12 17:09:42', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12619, '::1', 'admin_media/search/3', '2015-11-12 17:10:02', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12620, '::1', 'admin_media/search/2', '2015-11-12 17:10:09', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12621, '::1', 'admin_media/search/2', '2015-11-12 17:10:22', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12622, '::1', 'admin_media/search/3', '2015-11-12 17:10:36', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6'),
+(12623, '::1', 'admin_media/search/1', '2015-11-12 17:10:43', '11', '"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36"', 'lm27dq3sjlfhm0pa4q3u3qcar6');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `media`
+-- Estructura de tabla para la tabla `media`
 --
 
 CREATE TABLE IF NOT EXISTS `media` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(400) CHARACTER SET latin1 NOT NULL,
   `url` text CHARACTER SET latin1 NOT NULL,
-  `size` varchar(45) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+  `size` varchar(45) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=31 ;
 
 --
--- Dumping data for table `media`
+-- Volcado de datos para la tabla `media`
 --
 
 INSERT INTO `media` (`ID`, `name`, `url`, `size`) VALUES
@@ -12975,26 +13635,32 @@ INSERT INTO `media` (`ID`, `name`, `url`, `size`) VALUES
 (25, 'subir por media', 'static/resources/images/167565756.png', '1200x630'),
 (26, 'werwer', 'static/resources/images/296273813.png', '1200x630'),
 (27, 'gema', 'static/resources/images/212533967.png', '1200x630'),
-(28, 'marshall', 'static/resources/images/717770111.png', '350x327');
+(28, 'marshall', 'static/resources/images/717770111.png', '350x327'),
+(29, 'Google Maps', 'static/resources/images/393826862.png', '512x512'),
+(30, 'con 5 tags', 'static/resources/images/1125926556.jpg', '1400x425');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `notification`
+-- Estructura de tabla para la tabla `notification`
 --
 
 CREATE TABLE IF NOT EXISTS `notification` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `ID_User` bigint(20) NOT NULL COMMENT 'El usuario que recibe la notificacion\n',
   `ID_User_From` bigint(20) NOT NULL COMMENT 'El usuario que genera la notificacion\n',
   `notification` varchar(100) NOT NULL COMMENT 'La notificacion generada, es un evento\n\n',
   `showed` tinyint(1) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Cuando ocurrió la notificación\n',
-  `message` varchar(400) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=215 DEFAULT CHARSET=utf8;
+  `message` varchar(400) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `fk_notifications_1_idx` (`ID_User`),
+  KEY `fk_notification_eventtype_idx` (`notification`),
+  KEY `idx_userfrom` (`ID_User_From`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=313 ;
 
 --
--- Dumping data for table `notification`
+-- Volcado de datos para la tabla `notification`
 --
 
 INSERT INTO `notification` (`ID`, `ID_User`, `ID_User_From`, `notification`, `showed`, `timestamp`, `message`) VALUES
@@ -13178,22 +13844,120 @@ INSERT INTO `notification` (`ID`, `ID_User`, `ID_User_From`, `notification`, `sh
 (210, 11, 11, 'user.login', 3, '2015-10-26 16:18:04', 'Has iniciado sesion'),
 (212, 10, 10, 'user.login', 3, '2015-10-29 15:16:10', 'Has iniciado sesion'),
 (213, 8, 8, 'user.logout', 3, '2015-10-31 17:59:19', 'Has cerrado sesion'),
-(214, 11, 11, 'user.login', 3, '2015-10-31 19:37:17', 'Has iniciado sesion');
+(214, 11, 11, 'user.login', 3, '2015-10-31 19:37:17', 'Has iniciado sesion'),
+(215, 11, 11, 'user.logout', 3, '2015-11-04 11:28:28', 'Has cerrado sesion'),
+(216, 8, 8, 'user.login', 3, '2015-11-04 11:28:31', 'Has iniciado sesion'),
+(217, 10, 10, 'user.comment.add', 3, '2015-11-04 11:28:50', '10Ha Agregado un comentario'),
+(218, 8, 10, 'user.comment.get', 3, '2015-11-04 11:28:51', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(219, 10, 10, 'user.comment.add', 3, '2015-11-04 11:28:54', '10Ha Agregado un comentario'),
+(220, 8, 10, 'user.comment.get', 3, '2015-11-04 11:28:55', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(221, 10, 10, 'user.comment.add', 3, '2015-11-04 11:28:57', '10Ha Agregado un comentario'),
+(222, 8, 10, 'user.comment.get', 3, '2015-11-04 11:28:58', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(223, 10, 10, 'user.comment.add', 3, '2015-11-04 11:29:03', '10Ha Agregado un comentario'),
+(224, 8, 10, 'user.comment.get', 3, '2015-11-04 11:29:04', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(225, 10, 10, 'user.comment.add', 3, '2015-11-04 11:29:05', '10Ha Agregado un comentario'),
+(226, 8, 10, 'user.comment.get', 3, '2015-11-04 11:29:06', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(227, 10, 10, 'user.comment.add', 3, '2015-11-04 11:29:08', '10Ha Agregado un comentario'),
+(228, 8, 10, 'user.comment.get', 3, '2015-11-04 11:29:08', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(229, 10, 10, 'user.comment.add', 3, '2015-11-04 11:29:10', '10Ha Agregado un comentario'),
+(230, 8, 10, 'user.comment.get', 3, '2015-11-04 11:29:11', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(231, 10, 10, 'user.comment.add', 3, '2015-11-04 11:29:18', '10Ha Agregado un comentario'),
+(232, 8, 10, 'user.comment.get', 3, '2015-11-04 11:29:19', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(233, 10, 10, 'user.comment.add', 3, '2015-11-04 11:29:22', '10Ha Agregado un comentario'),
+(234, 8, 10, 'user.comment.get', 3, '2015-11-04 11:29:23', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(235, 10, 10, 'user.comment.add', 3, '2015-11-04 11:29:27', '10Ha Agregado un comentario'),
+(236, 8, 10, 'user.comment.get', 3, '2015-11-04 11:29:28', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(237, 10, 10, 'user.comment.add', 3, '2015-11-04 11:29:31', '10Ha Agregado un comentario'),
+(238, 8, 10, 'user.comment.get', 3, '2015-11-04 11:29:31', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(239, 10, 10, 'user.comment.add', 3, '2015-11-04 11:29:33', '10Ha Agregado un comentario'),
+(240, 8, 10, 'user.comment.get', 3, '2015-11-04 11:29:34', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(241, 10, 10, 'user.comment.add', 3, '2015-11-04 11:29:36', '10Ha Agregado un comentario'),
+(242, 8, 10, 'user.comment.get', 3, '2015-11-04 11:29:36', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(243, 10, 10, 'user.comment.add', 3, '2015-11-04 11:29:44', '10Ha Agregado un comentario'),
+(244, 8, 10, 'user.comment.get', 3, '2015-11-04 11:29:44', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(245, 10, 10, 'user.comment.add', 3, '2015-11-04 11:29:50', '10Ha Agregado un comentario'),
+(246, 8, 10, 'user.comment.get', 3, '2015-11-04 11:29:50', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(247, 8, 8, 'user.logout', 3, '2015-11-04 11:29:59', 'Has cerrado sesion'),
+(248, 11, 11, 'user.login', 3, '2015-11-04 11:30:03', 'Has iniciado sesion'),
+(249, 11, 11, 'user.logout', 3, '2015-11-04 11:40:27', 'Has cerrado sesion'),
+(250, 8, 8, 'user.login', 3, '2015-11-04 11:40:31', 'Has iniciado sesion'),
+(251, 10, 10, 'user.comment.add', 3, '2015-11-04 11:40:39', '10Ha Agregado un comentario'),
+(252, 8, 10, 'user.comment.get', 3, '2015-11-04 11:40:40', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(253, 8, 10, 'user.comment.get', 3, '2015-11-04 11:40:40', '. Has ganado <img src=''views/default/images/badges/'' class=''img-rounded'' height=''48'' width=''48'' />'),
+(254, 10, 10, 'user.comment.add', 3, '2015-11-04 12:57:15', '10Ha Agregado un comentario'),
+(255, 8, 10, 'user.comment.get', 3, '2015-11-04 12:57:15', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(256, 10, 10, 'user.comment.add', 3, '2015-11-04 12:57:19', '10Ha Agregado un comentario'),
+(257, 8, 10, 'user.comment.get', 3, '2015-11-04 12:57:20', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(258, 10, 10, 'user.comment.add', 3, '2015-11-04 12:57:22', '10Ha Agregado un comentario'),
+(259, 8, 10, 'user.comment.get', 3, '2015-11-04 12:57:23', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(260, 10, 10, 'user.comment.add', 3, '2015-11-04 12:57:24', '10Ha Agregado un comentario'),
+(261, 8, 10, 'user.comment.get', 3, '2015-11-04 12:57:24', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(262, 10, 10, 'user.comment.add', 3, '2015-11-04 12:57:26', '10Ha Agregado un comentario'),
+(263, 8, 10, 'user.comment.get', 3, '2015-11-04 12:57:26', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(264, 10, 10, 'user.comment.add', 3, '2015-11-04 12:57:28', '10Ha Agregado un comentario'),
+(265, 8, 10, 'user.comment.get', 3, '2015-11-04 12:57:28', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(266, 10, 10, 'user.comment.add', 3, '2015-11-04 12:57:30', '10Ha Agregado un comentario'),
+(267, 8, 10, 'user.comment.get', 3, '2015-11-04 12:57:30', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(268, 10, 10, 'user.comment.add', 3, '2015-11-04 12:57:32', '10Ha Agregado un comentario'),
+(269, 8, 10, 'user.comment.get', 3, '2015-11-04 12:57:33', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(270, 10, 10, 'user.comment.add', 3, '2015-11-04 12:57:34', '10Ha Agregado un comentario'),
+(271, 8, 10, 'user.comment.get', 3, '2015-11-04 12:57:35', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(272, 10, 10, 'user.comment.add', 3, '2015-11-04 12:57:37', '10Ha Agregado un comentario'),
+(273, 8, 10, 'user.comment.get', 3, '2015-11-04 12:57:38', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(274, 10, 10, 'user.comment.add', 3, '2015-11-04 12:57:40', '10Ha Agregado un comentario'),
+(275, 8, 10, 'user.comment.get', 3, '2015-11-04 12:57:40', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(276, 10, 10, 'user.comment.add', 3, '2015-11-04 12:57:43', '10Ha Agregado un comentario'),
+(277, 8, 10, 'user.comment.get', 3, '2015-11-04 12:57:43', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(278, 10, 10, 'user.comment.add', 3, '2015-11-04 12:57:46', '10Ha Agregado un comentario'),
+(279, 8, 10, 'user.comment.get', 3, '2015-11-04 12:57:46', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(280, 10, 10, 'user.comment.add', 3, '2015-11-04 12:57:50', '10Ha Agregado un comentario'),
+(281, 8, 10, 'user.comment.get', 3, '2015-11-04 12:57:51', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(282, 10, 10, 'user.comment.add', 3, '2015-11-04 12:57:58', '10Ha Agregado un comentario'),
+(283, 8, 10, 'user.comment.get', 3, '2015-11-04 12:57:59', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(284, 8, 8, 'user.logout', 3, '2015-11-04 13:02:06', 'Has cerrado sesion'),
+(285, 11, 11, 'user.login', 3, '2015-11-04 13:02:10', 'Has iniciado sesion'),
+(286, 11, 11, 'user.logout', 3, '2015-11-04 13:02:44', 'Has cerrado sesion'),
+(287, 8, 8, 'user.login', 3, '2015-11-04 13:02:47', 'Has iniciado sesion'),
+(288, 10, 10, 'user.comment.add', 3, '2015-11-04 13:02:54', '10Ha Agregado un comentario'),
+(289, 10, 10, 'user.comment.add', 3, '2015-11-04 13:02:54', '. Has ganado <img src=''views/default/images/badges/'' class=''img-rounded'' height=''48'' width=''48'' />'),
+(290, 8, 10, 'user.comment.get', 3, '2015-11-04 13:02:54', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(291, 8, 10, 'user.comment.get', 3, '2015-11-04 13:02:54', '. Has ganado <img src=''views/default/images/badges/'' class=''img-rounded'' height=''48'' width=''48'' />'),
+(292, 10, 10, 'user.comment.add', 3, '2015-11-04 14:58:37', '10Ha Agregado un comentario'),
+(293, 8, 10, 'user.comment.get', 3, '2015-11-04 14:58:38', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(294, 10, 10, 'user.comment.add', 3, '2015-11-04 15:22:52', '10Ha Agregado un comentario'),
+(295, 10, 10, 'user.comment.add', 3, '2015-11-04 15:22:52', '. Has ganado <img src=''static/resources/images/618753982.png'' class=''img-rounded'' height=''48'' width=''48'' />'),
+(296, 8, 10, 'user.comment.get', 3, '2015-11-04 15:22:52', ' Tu <a href=''snippets/view/86''>Snippet </a>Ha recibido un comentario de <img src=''views/default/images/avatar/user3.png'' class=''img-rounded'' height=''32'' width=''32'' /> <b><a href=''10''>pedro</a></b> '),
+(297, 8, 10, 'user.comment.get', 3, '2015-11-04 15:22:52', 'Nuestro primer comentario. Has ganado <img src=''static/resources/images/717770111.png'' class=''img-rounded'' height=''48'' width=''48'' />'),
+(298, 8, 8, 'user.logout', 3, '2015-11-04 15:23:51', 'Has cerrado sesion'),
+(299, 11, 11, 'user.login', 3, '2015-11-04 15:23:54', 'Has iniciado sesion'),
+(300, 11, 11, 'user.logout', 3, '2015-11-04 15:28:07', 'Has cerrado sesion'),
+(301, 8, 8, 'user.login', 3, '2015-11-04 15:28:13', 'Has iniciado sesion'),
+(302, 8, 8, 'user.logout', 3, '2015-11-04 15:28:16', 'Has cerrado sesion'),
+(303, 11, 11, 'user.login', 3, '2015-11-04 15:28:19', 'Has iniciado sesion'),
+(305, 11, 11, 'user.logout', 3, '2015-11-11 16:32:21', 'Has cerrado sesion'),
+(306, 10, 10, 'user.login', 3, '2015-11-11 16:32:24', 'Has iniciado sesion'),
+(307, 10, 10, 'user.logout', 3, '2015-11-11 16:32:39', 'Has cerrado sesion'),
+(308, 11, 11, 'user.login', 3, '2015-11-11 16:32:41', 'Has iniciado sesion'),
+(309, 11, 11, 'user.logout', 3, '2015-11-11 16:37:57', 'Has cerrado sesion'),
+(310, 10, 10, 'user.login', 3, '2015-11-11 16:37:59', 'Has iniciado sesion'),
+(311, 10, 10, 'user.logout', 3, '2015-11-11 16:42:16', 'Has cerrado sesion'),
+(312, 11, 11, 'user.login', 3, '2015-11-11 16:42:21', 'Has iniciado sesion');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `operational_status`
+-- Estructura de tabla para la tabla `operational_status`
 --
 
 CREATE TABLE IF NOT EXISTS `operational_status` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `status_name` varchar(45) CHARACTER SET latin1 NOT NULL,
-  `status_class` varchar(100) CHARACTER SET latin1 NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='Tabla para almacenar los status de los diferentes elememtos ';
+  `status_class` varchar(100) CHARACTER SET latin1 NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla para almacenar los status de los diferentes elememtos ' AUTO_INCREMENT=6 ;
 
 --
--- Dumping data for table `operational_status`
+-- Volcado de datos para la tabla `operational_status`
 --
 
 INSERT INTO `operational_status` (`ID`, `status_name`, `status_class`) VALUES
@@ -13204,11 +13968,11 @@ INSERT INTO `operational_status` (`ID`, `status_name`, `status_class`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `page`
+-- Estructura de tabla para la tabla `page`
 --
 
 CREATE TABLE IF NOT EXISTS `page` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `url` text CHARACTER SET latin1 NOT NULL,
   `body` longtext CHARACTER SET latin1 NOT NULL,
   `parent` bigint(20) NOT NULL,
@@ -13223,11 +13987,15 @@ CREATE TABLE IF NOT EXISTS `page` (
   `description_se` text CHARACTER SET latin1 NOT NULL,
   `associated` datetime DEFAULT NULL,
   `vars` text CHARACTER SET latin1,
-  `category` bigint(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+  `category` bigint(20) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `fk_page_type_idx` (`type`),
+  KEY `fk_page_category_idx` (`category`),
+  KEY `fk_page_pagelevel_idx` (`level`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
 
 --
--- Dumping data for table `page`
+-- Volcado de datos para la tabla `page`
 --
 
 INSERT INTO `page` (`ID`, `url`, `body`, `parent`, `created`, `ordenation`, `published`, `updated`, `title`, `type`, `level`, `keywords_se`, `description_se`, `associated`, `vars`, `category`) VALUES
@@ -13263,17 +14031,18 @@ INSERT INTO `page` (`ID`, `url`, `body`, `parent`, `created`, `ordenation`, `pub
 -- --------------------------------------------------------
 
 --
--- Table structure for table `page_level`
+-- Estructura de tabla para la tabla `page_level`
 --
 
 CREATE TABLE IF NOT EXISTS `page_level` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) CHARACTER SET latin1 NOT NULL,
-  `description` varchar(100) CHARACTER SET latin1 DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  `description` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
--- Dumping data for table `page_level`
+-- Volcado de datos para la tabla `page_level`
 --
 
 INSERT INTO `page_level` (`ID`, `name`, `description`) VALUES
@@ -13284,16 +14053,17 @@ INSERT INTO `page_level` (`ID`, `name`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `page_type`
+-- Estructura de tabla para la tabla `page_type`
 --
 
 CREATE TABLE IF NOT EXISTS `page_type` (
-  `ID` bigint(20) NOT NULL,
-  `name` varchar(100) CHARACTER SET latin1 DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
--- Dumping data for table `page_type`
+-- Volcado de datos para la tabla `page_type`
 --
 
 INSERT INTO `page_type` (`ID`, `name`) VALUES
@@ -13304,18 +14074,21 @@ INSERT INTO `page_type` (`ID`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `rating_links`
+-- Estructura de tabla para la tabla `rating_links`
 --
 
 CREATE TABLE IF NOT EXISTS `rating_links` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `ID_Links` bigint(20) NOT NULL,
   `ID_Users` bigint(20) NOT NULL,
-  `vote` decimal(10,2) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+  `vote` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `fk_rating_links1_idx` (`ID_Links`),
+  KEY `fk_rating_links2_idx` (`ID_Users`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
--- Dumping data for table `rating_links`
+-- Volcado de datos para la tabla `rating_links`
 --
 
 INSERT INTO `rating_links` (`ID`, `ID_Links`, `ID_Users`, `vote`) VALUES
@@ -13326,30 +14099,34 @@ INSERT INTO `rating_links` (`ID`, `ID_Links`, `ID_Users`, `vote`) VALUES
 (7, 21, 10, '4.50');
 
 --
--- Triggers `rating_links`
+-- Disparadores `rating_links`
 --
-DELIMITER $$
+DROP TRIGGER IF EXISTS `rating_link_update_avg`;
+DELIMITER //
 CREATE TRIGGER `rating_link_update_avg` AFTER INSERT ON `rating_links`
  FOR EACH ROW UPDATE links SET rating = ( SELECT AVG(vote) from rating_links where rating_links.ID_Links=Links.ID) 
 , totalVotes=totalVotes+1 WHERE Links.ID=NEW.ID_Links
-$$
+//
 DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `rating_snippet`
+-- Estructura de tabla para la tabla `rating_snippet`
 --
 
 CREATE TABLE IF NOT EXISTS `rating_snippet` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `ID_User` bigint(20) NOT NULL,
   `ID_Snippet` bigint(20) NOT NULL,
-  `voto` decimal(10,2) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 COMMENT='Tabla para almacenar las valoraciones';
+  `voto` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `FK_rating_snippet1` (`ID_Snippet`),
+  KEY `FK_rating_snippet2` (`ID_User`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla para almacenar las valoraciones' AUTO_INCREMENT=37 ;
 
 --
--- Dumping data for table `rating_snippet`
+-- Volcado de datos para la tabla `rating_snippet`
 --
 
 INSERT INTO `rating_snippet` (`ID`, `ID_User`, `ID_Snippet`, `voto`) VALUES
@@ -13369,52 +14146,57 @@ INSERT INTO `rating_snippet` (`ID`, `ID_User`, `ID_Snippet`, `voto`) VALUES
 (36, 10, 74, '4.50');
 
 --
--- Triggers `rating_snippet`
+-- Disparadores `rating_snippet`
 --
-DELIMITER $$
+DROP TRIGGER IF EXISTS `rating_snippet_update_avg`;
+DELIMITER //
 CREATE TRIGGER `rating_snippet_update_avg` AFTER INSERT ON `rating_snippet`
  FOR EACH ROW UPDATE snippets SET rating = ( SELECT AVG(voto) from rating_snippet where rating_snippet.ID_Snippet=snippets.ID) 
 , totalVotes=totalVotes+1 WHERE snippets.ID=NEW.ID_Snippet
-$$
+//
 DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `search_stat`
+-- Estructura de tabla para la tabla `search_stat`
 --
 
 CREATE TABLE IF NOT EXISTS `search_stat` (
   `search_date` date NOT NULL,
   `search_term_id` bigint(20) NOT NULL,
-  `hit` bigint(20) NOT NULL DEFAULT '1'
+  `hit` bigint(20) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`search_date`),
+  KEY `fk_stat_term_idx` (`search_term_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `search_term`
+-- Estructura de tabla para la tabla `search_term`
 --
 
 CREATE TABLE IF NOT EXISTS `search_term` (
-  `ID` bigint(20) NOT NULL,
-  `term` varchar(255) CHARACTER SET latin1 NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `term` varchar(255) CHARACTER SET latin1 NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `settings`
+-- Estructura de tabla para la tabla `settings`
 --
 
 CREATE TABLE IF NOT EXISTS `settings` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `key` varchar(255) NOT NULL,
-  `value` longtext NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+  `value` longtext NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
 
 --
--- Dumping data for table `settings`
+-- Volcado de datos para la tabla `settings`
 --
 
 INSERT INTO `settings` (`ID`, `key`, `value`) VALUES
@@ -13437,11 +14219,11 @@ INSERT INTO `settings` (`ID`, `key`, `value`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `snippets`
+-- Estructura de tabla para la tabla `snippets`
 --
 
 CREATE TABLE IF NOT EXISTS `snippets` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `Title` varchar(100) NOT NULL,
   `Code` longtext NOT NULL,
   `description` varchar(600) NOT NULL DEFAULT 'Sin Descripcion',
@@ -13452,11 +14234,16 @@ CREATE TABLE IF NOT EXISTS `snippets` (
   `totalFav` int(11) NOT NULL DEFAULT '0',
   `totalComments` int(11) NOT NULL DEFAULT '0',
   `added` datetime NOT NULL,
-  `ID_Status` bigint(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8 COMMENT='Almacena los snippets que se registran en el site\n';
+  `ID_Status` bigint(20) NOT NULL,
+  PRIMARY KEY (`ID`,`ID_Category`,`ID_USER`),
+  KEY `fk_snippets_2` (`ID_Category`),
+  KEY `fk_snippets_3` (`ID_USER`),
+  KEY `ID_Status` (`ID_Status`),
+  KEY `ID_Status_2` (`ID_Status`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Almacena los snippets que se registran en el site\n' AUTO_INCREMENT=89 ;
 
 --
--- Dumping data for table `snippets`
+-- Volcado de datos para la tabla `snippets`
 --
 
 INSERT INTO `snippets` (`ID`, `Title`, `Code`, `description`, `ID_Category`, `ID_USER`, `rating`, `totalVotes`, `totalFav`, `totalComments`, `added`, `ID_Status`) VALUES
@@ -13498,13 +14285,15 @@ INSERT INTO `snippets` (`ID`, `Title`, `Code`, `description`, `ID_Category`, `ID
 (81, 'Listing special forms', '(keys clojure.lang.Compiler/specials)', 'Title tells everything', 17, 8, '4.00', 1, 2, 1, '2014-12-02 13:02:47', 4),
 (83, 'dgseert', 'sdfgsdfg', 'sddfgsdfgsdf', 15, 8, '3.50', 2, 2, 15, '2015-08-07 13:46:39', 4),
 (84, 'sdfsdf', 'asdfasdf', 'sdfasdfasdf', 5, 10, '0.00', 0, 0, 0, '2015-08-12 17:43:44', 4),
-(86, 'xddf', 'setTagName', 'dfdfdf', 17, 8, '4.00', 1, 1, 1, '2015-09-16 16:15:24', 4),
-(87, 'sdfasdf', 'adfasdfdfasdfasdf', 'asdfasdf', 20, 8, '0.00', 0, 0, 0, '2015-09-23 17:09:37', 3);
+(86, 'xddf', 'setTagName', 'dfdfdf', 17, 8, '4.00', 1, 1, 35, '2015-09-16 16:15:24', 4),
+(87, 'sdfasdf', 'adfasdfdfasdfasdf', 'asdfasdf', 20, 8, '0.00', 0, 0, 0, '2015-09-23 17:09:37', 3),
+(88, 'google Maps', 'awfsadfasdfasdf', 'Mapsp', 29, 10, '0.00', 0, 0, 0, '2015-11-11 17:01:56', 3);
 
 --
--- Triggers `snippets`
+-- Disparadores `snippets`
 --
-DELIMITER $$
+DROP TRIGGER IF EXISTS `delete_snippet`;
+DELIMITER //
 CREATE TRIGGER `delete_snippet` BEFORE DELETE ON `snippets`
  FOR EACH ROW begin
 SET @disable_trigger = 1;
@@ -13515,25 +14304,29 @@ DELETE from comment_snippet where comment_snippet.ID_Snippet = old.ID;
 DELETE from rating_snippet where rating_snippet.ID_Snippet = old.ID;
 SET @disable_trigger = NULL;
 END
-$$
+//
 DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `snippet_log`
+-- Estructura de tabla para la tabla `snippet_log`
 --
 
 CREATE TABLE IF NOT EXISTS `snippet_log` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `ID_Snippet` bigint(20) NOT NULL,
   `event` varchar(100) NOT NULL,
   `ID_User` bigint(20) NOT NULL,
-  `created` datetime NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=262 DEFAULT CHARSET=utf8;
+  `created` datetime NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `fk_snippetlog_snippet_idx` (`ID_Snippet`),
+  KEY `fk_snippetlog_user_idx` (`ID_User`),
+  KEY `fk_snippetlog_event_idx` (`event`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=302 ;
 
 --
--- Dumping data for table `snippet_log`
+-- Volcado de datos para la tabla `snippet_log`
 --
 
 INSERT INTO `snippet_log` (`ID`, `ID_Snippet`, `event`, `ID_User`, `created`) VALUES
@@ -13698,21 +14491,62 @@ INSERT INTO `snippet_log` (`ID`, `ID_Snippet`, `event`, `ID_User`, `created`) VA
 (258, 86, 'user.fav.add', 10, '2015-10-22 17:47:02'),
 (259, 86, 'user.snippet.view', 10, '2015-10-26 17:08:34'),
 (260, 86, 'user.fav.del', 10, '2015-10-26 17:08:36'),
-(261, 86, 'user.fav.add', 10, '2015-10-26 17:08:37');
+(261, 86, 'user.fav.add', 10, '2015-10-26 17:08:37'),
+(262, 86, 'user.snippet.view', 10, '2015-11-04 12:28:46'),
+(263, 86, 'user.comment.add', 10, '2015-11-04 12:28:50'),
+(264, 86, 'user.comment.add', 10, '2015-11-04 12:28:54'),
+(265, 86, 'user.comment.add', 10, '2015-11-04 12:28:57'),
+(266, 86, 'user.comment.add', 10, '2015-11-04 12:29:03'),
+(267, 86, 'user.comment.add', 10, '2015-11-04 12:29:06'),
+(268, 86, 'user.comment.add', 10, '2015-11-04 12:29:08'),
+(269, 86, 'user.comment.add', 10, '2015-11-04 12:29:10'),
+(270, 86, 'user.comment.add', 10, '2015-11-04 12:29:18'),
+(271, 86, 'user.comment.add', 10, '2015-11-04 12:29:22'),
+(272, 86, 'user.comment.add', 10, '2015-11-04 12:29:27'),
+(273, 86, 'user.comment.add', 10, '2015-11-04 12:29:31'),
+(274, 86, 'user.comment.add', 10, '2015-11-04 12:29:34'),
+(275, 86, 'user.comment.add', 10, '2015-11-04 12:29:36'),
+(276, 86, 'user.comment.add', 10, '2015-11-04 12:29:44'),
+(277, 86, 'user.comment.add', 10, '2015-11-04 12:29:50'),
+(278, 86, 'user.snippet.view', 10, '2015-11-04 12:40:35'),
+(279, 86, 'user.snippet.view', 10, '2015-11-04 13:57:11'),
+(280, 86, 'user.comment.add', 10, '2015-11-04 13:57:15'),
+(281, 86, 'user.comment.add', 10, '2015-11-04 13:57:19'),
+(282, 86, 'user.comment.add', 10, '2015-11-04 13:57:22'),
+(283, 86, 'user.comment.add', 10, '2015-11-04 13:57:24'),
+(284, 86, 'user.comment.add', 10, '2015-11-04 13:57:26'),
+(285, 86, 'user.comment.add', 10, '2015-11-04 13:57:28'),
+(286, 86, 'user.comment.add', 10, '2015-11-04 13:57:30'),
+(287, 86, 'user.comment.add', 10, '2015-11-04 13:57:32'),
+(288, 86, 'user.comment.add', 10, '2015-11-04 13:57:34'),
+(289, 86, 'user.comment.add', 10, '2015-11-04 13:57:37'),
+(290, 86, 'user.comment.add', 10, '2015-11-04 13:57:40'),
+(291, 86, 'user.comment.add', 10, '2015-11-04 13:57:43'),
+(292, 86, 'user.comment.add', 10, '2015-11-04 13:57:46'),
+(293, 86, 'user.comment.add', 10, '2015-11-04 13:57:50'),
+(294, 86, 'user.comment.add', 10, '2015-11-04 13:57:58'),
+(295, 86, 'user.comment.add', 10, '2015-11-04 14:02:54'),
+(296, 86, 'user.snippet.view', 10, '2015-11-04 15:58:35'),
+(297, 86, 'user.comment.add', 10, '2015-11-04 15:58:37'),
+(298, 86, 'user.snippet.view', 10, '2015-11-04 16:22:48'),
+(299, 86, 'user.comment.add', 10, '2015-11-04 16:22:52'),
+(300, 75, 'user.snippet.view', 10, '2015-11-05 17:17:55'),
+(301, 78, 'user.snippet.view', 10, '2015-11-05 17:18:00');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tags`
+-- Estructura de tabla para la tabla `tags`
 --
 
 CREATE TABLE IF NOT EXISTS `tags` (
-  `ID` bigint(20) NOT NULL,
-  `tag_name` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=176 DEFAULT CHARSET=utf8 COMMENT='Tabla que almacena las etiquetas con las que se catalogan cu /* comment truncated */ /*alquier cosa en el site\n*/';
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `tag_name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla que almacena las etiquetas con las que se catalogan cu /* comment truncated */ /*alquier cosa en el site\n*/' AUTO_INCREMENT=178 ;
 
 --
--- Dumping data for table `tags`
+-- Volcado de datos para la tabla `tags`
 --
 
 INSERT INTO `tags` (`ID`, `tag_name`) VALUES
@@ -13887,16 +14721,18 @@ INSERT INTO `tags` (`ID`, `tag_name`) VALUES
 (172, 'teast'),
 (173, 'werwer'),
 (174, 'gema'),
-(175, 'marshall');
+(175, 'marshall'),
+(176, 'maps'),
+(177, 'sadf');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Estructura de tabla para la tabla `users`
 --
 
 CREATE TABLE IF NOT EXISTS `users` (
-  `ID` bigint(20) NOT NULL COMMENT 'Tabla que almacena toda la información referente al usuario',
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Tabla que almacena toda la información referente al usuario',
   `user_login` varchar(60) NOT NULL COMMENT 'login\n',
   `user_pass` varchar(100) NOT NULL COMMENT 'password',
   `password_salt` varchar(100) NOT NULL COMMENT 'semilla del password',
@@ -13913,16 +14749,18 @@ CREATE TABLE IF NOT EXISTS `users` (
   `reset_expires` datetime DEFAULT NULL COMMENT 'Fecha de expiración para la solicitud de reset de password',
   `activation_key` varchar(100) DEFAULT NULL COMMENT 'Almacena la clave para la activacióndel usuario cuando se registra',
   `user_level` int(11) NOT NULL DEFAULT '0' COMMENT 'Define los niveles del  usuario  basico 0  - admin 10',
-  `profile_image` varchar(500) NOT NULL DEFAULT 'comment.png'
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+  `profile_image` varchar(500) NOT NULL DEFAULT 'comment.png',
+  PRIMARY KEY (`ID`),
+  KEY `user_status_idx` (`user_status`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
 
 --
--- Dumping data for table `users`
+-- Volcado de datos para la tabla `users`
 --
 
 INSERT INTO `users` (`ID`, `user_login`, `user_pass`, `password_salt`, `twitter_name`, `user_email`, `user_url`, `user_registered`, `user_status`, `display_name`, `experience_points`, `reputation_points`, `level_points`, `reset_key`, `reset_expires`, `activation_key`, `user_level`, `profile_image`) VALUES
 (8, 'oscarlgarcia', '$2a$07$106c84709b2b7a5e6ef78OyF32F8K7bPfSiIbfvx3UDKZaLZZquoW', '$2a$07$106c84709b2b7a5e6ef78a7f7e226c2d656ca810e48d$', 'c_programador', 'oscarlgarcia@gmail.com', 'http://radar.oreilly.com/nat/page/123', '2014-03-06 01:26:52', 4, 'oscarlgarcia', 190, 110, 1, 'aaae94ae8bfd150102216afbecf9e3d6', '2015-10-13 14:31:30', '624e86b4c38468e7695a8ac71ebd4c61', 0, 'oscar.jpg'),
-(10, 'pedro', '$2a$07$1c173912f89d4921d411euyGh1S5gXebi9./pkETmwwIQgby5Ibty', '$2a$07$1c173912f89d4921d411e8cef1e53e9acf5c5c6839de$', NULL, 'pedroperez@ff.com', NULL, '2014-10-20 17:50:29', 4, 'pedro', 57, 7, 0, NULL, NULL, '5033fd6a244f95b9d33e4a388f0f0eb4', 0, 'user3.png'),
+(10, 'pedro', '$2a$07$1c173912f89d4921d411euyGh1S5gXebi9./pkETmwwIQgby5Ibty', '$2a$07$1c173912f89d4921d411e8cef1e53e9acf5c5c6839de$', NULL, 'pedroperez@ff.com', NULL, '2014-10-20 17:50:29', 4, 'pedro', 79, 9, 0, NULL, NULL, '5033fd6a244f95b9d33e4a388f0f0eb4', 0, 'user3.png'),
 (11, 'director', '$2a$07$441112768ee904e1c81bbOY6nCGoWambFLWFsBygKLjHAHuy2r6kC', '$2a$07$441112768ee904e1c81bbae0cb9110b3c473e4b6a444$', NULL, 'oscar.garcia@elclubdelprogramador.com', NULL, '2014-11-06 14:58:21', 4, 'director', 36, 5, 0, NULL, NULL, '13945b33caf58e2d7770f0637f008807', 10, 'user3.png'),
 (12, 'usuario2', '$2a$07$fb026efc8f989177cd0dduBxYBVgBgRbTEppx5C35VaQqs63noETG', '$2a$07$fb026efc8f989177cd0dd227a5a0a4d01a7ebb5bf26e$', NULL, 'usuarios2@gmsail.com', NULL, '2014-11-13 12:25:42', 4, 'usuario2', 21, 2, 0, NULL, NULL, '101be302634e6345c900ce239d5c5905', 0, 'gravatar.jpg'),
 (13, 'usuario3', '$2a$07$653ca6a92c2b784192e93Oi5Ghi4zWQ8aryZZeklD2dIvqpj.Qtgu', '$2a$07$653ca6a92c2b784192e93a2f2c433a079fcf28b193b0$', NULL, 'usuarios3@gmsail.com', NULL, '2014-11-13 12:26:25', 4, 'usuario3', 36, 5, 0, NULL, NULL, '6af78b66065197267fd4d1c0663dadbf', 0, 'user2.png'),
@@ -13936,2119 +14774,218 @@ INSERT INTO `users` (`ID`, `user_login`, `user_pass`, `password_salt`, `twitter_
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_event`
+-- Estructura de tabla para la tabla `user_event`
 --
 
 CREATE TABLE IF NOT EXISTS `user_event` (
-  `ID` bigint(20) NOT NULL COMMENT 'Son las acciones que determinado usuario puede realizar, estas acciones se van añadiendo a medida que el usuario avance de niveles\n',
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Son las acciones que determinado usuario puede realizar, estas acciones se van añadiendo a medida que el usuario avance de niveles\n',
   `ID_User` bigint(20) NOT NULL,
   `eventName` varchar(100) NOT NULL,
   `ipaddress` varchar(60) DEFAULT NULL,
   `data` varchar(400) DEFAULT NULL,
-  `dateExecuted` datetime NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=1714 DEFAULT CHARSET=utf8 COMMENT='Tabla que almacena los eventos del site que ha realizado un  /* comment truncated */ /*usuario*/';
+  `dateExecuted` datetime NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `fk2_idx` (`ID_User`),
+  KEY `fk_user_event_1_idx` (`eventName`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Tabla que almacena los eventos del site que ha realizado un  /* comment truncated */ /*usuario*/' AUTO_INCREMENT=1807 ;
 
 --
--- Dumping data for table `user_event`
+-- Volcado de datos para la tabla `user_event`
 --
 
 INSERT INTO `user_event` (`ID`, `ID_User`, `eventName`, `ipaddress`, `data`, `dateExecuted`) VALUES
-(144, 8, 'user.password.forgot', '127.0.0.1', '{"email":""oscarlgarcia@gmail.com""}', '2014-03-24 23:47:03'),
-(145, 8, 'user.password.reset', '127.0.0.1', '', '2014-03-24 23:48:12'),
-(146, 8, 'user.login', '127.0.0.1', '', '2014-03-25 00:02:01'),
-(147, 8, 'user.logout', '127.0.0.1', '', '2014-03-25 00:08:15'),
-(148, 8, 'user.login', '127.0.0.1', '', '2014-03-25 00:08:22'),
-(149, 8, 'user.login', '127.0.0.1', '', '2014-03-26 22:07:28'),
-(150, 8, 'user.logout', '127.0.0.1', '', '2014-03-26 22:11:33'),
-(151, 8, 'user.login', '127.0.0.1', '', '2014-03-26 22:11:38'),
-(152, 8, 'user.logout', '127.0.0.1', '', '2014-03-26 22:11:48'),
-(153, 8, 'user.login', '127.0.0.1', '', '2014-03-26 22:12:10'),
-(154, 8, 'user.login', '127.0.0.1', '', '2014-03-26 23:47:42'),
-(155, 8, 'user.login', '127.0.0.1', '', '2014-03-27 00:01:45'),
-(156, 8, 'user.logout', '127.0.0.1', '', '2014-03-27 00:09:19'),
-(157, 8, 'user.login', '127.0.0.1', '', '2014-03-27 00:09:24'),
-(158, 8, 'user.login', '127.0.0.1', '', '2014-03-27 00:12:41'),
-(159, 8, 'user.logout', '127.0.0.1', '', '2014-03-27 00:13:27'),
-(160, 8, 'user.login', '127.0.0.1', '', '2014-03-27 00:13:39'),
-(161, 8, 'user.logout', '127.0.0.1', '', '2014-03-27 00:22:21'),
-(162, 8, 'user.login', '127.0.0.1', '', '2014-03-27 00:22:27'),
-(163, 8, 'user.logout', '127.0.0.1', '', '2014-03-27 00:23:47'),
-(164, 8, 'user.login', '127.0.0.1', '', '2014-03-27 00:24:50'),
-(165, 8, 'user.logout', '127.0.0.1', '', '2014-03-27 01:03:13'),
-(166, 8, 'user.login', '127.0.0.1', '', '2014-03-27 01:03:26'),
-(167, 8, 'user.logout', '127.0.0.1', '', '2014-03-27 01:03:48'),
-(168, 8, 'user.login', '127.0.0.1', '', '2014-03-27 01:10:20'),
-(169, 8, 'user.login', '127.0.0.1', '', '2014-03-28 00:21:04'),
-(170, 8, 'user.login', '127.0.0.1', '', '2014-03-28 00:43:46'),
-(171, 8, 'user.logout', '127.0.0.1', '', '2014-03-28 00:49:32'),
-(172, 8, 'user.login', '127.0.0.1', '', '2014-03-28 00:49:39'),
-(173, 8, 'user.login', '127.0.0.1', '', '2014-03-28 01:56:30'),
-(174, 8, 'user.logout', '127.0.0.1', '', '2014-03-28 02:01:00'),
-(175, 8, 'user.login', '127.0.0.1', '', '2014-03-28 02:01:05'),
-(176, 8, 'user.login', '::1', '', '2014-04-01 00:06:27'),
-(177, 8, 'user.login', '::1', '', '2014-04-02 00:00:30'),
-(178, 8, 'user.logout', '::1', '', '2014-04-02 00:06:29'),
-(179, 8, 'user.login', '::1', '', '2014-04-02 23:50:09'),
-(180, 8, 'user.login', '::1', '', '2014-04-04 19:20:12'),
-(181, 8, 'user.login', '::1', '', '2014-04-04 22:55:53'),
-(182, 8, 'user.logout', '::1', '', '2014-04-04 23:44:36'),
-(183, 8, 'user.login', '::1', '', '2014-04-04 23:45:38'),
-(184, 8, 'user.logout', '::1', '', '2014-04-05 00:23:12'),
-(185, 8, 'user.login', '::1', '', '2014-04-05 00:23:34'),
-(186, 8, 'user.logout', '::1', '', '2014-04-05 00:36:32'),
-(187, 8, 'user.login', '::1', '', '2014-04-05 00:37:45'),
-(188, 8, 'user.login', '::1', '', '2014-04-05 10:27:48'),
-(189, 8, 'user.login', '::1', '', '2014-04-11 19:21:45'),
-(190, 8, 'user.logout', '::1', '', '2014-04-11 19:33:48'),
-(191, 8, 'user.login', '::1', '', '2014-04-11 19:33:52'),
-(192, 8, 'user.login', '::1', '', '2014-04-11 21:27:14'),
-(193, 8, 'user.login', '::1', '', '2014-04-12 19:38:36'),
-(194, 8, 'user.login', '::1', '', '2014-04-12 19:46:12'),
-(195, 8, 'user.login', '::1', '', '2014-04-13 12:08:02'),
-(196, 8, 'user.login', '::1', '', '2014-04-13 12:11:40'),
-(197, 8, 'user.logout', '::1', '', '2014-04-13 12:13:14'),
-(198, 8, 'user.login', '::1', '', '2014-04-13 12:14:18'),
-(199, 8, 'user.login', '::1', '', '2014-04-13 14:57:13'),
-(200, 8, 'user.login', '::1', '', '2014-04-13 20:10:28'),
-(201, 8, 'user.logout', '::1', '', '2014-04-13 20:20:19'),
-(202, 8, 'user.login', '::1', '', '2014-04-13 20:20:28'),
-(203, 8, 'user.login', '::1', '', '2014-04-13 20:26:01'),
-(204, 8, 'user.login', '::1', '', '2014-04-13 21:48:38'),
-(205, 8, 'user.login', '::1', '', '2014-04-13 21:56:36'),
-(206, 8, 'user.login', '::1', '', '2014-04-13 23:13:56'),
-(207, 8, 'user.login', '::1', '', '2014-04-13 23:33:13'),
-(208, 8, 'user.logout', '::1', '', '2014-04-13 23:33:23'),
-(209, 8, 'user.login', '::1', '', '2014-04-14 21:39:29'),
-(210, 8, 'user.login', '::1', '', '2014-04-14 23:41:12'),
-(211, 8, 'user.login', '::1', '', '2014-04-15 22:09:58'),
-(212, 8, 'user.logout', '::1', '', '2014-04-15 22:10:03'),
-(213, 8, 'user.login', '::1', '', '2014-04-15 22:10:10'),
-(214, 8, 'user.login', '::1', '', '2014-04-17 21:55:43'),
-(215, 8, 'user.login', '::1', '', '2014-04-18 16:37:20'),
-(216, 8, 'user.login', '::1', '', '2014-04-18 16:47:12'),
-(217, 8, 'user.login', '::1', '', '2014-04-18 18:18:43'),
-(218, 8, 'user.login', '::1', '', '2014-04-18 23:20:17'),
-(219, 8, 'user.logout', '::1', '', '2014-04-18 23:21:21'),
-(220, 8, 'user.login', '::1', '', '2014-04-18 23:21:36'),
-(221, 8, 'user.logout', '::1', '', '2014-04-18 23:33:04'),
-(222, 8, 'user.login', '::1', '', '2014-04-18 23:33:10'),
-(223, 8, 'user.login', '::1', '', '2014-04-19 14:36:23'),
-(224, 8, 'user.login', '::1', '', '2014-04-19 14:45:26'),
-(225, 8, 'user.login', '::1', '', '2014-04-19 20:21:37'),
-(226, 8, 'user.login', '::1', '', '2014-04-19 21:50:44'),
-(227, 8, 'user.login', '::1', '', '2014-04-20 14:08:42'),
-(228, 8, 'user.login', '::1', '', '2014-04-20 19:59:03'),
-(229, 8, 'user.logout', '::1', '', '2014-04-20 20:24:39'),
-(230, 8, 'user.login', '::1', '', '2014-04-20 20:24:59'),
-(231, 8, 'user.logout', '::1', '', '2014-04-20 20:25:15'),
-(232, 8, 'user.login', '::1', '', '2014-04-20 20:25:37'),
-(233, 8, 'user.logout', '::1', '', '2014-04-20 20:26:57'),
-(234, 8, 'user.login', '::1', '', '2014-04-20 20:33:37'),
-(235, 8, 'user.login', '::1', '', '2014-04-20 23:34:03'),
-(236, 8, 'user.logout', '::1', '', '2014-04-21 01:22:43'),
-(237, 8, 'user.login', '::1', '', '2014-04-21 12:43:44'),
-(238, 8, 'user.login', '::1', '', '2014-04-21 13:52:44'),
-(239, 8, 'user.login', '::1', '', '2014-04-21 16:05:32'),
-(240, 8, 'user.login', '::1', '', '2014-04-21 17:50:00'),
-(241, 8, 'user.login', '::1', '', '2014-04-21 18:43:29'),
-(242, 8, 'user.login', '::1', '', '2014-04-21 19:58:13'),
-(243, 8, 'user.login', '::1', '', '2014-04-21 22:55:22'),
-(244, 8, 'user.login', '::1', '', '2014-04-21 23:28:23'),
-(245, 8, 'user.login', '127.0.0.1', '', '2014-04-21 23:30:58'),
-(246, 8, 'user.login', '::1', '', '2014-04-22 19:33:28'),
-(247, 8, 'user.login', '::1', '', '2014-04-24 01:07:07'),
-(248, 8, 'user.login', '::1', '', '2014-04-24 19:32:30'),
-(249, 8, 'user.login', '::1', '', '2014-04-26 00:29:24'),
-(250, 8, 'user.login', '::1', '', '2014-04-26 17:38:31'),
-(251, 8, 'user.login', '::1', '', '2014-04-26 20:17:12'),
-(252, 8, 'user.login', '::1', '', '2014-04-26 22:14:38'),
-(253, 8, 'user.login', '::1', '', '2014-04-27 15:30:38'),
-(254, 8, 'user.login', '::1', '', '2014-04-28 00:41:50'),
-(255, 8, 'user.login', '127.0.0.1', '', '2014-04-28 00:44:43'),
-(256, 8, 'user.login', '::1', '', '2014-04-28 00:48:57'),
-(257, 8, 'user.login', '::1', '', '2014-04-28 19:16:46'),
-(258, 8, 'user.login', '::1', '', '2014-04-28 21:14:58'),
-(259, 8, 'user.login', '::1', '', '2014-05-01 19:14:40'),
-(260, 8, 'user.login', '::1', '', '2014-05-01 19:15:58'),
-(261, 8, 'user.login', '::1', '', '2014-05-02 21:54:40'),
-(262, 8, 'user.login', '::1', '', '2014-05-03 17:30:07'),
-(263, 8, 'user.login', '::1', '', '2014-05-03 18:41:46'),
-(264, 8, 'user.login', '::1', '', '2014-05-03 19:28:13'),
-(265, 8, 'user.logout', '::1', '', '2014-05-03 19:28:22'),
-(266, 8, 'user.login', '::1', '', '2014-05-03 20:01:35'),
-(267, 8, 'user.login', '::1', '', '2014-05-06 00:12:06'),
-(268, 8, 'user.login', '::1', '', '2014-05-12 00:36:06'),
-(269, 8, 'user.logout', '::1', '', '2014-05-12 00:43:03'),
-(270, 8, 'user.login', '::1', '', '2014-05-12 00:43:08'),
-(271, 8, 'user.login', '127.0.0.1', '', '2014-05-12 23:45:31'),
-(272, 8, 'user.login', '127.0.0.1', '', '2014-05-19 23:31:26'),
-(273, 8, 'user.login', '127.0.0.1', '', '2014-05-22 20:36:34'),
-(274, 8, 'user.login', '::1', '', '2014-05-24 00:51:27'),
-(275, 8, 'user.login', '::1', '', '2014-05-24 16:22:01'),
-(276, 8, 'user.login', '::1', '', '2014-05-24 17:15:33'),
-(277, 8, 'user.login', '::1', '', '2014-05-26 22:53:52'),
-(278, 8, 'user.login', '::1', '', '2014-05-28 20:53:55'),
-(279, 8, 'user.login', '127.0.0.1', '', '2014-05-28 21:08:23'),
-(280, 8, 'user.login', '::1', '', '2014-05-28 22:54:49'),
-(281, 8, 'user.login', '127.0.0.1', '', '2014-05-28 23:51:41'),
-(282, 8, 'user.login', '::1', '', '2014-05-28 23:53:06'),
-(283, 8, 'user.login', '::1', '', '2014-05-29 23:38:13'),
-(284, 8, 'user.login', '127.0.0.1', '', '2014-05-29 23:47:21'),
-(285, 8, 'user.login', '127.0.0.1', '', '2014-05-30 00:08:33'),
-(286, 8, 'user.login', '::1', '', '2014-05-30 21:13:43'),
-(287, 8, 'user.login', '::1', '', '2014-05-31 00:05:16'),
-(288, 8, 'user.login', '::1', '', '2014-05-31 23:24:58'),
-(289, 8, 'user.login', '::1', '', '2014-06-01 14:52:45'),
-(290, 8, 'user.login', '::1', '', '2014-06-01 16:50:21'),
-(291, 8, 'user.login', '::1', '', '2014-06-01 18:51:07'),
-(292, 8, 'user.login', '::1', '', '2014-06-01 20:47:13'),
-(293, 8, 'user.login', '::1', '', '2014-06-01 22:20:38'),
-(294, 8, 'user.login', '::1', '', '2014-06-01 23:52:28'),
-(295, 8, 'user.logout', '::1', '', '2014-06-02 00:05:08'),
-(296, 8, 'user.login', '::1', '', '2014-06-02 00:05:48'),
-(297, 8, 'user.logout', '::1', '', '2014-06-02 00:29:10'),
-(298, 8, 'user.login', '::1', '', '2014-06-02 00:30:43'),
-(299, 8, 'user.logout', '::1', '', '2014-06-02 00:30:48'),
-(300, 8, 'user.login', '::1', '', '2014-06-02 00:34:37'),
-(301, 8, 'user.login', '::1', '', '2014-06-02 23:22:08'),
-(302, 8, 'user.login', '::1', '', '2014-06-03 21:03:19'),
-(303, 8, 'user.login', '::1', '', '2014-06-03 23:09:10'),
-(304, 8, 'user.login', '127.0.0.1', '', '2014-06-03 23:51:27'),
-(305, 8, 'user.login', '::1', '', '2014-06-04 20:27:22'),
-(306, 8, 'user.login', '::1', '', '2014-06-04 21:20:56'),
-(307, 8, 'user.login', '127.0.0.1', '', '2014-06-04 22:06:08'),
-(308, 8, 'user.login', '::1', '', '2014-06-05 00:00:33'),
-(309, 8, 'user.login', '::1', '', '2014-06-05 22:58:44'),
-(310, 8, 'user.login', '::1', '', '2014-06-06 00:25:32'),
-(311, 8, 'user.login', '::1', '', '2014-06-07 00:51:59'),
-(312, 8, 'user.login', '::1', '', '2014-06-07 02:36:49'),
-(313, 8, 'user.login', '::1', '', '2014-06-08 01:46:12'),
-(314, 8, 'user.login', '::1', '', '2014-06-08 23:45:32'),
-(315, 8, 'user.login', '::1', '', '2014-06-09 23:32:35'),
-(316, 8, 'user.login', '::1', '', '2014-06-09 23:32:42'),
-(317, 8, 'user.login', '::1', '', '2014-06-11 00:06:14'),
-(318, 8, 'user.login', '::1', '', '2014-06-14 21:54:49'),
-(319, 8, 'user.login', '::1', '', '2014-06-15 00:55:22'),
-(320, 8, 'user.login', '::1', '', '2014-06-15 15:54:34'),
-(321, 8, 'user.login', '::1', '', '2014-06-15 18:47:49'),
-(322, 8, 'user.login', '::1', '', '2014-06-15 19:44:53'),
-(323, 8, 'user.login', '::1', '', '2014-06-15 21:14:04'),
-(324, 8, 'user.login', '::1', '', '2014-06-15 23:26:17'),
-(325, 8, 'user.login', '::1', '', '2014-06-19 16:16:54'),
-(326, 8, 'user.login', '::1', '', '2014-06-19 18:52:36'),
-(327, 8, 'user.login', '::1', '', '2014-06-19 19:14:03'),
-(328, 8, 'user.login', '::1', '', '2014-06-20 23:56:33'),
-(329, 8, 'user.login', '::1', '', '2014-06-21 00:08:41'),
-(330, 8, 'user.logout', '::1', '', '2014-06-21 00:43:44'),
-(331, 8, 'user.login', '::1', '', '2014-06-21 00:57:00'),
-(332, 8, 'user.login', '::1', '', '2014-06-21 01:19:16'),
-(333, 8, 'user.login', '::1', '', '2014-06-21 23:54:59'),
-(334, 8, 'user.login', '::1', '', '2014-06-22 17:00:35'),
-(335, 8, 'user.login', '::1', '', '2014-06-24 11:24:21'),
-(336, 8, 'user.login', '::1', '', '2014-06-24 18:02:55'),
-(337, 8, 'user.login', '::1', '', '2014-06-24 21:18:35'),
-(338, 8, 'user.login', '::1', '', '2014-06-28 13:39:29'),
-(339, 8, 'user.login', '::1', '', '2014-06-30 00:01:22'),
-(340, 8, 'user.login', '::1', '', '2014-07-01 23:08:19'),
-(341, 8, 'user.login', '::1', '', '2014-07-02 22:01:56'),
-(342, 8, 'user.login', '::1', '', '2014-07-03 22:02:18'),
-(343, 8, 'user.login', '::1', '', '2014-07-04 22:16:28'),
-(344, 8, 'user.login', '::1', '', '2014-07-06 20:58:10'),
-(345, 8, 'user.login', '::1', '', '2014-07-06 22:02:42'),
-(346, 8, 'user.login', '::1', '', '2014-07-12 13:04:47'),
-(347, 8, 'user.login', '::1', '', '2014-07-12 14:53:43'),
-(348, 8, 'user.login', '::1', '', '2014-07-12 18:53:07'),
-(349, 8, 'user.login', '::1', '', '2014-07-12 20:36:36'),
-(350, 8, 'user.login', '::1', '', '2014-07-12 22:43:12'),
-(351, 8, 'user.login', '::1', '', '2014-07-13 10:24:29'),
-(352, 8, 'user.login', '::1', '', '2014-07-13 19:56:56'),
-(353, 8, 'user.login', '::1', '', '2014-07-19 00:37:36'),
-(354, 8, 'user.logout', '::1', '', '2014-07-19 00:48:18'),
-(355, 8, 'user.login', '::1', '', '2014-07-19 00:49:07'),
-(356, 8, 'user.login', '::1', '', '2014-07-19 14:29:14'),
-(357, 8, 'user.login', '::1', '', '2014-07-19 19:52:56'),
-(358, 8, 'user.login', '::1', '', '2014-07-20 19:18:20'),
-(359, 8, 'user.login', '::1', '', '2014-07-21 22:12:36'),
-(360, 8, 'user.login', '::1', '', '2014-07-24 00:09:58'),
-(361, 8, 'user.login', '127.0.0.1', '', '2014-07-24 08:15:57'),
-(362, 8, 'user.login', '127.0.0.1', '', '2014-07-24 08:19:11'),
-(363, 8, 'user.login', '127.0.0.1', '', '2014-07-24 08:23:32'),
-(364, 8, 'user.login', '127.0.0.1', '', '2014-07-24 08:25:53'),
-(365, 8, 'user.login', '127.0.0.1', '', '2014-07-24 22:35:52'),
-(366, 8, 'user.login', '127.0.0.1', '', '2014-07-24 22:39:54'),
-(367, 8, 'user.login', '127.0.0.1', '', '2014-07-24 22:44:24'),
-(368, 8, 'user.login', '127.0.0.1', '', '2014-07-24 23:52:46'),
-(369, 8, 'user.login', '127.0.0.1', '', '2014-07-26 20:01:44'),
-(370, 8, 'user.login', '127.0.0.1', '', '2014-07-26 21:05:39'),
-(371, 8, 'user.login', '127.0.0.1', '', '2014-07-27 15:39:18'),
-(373, 8, 'user.login', '127.0.0.1', '', '2014-07-27 20:00:39'),
-(379, 8, 'user.login', '127.0.0.1', '', '2014-07-27 22:15:18'),
-(380, 8, 'user.login', '127.0.0.1', '', '2014-07-27 22:20:42'),
-(381, 8, 'user.login', '127.0.0.1', '', '2014-07-28 00:04:47'),
-(382, 8, 'user.login', '127.0.0.1', '', '2014-07-28 01:09:34'),
-(383, 8, 'user.snippet.add', '127.0.0.1', '', '2014-07-28 01:10:00'),
-(384, 8, 'user.snippet.add', '127.0.0.1', '', '2014-07-28 01:13:53'),
-(385, 8, 'user.login', '127.0.0.1', '', '2014-07-28 08:30:47'),
-(386, 8, 'user.login', '127.0.0.1', '', '2014-07-28 21:18:01'),
-(387, 8, 'user.login', '127.0.0.1', '', '2014-07-28 22:40:25'),
-(388, 8, 'user.login', '127.0.0.1', '', '2014-07-29 08:01:48'),
-(389, 8, 'user.login', '127.0.0.1', '', '2014-07-30 23:39:32'),
-(390, 8, 'user.login', '127.0.0.1', '', '2014-07-31 22:12:37'),
-(391, 8, 'user.login', '127.0.0.1', '', '2014-08-02 21:36:56'),
-(392, 8, 'user.login', '::1', '', '2014-08-03 20:16:02'),
-(393, 8, 'user.login', '::1', '', '2014-08-03 23:12:12'),
-(394, 8, 'user.snippet.add', '::1', '', '2014-08-03 23:41:17'),
-(395, 8, 'user.login', '::1', '', '2014-08-04 21:57:35'),
-(396, 8, 'user.login', '127.0.0.1', '', '2014-09-29 10:45:47'),
-(397, 8, 'user.snippet.add', '127.0.0.1', '', '2014-09-29 10:51:51'),
-(398, 8, 'user.snippet.add', '127.0.0.1', '', '2014-09-29 10:52:22'),
-(399, 8, 'user.snippet.add', '127.0.0.1', '', '2014-09-29 10:54:05'),
-(400, 8, 'user.snippet.add', '127.0.0.1', '', '2014-10-01 17:12:35'),
-(401, 8, 'user.logout', '127.0.0.1', '', '2014-10-02 17:37:00'),
-(402, 8, 'user.login', '127.0.0.1', '', '2014-10-02 17:37:02'),
-(403, 8, 'user.logout', '127.0.0.1', '', '2014-10-02 17:40:46'),
-(404, 8, 'user.login', '127.0.0.1', '', '2014-10-02 17:40:49'),
-(405, 8, 'user.snippet.add', '127.0.0.1', '', '2014-10-02 17:59:49'),
-(406, 8, 'user.snippet.add', '127.0.0.1', '', '2014-10-06 11:22:23'),
-(407, 8, 'user.logout', '127.0.0.1', '', '2014-10-06 13:43:30'),
-(408, 8, 'user.login', '127.0.0.1', '', '2014-10-06 13:43:38'),
-(409, 8, 'user.logout', '127.0.0.1', '', '2014-10-07 13:16:15'),
-(410, 8, 'user.login', '127.0.0.1', '', '2014-10-07 13:16:18'),
-(411, 8, 'user.logout', '127.0.0.1', '', '2014-10-07 14:04:02'),
-(412, 8, 'user.login', '127.0.0.1', '', '2014-10-07 14:04:03'),
-(413, 8, 'user.logout', '127.0.0.1', '', '2014-10-07 14:04:20'),
-(414, 8, 'user.login', '127.0.0.1', '', '2014-10-07 14:04:21'),
-(415, 8, 'user.snippet.add', '127.0.0.1', '', '2014-10-07 16:13:52'),
-(416, 8, 'user.snippet.add', '127.0.0.1', '', '2014-10-07 16:29:51'),
-(417, 8, 'user.logout', '127.0.0.1', '', '2014-10-09 13:04:07'),
-(418, 8, 'user.login', '127.0.0.1', '', '2014-10-09 13:04:52'),
-(419, 8, 'user.snippet.add', '127.0.0.1', '', '2014-10-09 16:02:13'),
-(420, 8, 'user.snippet.add', '127.0.0.1', '', '2014-10-09 16:04:22'),
-(421, 8, 'user.snippet.add', '127.0.0.1', '', '2014-10-09 17:37:39'),
-(422, 8, 'user.snippet.add', '127.0.0.1', '', '2014-10-09 17:39:13'),
-(423, 8, 'user.snippet.add', '127.0.0.1', '', '2014-10-13 16:15:14'),
-(424, 8, 'user.snippet.add', '127.0.0.1', '', '2014-10-13 16:20:57'),
-(425, 8, 'user.snippet.add', '127.0.0.1', '', '2014-10-13 16:22:28'),
-(426, 8, 'user.snippet.add', '127.0.0.1', '', '2014-10-13 16:29:39'),
-(427, 8, 'user.snippet.add', '127.0.0.1', '', '2014-10-13 16:31:36'),
-(428, 8, 'user.snippet.add', '127.0.0.1', '', '2014-10-13 16:34:45'),
-(429, 8, 'user.snippet.add', '127.0.0.1', '', '2014-10-13 16:49:04'),
-(430, 8, 'user.logout', '127.0.0.1', '', '2014-10-16 11:09:23'),
-(431, 8, 'user.login', '127.0.0.1', '', '2014-10-16 11:09:27'),
-(432, 8, 'user.logout', '127.0.0.1', '', '2014-10-16 11:41:30'),
-(433, 8, 'user.login', '127.0.0.1', '', '2014-10-16 11:46:07'),
-(434, 8, 'user.snippet.add', '127.0.0.1', '', '2014-10-16 12:44:21'),
-(435, 8, 'user.snippet.add', '127.0.0.1', '', '2014-10-16 12:45:15'),
-(436, 8, 'user.logout', '127.0.0.1', '', '2014-10-17 12:17:46'),
-(437, 8, 'user.login', '127.0.0.1', '', '2014-10-17 12:29:37'),
-(438, 8, 'user.logout', '127.0.0.1', '', '2014-10-17 12:29:43'),
-(439, 8, 'user.login', '127.0.0.1', '', '2014-10-17 12:30:49'),
-(440, 8, 'user.logout', '127.0.0.1', '', '2014-10-17 12:30:54'),
-(441, 8, 'user.login', '127.0.0.1', '', '2014-10-17 12:36:29'),
-(442, 8, 'user.logout', '127.0.0.1', '', '2014-10-17 12:36:33'),
-(443, 8, 'user.login', '127.0.0.1', '', '2014-10-17 13:29:20'),
-(444, 8, 'user.logout', '127.0.0.1', '', '2014-10-17 13:30:56'),
-(445, 8, 'user.login', '127.0.0.1', '', '2014-10-20 10:06:17'),
-(446, 8, 'user.snippet.add', '127.0.0.1', 'null', '2014-10-20 13:21:12'),
-(447, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""Create new Object From Variable in JavaScript""}', '2014-10-20 13:27:44'),
-(448, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""strip html tags from a string in Javascript""}', '2014-10-20 15:42:43'),
-(449, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""strip html tags from a string in Javascript""}', '2014-10-20 15:55:47'),
-(450, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""javascript replace all instances in a string""}', '2014-10-20 15:56:24'),
-(451, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""PHP replace words in a string""}', '2014-10-20 15:57:29'),
-(452, 8, 'user.logout', '127.0.0.1', '', '2014-10-20 15:58:00'),
-(453, 8, 'user.logout', '127.0.0.1', '', '2014-10-20 15:58:12'),
-(454, 8, 'user.login', '127.0.0.1', '', '2014-10-20 15:58:21'),
-(455, 8, 'user.logout', '127.0.0.1', '', '2014-10-20 15:58:28'),
-(456, 8, 'user.login', '127.0.0.1', '', '2014-10-20 16:04:57'),
-(457, 8, 'user.logout', '127.0.0.1', '', '2014-10-20 16:05:00'),
-(458, 8, 'user.login', '127.0.0.1', '', '2014-10-20 16:06:58'),
-(459, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""Find words adjacent to a word given by its index in a string""}', '2014-10-20 16:08:25'),
-(460, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""Find words adjacent to a word given by its index in a string""}', '2014-10-20 16:09:37'),
-(461, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""Get unique field values""}', '2014-10-20 16:10:53'),
-(462, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""get list of all values in a field MySQL""}', '2014-10-20 16:12:02'),
-(463, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""Get Enumerated Values for a MySQL Field""}', '2014-10-20 16:14:10'),
-(464, 8, 'user.logout', '127.0.0.1', '', '2014-10-20 17:50:08'),
-(465, 10, 'user.activate', '127.0.0.1', '', '2014-10-20 17:54:15'),
-(466, 10, 'user.login', '127.0.0.1', '', '2014-10-20 17:54:26'),
-(467, 10, 'user.logout', '127.0.0.1', '', '2014-10-21 16:01:49'),
-(468, 8, 'user.login', '127.0.0.1', '', '2014-10-21 16:12:27'),
-(469, 10, 'user.login', '127.0.0.1', '', '2014-10-22 15:31:37'),
-(470, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 16:07:02'),
-(471, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 16:07:02'),
-(472, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 16:29:24'),
-(473, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 16:29:26'),
-(474, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 16:29:26'),
-(475, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 16:29:43'),
-(476, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 16:29:44'),
-(477, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 16:29:44'),
-(478, 8, 'user.login', '127.0.0.1', '', '2014-10-22 17:38:54'),
-(479, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 17:39:10'),
-(480, 8, 'user.rating.add', '127.0.0.1', '{"id_snippet":""71"","rating":""3.5""}', '2014-10-22 17:39:12'),
-(481, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 17:39:24'),
-(482, 8, 'user.logout', '127.0.0.1', '', '2014-10-22 17:39:54'),
-(483, 10, 'user.login', '127.0.0.1', '', '2014-10-22 17:39:59'),
-(484, 10, 'user.rating.add', '127.0.0.1', '{"id_snippet":""71"","rating":""3""}', '2014-10-22 17:40:08'),
-(485, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 17:41:48'),
-(486, 8, 'user.comment.get', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 17:41:49'),
-(487, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 17:42:06'),
-(488, 8, 'user.comment.get', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 17:42:06'),
-(489, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 18:08:20'),
-(490, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 18:08:22'),
-(491, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 18:08:22'),
-(492, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 18:09:18'),
-(493, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 18:09:21'),
-(494, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 18:09:21'),
-(495, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 18:09:24'),
-(496, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 18:10:07'),
-(497, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 18:10:07'),
-(498, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 18:11:06'),
-(499, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 18:11:10'),
-(500, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 18:11:10'),
-(501, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 18:12:55'),
-(502, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 18:12:57'),
-(503, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 18:12:57'),
-(504, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 18:12:58'),
-(505, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 18:12:59'),
-(506, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 18:12:59'),
-(507, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 18:13:08'),
-(508, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 18:13:16'),
-(509, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""71""}', '2014-10-22 18:13:16'),
-(510, 10, 'user.logout', '127.0.0.1', '', '2014-10-23 12:35:39'),
-(511, 8, 'user.login', '127.0.0.1', '', '2014-10-23 12:45:11'),
-(512, 8, 'user.logout', '127.0.0.1', '', '2014-10-27 12:56:55'),
-(513, 8, 'user.login', '127.0.0.1', '', '2014-10-27 12:56:57'),
-(514, 8, 'user.logout', '127.0.0.1', '', '2014-11-03 10:36:46'),
-(515, 8, 'user.login', '127.0.0.1', '', '2014-11-03 10:48:04'),
-(516, 8, 'user.logout', '127.0.0.1', '', '2014-11-03 10:49:51'),
-(517, 8, 'user.login', '127.0.0.1', '', '2014-11-03 10:49:58'),
-(518, 8, 'user.logout', '127.0.0.1', '', '2014-11-03 11:34:46'),
-(519, 8, 'user.login', '127.0.0.1', '', '2014-11-03 11:34:49'),
-(520, 8, 'user.logout', '127.0.0.1', '', '2014-11-03 13:34:18'),
-(521, 8, 'user.login', '127.0.0.1', '', '2014-11-03 13:34:40'),
-(522, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""71""}', '2014-11-03 16:48:11'),
-(523, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""\\u00c3\\u00b1a\\u00c3\\u00b1ito avi\\u00c3\\u00b3n""}', '2014-11-04 10:40:22'),
-(524, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""\\u00c3\\u00b1a\\u00c3\\u00b1ito avi\\u00c3\\u00b3n""}', '2014-11-04 10:42:17'),
-(525, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""&ntilde;a&ntilde;ito avi&oacute;n""}', '2014-11-04 10:44:50'),
-(526, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""delete from Snippets where 1;""}', '2014-11-04 10:48:53'),
-(527, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""75""}', '2014-11-04 10:49:09'),
-(528, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""74""}', '2014-11-04 10:56:03'),
-(529, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""74""}', '2014-11-04 10:56:09'),
-(530, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""74""}', '2014-11-04 10:56:17'),
-(531, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""74""}', '2014-11-04 10:56:22'),
-(532, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""71""}', '2014-11-04 10:57:40'),
-(533, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""71""}', '2014-11-04 10:57:46'),
-(534, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""71""}', '2014-11-04 10:57:49'),
-(535, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""71""}', '2014-11-04 10:57:54'),
-(536, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""71""}', '2014-11-04 10:57:59'),
-(537, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""71""}', '2014-11-04 10:58:03'),
-(538, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""75""}', '2014-11-04 11:45:00'),
-(539, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""75""}', '2014-11-04 11:46:08'),
-(540, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""75""}', '2014-11-04 11:47:05'),
-(541, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""75""}', '2014-11-04 11:47:23'),
-(542, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""75""}', '2014-11-04 11:47:24'),
-(543, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""75""}', '2014-11-04 11:47:25'),
-(544, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""75""}', '2014-11-04 11:47:26'),
-(545, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""75""}', '2014-11-04 11:47:27'),
-(546, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""74""}', '2014-11-04 11:47:33'),
-(547, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""sdfsfs""}', '2014-11-04 12:37:52'),
-(548, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""70""}', '2014-11-04 14:07:15'),
-(549, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""70""}', '2014-11-04 14:07:17'),
-(550, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""70""}', '2014-11-04 14:07:29'),
-(551, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""38""}', '2014-11-04 14:56:51'),
-(552, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""38""}', '2014-11-04 14:57:21'),
-(553, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""38""}', '2014-11-04 14:59:24'),
-(554, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""71""}', '2014-11-04 18:06:00'),
-(555, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""71""}', '2014-11-04 18:06:05'),
-(556, 8, 'user.logout', '127.0.0.1', '', '2014-11-06 14:53:25'),
-(557, 11, 'user.activate', '127.0.0.1', '', '2014-11-06 15:02:07'),
-(558, 11, 'user.login', '127.0.0.1', '', '2014-11-06 15:02:31'),
-(559, 11, 'user.logout', '127.0.0.1', '', '2014-11-06 15:02:35'),
-(560, 11, 'user.login', '127.0.0.1', '', '2014-11-06 17:34:18'),
-(561, 11, 'user.logout', '127.0.0.1', '', '2014-11-06 17:44:00'),
-(562, 8, 'user.login', '127.0.0.1', '', '2014-11-06 17:44:25'),
-(563, 8, 'user.logout', '127.0.0.1', '', '2014-11-06 17:45:25'),
-(564, 11, 'user.login', '127.0.0.1', '', '2014-11-06 17:45:34'),
-(565, 11, 'user.logout', '127.0.0.1', '', '2014-11-07 12:28:42'),
-(566, 8, 'user.login', '127.0.0.1', '', '2014-11-07 12:28:56'),
-(567, 8, 'user.logout', '127.0.0.1', '', '2014-11-07 12:29:43'),
-(568, 8, 'user.login', '127.0.0.1', '', '2014-11-07 12:29:45'),
-(569, 8, 'user.logout', '127.0.0.1', '', '2014-11-07 12:36:02'),
-(570, 8, 'user.login', '127.0.0.1', '', '2014-11-07 12:51:34'),
-(571, 8, 'user.logout', '127.0.0.1', '', '2014-11-07 12:56:32'),
-(572, 8, 'user.login', '127.0.0.1', '', '2014-11-07 12:57:47'),
-(573, 8, 'user.logout', '127.0.0.1', '', '2014-11-07 12:58:10'),
-(574, 11, 'user.login', '127.0.0.1', '', '2014-11-07 13:00:17'),
-(575, 11, 'user.logout', '127.0.0.1', '', '2014-11-07 13:00:27'),
-(576, 8, 'user.login', '127.0.0.1', '', '2014-11-07 13:56:25'),
-(577, 8, 'user.logout', '127.0.0.1', '', '2014-11-07 13:59:41'),
-(578, 11, 'user.login', '127.0.0.1', '', '2014-11-07 14:00:00'),
-(579, 11, 'user.login', '::1', '', '2014-11-08 16:01:09'),
-(580, 11, 'user.login', '::1', '', '2014-11-08 20:21:49'),
-(581, 11, 'user.login', '::1', '', '2014-11-08 20:42:32'),
-(582, 11, 'user.logout', '::1', '', '2014-11-08 20:43:58'),
-(583, 11, 'user.login', '::1', '', '2014-11-08 21:23:17'),
-(584, 11, 'user.logout', '::1', '', '2014-11-08 22:03:07'),
-(585, 8, 'user.login', '::1', '', '2014-11-08 22:03:11'),
-(586, 8, 'user.logout', '::1', '', '2014-11-08 22:03:38'),
-(587, 8, 'user.login', '::1', '', '2014-11-08 22:03:47'),
-(588, 8, 'user.logout', '::1', '', '2014-11-08 22:03:52'),
-(589, 11, 'user.login', '::1', '', '2014-11-08 22:03:56'),
-(590, 11, 'user.login', '::1', '', '2014-11-08 22:40:13'),
-(591, 11, 'user.logout', '::1', '', '2014-11-08 22:57:27'),
-(592, 8, 'user.login', '::1', '', '2014-11-08 22:57:31'),
-(593, 8, 'user.logout', '::1', '', '2014-11-08 23:10:38'),
-(594, 11, 'user.login', '::1', '', '2014-11-08 23:10:42'),
-(595, 11, 'user.logout', '::1', '', '2014-11-08 23:35:28'),
-(596, 8, 'user.login', '::1', '', '2014-11-08 23:35:36'),
-(597, 8, 'user.logout', '::1', '', '2014-11-08 23:38:41'),
-(598, 11, 'user.login', '::1', '', '2014-11-08 23:38:46'),
-(599, 11, 'user.login', '::1', '', '2014-11-09 10:40:59'),
-(600, 11, 'user.login', '::1', '', '2014-11-09 14:11:22'),
-(601, 11, 'user.login', '::1', '', '2014-11-09 14:49:58'),
-(602, 11, 'user.login', '::1', '', '2014-11-09 15:57:55'),
-(603, 11, 'user.login', '::1', '', '2014-11-09 18:28:32'),
-(604, 11, 'user.login', '::1', '', '2014-11-09 20:09:26'),
-(605, 11, 'user.logout', '::1', '', '2014-11-09 21:03:18'),
-(606, 11, 'user.login', '::1', '', '2014-11-09 21:03:27'),
-(607, 11, 'user.logout', '::1', '', '2014-11-09 21:07:34'),
-(608, 11, 'user.login', '::1', '', '2014-11-09 21:07:39'),
-(609, 11, 'user.login', '::1', '', '2014-11-09 22:04:32'),
-(610, 11, 'user.login', '::1', '', '2014-11-10 11:50:44'),
-(611, 11, 'user.logout', '127.0.0.1', '', '2014-11-11 14:22:01'),
-(612, 8, 'user.login', '127.0.0.1', '', '2014-11-11 14:22:03'),
-(613, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""57""}', '2014-11-12 14:27:54'),
-(614, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""57""}', '2014-11-12 14:28:02'),
-(615, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""57""}', '2014-11-12 14:28:46'),
-(616, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""57""}', '2014-11-12 14:28:49'),
-(617, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 16:48:02'),
-(618, 11, 'user.login', '127.0.0.1', '', '2014-11-12 16:48:22'),
-(619, 11, 'user.logout', '127.0.0.1', '', '2014-11-12 16:48:49'),
-(620, 8, 'user.login', '127.0.0.1', '', '2014-11-12 16:48:52'),
-(621, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 16:50:21'),
-(622, 11, 'user.login', '127.0.0.1', '', '2014-11-12 16:50:25'),
-(623, 11, 'user.logout', '127.0.0.1', '', '2014-11-12 16:51:00'),
-(624, 11, 'user.login', '127.0.0.1', '', '2014-11-12 16:51:04'),
-(625, 11, 'user.logout', '127.0.0.1', '', '2014-11-12 16:51:08'),
-(626, 8, 'user.login', '127.0.0.1', '', '2014-11-12 16:51:11'),
-(627, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 16:51:17'),
-(628, 11, 'user.login', '127.0.0.1', '', '2014-11-12 16:51:20'),
-(629, 11, 'user.logout', '127.0.0.1', '', '2014-11-12 16:58:01'),
-(630, 11, 'user.login', '127.0.0.1', '', '2014-11-12 17:00:15'),
-(631, 11, 'user.logout', '127.0.0.1', '', '2014-11-12 17:01:32'),
-(632, 11, 'user.login', '127.0.0.1', '', '2014-11-12 17:01:34'),
-(633, 11, 'user.logout', '127.0.0.1', '', '2014-11-12 17:01:38'),
-(634, 11, 'user.login', '127.0.0.1', '', '2014-11-12 17:01:44'),
-(635, 11, 'user.logout', '127.0.0.1', '', '2014-11-12 17:01:50'),
-(636, 11, 'user.login', '127.0.0.1', '', '2014-11-12 17:02:02'),
-(637, 11, 'user.logout', '127.0.0.1', '', '2014-11-12 17:02:06'),
-(638, 11, 'user.login', '127.0.0.1', '', '2014-11-12 17:02:09'),
-(639, 11, 'user.logout', '127.0.0.1', '', '2014-11-12 17:02:13'),
-(640, 11, 'user.login', '127.0.0.1', '', '2014-11-12 17:02:31'),
-(641, 11, 'user.logout', '127.0.0.1', '', '2014-11-12 17:02:34'),
-(642, 11, 'user.login', '127.0.0.1', '', '2014-11-12 17:02:41'),
-(643, 11, 'user.logout', '127.0.0.1', '', '2014-11-12 17:03:32'),
-(644, 8, 'user.login', '127.0.0.1', '', '2014-11-12 17:03:35'),
-(645, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 17:04:52'),
-(646, 11, 'user.login', '127.0.0.1', '', '2014-11-12 17:04:56'),
-(647, 11, 'user.logout', '127.0.0.1', '', '2014-11-12 17:05:00'),
-(648, 11, 'user.login', '127.0.0.1', '', '2014-11-12 17:05:02'),
-(649, 11, 'user.logout', '127.0.0.1', '', '2014-11-12 17:05:05'),
-(650, 11, 'user.login', '127.0.0.1', '', '2014-11-12 17:05:11'),
-(651, 11, 'user.logout', '127.0.0.1', '', '2014-11-12 17:05:57'),
-(652, 8, 'user.login', '127.0.0.1', '', '2014-11-12 17:06:03'),
-(653, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 17:06:55'),
-(654, 11, 'user.login', '127.0.0.1', '', '2014-11-12 17:07:02'),
-(655, 11, 'user.logout', '127.0.0.1', '', '2014-11-12 17:07:29'),
-(656, 8, 'user.login', '127.0.0.1', '', '2014-11-12 17:07:32'),
-(657, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 17:07:35'),
-(658, 11, 'user.login', '127.0.0.1', '', '2014-11-12 17:07:40'),
-(659, 11, 'user.logout', '127.0.0.1', '', '2014-11-12 17:07:48'),
-(660, 11, 'user.login', '127.0.0.1', '', '2014-11-12 17:07:50'),
-(661, 11, 'user.logout', '127.0.0.1', '', '2014-11-12 17:07:53'),
-(662, 8, 'user.login', '127.0.0.1', '', '2014-11-12 17:07:56'),
-(663, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 17:08:00'),
-(664, 11, 'user.login', '127.0.0.1', '', '2014-11-12 17:08:06'),
-(665, 11, 'user.logout', '127.0.0.1', '', '2014-11-12 17:08:32'),
-(666, 8, 'user.login', '127.0.0.1', '', '2014-11-12 17:08:35'),
-(667, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 17:08:42'),
-(668, 11, 'user.login', '127.0.0.1', '', '2014-11-12 17:08:46'),
-(669, 11, 'user.logout', '127.0.0.1', '', '2014-11-12 17:09:30'),
-(670, 8, 'user.login', '127.0.0.1', '', '2014-11-12 17:09:35'),
-(671, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 17:11:06'),
-(672, 11, 'user.login', '127.0.0.1', '', '2014-11-12 17:11:10'),
-(673, 11, 'user.logout', '127.0.0.1', '', '2014-11-12 17:11:21'),
-(674, 11, 'user.login', '127.0.0.1', '', '2014-11-12 17:11:35'),
-(675, 11, 'user.logout', '127.0.0.1', '', '2014-11-12 17:11:53'),
-(676, 8, 'user.login', '127.0.0.1', '', '2014-11-12 17:11:57'),
-(677, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 17:12:11'),
-(678, 8, 'user.login', '127.0.0.1', '', '2014-11-12 17:12:13'),
-(679, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 17:12:18'),
-(680, 8, 'user.login', '127.0.0.1', '', '2014-11-12 17:12:46'),
-(681, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 17:12:52'),
-(682, 8, 'user.login', '127.0.0.1', '', '2014-11-12 17:12:55'),
-(683, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 17:13:05'),
-(684, 8, 'user.login', '127.0.0.1', '', '2014-11-12 17:13:07'),
-(685, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 17:13:26'),
-(686, 11, 'user.login', '127.0.0.1', '', '2014-11-12 17:13:30'),
-(687, 11, 'user.logout', '127.0.0.1', '', '2014-11-12 17:13:58'),
-(688, 8, 'user.login', '127.0.0.1', '', '2014-11-12 17:14:00'),
-(689, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 17:16:31'),
-(690, 8, 'user.login', '127.0.0.1', '', '2014-11-12 17:16:33'),
-(691, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 17:16:36'),
-(692, 8, 'user.login', '127.0.0.1', '', '2014-11-12 17:22:05'),
-(693, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 17:22:08'),
-(694, 8, 'user.login', '127.0.0.1', '', '2014-11-12 17:22:16'),
-(695, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 17:22:30'),
-(696, 8, 'user.login', '127.0.0.1', '', '2014-11-12 17:22:32'),
-(697, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 17:22:41'),
-(698, 8, 'user.login', '127.0.0.1', '', '2014-11-12 17:23:37'),
-(699, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 17:23:42'),
-(700, 8, 'user.login', '127.0.0.1', '', '2014-11-12 17:23:45'),
-(701, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 17:25:38'),
-(702, 8, 'user.login', '127.0.0.1', '', '2014-11-12 17:25:40'),
-(703, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 17:25:46'),
-(704, 8, 'user.login', '127.0.0.1', '', '2014-11-12 17:25:48'),
-(705, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 17:29:37'),
-(706, 8, 'user.login', '127.0.0.1', '', '2014-11-12 17:29:39'),
-(707, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 17:36:03'),
-(708, 8, 'user.login', '127.0.0.1', '', '2014-11-12 17:36:05'),
-(709, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 17:36:32'),
-(710, 8, 'user.login', '127.0.0.1', '', '2014-11-12 17:36:35'),
-(711, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 17:36:37'),
-(712, 11, 'user.login', '127.0.0.1', '', '2014-11-12 17:36:40'),
-(713, 11, 'user.logout', '127.0.0.1', '', '2014-11-12 17:36:58'),
-(714, 8, 'user.login', '127.0.0.1', '', '2014-11-12 17:37:01'),
-(715, 8, 'user.logout', '127.0.0.1', '', '2014-11-12 17:43:35'),
-(716, 10, 'user.login', '127.0.0.1', '', '2014-11-12 17:43:40'),
-(717, 10, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""Animated Tooltips With Very Little Coding""}', '2014-11-12 17:44:52'),
-(718, 10, 'user.logout', '127.0.0.1', '', '2014-11-13 12:25:09'),
-(719, 8, 'user.login', '127.0.0.1', '', '2014-11-13 12:27:27'),
-(720, 8, 'user.logout', '127.0.0.1', '', '2014-11-13 12:27:36'),
-(721, 12, 'user.login', '127.0.0.1', '', '2014-11-13 12:27:44'),
-(722, 12, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""HTML5 Mobile Video with Flash, Silverlight, Java, Animated GIF and Download fallback""}', '2014-11-13 12:32:02'),
-(723, 12, 'user.logout', '127.0.0.1', '', '2014-11-13 12:32:16'),
-(724, 13, 'user.login', '127.0.0.1', '', '2014-11-13 12:32:22'),
-(725, 13, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""Save all images from RSS feed""}', '2014-11-13 12:33:24'),
-(726, 13, 'user.logout', '127.0.0.1', '', '2014-11-13 12:37:19'),
-(727, 14, 'user.login', '127.0.0.1', '', '2014-11-13 12:37:27'),
-(728, 14, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""List all images from directory""}', '2014-11-13 12:38:13'),
-(729, 14, 'user.fav.add', '127.0.0.1', '{"id_snippet":""80""}', '2014-11-14 13:21:57'),
-(730, 14, 'user.fav.del', '127.0.0.1', '{"id_snippet":""80""}', '2014-11-14 13:21:58'),
-(731, 14, 'user.fav.add', '127.0.0.1', '{"id_snippet":""80""}', '2014-11-14 13:23:42'),
-(732, 14, 'user.fav.del', '127.0.0.1', '{"id_snippet":""80""}', '2014-11-14 13:23:43'),
-(733, 14, 'user.fav.add', '127.0.0.1', '{"id_snippet":""80""}', '2014-11-14 13:23:55'),
-(734, 14, 'user.fav.del', '127.0.0.1', '{"id_snippet":""80""}', '2014-11-14 13:23:57'),
-(735, 14, 'user.rating.add', '127.0.0.1', '{"id_snippet":""80"","rating":""3.5""}', '2014-11-14 13:24:00'),
-(736, 14, 'user.logout', '127.0.0.1', '', '2014-11-21 12:58:49'),
-(737, 8, 'user.login', '127.0.0.1', '', '2014-11-24 12:38:33'),
-(738, 8, 'user.logout', '127.0.0.1', '', '2014-11-25 17:49:58'),
-(739, 11, 'user.login', '127.0.0.1', '', '2014-11-25 17:50:02'),
-(740, 11, 'user.logout', '127.0.0.1', '', '2014-11-25 17:50:39'),
-(741, 8, 'user.login', '127.0.0.1', '', '2014-11-26 12:07:48'),
-(742, 8, 'user.logout', '127.0.0.1', '', '2014-12-02 10:56:45'),
-(743, 11, 'user.login', '127.0.0.1', '', '2014-12-02 10:57:18'),
-(744, 11, 'user.logout', '127.0.0.1', '', '2014-12-02 10:57:23'),
-(745, 8, 'user.login', '127.0.0.1', '', '2014-12-02 10:57:26'),
-(746, 8, 'user.logout', '127.0.0.1', '', '2014-12-02 12:40:37'),
-(747, 8, 'user.login', '127.0.0.1', '', '2014-12-02 12:40:40'),
-(748, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""38""}', '2014-12-02 12:51:57'),
-(749, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""38""}', '2014-12-02 12:51:58'),
-(750, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""38""}', '2014-12-02 12:55:01'),
-(751, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""38""}', '2014-12-02 12:55:02'),
-(752, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""38""}', '2014-12-02 12:55:04'),
-(753, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""38""}', '2014-12-02 12:55:07'),
-(754, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""79""}', '2014-12-02 12:55:22'),
-(755, 13, 'user.fav.get', '127.0.0.1', '{"id_snippet":""79""}', '2014-12-02 12:55:22'),
-(756, 8, 'user.rating.add', '127.0.0.1', '{"id_snippet":""79"","rating":""4""}', '2014-12-02 12:55:23'),
-(757, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""79""}', '2014-12-02 12:55:35'),
-(758, 13, 'user.comment.get', '127.0.0.1', '{"id_snippet":""79""}', '2014-12-02 12:55:35'),
-(759, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""Listing special forms""}', '2014-12-02 13:02:47'),
-(760, 8, 'user.login', '::1', '', '2014-12-13 15:11:22'),
-(761, 8, 'user.login', '192.168.1.135', '', '2014-12-14 23:37:35'),
-(762, 8, 'user.login', '192.168.1.135', '', '2014-12-15 23:20:34'),
-(763, 8, 'user.login', '192.168.1.135', '', '2014-12-17 00:09:06'),
-(764, 8, 'user.comment.add', '192.168.1.135', '{"id_snippet":""1""}', '2014-12-17 00:14:31'),
-(765, 10, 'user.comment.get', '192.168.1.135', '{"id_snippet":""1""}', '2014-12-17 00:14:31'),
-(766, 8, 'user.fav.add', '192.168.1.135', '{"id_links":""1""}', '2014-12-17 00:55:12'),
-(768, 8, 'user.fav.add', '192.168.1.135', '{"id_links":""1""}', '2014-12-17 00:55:30'),
-(770, 8, 'user.fav.add', '192.168.1.135', '{"id_links":""1""}', '2014-12-17 00:56:09'),
-(772, 8, 'user.fav.del', '192.168.1.135', '{"id_links":""1""}', '2014-12-17 01:00:14'),
-(773, 8, 'user.fav.add', '192.168.1.135', '{"id_links":""1""}', '2014-12-17 01:05:36'),
-(775, 8, 'user.fav.del', '192.168.1.135', '{"id_links":""1""}', '2014-12-17 01:07:37'),
-(776, 8, 'user.fav.add', '192.168.1.135', '{"id_links":""1""}', '2014-12-17 01:10:51'),
-(778, 8, 'user.fav.add', '192.168.1.135', '{"id_links":""1""}', '2014-12-17 01:11:45'),
-(780, 8, 'user.fav.del', '192.168.1.135', '{"id_Links":""1""}', '2014-12-17 01:30:54'),
-(781, 8, 'user.fav.del', '192.168.1.135', '{"id_Links":""1""}', '2014-12-17 01:31:48'),
-(782, 8, 'user.fav.del', '192.168.1.135', '{"id_Links":""1""}', '2014-12-17 01:32:38'),
-(783, 8, 'user.fav.del', '192.168.1.135', '{"id_Links":""1""}', '2014-12-17 01:34:58'),
-(784, 8, 'user.fav.add', '192.168.1.135', '{"id_links":""1""}', '2014-12-17 01:35:23'),
-(786, 8, 'user.fav.del', '192.168.1.135', '{"id_Links":""1""}', '2014-12-17 01:36:16'),
-(787, 8, 'user.fav.add', '192.168.1.135', '{"id_links":""1""}', '2014-12-17 01:36:21'),
-(789, 8, 'user.fav.del', '192.168.1.135', '{"id_Links":""1""}', '2014-12-17 01:38:42'),
-(790, 8, 'user.fav.add', '192.168.1.135', '{"id_links":""1""}', '2014-12-17 01:38:45'),
-(792, 8, 'user.fav.del', '192.168.1.135', '{"id_Links":""1""}', '2014-12-17 01:41:04'),
-(793, 8, 'user.fav.add', '192.168.1.135', '{"id_links":""1""}', '2014-12-17 01:41:07'),
-(795, 8, 'user.fav.del', '192.168.1.135', '{"id_Links":""1""}', '2014-12-17 01:43:19'),
-(796, 8, 'user.fav.add', '192.168.1.135', '{"id_links":""1""}', '2014-12-17 01:43:22'),
-(798, 8, 'user.fav.del', '192.168.1.135', '{"id_Links":""1""}', '2014-12-17 01:44:25'),
-(799, 8, 'user.fav.add', '192.168.1.135', '{"id_links":""1""}', '2014-12-17 01:44:28'),
-(801, 8, 'user.fav.del', '192.168.1.135', '{"id_Links":""1""}', '2014-12-17 01:45:37'),
-(802, 8, 'user.fav.del', '192.168.1.135', '{"id_Links":""1""}', '2014-12-17 01:46:39'),
-(803, 8, 'user.fav.del', '192.168.1.135', '{"id_Links":""1""}', '2014-12-17 01:50:12'),
-(804, 8, 'user.fav.del', '192.168.1.135', '{"id_Links":""1""}', '2014-12-17 01:50:42'),
-(805, 8, 'user.fav.add', '192.168.1.135', '{"id_links":""1""}', '2014-12-17 01:50:45'),
-(806, 10, 'user.fav.get', '192.168.1.135', '{"id_links":""1""}', '2014-12-17 01:50:45'),
-(807, 8, 'user.login', '::1', '', '2014-12-18 20:07:18'),
-(808, 8, 'user.login', '192.168.1.136', '', '2014-12-19 19:28:54'),
-(809, 8, 'user.fav.add', '192.168.1.136', '{"id_snippet":""81""}', '2014-12-19 19:43:43'),
-(810, 8, 'user.fav.del', '192.168.1.136', '{"id_snippet":""81""}', '2014-12-19 19:43:44'),
-(811, 8, 'user.rating.add', '192.168.1.136', '{"id_snippet":""81"","rating":""4""}', '2014-12-19 19:43:46'),
-(812, 8, 'user.login', '192.168.1.136', '', '2014-12-19 19:44:55'),
-(813, 8, 'user.logout', '192.168.1.128', '', '2014-12-19 20:05:20'),
-(814, 11, 'user.login', '192.168.1.128', '', '2014-12-21 01:40:34'),
-(815, 11, 'user.logout', '192.168.1.128', '', '2014-12-21 01:40:47'),
-(816, 8, 'user.login', '192.168.1.128', '', '2014-12-21 01:40:58'),
-(817, 8, 'user.login', '192.168.1.128', '', '2014-12-21 01:42:01'),
-(818, 8, 'user.login', '192.168.1.128', '', '2014-12-21 10:56:34'),
-(819, 8, 'user.login', '192.168.1.133', '', '2014-12-22 00:50:00'),
-(820, 8, 'user.comment.add', '192.168.1.133', '{"id_snippet":""1""}', '2014-12-22 01:19:21'),
-(821, 10, 'user.comment.get', '192.168.1.133', '{"id_snippet":""1""}', '2014-12-22 01:19:21'),
-(822, 8, 'user.login', '192.168.1.128', '', '2014-12-22 10:16:18'),
-(823, 8, 'user.login', '192.168.1.132', '', '2014-12-24 18:26:17'),
-(824, 8, 'user.login', '192.168.1.132', '', '2014-12-24 19:41:29'),
-(825, 8, 'user.login', '192.168.1.132', '', '2014-12-25 11:38:28'),
-(826, 8, 'user.login', '192.168.1.132', '', '2014-12-25 19:27:31'),
-(827, 8, 'user.login', '192.168.1.133', '', '2014-12-25 23:44:56'),
-(828, 8, 'user.login', '192.168.1.133', '', '2014-12-26 00:05:11'),
-(829, 8, 'user.login', '192.168.1.133', '', '2014-12-26 00:15:50'),
-(830, 8, 'user.login', '127.0.0.1', '', '2014-12-26 00:20:45'),
-(831, 8, 'user.logout', '::1', '', '2015-01-03 23:05:27'),
-(832, 8, 'user.login', '::1', '', '2015-01-03 23:05:29'),
-(833, 8, 'user.rating.add', '::1', '{"id_links":""1"","rating":""3""}', '2015-01-03 23:40:50'),
-(834, 8, 'user.rating.add', '::1', '{"id_links":""2"","rating":""4""}', '2015-01-03 23:44:09'),
-(835, 8, 'user.rating.add', '::1', '{"id_links":""1"","rating":""5""}', '2015-01-03 23:44:45'),
-(837, 8, 'user.link.add', '::1', '{"link_name":""dfgdfgd""}', '2015-01-05 01:41:20'),
-(838, 8, 'user.link.add', '::1', '{"link_name":""Setup Ruby On Rails on Mac OS X 10.10 Yosemite""}', '2015-01-05 01:43:57'),
-(839, 8, 'user.link.add', '::1', '{"link_name":""sdfsdf""}', '2015-01-05 02:31:43'),
-(840, 8, 'user.logout', '::1', '', '2015-01-05 22:48:41'),
-(841, 8, 'user.login', '::1', '', '2015-01-05 22:48:47'),
-(842, 8, 'user.link.add', '::1', '{"link_name":""Como validar una URL""}', '2015-01-06 01:59:43'),
-(843, 8, 'user.link.add', '::1', '{"link_name":""Radar Oreilly""}', '2015-01-06 17:47:44'),
-(844, 8, 'user.link.add', '::1', '{"link_name":""LEXICALIST""}', '2015-01-06 17:48:16'),
-(845, 8, 'user.logout', '::1', '', '2015-01-15 23:19:31'),
-(846, 11, 'user.login', '::1', '', '2015-01-15 23:19:47'),
-(847, 11, 'user.logout', '::1', '', '2015-01-15 23:21:02'),
-(848, 8, 'user.login', '::1', '', '2015-01-15 23:21:20'),
-(849, 11, 'user.login', '::1', '', '2015-01-18 18:51:00'),
-(850, 8, 'user.login', '::1', '', '2015-01-22 23:54:08'),
-(851, 8, 'user.rating.add', '::1', '{"id_links":""18"","rating":""2""}', '2015-01-22 23:54:53'),
-(852, 8, 'user.fav.add', '::1', '{"id_links":""18""}', '2015-01-22 23:54:57'),
-(853, 8, 'user.fav.add', '::1', '{"id_snippet":""81""}', '2015-01-22 23:55:59'),
-(854, 8, 'user.logout', '::1', '', '2015-01-25 15:50:28'),
-(855, 11, 'user.login', '::1', '', '2015-01-25 15:50:31'),
-(856, 11, 'user.logout', '::1', '', '2015-01-25 18:15:14'),
-(857, 8, 'user.login', '::1', '', '2015-01-25 18:15:17'),
-(858, 8, 'user.logout', '::1', '', '2015-01-25 18:15:24'),
-(859, 11, 'user.login', '::1', '', '2015-01-25 18:15:28'),
-(860, 8, 'user.login', '::1', '', '2015-01-25 18:18:28'),
-(861, 11, 'user.logout', '::1', '', '2015-01-25 18:24:47'),
-(862, 11, 'user.login', '::1', '', '2015-01-25 18:25:33'),
-(863, 8, 'user.snippet.add', '::1', '{"snippet_name":""rsdfgsdfg""}', '2015-01-28 00:38:29'),
-(864, 8, 'user.snippet.add', '::1', '{"snippet_name":""fgsdfgsdgf""}', '2015-01-28 00:41:07'),
-(865, 8, 'user.snippet.add', '::1', '{"snippet_name":""dfgsdfg""}', '2015-01-28 00:52:15'),
-(866, 8, 'user.rating.add', '::1', '{"id_snippet":""84"","rating":""3.5""}', '2015-01-28 00:52:20'),
-(867, 8, 'user.fav.add', '::1', '{"id_snippet":""84""}', '2015-01-28 00:52:21'),
-(868, 8, 'user.comment.add', '::1', '{"id_snippet":""84""}', '2015-01-28 00:52:32'),
-(869, 8, 'user.snippet.add', '::1', '{"snippet_name":""dfvdfgdfg""}', '2015-01-28 01:03:21'),
-(870, 8, 'user.fav.add', '::1', '{"id_snippet":""85""}', '2015-01-28 01:03:26'),
-(871, 11, 'user.logout', '::1', '', '2015-01-29 00:15:34'),
-(872, 8, 'user.login', '::1', '', '2015-01-29 00:15:38'),
-(873, 8, 'user.fav.del', '::1', '{"id_snippet":""85""}', '2015-01-29 00:43:42'),
-(874, 8, 'user.fav.add', '::1', '{"id_snippet":""85""}', '2015-01-29 00:43:57'),
-(875, 8, 'user.fav.del', '::1', '{"id_snippet":""85""}', '2015-01-29 00:44:25'),
-(876, 8, 'user.fav.add', '::1', '{"id_snippet":""85""}', '2015-01-29 00:44:29'),
-(877, 8, 'user.fav.del', '::1', '{"id_snippet":""85""}', '2015-01-29 00:44:50'),
-(878, 8, 'user.fav.add', '::1', '{"id_snippet":""85""}', '2015-01-29 00:44:57'),
-(879, 8, 'user.fav.del', '::1', '{"id_snippet":""85""}', '2015-01-29 00:44:59'),
-(880, 8, 'user.fav.add', '::1', '{"id_snippet":""85""}', '2015-01-29 00:45:00'),
-(881, 8, 'user.logout', '::1', '', '2015-01-29 00:45:53'),
-(882, 11, 'user.login', '::1', '', '2015-01-29 00:45:56'),
-(883, 8, 'user.login', '::1', '', '2015-01-29 00:46:19'),
-(884, 8, 'user.rating.add', '::1', '{"id_snippet":""85"","rating":""4""}', '2015-01-29 00:46:29'),
-(885, 8, 'user.comment.add', '::1', '{"id_snippet":""85""}', '2015-01-29 00:46:36'),
-(886, 8, 'user.snippet.add', '::1', '{"snippet_name":""dfgdsfgsdfgsd""}', '2015-01-29 00:52:13'),
-(887, 8, 'user.rating.add', '::1', '{"id_snippet":""86"","rating":""4.5""}', '2015-01-29 00:52:17'),
-(888, 8, 'user.fav.add', '::1', '{"id_snippet":""86""}', '2015-01-29 00:52:19'),
-(889, 8, 'user.comment.add', '::1', '{"id_snippet":""86""}', '2015-01-29 00:52:23'),
-(890, 11, 'user.login', '::1', '', '2015-02-04 23:30:27'),
-(891, 11, 'user.login', '::1', '', '2015-02-10 00:04:38'),
-(892, 11, 'user.logout', '::1', '', '2015-02-10 00:27:41'),
-(893, 8, 'user.login', '::1', '', '2015-02-10 00:27:45'),
-(894, 8, 'user.snippet.add', '::1', '{"snippet_name":""sdgfgfdsgsdfgsdgf""}', '2015-02-10 00:29:46');
-INSERT INTO `user_event` (`ID`, `ID_User`, `eventName`, `ipaddress`, `data`, `dateExecuted`) VALUES
-(895, 8, 'user.snippet.add', '::1', '{"snippet_name":""adgsdfgsdfg""}', '2015-02-10 00:31:26'),
-(896, 8, 'user.snippet.add', '::1', '{"snippet_name":""dsfgsdsdfg""}', '2015-02-10 00:32:33'),
-(897, 8, 'user.snippet.add', '::1', '{"snippet_name":""dsfgsdsdfg""}', '2015-02-10 00:34:42'),
-(898, 8, 'user.snippet.add', '::1', '{"snippet_name":""dsfgsdsdfg""}', '2015-02-10 00:35:39'),
-(899, 8, 'user.logout', '::1', '', '2015-02-10 00:37:41'),
-(900, 11, 'user.login', '::1', '', '2015-02-10 00:37:45'),
-(901, 11, 'user.logout', '::1', '', '2015-02-10 00:38:00'),
-(902, 8, 'user.login', '::1', '', '2015-02-10 00:38:03'),
-(903, 8, 'user.snippet.add', '::1', '{"snippet_name":""sfsdfgsdfg""}', '2015-02-10 00:38:21'),
-(904, 8, 'user.logout', '::1', '', '2015-02-10 00:38:24'),
-(905, 11, 'user.login', '::1', '', '2015-02-10 00:38:28'),
-(906, 11, 'user.logout', '::1', '', '2015-02-10 00:45:34'),
-(907, 8, 'user.login', '::1', '', '2015-02-10 00:45:37'),
-(908, 8, 'user.snippet.add', '::1', '{"snippet_name":""svbvzxcvzxcvzxcv""}', '2015-02-10 00:46:03'),
-(909, 8, 'user.rating.add', '::1', '{"id_snippet":""88"","rating":""4""}', '2015-02-10 00:46:07'),
-(910, 8, 'user.fav.add', '::1', '{"id_snippet":""88""}', '2015-02-10 00:46:09'),
-(911, 8, 'user.fav.del', '::1', '{"id_snippet":""88""}', '2015-02-10 00:46:19'),
-(912, 8, 'user.fav.add', '::1', '{"id_snippet":""88""}', '2015-02-10 00:46:23'),
-(913, 8, 'user.comment.add', '::1', '{"id_snippet":""88""}', '2015-02-10 00:46:36'),
-(914, 8, 'user.comment.add', '::1', '{"id_snippet":""88""}', '2015-02-10 00:48:33'),
-(915, 8, 'user.logout', '::1', '', '2015-02-10 00:50:39'),
-(916, 11, 'user.login', '::1', '', '2015-02-10 00:50:43'),
-(917, 11, 'user.logout', '::1', '', '2015-02-10 00:50:52'),
-(918, 8, 'user.login', '::1', '', '2015-02-10 00:50:55'),
-(919, 8, 'user.snippet.add', '::1', '{"snippet_name":""dfafasdfasdfasdfasf""}', '2015-02-10 00:51:11'),
-(920, 8, 'user.fav.add', '::1', '{"id_snippet":""89""}', '2015-02-10 00:51:17'),
-(921, 8, 'user.rating.add', '::1', '{"id_snippet":""89"","rating":""4""}', '2015-02-10 00:51:19'),
-(922, 8, 'user.comment.add', '::1', '{"id_snippet":""89""}', '2015-02-10 00:51:31'),
-(923, 8, 'user.fav.del', '::1', '{"id_snippet":""89""}', '2015-02-10 00:51:35'),
-(924, 8, 'user.fav.add', '::1', '{"id_snippet":""89""}', '2015-02-10 00:51:35'),
-(925, 8, 'user.fav.del', '::1', '{"id_snippet":""89""}', '2015-02-10 00:51:36'),
-(926, 8, 'user.fav.add', '::1', '{"id_snippet":""89""}', '2015-02-10 00:51:36'),
-(927, 8, 'user.logout', '::1', '', '2015-02-10 00:52:03'),
-(928, 10, 'user.login', '::1', '', '2015-02-10 00:52:28'),
-(929, 10, 'user.rating.add', '::1', '{"id_snippet":""89"","rating":""5""}', '2015-02-10 00:55:40'),
-(930, 10, 'user.fav.add', '::1', '{"id_snippet":""89""}', '2015-02-10 00:56:03'),
-(931, 8, 'user.fav.get', '::1', '{"id_snippet":""89""}', '2015-02-10 00:56:03'),
-(932, 10, 'user.comment.add', '::1', '{"id_snippet":""89""}', '2015-02-10 00:56:10'),
-(933, 8, 'user.comment.get', '::1', '{"id_snippet":""89""}', '2015-02-10 00:56:10'),
-(934, 10, 'user.logout', '::1', '', '2015-02-12 01:05:45'),
-(935, 11, 'user.login', '::1', '', '2015-02-12 01:05:49'),
-(936, 11, 'user.logout', '::1', '', '2015-02-14 20:00:28'),
-(937, 8, 'user.login', '::1', '', '2015-02-14 20:00:32'),
-(938, 8, 'user.snippet.add', '::1', '{"snippet_name":""23123123""}', '2015-02-14 20:00:45'),
-(939, 8, 'user.rating.add', '::1', '{"id_snippet":""90"","rating":""4""}', '2015-02-14 20:05:07'),
-(940, 8, 'user.fav.add', '::1', '{"id_snippet":""90""}', '2015-02-14 20:05:08'),
-(941, 8, 'user.comment.add', '::1', '{"id_snippet":""90""}', '2015-02-14 20:05:12'),
-(942, 8, 'user.logout', '::1', '', '2015-02-14 21:01:47'),
-(943, 11, 'user.login', '::1', '', '2015-02-14 21:01:51'),
-(944, 11, 'user.logout', '::1', '', '2015-02-15 13:47:39'),
-(945, 10, 'user.login', '::1', '', '2015-02-15 13:47:42'),
-(946, 10, 'user.fav.add', '::1', '{"id_snippet":""90""}', '2015-02-15 13:47:49'),
-(947, 8, 'user.fav.get', '::1', '{"id_snippet":""90""}', '2015-02-15 13:47:49'),
-(948, 10, 'user.rating.add', '::1', '{"id_snippet":""90"","rating":""4""}', '2015-02-15 13:47:50'),
-(949, 10, 'user.comment.add', '::1', '{"id_snippet":""90""}', '2015-02-15 13:47:56'),
-(950, 8, 'user.comment.get', '::1', '{"id_snippet":""90""}', '2015-02-15 13:47:56'),
-(951, 10, 'user.logout', '::1', '', '2015-02-15 13:48:00'),
-(952, 11, 'user.login', '::1', '', '2015-02-15 13:48:03'),
-(953, 11, 'user.logout', '::1', '', '2015-02-15 23:04:40'),
-(954, 8, 'user.login', '::1', '', '2015-02-15 23:04:44'),
-(955, 8, 'user.logout', '::1', '', '2015-02-15 23:21:19'),
-(956, 11, 'user.login', '::1', '', '2015-02-15 23:21:22'),
-(957, 11, 'user.logout', '::1', '', '2015-02-19 20:45:36'),
-(958, 8, 'user.login', '::1', '', '2015-02-19 20:45:39'),
-(959, 8, 'user.login', '::1', '', '2015-02-25 11:09:40'),
-(960, 8, 'user.logout', '::1', '', '2015-02-25 11:21:52'),
-(961, 11, 'user.login', '::1', '', '2015-02-25 11:21:56'),
-(962, 11, 'user.logout', '::1', '', '2015-03-01 21:05:57'),
-(963, 8, 'user.login', '::1', '', '2015-03-01 21:06:00'),
-(964, 8, 'user.fav.add', '::1', '{"id_snippet":""41""}', '2015-03-01 21:06:13'),
-(965, 8, 'user.fav.del', '::1', '{"id_snippet":""41""}', '2015-03-01 21:06:16'),
-(966, 8, 'user.comment.add', '::1', '{"id_snippet":""41""}', '2015-03-01 21:06:23'),
-(967, 8, 'user.fav.add', '::1', '{"id_snippet":""41""}', '2015-03-01 21:06:42'),
-(968, 8, 'user.snippet.add', '::1', '{"snippet_name":""asfasdfasdf""}', '2015-03-01 21:07:17'),
-(969, 8, 'user.rating.add', '::1', '{"id_snippet":""91"","rating":""4.5""}', '2015-03-01 21:07:21'),
-(970, 8, 'user.fav.add', '::1', '{"id_snippet":""91""}', '2015-03-01 21:07:22'),
-(971, 8, 'user.comment.add', '::1', '{"id_snippet":""91""}', '2015-03-01 21:07:52'),
-(972, 8, 'user.fav.del', '::1', '{"id_Links":""18""}', '2015-03-01 21:08:19'),
-(973, 8, 'user.fav.add', '::1', '{"id_links":""18""}', '2015-03-01 21:08:20'),
-(974, 8, 'user.logout', '::1', '', '2015-03-01 21:13:22'),
-(975, 11, 'user.login', '::1', '', '2015-03-01 21:13:26'),
-(976, 8, 'user.login', '::1', '', '2015-03-01 23:09:57'),
-(977, 8, 'user.logout', '::1', '', '2015-03-01 23:10:56'),
-(978, 11, 'user.login', '::1', '', '2015-03-01 23:11:23'),
-(979, 11, 'user.logout', '::1', '', '2015-03-01 23:11:24'),
-(980, 11, 'user.login', '::1', '', '2015-03-01 23:11:52'),
-(981, 11, 'user.logout', '::1', '', '2015-03-01 23:13:09'),
-(982, 11, 'user.login', '::1', '', '2015-03-01 23:13:13'),
-(983, 11, 'user.logout', '::1', '', '2015-03-01 23:13:19'),
-(984, 8, 'user.login', '::1', '', '2015-03-01 23:13:22'),
-(985, 8, 'user.logout', '::1', '', '2015-03-01 23:17:02'),
-(986, 8, 'user.login', '::1', '', '2015-03-01 23:17:08'),
-(987, 11, 'user.login', '127.0.0.1', '', '2015-03-02 11:33:57'),
-(988, 11, 'user.logout', '127.0.0.1', '', '2015-03-03 15:08:58'),
-(989, 8, 'user.login', '127.0.0.1', '', '2015-03-03 15:09:02'),
-(990, 8, 'user.logout', '127.0.0.1', '', '2015-03-03 15:09:13'),
-(991, 11, 'user.login', '127.0.0.1', '', '2015-03-03 15:09:20'),
-(992, 11, 'user.page.add', '127.0.0.1', '{"page_title":""342342""}', '2015-03-03 17:24:51'),
-(993, 11, 'user.page.add', '127.0.0.1', '{"page_title":""ssdfdfs""}', '2015-03-03 17:26:40'),
-(994, 11, 'user.page.add', '127.0.0.1', '{"page_title":""fsfdsdf""}', '2015-03-03 17:27:35'),
-(995, 11, 'user.page.add', '127.0.0.1', '{"page_title":""http:\\/\\/bootsnipp.com\\/snippets\\/featured\\/bootstrap-30-treeview""}', '2015-03-03 17:35:28'),
-(996, 11, 'user.page.add', '127.0.0.1', '{"page_title":""fdsdf""}', '2015-03-12 17:05:25'),
-(997, 11, 'user.page.add', '127.0.0.1', '{"page_title":"" Construye una arbol desplegable con PHP, CSS y jQuery""}', '2015-03-12 17:07:30'),
-(998, 11, 'user.login', '127.0.0.1', '', '2015-03-17 10:38:46'),
-(999, 11, 'user.page.add', '127.0.0.1', '{"page_title":""http:\\/\\/jsfiddle.net\\/gabrieleromanato\\/mxq9R\\/""}', '2015-03-17 17:00:22'),
-(1000, 11, 'user.login', '127.0.0.1', '', '2015-03-18 13:33:12'),
-(1001, 11, 'user.login', '127.0.0.1', '', '2015-03-23 12:13:13'),
-(1002, 11, 'user.logout', '127.0.0.1', '', '2015-03-23 15:20:54'),
-(1003, 8, 'user.login', '127.0.0.1', '', '2015-03-23 15:20:58'),
-(1004, 8, 'user.logout', '127.0.0.1', '', '2015-03-23 15:21:19'),
-(1005, 11, 'user.login', '127.0.0.1', '', '2015-03-23 15:21:22'),
-(1006, 11, 'user.logout', '127.0.0.1', '', '2015-03-23 15:22:16'),
-(1007, 8, 'user.login', '127.0.0.1', '', '2015-03-23 15:22:19'),
-(1008, 8, 'user.logout', '127.0.0.1', '', '2015-03-23 15:24:53'),
-(1009, 11, 'user.login', '127.0.0.1', '', '2015-03-23 15:24:56'),
-(1010, 11, 'user.logout', '127.0.0.1', '', '2015-03-24 12:29:25'),
-(1011, 8, 'user.login', '127.0.0.1', '', '2015-03-24 12:29:31'),
-(1012, 8, 'user.logout', '127.0.0.1', '', '2015-03-24 12:44:15'),
-(1013, 8, 'user.login', '127.0.0.1', '', '2015-03-24 12:44:51'),
-(1014, 8, 'user.logout', '127.0.0.1', '', '2015-03-24 13:50:42'),
-(1015, 8, 'user.login', '127.0.0.1', '', '2015-03-24 13:50:44'),
-(1016, 11, 'user.logout', '127.0.0.1', '', '2015-03-24 13:51:08'),
-(1017, 8, 'user.login', '127.0.0.1', '', '2015-03-24 13:51:11'),
-(1018, 8, 'user.logout', '127.0.0.1', '', '2015-03-24 13:52:26'),
-(1019, 8, 'user.login', '127.0.0.1', '', '2015-03-24 13:52:30'),
-(1020, 8, 'user.logout', '127.0.0.1', '', '2015-03-24 13:57:49'),
-(1021, 8, 'user.login', '127.0.0.1', '', '2015-03-24 13:57:52'),
-(1022, 8, 'user.logout', '127.0.0.1', '', '2015-03-24 13:58:05'),
-(1023, 8, 'user.logout', '127.0.0.1', '', '2015-03-24 13:59:09'),
-(1024, 11, 'user.login', '127.0.0.1', '', '2015-03-24 13:59:13'),
-(1025, 11, 'user.login', '127.0.0.1', '', '2015-03-24 14:00:08'),
-(1026, 11, 'user.login', '127.0.0.1', '', '2015-03-24 14:00:25'),
-(1027, 11, 'user.logout', '127.0.0.1', '', '2015-03-24 15:15:57'),
-(1028, 11, 'user.login', '127.0.0.1', '', '2015-03-24 16:42:13'),
-(1029, 11, 'user.logout', '127.0.0.1', '', '2015-03-24 16:42:31'),
-(1030, 11, 'user.login', '127.0.0.1', '', '2015-03-24 16:42:34'),
-(1031, 11, 'user.logout', '127.0.0.1', '', '2015-03-24 16:44:39'),
-(1032, 11, 'user.login', '127.0.0.1', '', '2015-03-24 16:44:44'),
-(1033, 11, 'user.logout', '127.0.0.1', '', '2015-03-24 16:47:44'),
-(1034, 11, 'user.login', '127.0.0.1', '', '2015-03-24 16:47:48'),
-(1035, 11, 'user.logout', '127.0.0.1', '', '2015-03-24 16:48:48'),
-(1036, 11, 'user.login', '127.0.0.1', '', '2015-03-24 16:48:52'),
-(1037, 11, 'user.logout', '127.0.0.1', '', '2015-03-24 17:07:18'),
-(1038, 11, 'user.login', '127.0.0.1', '', '2015-03-24 17:07:21'),
-(1039, 11, 'user.logout', '127.0.0.1', '', '2015-03-24 17:12:59'),
-(1040, 11, 'user.login', '127.0.0.1', '', '2015-03-24 17:13:02'),
-(1041, 11, 'user.logout', '127.0.0.1', '', '2015-03-24 17:28:25'),
-(1042, 11, 'user.logout', '127.0.0.1', '', '2015-03-24 17:29:41'),
-(1043, 11, 'user.login', '127.0.0.1', '', '2015-03-24 17:29:43'),
-(1044, 11, 'user.logout', '127.0.0.1', '', '2015-03-24 17:30:24'),
-(1045, 8, 'user.login', '127.0.0.1', '', '2015-03-24 17:30:27'),
-(1046, 8, 'user.logout', '127.0.0.1', '', '2015-03-24 17:30:31'),
-(1047, 8, 'user.login', '127.0.0.1', '', '2015-03-24 17:31:19'),
-(1048, 8, 'user.logout', '127.0.0.1', '', '2015-03-24 17:31:25'),
-(1049, 8, 'user.login', '127.0.0.1', '', '2015-03-24 17:31:29'),
-(1050, 8, 'user.logout', '127.0.0.1', '', '2015-03-24 17:31:32'),
-(1051, 8, 'user.login', '127.0.0.1', '', '2015-03-24 17:35:39'),
-(1052, 8, 'user.logout', '127.0.0.1', '', '2015-03-24 17:36:36'),
-(1053, 8, 'user.login', '127.0.0.1', '', '2015-03-24 17:36:39'),
-(1054, 8, 'user.logout', '127.0.0.1', '', '2015-03-24 17:36:43'),
-(1055, 11, 'user.login', '127.0.0.1', '', '2015-03-24 17:38:02'),
-(1056, 11, 'user.logout', '127.0.0.1', '', '2015-03-24 17:40:47'),
-(1057, 8, 'user.login', '127.0.0.1', '', '2015-03-24 17:40:50'),
-(1058, 8, 'user.logout', '127.0.0.1', '', '2015-03-24 17:40:55'),
-(1059, 8, 'user.login', '127.0.0.1', '', '2015-03-24 17:40:58'),
-(1060, 8, 'user.logout', '127.0.0.1', '', '2015-03-24 17:41:00'),
-(1061, 11, 'user.login', '127.0.0.1', '', '2015-03-24 17:41:03'),
-(1062, 11, 'user.logout', '127.0.0.1', '', '2015-03-24 17:41:06'),
-(1063, 8, 'user.login', '127.0.0.1', '', '2015-03-24 17:43:49'),
-(1064, 8, 'user.logout', '127.0.0.1', '', '2015-03-24 17:43:51'),
-(1065, 11, 'user.login', '127.0.0.1', '', '2015-03-24 17:43:54'),
-(1066, 11, 'user.logout', '127.0.0.1', '', '2015-03-25 10:03:45'),
-(1067, 11, 'user.login', '127.0.0.1', '', '2015-03-25 10:03:47'),
-(1068, 11, 'user.logout', '127.0.0.1', '', '2015-03-25 10:03:49'),
-(1069, 8, 'user.login', '127.0.0.1', '', '2015-03-25 10:03:51'),
-(1070, 8, 'user.logout', '127.0.0.1', '', '2015-03-25 10:03:55'),
-(1071, 8, 'user.login', '127.0.0.1', '', '2015-03-25 10:05:15'),
-(1072, 8, 'user.logout', '127.0.0.1', '', '2015-03-25 10:05:18'),
-(1073, 11, 'user.login', '127.0.0.1', '', '2015-03-25 10:05:20'),
-(1074, 11, 'user.logout', '127.0.0.1', '', '2015-03-25 10:05:22'),
-(1075, 11, 'user.login', '127.0.0.1', '', '2015-03-25 10:09:42'),
-(1076, 11, 'user.logout', '127.0.0.1', '', '2015-03-25 10:09:44'),
-(1077, 8, 'user.login', '127.0.0.1', '', '2015-03-25 10:09:47'),
-(1078, 8, 'user.logout', '127.0.0.1', '', '2015-03-25 10:10:05'),
-(1079, 8, 'user.login', '127.0.0.1', '', '2015-03-25 10:37:48'),
-(1080, 8, 'user.logout', '127.0.0.1', '', '2015-03-25 10:37:55'),
-(1081, 11, 'user.login', '127.0.0.1', '', '2015-03-25 10:37:58'),
-(1082, 11, 'user.logout', '127.0.0.1', '', '2015-03-25 10:38:01'),
-(1083, 11, 'user.login', '127.0.0.1', '', '2015-03-25 10:42:06'),
-(1084, 11, 'user.logout', '127.0.0.1', '', '2015-03-25 10:42:20'),
-(1085, 8, 'user.login', '127.0.0.1', '', '2015-03-25 10:42:58'),
-(1086, 8, 'user.logout', '127.0.0.1', '', '2015-03-25 10:43:02'),
-(1087, 8, 'user.login', '127.0.0.1', '', '2015-03-25 11:45:39'),
-(1088, 8, 'user.logout', '127.0.0.1', '', '2015-03-25 12:30:10'),
-(1089, 8, 'user.login', '127.0.0.1', '', '2015-03-25 12:38:03'),
-(1090, 8, 'user.logout', '127.0.0.1', '', '2015-03-25 12:38:29'),
-(1091, 11, 'user.login', '127.0.0.1', '', '2015-03-25 12:38:32'),
-(1092, 11, 'user.logout', '127.0.0.1', '', '2015-03-25 12:38:44'),
-(1093, 8, 'user.login', '127.0.0.1', '', '2015-03-25 13:09:49'),
-(1094, 8, 'user.logout', '127.0.0.1', '', '2015-03-25 13:10:02'),
-(1095, 8, 'user.login', '127.0.0.1', '', '2015-03-25 13:10:04'),
-(1096, 8, 'user.logout', '127.0.0.1', '', '2015-03-25 13:10:09'),
-(1097, 8, 'user.login', '127.0.0.1', '', '2015-03-25 13:11:11'),
-(1098, 8, 'user.logout', '127.0.0.1', '', '2015-03-25 13:11:15'),
-(1099, 8, 'user.login', '127.0.0.1', '', '2015-03-25 13:17:59'),
-(1100, 8, 'user.logout', '127.0.0.1', '', '2015-03-25 13:18:02'),
-(1101, 8, 'user.login', '127.0.0.1', '', '2015-03-25 13:33:24'),
-(1102, 8, 'user.logout', '127.0.0.1', '', '2015-03-25 13:33:27'),
-(1103, 11, 'user.login', '127.0.0.1', '', '2015-03-25 13:33:29'),
-(1104, 11, 'user.logout', '127.0.0.1', '', '2015-03-25 13:33:32'),
-(1105, 11, 'user.login', '127.0.0.1', '', '2015-03-25 15:58:13'),
-(1106, 11, 'user.logout', '127.0.0.1', '', '2015-03-25 15:58:17'),
-(1107, 8, 'user.login', '127.0.0.1', '', '2015-03-25 15:58:21'),
-(1108, 8, 'user.logout', '127.0.0.1', '', '2015-03-25 15:58:25'),
-(1109, 8, 'user.login', '127.0.0.1', '', '2015-03-25 15:58:29'),
-(1110, 8, 'user.logout', '127.0.0.1', '', '2015-03-25 15:59:44'),
-(1111, 11, 'user.login', '127.0.0.1', '', '2015-03-25 15:59:47'),
-(1112, 11, 'user.logout', '127.0.0.1', '', '2015-03-25 16:05:08'),
-(1113, 8, 'user.login', '127.0.0.1', '', '2015-03-25 16:05:11'),
-(1114, 8, 'user.logout', '127.0.0.1', '', '2015-03-25 16:16:06'),
-(1115, 11, 'user.login', '127.0.0.1', '', '2015-03-25 16:16:08'),
-(1116, 11, 'user.logout', '127.0.0.1', '', '2015-03-25 16:16:16'),
-(1117, 8, 'user.login', '127.0.0.1', '', '2015-03-25 16:20:40'),
-(1118, 8, 'user.logout', '127.0.0.1', '', '2015-03-25 16:21:25'),
-(1119, 11, 'user.login', '127.0.0.1', '', '2015-03-25 16:21:27'),
-(1120, 11, 'user.logout', '127.0.0.1', '', '2015-03-25 16:21:37'),
-(1121, 8, 'user.login', '127.0.0.1', '', '2015-03-25 16:37:17'),
-(1122, 8, 'user.logout', '127.0.0.1', '', '2015-03-25 16:42:31'),
-(1123, 11, 'user.login', '127.0.0.1', '', '2015-03-25 16:42:34'),
-(1124, 11, 'user.logout', '127.0.0.1', '', '2015-03-25 16:49:04'),
-(1125, 8, 'user.login', '127.0.0.1', '', '2015-03-26 12:42:06'),
-(1126, 8, 'user.logout', '127.0.0.1', '', '2015-03-26 12:44:34'),
-(1127, 8, 'user.login', '127.0.0.1', '', '2015-03-26 12:44:36'),
-(1128, 8, 'user.logout', '127.0.0.1', '', '2015-03-26 13:05:22'),
-(1129, 8, 'user.login', '127.0.0.1', '', '2015-03-26 13:37:33'),
-(1130, 8, 'user.logout', '127.0.0.1', '', '2015-03-26 16:31:46'),
-(1131, 8, 'user.login', '127.0.0.1', '', '2015-03-26 16:32:34'),
-(1132, 8, 'user.logout', '127.0.0.1', '', '2015-03-26 16:33:37'),
-(1133, 8, 'user.login', '127.0.0.1', '', '2015-03-26 16:34:04'),
-(1134, 8, 'user.logout', '127.0.0.1', '', '2015-03-26 16:34:08'),
-(1135, 8, 'user.password.forgot', '127.0.0.1', '{"email":""oscarlgarcia@gmail.com""}', '2015-03-26 16:45:19'),
-(1136, 8, 'user.password.reset', '127.0.0.1', '', '2015-03-26 16:46:00'),
-(1137, 8, 'user.password.forgot', '127.0.0.1', '{"email":""oscarlgarcia@gmail.com""}', '2015-03-26 16:46:11'),
-(1138, 8, 'user.password.reset', '127.0.0.1', '', '2015-03-26 16:46:28'),
-(1139, 8, 'user.password.forgot', '127.0.0.1', '{"email":""oscarlgarcia@gmail.com""}', '2015-03-26 16:53:49'),
-(1140, 8, 'user.password.reset', '127.0.0.1', '', '2015-03-26 16:55:09'),
-(1141, 8, 'user.password.forgot', '127.0.0.1', '{"email":""oscarlgarcia@gmail.com""}', '2015-03-26 16:55:17'),
-(1142, 8, 'user.password.reset', '127.0.0.1', '', '2015-03-26 16:57:58'),
-(1143, 8, 'user.login', '127.0.0.1', '', '2015-03-26 16:58:10'),
-(1144, 8, 'user.logout', '127.0.0.1', '', '2015-03-26 16:58:13'),
-(1145, 8, 'user.login', '127.0.0.1', '', '2015-03-26 16:58:34'),
-(1146, 8, 'user.logout', '127.0.0.1', '', '2015-03-26 16:58:36'),
-(1147, 8, 'user.login', '127.0.0.1', '', '2015-03-26 17:24:59'),
-(1148, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""91""}', '2015-03-27 13:34:53'),
-(1149, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""91""}', '2015-03-27 13:46:39'),
-(1150, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""91""}', '2015-03-27 13:46:40'),
-(1151, 8, 'user.link.add', '127.0.0.1', '{"link_name":""""}', '2015-03-27 13:48:54'),
-(1152, 8, 'user.fav.del', '127.0.0.1', '{"id_Links":""18""}', '2015-03-27 14:06:35'),
-(1153, 8, 'user.fav.add', '127.0.0.1', '{"id_links":""18""}', '2015-03-27 14:06:37'),
-(1154, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""18""}', '2015-03-27 14:06:43'),
-(1155, 8, 'user.rating.add', '127.0.0.1', '{"id_links":""19"","rating":""5""}', '2015-03-27 14:06:48'),
-(1156, 8, 'user.fav.add', '127.0.0.1', '{"id_links":""19""}', '2015-03-27 14:06:49'),
-(1157, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""19""}', '2015-03-27 14:06:52'),
-(1158, 8, 'user.logout', '127.0.0.1', '', '2015-03-30 11:52:59'),
-(1159, 11, 'user.login', '127.0.0.1', '', '2015-03-30 12:00:21'),
-(1160, 11, 'user.logout', '127.0.0.1', '', '2015-03-30 12:05:00'),
-(1161, 11, 'user.login', '127.0.0.1', '', '2015-03-30 13:03:29'),
-(1162, 11, 'user.logout', '127.0.0.1', '', '2015-03-30 16:51:13'),
-(1163, 8, 'user.login', '127.0.0.1', '', '2015-03-30 16:51:16'),
-(1164, 8, 'user.login', '127.0.0.1', '', '2015-03-30 17:37:52'),
-(1165, 8, 'user.logout', '127.0.0.1', '', '2015-03-30 17:38:13'),
-(1166, 11, 'user.login', '127.0.0.1', '', '2015-03-31 12:21:10'),
-(1167, 11, 'user.login', '127.0.0.1', '', '2015-03-31 13:55:18'),
-(1168, 11, 'user.logout', '127.0.0.1', '', '2015-03-31 16:59:34'),
-(1169, 11, 'user.login', '127.0.0.1', '', '2015-04-06 12:16:20'),
-(1170, 11, 'user.page.add', '127.0.0.1', '{"page_title":""Exporta desde tu base de datos a tu seeds.rb""}', '2015-04-08 12:57:41'),
-(1171, 11, 'user.logout', '127.0.0.1', '', '2015-04-16 19:20:37'),
-(1172, 8, 'user.login', '127.0.0.1', '', '2015-04-17 11:03:38'),
-(1173, 8, 'user.logout', '127.0.0.1', '', '2015-04-20 12:31:06'),
-(1174, 8, 'user.login', '127.0.0.1', '', '2015-04-20 12:31:12'),
-(1175, 8, 'user.logout', '127.0.0.1', '', '2015-04-20 15:55:03'),
-(1176, 11, 'user.login', '127.0.0.1', '', '2015-04-20 15:55:06'),
-(1177, 11, 'user.page.add', '127.0.0.1', '{"page_title":""dfgvasdgf""}', '2015-04-20 15:55:42'),
-(1178, 11, 'user.logout', '127.0.0.1', '', '2015-04-20 15:56:08'),
-(1179, 8, 'user.login', '127.0.0.1', '', '2015-04-23 16:17:56'),
-(1180, 8, 'user.logout', '127.0.0.1', '', '2015-04-27 13:17:32'),
-(1181, 8, 'user.login', '127.0.0.1', '', '2015-04-27 13:17:38'),
-(1182, 8, 'user.logout', '127.0.0.1', '', '2015-05-12 13:53:48'),
-(1183, 11, 'user.login', '127.0.0.1', '', '2015-05-12 14:00:32'),
-(1184, 11, 'user.logout', '127.0.0.1', '', '2015-05-12 14:03:28'),
-(1185, 8, 'user.login', '127.0.0.1', '', '2015-05-12 14:03:32'),
-(1186, 8, 'user.logout', '127.0.0.1', '', '2015-05-12 14:05:03'),
-(1187, 8, 'user.login', '127.0.0.1', '', '2015-05-13 17:01:47'),
-(1188, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""54""}', '2015-05-13 17:06:47'),
-(1189, 8, 'user.rating.add', '127.0.0.1', '{"id_snippet":""54"","rating":""2.5""}', '2015-05-13 17:06:49'),
-(1190, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""80""}', '2015-05-13 17:07:43'),
-(1191, 14, 'user.fav.get', '127.0.0.1', '{"id_snippet":""80""}', '2015-05-13 17:07:43'),
-(1192, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""80""}', '2015-05-13 17:07:57'),
-(1193, 14, 'user.comment.get', '127.0.0.1', '{"id_snippet":""80""}', '2015-05-13 17:07:57'),
-(1194, 8, 'user.logout', '127.0.0.1', '', '2015-05-22 13:02:28'),
-(1195, 11, 'user.login', '127.0.0.1', '', '2015-05-22 13:02:32'),
-(1196, 11, 'user.page.add', '127.0.0.1', '{"page_title":""rrrrrrr""}', '2015-05-22 13:10:11'),
-(1197, 11, 'user.logout', '127.0.0.1', '', '2015-05-22 13:14:23'),
-(1198, 8, 'user.login', '127.0.0.1', '', '2015-05-22 13:14:25'),
-(1199, 8, 'user.logout', '127.0.0.1', '', '2015-05-22 13:38:57'),
-(1200, 11, 'user.login', '127.0.0.1', '', '2015-05-22 13:39:00'),
-(1201, 11, 'user.page.add', '127.0.0.1', '{"page_title":""sdfasdf""}', '2015-05-22 13:39:13'),
-(1202, 11, 'user.logout', '127.0.0.1', '', '2015-05-22 13:39:14'),
-(1203, 8, 'user.login', '127.0.0.1', '', '2015-05-22 13:39:16'),
-(1204, 8, 'user.login', '127.0.0.1', '', '2015-05-22 13:41:31'),
-(1205, 8, 'user.login', '127.0.0.1', '', '2015-05-22 13:42:44'),
-(1206, 8, 'user.logout', '127.0.0.1', '', '2015-05-22 14:12:31'),
-(1207, 11, 'user.login', '127.0.0.1', '', '2015-05-22 14:12:35'),
-(1208, 11, 'user.page.add', '127.0.0.1', '{"page_title":""asgsdfgsd""}', '2015-05-22 14:12:52'),
-(1209, 11, 'user.page.add', '127.0.0.1', '{"page_title":""sdfgsdfgsd""}', '2015-05-22 14:13:39'),
-(1210, 8, 'user.logout', '127.0.0.1', '', '2015-05-26 16:37:08'),
-(1211, 11, 'user.login', '127.0.0.1', '', '2015-05-26 16:37:13'),
-(1212, 11, 'user.login', '127.0.0.1', '', '2015-05-26 17:12:48'),
-(1213, 11, 'user.page.add', '127.0.0.1', '{"page_title":""sdfsdf""}', '2015-05-28 11:31:30'),
-(1214, 11, 'user.page.add', '127.0.0.1', '{"page_title":""ssddfsdfsdf""}', '2015-05-28 11:40:47'),
-(1215, 11, 'user.logout', '127.0.0.1', '', '2015-05-29 11:13:38'),
-(1216, 8, 'user.login', '127.0.0.1', '', '2015-05-29 11:13:40'),
-(1217, 8, 'user.logout', '127.0.0.1', '', '2015-06-01 13:52:02'),
-(1218, 11, 'user.login', '127.0.0.1', '', '2015-06-01 13:52:06'),
-(1219, 11, 'user.page.add', '127.0.0.1', '{"page_title":""angular 1""}', '2015-06-01 13:52:33'),
-(1220, 11, 'user.page.add', '127.0.0.1', '{"page_title":""angular 3""}', '2015-06-01 13:52:49'),
-(1221, 11, 'user.logout', '127.0.0.1', '', '2015-06-01 13:52:52'),
-(1222, 8, 'user.login', '127.0.0.1', '', '2015-06-01 13:52:57'),
-(1223, 8, 'user.logout', '127.0.0.1', '', '2015-06-05 13:23:28'),
-(1224, 11, 'user.login', '127.0.0.1', '', '2015-06-05 13:23:31'),
-(1225, 11, 'user.logout', '127.0.0.1', '', '2015-06-05 13:24:07'),
-(1226, 8, 'user.login', '127.0.0.1', '', '2015-06-05 13:24:09'),
-(1227, 8, 'user.logout', '127.0.0.1', '', '2015-06-05 13:46:45'),
-(1228, 11, 'user.login', '127.0.0.1', '', '2015-06-05 13:46:48'),
-(1229, 11, 'user.page.add', '127.0.0.1', '{"page_title":""Clojure Tutorial for the Non-Lisp Programmer""}', '2015-06-05 13:48:10'),
-(1230, 11, 'user.logout', '127.0.0.1', '', '2015-06-05 13:48:13'),
-(1231, 8, 'user.login', '127.0.0.1', '', '2015-06-05 13:48:16'),
-(1232, 11, 'user.login', '127.0.0.1', '', '2015-06-05 13:49:32'),
-(1233, 11, 'user.page.add', '127.0.0.1', '{"page_title":""trterterte""}', '2015-06-05 13:50:00'),
-(1234, 11, 'user.login', '127.0.0.1', '', '2015-06-08 13:33:50'),
-(1235, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-08 15:38:58'),
-(1236, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-08 15:38:59'),
-(1237, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-08 15:39:10'),
-(1238, 8, 'user.fav.del', '127.0.0.1', '{"id_Links":""18""}', '2015-06-08 15:40:18'),
-(1239, 8, 'user.fav.add', '127.0.0.1', '{"id_links":""18""}', '2015-06-08 15:40:20'),
-(1240, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""18""}', '2015-06-08 15:40:27'),
-(1241, 11, 'user.page.add', '127.0.0.1', '{"page_title":""Configuraci&oacute;n en tiempo de ejecuci&oacute;n""}', '2015-06-08 17:00:20'),
-(1242, 11, 'user.page.add', '127.0.0.1', '{"page_title":""Configuraci&oacute;n en tiempo de ejecuci&oacute;n II Parte""}', '2015-06-08 17:01:13'),
-(1243, 11, 'user.login', '127.0.0.1', '', '2015-06-09 14:09:22'),
-(1244, 11, 'user.page.add', '127.0.0.1', '{"page_title":""Captura todas tus peticiones err&oacute;neas (404) con Rails""}', '2015-06-09 14:13:54'),
-(1245, 11, 'user.page.add', '127.0.0.1', '{"page_title":""Utilizando variables en sentencias en MySQL""}', '2015-06-09 16:54:43'),
-(1246, 8, 'user.logout', '127.0.0.1', '', '2015-06-09 17:32:55'),
-(1247, 11, 'user.login', '127.0.0.1', '', '2015-06-09 17:32:58'),
-(1248, 11, 'user.logout', '127.0.0.1', '', '2015-06-09 17:40:06'),
-(1249, 8, 'user.login', '127.0.0.1', '', '2015-06-09 17:40:08'),
-(1250, 11, 'user.page.add', '127.0.0.1', '{"page_title":""Clojure Tutorial for the Non-Lisp Programmer III Parte""}', '2015-06-10 16:28:56'),
-(1251, 11, 'user.page.add', '127.0.0.1', '{"page_title":""sdfsdfsdfsfdsf""}', '2015-06-11 15:57:34'),
-(1252, 8, 'user.logout', '::1', '', '2015-06-21 20:32:27'),
-(1253, 11, 'user.login', '::1', '', '2015-06-21 20:32:31'),
-(1254, 11, 'user.logout', '::1', '', '2015-06-21 21:02:25'),
-(1255, 8, 'user.login', '::1', '', '2015-06-21 21:02:30'),
-(1256, 8, 'user.logout', '::1', '', '2015-06-21 21:05:37'),
-(1257, 11, 'user.login', '::1', '', '2015-06-21 21:05:41'),
-(1258, 11, 'user.logout', '::1', '', '2015-06-21 21:13:55'),
-(1259, 8, 'user.login', '::1', '', '2015-06-21 21:13:59'),
-(1260, 8, 'user.logout', '::1', '', '2015-06-21 22:20:11'),
-(1261, 11, 'user.login', '::1', '', '2015-06-21 22:20:15'),
-(1262, 11, 'user.logout', '::1', '', '2015-06-21 22:31:13'),
-(1263, 8, 'user.login', '::1', '', '2015-06-21 23:10:33'),
-(1264, 8, 'user.logout', '127.0.0.1', '', '2015-06-22 11:17:07'),
-(1265, 11, 'user.login', '127.0.0.1', '', '2015-06-22 11:17:11'),
-(1266, 11, 'user.logout', '127.0.0.1', '', '2015-06-22 12:53:20'),
-(1267, 8, 'user.login', '127.0.0.1', '', '2015-06-22 12:53:22'),
-(1268, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""sdsfsdf""}', '2015-06-22 12:53:32'),
-(1269, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""92""}', '2015-06-22 12:53:35'),
-(1270, 8, 'user.rating.add', '127.0.0.1', '{"id_snippet":""92"","rating":""3.5""}', '2015-06-22 12:53:36'),
-(1271, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""92""}', '2015-06-22 12:57:13'),
-(1272, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""92""}', '2015-06-22 12:57:15'),
-(1273, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""92""}', '2015-06-22 13:01:00'),
-(1274, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""92""}', '2015-06-22 13:02:34'),
-(1275, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""92""}', '2015-06-22 13:02:35'),
-(1276, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-22 13:07:30'),
-(1277, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-22 13:07:31'),
-(1278, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""92""}', '2015-06-22 13:07:43'),
-(1279, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""92""}', '2015-06-22 13:07:44'),
-(1280, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""92""}', '2015-06-22 13:07:44'),
-(1281, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""92""}', '2015-06-22 13:07:45'),
-(1282, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""92""}', '2015-06-22 13:07:45'),
-(1283, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""92""}', '2015-06-22 13:07:45'),
-(1284, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""92""}', '2015-06-22 13:07:45'),
-(1285, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""92""}', '2015-06-22 13:07:45'),
-(1286, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""92""}', '2015-06-22 13:07:46'),
-(1287, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""92""}', '2015-06-22 13:07:46'),
-(1288, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""92""}', '2015-06-22 13:07:46'),
-(1289, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""92""}', '2015-06-22 13:07:47'),
-(1290, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-22 13:08:00'),
-(1291, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-22 13:08:01'),
-(1292, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""92""}', '2015-06-22 13:08:06'),
-(1293, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""92""}', '2015-06-22 13:08:09'),
-(1294, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""92""}', '2015-06-22 13:11:40'),
-(1295, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""92""}', '2015-06-22 13:11:45'),
-(1296, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-22 13:11:56'),
-(1297, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-22 13:11:57'),
-(1298, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""92""}', '2015-06-22 13:12:45'),
-(1299, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""92""}', '2015-06-22 13:12:46'),
-(1300, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-22 13:15:57'),
-(1301, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-22 13:16:01'),
-(1302, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-22 13:16:03'),
-(1303, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-22 13:16:03'),
-(1304, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-22 13:16:03'),
-(1305, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-22 13:16:04'),
-(1306, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-22 13:16:04'),
-(1307, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-22 13:16:04'),
-(1308, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-22 13:16:04'),
-(1309, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-22 13:16:04'),
-(1310, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-22 13:16:04'),
-(1311, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-22 13:16:05'),
-(1312, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-22 13:16:05'),
-(1313, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-22 13:16:05'),
-(1314, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-22 13:16:05'),
-(1315, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-22 13:16:05'),
-(1316, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-22 13:16:06'),
-(1317, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""91""}', '2015-06-22 13:16:06'),
-(1318, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""s1231231231""}', '2015-06-22 13:26:24'),
-(1319, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""93""}', '2015-06-22 13:26:28'),
-(1320, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""93""}', '2015-06-22 13:26:28'),
-(1321, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""93""}', '2015-06-22 13:26:29'),
-(1322, 8, 'user.rating.add', '127.0.0.1', '{"id_snippet":""93"","rating":""5""}', '2015-06-22 13:26:30'),
-(1323, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""93""}', '2015-06-22 13:26:32'),
-(1324, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""80""}', '2015-06-22 13:27:23'),
-(1325, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""80""}', '2015-06-22 13:27:24'),
-(1326, 14, 'user.fav.get', '127.0.0.1', '{"id_snippet":""80""}', '2015-06-22 13:27:24'),
-(1327, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""79""}', '2015-06-22 13:27:37'),
-(1328, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""79""}', '2015-06-22 13:27:43'),
-(1329, 13, 'user.fav.get', '127.0.0.1', '{"id_snippet":""79""}', '2015-06-22 13:27:43'),
-(1330, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""How to add text-to-speech and speech-to-text features to your SIP software by using Microsoft Speech""}', '2015-06-22 17:05:54'),
-(1331, 8, 'user.logout', '127.0.0.1', '', '2015-06-23 14:16:41'),
-(1332, 11, 'user.login', '127.0.0.1', '', '2015-06-23 14:16:45'),
-(1333, 11, 'user.logout', '127.0.0.1', '', '2015-06-23 14:18:02'),
-(1334, 8, 'user.login', '127.0.0.1', '', '2015-06-23 14:18:04'),
-(1335, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""ddrrgdfg""}', '2015-06-23 14:18:13'),
-(1336, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""ddfgsdfgsd""}', '2015-06-23 14:19:00'),
-(1337, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""wergzdfgsd""}', '2015-06-23 14:23:04'),
-(1338, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""afgasdfasdf""}', '2015-06-23 14:23:23'),
-(1339, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""rqwreqwer""}', '2015-06-23 14:27:04'),
-(1340, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""sdfsdf""}', '2015-06-23 14:27:48'),
-(1341, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""gfasdgrsd""}', '2015-06-23 14:29:27'),
-(1342, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""dwffdfg""}', '2015-06-23 14:46:50'),
-(1343, 8, 'user.logout', '127.0.0.1', '', '2015-07-16 12:21:37'),
-(1344, 8, 'user.login', '127.0.0.1', '', '2015-07-16 12:29:18'),
-(1345, 8, 'user.logout', '127.0.0.1', '', '2015-07-16 17:04:10'),
-(1346, 8, 'user.login', '127.0.0.1', '', '2015-07-16 17:04:12'),
-(1347, 8, 'user.logout', '127.0.0.1', '', '2015-07-16 17:04:17'),
-(1348, 11, 'user.login', '127.0.0.1', '', '2015-07-16 17:04:20'),
-(1349, 8, 'user.login', '127.0.0.1', '', '2015-07-16 17:05:59'),
-(1350, 8, 'user.login', '127.0.0.1', '', '2015-07-17 10:42:29'),
-(1351, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""94""}', '2015-07-17 13:24:03'),
-(1352, 11, 'user.logout', '127.0.0.1', '', '2015-07-20 10:20:01'),
-(1353, 11, 'user.login', '127.0.0.1', '', '2015-07-20 10:41:46'),
-(1354, 8, 'user.login', '127.0.0.1', '', '2015-07-20 12:22:46'),
-(1355, 8, 'user.logout', '127.0.0.1', '', '2015-07-20 16:38:09'),
-(1356, 10, 'user.login', '127.0.0.1', '', '2015-07-20 16:38:14'),
-(1357, 11, 'user.logout', '127.0.0.1', '', '2015-07-20 17:13:39'),
-(1358, 11, 'user.login', '127.0.0.1', '', '2015-07-20 17:13:43'),
-(1359, 10, 'user.logout', '127.0.0.1', '', '2015-07-20 17:13:48'),
-(1360, 8, 'user.login', '127.0.0.1', '', '2015-07-20 17:13:52'),
-(1361, 8, 'user.logout', '127.0.0.1', '', '2015-07-20 17:14:18'),
-(1362, 10, 'user.login', '127.0.0.1', '', '2015-07-20 17:14:21'),
-(1363, 10, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""texzst 1""}', '2015-07-24 12:55:57'),
-(1364, 11, 'user.logout', '127.0.0.1', '', '2015-07-24 13:35:26'),
-(1365, 11, 'user.login', '127.0.0.1', '', '2015-07-24 13:35:31'),
-(1366, 10, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""fsdfsdf""}', '2015-07-24 14:12:59'),
-(1367, 10, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""sfsdfsdfsddfas""}', '2015-07-27 15:27:10'),
-(1368, 10, 'user.logout', '127.0.0.1', '', '2015-07-27 17:39:08'),
-(1369, 11, 'user.login', '127.0.0.1', '', '2015-07-27 18:00:39'),
-(1370, 8, 'user.login', '127.0.0.1', '', '2015-07-30 16:35:11'),
-(1371, 8, 'user.login', '127.0.0.1', '', '2015-07-31 13:37:42'),
-(1372, 8, 'user.fav.del', '127.0.0.1', '{"id_Links":""18""}', '2015-08-03 17:09:05'),
-(1373, 8, 'user.fav.add', '127.0.0.1', '{"id_links":""18""}', '2015-08-03 17:09:06'),
-(1374, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""18""}', '2015-08-04 16:40:02'),
-(1375, 8, 'user.fav.del', '127.0.0.1', '{"id_Links":""18""}', '2015-08-04 16:49:29'),
-(1376, 8, 'user.fav.add', '127.0.0.1', '{"id_links":""18""}', '2015-08-04 16:49:31'),
-(1377, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""18""}', '2015-08-04 16:50:02'),
-(1378, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""18""}', '2015-08-04 16:50:05'),
-(1379, 8, 'user.fav.add', '127.0.0.1', '{"id_links":""2""}', '2015-08-04 16:50:19'),
-(1380, 11, 'user.fav.get', '127.0.0.1', '{"id_links":""2""}', '2015-08-04 16:50:19'),
-(1381, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""2""}', '2015-08-04 16:50:33'),
-(1382, 11, 'user.comment.get', '127.0.0.1', '{"id_snippet":""2""}', '2015-08-04 16:50:33'),
-(1383, 8, 'user.fav.del', '127.0.0.1', '{"id_Links":""19""}', '2015-08-04 16:58:15'),
-(1384, 8, 'user.fav.add', '127.0.0.1', '{"id_links":""19""}', '2015-08-04 16:58:16'),
-(1385, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""19""}', '2015-08-04 16:58:19'),
-(1386, 8, 'user.rating.add', '127.0.0.1', '{"id_links":""17"","rating":""5""}', '2015-08-04 17:04:14'),
-(1387, 8, 'user.fav.add', '127.0.0.1', '{"id_links":""17""}', '2015-08-04 17:04:16'),
-(1388, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""17""}', '2015-08-04 17:04:20'),
-(1389, 11, 'user.logout', '127.0.0.1', '', '2015-08-05 16:15:11'),
-(1390, 11, 'user.login', '127.0.0.1', '', '2015-08-05 16:15:13'),
-(1391, 8, 'user.logout', '127.0.0.1', '', '2015-08-05 16:27:03'),
-(1392, 11, 'user.login', '127.0.0.1', '', '2015-08-05 16:27:06'),
-(1393, 11, 'user.login', '127.0.0.1', '', '2015-08-05 16:45:04'),
-(1394, 11, 'user.logout', '127.0.0.1', '', '2015-08-05 17:05:48'),
-(1395, 8, 'user.login', '127.0.0.1', '', '2015-08-05 17:05:52'),
-(1396, 8, 'user.logout', '127.0.0.1', '', '2015-08-05 17:06:56'),
-(1397, 11, 'user.login', '127.0.0.1', '', '2015-08-05 17:07:00'),
-(1398, 11, 'user.logout', '127.0.0.1', '', '2015-08-06 10:15:30'),
-(1399, 8, 'user.login', '127.0.0.1', '', '2015-08-06 10:15:58'),
-(1400, 8, 'user.logout', '127.0.0.1', '', '2015-08-06 10:19:01'),
-(1401, 11, 'user.login', '127.0.0.1', '', '2015-08-06 10:19:03'),
-(1402, 11, 'user.logout', '127.0.0.1', '', '2015-08-06 11:05:26'),
-(1403, 11, 'user.login', '127.0.0.1', '', '2015-08-06 11:05:29'),
-(1404, 11, 'user.logout', '127.0.0.1', '', '2015-08-06 11:07:10'),
-(1405, 11, 'user.login', '127.0.0.1', '', '2015-08-06 11:07:12'),
-(1406, 11, 'user.logout', '127.0.0.1', '', '2015-08-06 11:10:20'),
-(1407, 11, 'user.login', '127.0.0.1', '', '2015-08-06 11:10:23'),
-(1408, 11, 'user.logout', '127.0.0.1', '', '2015-08-06 11:10:52'),
-(1409, 8, 'user.login', '127.0.0.1', '', '2015-08-06 11:10:55'),
-(1410, 8, 'user.logout', '127.0.0.1', '', '2015-08-06 13:07:26'),
-(1411, 11, 'user.login', '127.0.0.1', '', '2015-08-06 13:07:27'),
-(1412, 11, 'user.logout', '127.0.0.1', '', '2015-08-06 13:10:43'),
-(1413, 11, 'user.login', '127.0.0.1', '', '2015-08-06 13:10:44'),
-(1414, 8, 'user.login', '127.0.0.1', '', '2015-08-06 13:24:25'),
-(1415, 8, 'user.link.add', '127.0.0.1', '{"link_name":""asrrgdfg""}', '2015-08-06 16:47:43'),
-(1416, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""sdefdg""}', '2015-08-06 16:49:19'),
-(1417, 8, 'user.link.add', '127.0.0.1', '{"link_name":""Less Tutorial""}', '2015-08-07 13:09:44'),
-(1418, 8, 'user.link.add', '127.0.0.1', '{"link_name":""link 1""}', '2015-08-07 13:29:38'),
-(1419, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""dgseert""}', '2015-08-07 13:46:39'),
-(1420, 8, 'user.rating.add', '127.0.0.1', '{"id_snippet":""83"","rating":""5""}', '2015-08-07 14:08:06'),
-(1421, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-08-07 14:08:08'),
-(1422, 8, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-08-07 14:08:14'),
-(1423, 8, 'user.fav.del', '127.0.0.1', '{"id_snippet":""83""}', '2015-08-07 14:08:35'),
-(1424, 8, 'user.fav.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-08-07 14:08:36'),
-(1425, 8, 'user.logout', '127.0.0.1', '', '2015-08-07 14:18:04'),
-(1426, 10, 'user.login', '127.0.0.1', '', '2015-08-07 14:18:07'),
-(1427, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-08-07 14:18:22'),
-(1428, 8, 'user.comment.get', '127.0.0.1', '{"id_snippet":""83""}', '2015-08-07 14:18:22'),
-(1429, 10, 'user.rating.add', '127.0.0.1', '{"id_snippet":""83"","rating":""2""}', '2015-08-07 14:20:38'),
-(1430, 10, 'user.fav.add', '127.0.0.1', '{"id_links":""20""}', '2015-08-10 16:27:12'),
-(1431, 8, 'user.fav.get', '127.0.0.1', '{"id_links":""20""}', '2015-08-10 16:27:12'),
-(1432, 10, 'user.fav.add', '127.0.0.1', '{"id_links":""21""}', '2015-08-10 16:27:44'),
-(1433, 8, 'user.fav.get', '127.0.0.1', '{"id_links":""21""}', '2015-08-10 16:27:44'),
-(1434, 10, 'user.fav.del', '127.0.0.1', '{"id_Links":""21""}', '2015-08-10 16:28:34'),
-(1435, 10, 'user.rating.add', '127.0.0.1', '{"id_links":""21"","rating":""4.5""}', '2015-08-10 16:28:37'),
-(1436, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""21""}', '2015-08-10 16:28:42'),
-(1437, 8, 'user.comment.get', '127.0.0.1', '{"id_snippet":""21""}', '2015-08-10 16:28:42'),
-(1438, 11, 'user.page.add', '127.0.0.1', '{"page_title":""dfgvasdgf""}', '2015-08-12 13:20:55'),
-(1439, 8, 'user.login', '127.0.0.1', '', '2015-08-12 14:12:14'),
-(1440, 11, 'user.page.add', '127.0.0.1', '{"page_title":""angular 1""}', '2015-08-12 16:40:53'),
-(1441, 11, 'user.page.add', '127.0.0.1', '{"page_title":""angular 3""}', '2015-08-12 16:41:01'),
-(1442, 11, 'user.page.add', '127.0.0.1', '{"page_title":""angular 1""}', '2015-08-12 16:41:12'),
-(1443, 11, 'user.page.add', '127.0.0.1', '{"page_title":""angular 3""}', '2015-08-12 16:41:23'),
-(1444, 11, 'user.page.add', '127.0.0.1', '{"page_title":""angular 1""}', '2015-08-12 16:42:41'),
-(1445, 11, 'user.page.add', '127.0.0.1', '{"page_title":""angular 1""}', '2015-08-12 16:43:14'),
-(1446, 11, 'user.page.add', '127.0.0.1', '{"page_title":""angular 3""}', '2015-08-12 16:43:54'),
-(1447, 11, 'user.page.add', '127.0.0.1', '{"page_title":""angular 1""}', '2015-08-12 16:44:05'),
-(1448, 8, 'user.logout', '127.0.0.1', '', '2015-08-12 17:43:32'),
-(1449, 10, 'user.login', '127.0.0.1', '', '2015-08-12 17:43:36'),
-(1450, 10, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""sdfsdf""}', '2015-08-12 17:43:44'),
-(1451, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""78""}', '2015-08-17 13:38:03'),
-(1452, 12, 'user.comment.get', '127.0.0.1', '{"id_snippet":""78""}', '2015-08-17 13:38:03'),
-(1453, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""78""}', '2015-08-17 13:50:09'),
-(1454, 12, 'user.comment.get', '127.0.0.1', '{"id_snippet":""78""}', '2015-08-17 13:50:09'),
-(1455, 8, 'user.login', '127.0.0.1', '', '2015-08-19 13:21:44'),
-(1456, 8, 'user.link.add', '127.0.0.1', '{"link_name":""Font Awesome Cheat Sheet""}', '2015-08-19 13:23:11'),
-(1457, 11, 'user.page.add', '127.0.0.1', '{"page_title":"" Construye una arbol desplegable con PHP, CSS y jQuery""}', '2015-08-19 17:37:03'),
-(1458, 11, 'user.page.add', '127.0.0.1', '{"page_title":""eedrfgsdfgsdfgsdfgsdfg""}', '2015-08-19 17:38:58'),
-(1459, 11, 'user.page.add', '127.0.0.1', '{"page_title":""Construye una arbol desplegable con PHP, CSS y jQuery""}', '2015-08-20 12:51:57'),
-(1460, 11, 'user.page.add', '127.0.0.1', '{"page_title":""Fantastic Shine""}', '2015-08-20 13:14:34'),
-(1461, 11, 'user.page.add', '127.0.0.1', '{"page_title":""Fantastic Shine""}', '2015-08-20 13:14:50'),
-(1462, 8, 'user.login', '127.0.0.1', '', '2015-09-07 13:40:47'),
-(1463, 11, 'user.page.add', '127.0.0.1', '{"page_title":""sdfasdf""}', '2015-09-08 12:38:24'),
-(1464, 8, 'user.login', '127.0.0.1', '', '2015-09-14 17:04:54'),
-(1465, 8, 'user.login', '127.0.0.1', '', '2015-09-14 17:57:37'),
-(1466, 11, 'user.logout', '::1', '', '2015-09-16 14:13:44'),
-(1467, 8, 'user.logout', '127.0.0.1', '', '2015-09-16 14:13:48'),
-(1468, 11, 'user.login', '127.0.0.1', '', '2015-09-16 14:14:06'),
-(1469, 11, 'user.logout', '127.0.0.1', '', '2015-09-16 16:14:45'),
-(1470, 8, 'user.login', '127.0.0.1', '', '2015-09-16 16:14:47'),
-(1471, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""xddf""}', '2015-09-16 16:15:24'),
-(1472, 11, 'user.login', '::1', '', '2015-09-16 16:15:33'),
-(1473, 8, 'user.link.add', '127.0.0.1', '{"link_name":""setTagName""}', '2015-09-16 16:16:39'),
-(1474, 11, 'user.page.add', '::1', '{"page_title":""setTagName""}', '2015-09-16 16:18:00'),
-(1475, 8, 'user.logout', '127.0.0.1', '', '2015-09-16 16:41:22'),
-(1476, 11, 'user.login', '127.0.0.1', '', '2015-09-16 16:41:43'),
-(1477, 11, 'user.login', '127.0.0.1', '', '2015-09-16 16:44:12'),
-(1478, 11, 'user.login', '127.0.0.1', '', '2015-09-16 16:48:20'),
-(1479, 11, 'user.logout', '127.0.0.1', '', '2015-09-17 15:53:26'),
-(1480, 11, 'user.login', '127.0.0.1', '', '2015-09-17 15:53:39'),
-(1481, 8, 'user.login', '127.0.0.1', '', '2015-09-18 13:41:29'),
-(1482, 8, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""sdfasdf""}', '2015-09-23 17:09:37'),
-(1483, 11, 'user.page.add', '::1', '{"page_title":""Cofee""}', '2015-09-24 10:53:41'),
-(1484, 11, 'user.login', '::1', '', '2015-09-24 13:22:41'),
-(1485, 11, 'user.page.add', '::1', '{"page_title":""setTagName""}', '2015-09-24 13:43:03'),
-(1486, 8, 'user.login', '127.0.0.1', '', '2015-10-05 12:43:02'),
-(1487, 11, 'user.logout', '::1', '', '2015-10-09 12:32:08'),
-(1488, 8, 'user.login', '::1', '', '2015-10-09 12:32:11'),
-(1489, 8, 'user.logout', '::1', '', '2015-10-09 13:38:48'),
-(1490, 8, 'user.login', '::1', '', '2015-10-09 13:41:31'),
-(1491, 8, 'user.logout', '::1', '', '2015-10-09 13:42:33'),
-(1492, 8, 'user.login', '::1', '', '2015-10-09 13:42:40'),
-(1493, 8, 'user.logout', '::1', '', '2015-10-09 14:06:05'),
-(1494, 8, 'user.login', '::1', '', '2015-10-09 14:08:28'),
-(1495, 8, 'user.logout', '127.0.0.1', '', '2015-10-13 10:24:45'),
-(1496, 8, 'user.login', '127.0.0.1', '', '2015-10-13 10:24:48'),
-(1497, 8, 'user.logout', '127.0.0.1', '', '2015-10-13 12:27:28'),
-(1498, 10, 'user.login', '127.0.0.1', '', '2015-10-13 12:27:32'),
-(1499, 10, 'user.logout', '127.0.0.1', '', '2015-10-13 12:44:46'),
-(1500, 8, 'user.password.forgot', '127.0.0.1', '{"email":""oscarlgarcia@gmail.com""}', '2015-10-13 12:45:02'),
-(1501, 8, 'user.password.forgot', '127.0.0.1', '{"email":""oscarlgarcia@gmail.com""}', '2015-10-13 13:31:30'),
-(1502, 8, 'user.login', '127.0.0.1', '', '2015-10-13 14:04:27'),
-(1503, 8, 'user.logout', '127.0.0.1', '', '2015-10-13 14:04:33'),
-(1504, 10, 'user.login', '127.0.0.1', '', '2015-10-13 14:04:37'),
-(1505, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-13 14:19:46'),
-(1506, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-13 14:19:46'),
-(1507, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-13 16:08:42'),
-(1508, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-13 16:08:45'),
-(1509, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-13 16:08:45'),
-(1510, 10, 'user.rating.add', '127.0.0.1', '{"id_snippet":""86"","rating":""4""}', '2015-10-13 16:08:55'),
-(1511, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-13 16:09:07'),
-(1512, 8, 'user.comment.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-13 16:09:07'),
-(1513, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-13 17:05:20'),
-(1514, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-13 17:05:20'),
-(1515, 10, 'user.rating.add', '127.0.0.1', '{"id_snippet":""75"","rating":""4""}', '2015-10-13 17:05:36'),
-(1517, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""75""}', '2015-10-13 17:14:36'),
-(1518, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""75""}', '2015-10-13 17:14:36'),
-(1519, 10, 'user.rating.add', '127.0.0.1', '{"id_snippet":""74"","rating":""4.5""}', '2015-10-13 17:14:49'),
-(1520, 8, 'user.rating.get', '127.0.0.1', '{"id_snippet":""74"","rating":""4.5""}', '2015-10-13 17:14:49'),
-(1521, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-13 17:39:36'),
-(1522, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-13 17:39:39'),
-(1523, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-13 17:39:39'),
-(1524, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-13 17:40:23'),
-(1525, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-13 17:40:25'),
-(1526, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-13 17:40:25'),
-(1527, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-13 17:41:59'),
-(1528, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-13 17:42:00'),
-(1529, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-13 17:42:00'),
-(1530, 10, 'user.login', '127.0.0.1', '', '2015-10-14 10:34:52'),
-(1531, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-14 10:57:10'),
-(1532, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-14 10:57:12'),
-(1533, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-14 10:57:12'),
-(1534, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-14 10:57:42'),
-(1535, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-14 10:57:44'),
-(1536, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-14 10:57:44'),
-(1537, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-14 10:58:24'),
-(1538, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-14 10:58:26'),
-(1539, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-14 10:58:26'),
-(1540, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-14 10:58:47'),
-(1541, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-14 10:58:49'),
-(1542, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-14 10:58:49'),
-(1543, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-14 10:59:40'),
-(1544, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-14 10:59:42'),
-(1545, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-14 10:59:42'),
-(1546, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-14 12:54:09'),
-(1547, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-14 12:54:12'),
-(1548, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-14 12:54:12'),
-(1549, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 12:57:36'),
-(1550, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 12:57:36'),
-(1551, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 12:58:06'),
-(1552, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 12:58:07'),
-(1553, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 12:58:07'),
-(1554, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 12:58:16'),
-(1555, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 12:58:17'),
-(1556, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 12:58:17');
-INSERT INTO `user_event` (`ID`, `ID_User`, `eventName`, `ipaddress`, `data`, `dateExecuted`) VALUES
-(1557, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-14 12:58:42'),
-(1558, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-14 12:58:43'),
-(1559, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-14 12:58:43'),
-(1560, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 12:58:55'),
-(1561, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 12:58:56'),
-(1562, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 12:58:56'),
-(1563, 8, 'user.logout', '::1', '', '2015-10-14 13:15:34'),
-(1564, 11, 'user.login', '::1', '', '2015-10-14 13:15:36'),
-(1565, 11, 'user.logout', '::1', '', '2015-10-14 13:17:09'),
-(1566, 8, 'user.login', '::1', '', '2015-10-14 13:19:38'),
-(1567, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 13:19:40'),
-(1568, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 13:19:42'),
-(1569, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 13:19:42'),
-(1570, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 13:20:03'),
-(1571, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 13:20:04'),
-(1572, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 13:20:04'),
-(1573, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 13:20:10'),
-(1574, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 13:20:11'),
-(1575, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 13:20:11'),
-(1576, 8, 'user.logout', '::1', '', '2015-10-14 16:14:10'),
-(1577, 11, 'user.login', '::1', '', '2015-10-14 16:14:13'),
-(1578, 11, 'user.logout', '::1', '', '2015-10-14 16:14:25'),
-(1579, 8, 'user.login', '::1', '', '2015-10-14 16:14:29'),
-(1580, 8, 'user.logout', '::1', '', '2015-10-14 16:16:13'),
-(1581, 11, 'user.login', '::1', '', '2015-10-14 16:16:17'),
-(1582, 11, 'user.logout', '::1', '', '2015-10-14 16:21:11'),
-(1583, 8, 'user.login', '::1', '', '2015-10-14 16:21:14'),
-(1584, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 16:21:16'),
-(1585, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 16:21:17'),
-(1586, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 16:21:17'),
-(1587, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 16:21:37'),
-(1588, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 16:21:38'),
-(1589, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 16:21:38'),
-(1590, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 16:22:02'),
-(1591, 8, 'user.comment.get', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 16:22:02'),
-(1592, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 16:22:11'),
-(1593, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 16:22:12'),
-(1594, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 16:22:12'),
-(1595, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 16:25:17'),
-(1596, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 16:25:18'),
-(1597, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 16:25:18'),
-(1598, 8, 'user.logout', '::1', '', '2015-10-14 17:39:42'),
-(1599, 11, 'user.login', '::1', '', '2015-10-14 17:39:45'),
-(1600, 11, 'user.logout', '::1', '', '2015-10-14 17:47:00'),
-(1601, 8, 'user.login', '::1', '', '2015-10-14 17:47:03'),
-(1602, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 17:47:13'),
-(1603, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 17:47:15'),
-(1604, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 17:47:30'),
-(1605, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 17:47:32'),
-(1606, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 17:49:10'),
-(1607, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 17:49:12'),
-(1608, 8, 'user.logout', '::1', '', '2015-10-14 17:50:16'),
-(1609, 11, 'user.login', '::1', '', '2015-10-14 17:50:18'),
-(1610, 11, 'user.logout', '::1', '', '2015-10-14 17:50:44'),
-(1611, 8, 'user.login', '::1', '', '2015-10-14 17:50:46'),
-(1612, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 17:50:57'),
-(1613, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 17:50:58'),
-(1614, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 17:51:58'),
-(1615, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 17:52:00'),
-(1616, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""81""}', '2015-10-14 17:52:00'),
-(1617, 8, 'user.comment.add', '::1', '{"id_links":""24""}', '2015-10-19 17:03:07'),
-(1618, 8, 'user.comment.get', '::1', '{"id_links":""24""}', '2015-10-19 17:03:07'),
-(1619, 8, 'user.comment.add', '::1', '{"id_links":""24""}', '2015-10-19 17:05:53'),
-(1620, 8, 'user.logout', '::1', '', '2015-10-19 17:05:56'),
-(1621, 11, 'user.login', '::1', '', '2015-10-19 17:05:59'),
-(1622, 11, 'user.logout', '::1', '', '2015-10-19 17:06:33'),
-(1623, 8, 'user.login', '::1', '', '2015-10-19 17:06:36'),
-(1624, 8, 'user.comment.add', '::1', '{"id_links":""24""}', '2015-10-19 17:06:48'),
-(1625, 11, 'user.login', '127.0.0.1', '', '2015-10-19 17:07:03'),
-(1626, 8, 'user.comment.add', '::1', '{"id_links":""24""}', '2015-10-19 17:12:39'),
-(1627, 8, 'user.comment.add', '::1', '{"id_links":""22""}', '2015-10-19 17:13:15'),
-(1628, 8, 'user.comment.add', '::1', '{"id_links":""22""}', '2015-10-19 17:24:52'),
-(1629, 11, 'user.logout', '127.0.0.1', '', '2015-10-19 17:32:07'),
-(1630, 10, 'user.login', '127.0.0.1', '', '2015-10-19 17:32:10'),
-(1631, 10, 'user.comment.add', '127.0.0.1', '{"id_links":""24""}', '2015-10-19 17:33:39'),
-(1632, 8, 'user.comment.get', '127.0.0.1', '{"id_links":""24""}', '2015-10-19 17:33:39'),
-(1633, 10, 'user.fav.add', '127.0.0.1', '{"id_links":""24""}', '2015-10-19 17:33:52'),
-(1634, 8, 'user.fav.get', '127.0.0.1', '{"id_links":""24""}', '2015-10-19 17:33:52'),
-(1635, 10, 'user.fav.del', '127.0.0.1', '{"id_Links":""24""}', '2015-10-19 17:34:00'),
-(1636, 10, 'user.fav.add', '127.0.0.1', '{"id_links":""24""}', '2015-10-19 17:34:01'),
-(1637, 8, 'user.fav.get', '127.0.0.1', '{"id_links":""24""}', '2015-10-19 17:34:01'),
-(1638, 10, 'user.login', '127.0.0.1', '', '2015-10-20 16:32:23'),
-(1639, 8, 'user.login', '::1', '', '2015-10-20 16:32:31'),
-(1640, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:32:45'),
-(1642, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:33:13'),
-(1644, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:34:25'),
-(1646, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:35:57'),
-(1648, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:36:02'),
-(1650, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:38:48'),
-(1652, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:38:53'),
-(1654, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:40:30'),
-(1656, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:40:38'),
-(1658, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:42:17'),
-(1659, 8, 'user.comment.get', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:42:17'),
-(1660, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:42:19'),
-(1661, 8, 'user.comment.get', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 16:42:19'),
-(1662, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 17:22:39'),
-(1663, 8, 'user.comment.get', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 17:22:39'),
-(1664, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 17:23:25'),
-(1665, 8, 'user.comment.get', '127.0.0.1', '{"id_snippet":""83""}', '2015-10-20 17:23:25'),
-(1666, 10, 'user.logout', '127.0.0.1', '', '2015-10-20 17:24:16'),
-(1667, 11, 'user.login', '127.0.0.1', '', '2015-10-20 17:24:21'),
-(1668, 8, 'user.login', '127.0.0.1', '', '2015-10-22 13:49:25'),
-(1669, 10, 'user.login', '127.0.0.1', '', '2015-10-22 16:26:35'),
-(1670, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:26:51'),
-(1671, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:26:55'),
-(1672, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:26:55'),
-(1673, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:27:20'),
-(1674, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:27:30'),
-(1675, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:27:30'),
-(1676, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:28:01'),
-(1677, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:28:02'),
-(1678, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:28:02'),
-(1679, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:28:12'),
-(1680, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:28:14'),
-(1681, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:28:14'),
-(1682, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:29:21'),
-(1683, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:29:22'),
-(1684, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:29:22'),
-(1685, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:29:27'),
-(1686, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:29:28'),
-(1687, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:29:28'),
-(1688, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:29:32'),
-(1689, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:29:32'),
-(1690, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:29:32'),
-(1691, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:29:39'),
-(1692, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:29:40'),
-(1693, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:29:40'),
-(1694, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:33:59'),
-(1695, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:34:02'),
-(1696, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 16:34:02'),
-(1697, 8, 'user.logout', '::1', '', '2015-10-22 17:39:40'),
-(1698, 10, 'user.login', '::1', '', '2015-10-22 17:39:48'),
-(1699, 10, 'user.logout', '::1', '', '2015-10-22 17:40:54'),
-(1700, 8, 'user.login', '::1', '', '2015-10-22 17:40:57'),
-(1701, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 17:47:00'),
-(1702, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 17:47:01'),
-(1703, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-22 17:47:02'),
-(1704, 10, 'user.login', '127.0.0.1', '', '2015-10-26 17:08:29'),
-(1705, 10, 'user.fav.del', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-26 17:08:36'),
-(1706, 10, 'user.fav.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-26 17:08:37'),
-(1707, 8, 'user.fav.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-10-26 17:08:37'),
-(1708, 8, 'user.logout', '::1', '', '2015-10-26 17:18:01'),
-(1709, 11, 'user.login', '::1', '', '2015-10-26 17:18:04'),
-(1710, 11, 'user.page.add', '::1', '{"page_title":""dfgvasdgf""}', '2015-10-29 13:08:55'),
-(1711, 10, 'user.login', '127.0.0.1', '', '2015-10-29 16:16:10'),
-(1712, 8, 'user.logout', '::1', '', '2015-10-31 18:59:19'),
-(1713, 11, 'user.login', '::1', '', '2015-10-31 20:37:17');
+(1790, 10, 'user.comment.add', '127.0.0.1', '{"id_snippet":""86""}', '2015-11-04 16:22:52'),
+(1791, 8, 'user.comment.get', '127.0.0.1', '{"id_snippet":""86""}', '2015-11-04 16:22:52'),
+(1792, 8, 'user.logout', '::1', '', '2015-11-04 16:23:51'),
+(1793, 11, 'user.login', '::1', '', '2015-11-04 16:23:54'),
+(1794, 11, 'user.logout', '::1', '', '2015-11-04 16:28:07'),
+(1795, 8, 'user.login', '::1', '', '2015-11-04 16:28:13'),
+(1796, 8, 'user.logout', '::1', '', '2015-11-04 16:28:16'),
+(1797, 11, 'user.login', '::1', '', '2015-11-04 16:28:19'),
+(1798, 10, 'user.snippet.add', '127.0.0.1', '{"snippet_name":""google Maps""}', '2015-11-11 17:01:56'),
+(1799, 11, 'user.logout', '::1', '', '2015-11-11 17:32:21'),
+(1800, 10, 'user.login', '::1', '', '2015-11-11 17:32:24'),
+(1801, 10, 'user.logout', '::1', '', '2015-11-11 17:32:39'),
+(1802, 11, 'user.login', '::1', '', '2015-11-11 17:32:41'),
+(1803, 11, 'user.logout', '::1', '', '2015-11-11 17:37:57'),
+(1804, 10, 'user.login', '::1', '', '2015-11-11 17:37:59'),
+(1805, 10, 'user.logout', '::1', '', '2015-11-11 17:42:16'),
+(1806, 11, 'user.login', '::1', '', '2015-11-11 17:42:21');
 
 --
--- Indexes for dumped tables
+-- Restricciones para tablas volcadas
 --
 
 --
--- Indexes for table `badges`
---
-ALTER TABLE `badges`
-  ADD PRIMARY KEY (`ID`), ADD KEY `idx_badge_media` (`media_id`);
-
---
--- Indexes for table `badges_achieved`
+-- Filtros para la tabla `badges_achieved`
 --
 ALTER TABLE `badges_achieved`
-  ADD PRIMARY KEY (`ID`), ADD KEY `fk1_idx` (`ID_User`), ADD KEY `fk2_idx` (`ID_Badge`);
+  ADD CONSTRAINT `fk_achieved_media` FOREIGN KEY (`ID_Badge`) REFERENCES `media` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_achieved_users` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Indexes for table `category`
+-- Filtros para la tabla `category`
 --
 ALTER TABLE `category`
-  ADD PRIMARY KEY (`ID`), ADD UNIQUE KEY `name` (`name`), ADD KEY `idx_img_cat` (`image_category`);
+  ADD CONSTRAINT `FK_media_imgcat` FOREIGN KEY (`image_category`) REFERENCES `media` (`ID`);
 
 --
--- Indexes for table `comments_links`
+-- Filtros para la tabla `comments_links`
 --
 ALTER TABLE `comments_links`
-  ADD PRIMARY KEY (`ID`), ADD KEY `fk_comments_links1_idx` (`ID_User`), ADD KEY `fk_comments_links2_idx` (`ID_Link`), ADD KEY `fk_comm_op` (`approved`);
+  ADD CONSTRAINT `fk_commentlinks_operational` FOREIGN KEY (`approved`) REFERENCES `operational_status` (`ID`),
+  ADD CONSTRAINT `fk_comments_links1` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_comments_links2` FOREIGN KEY (`ID_Link`) REFERENCES `links` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Indexes for table `comment_snippet`
+-- Filtros para la tabla `comment_snippet`
 --
 ALTER TABLE `comment_snippet`
-  ADD PRIMARY KEY (`ID`), ADD UNIQUE KEY `ID` (`ID`), ADD KEY `ID_User` (`ID_User`), ADD KEY `FK_comment_snippet2` (`ID_Snippet`), ADD KEY `IDX_approved_comment_snippets` (`approved`);
+  ADD CONSTRAINT `FK_comment_snippet1` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`),
+  ADD CONSTRAINT `FK_comment_snippet2` FOREIGN KEY (`ID_Snippet`) REFERENCES `snippets` (`ID`),
+  ADD CONSTRAINT `FK_commentsnippet_operational` FOREIGN KEY (`approved`) REFERENCES `operational_status` (`ID`);
 
 --
--- Indexes for table `controllers`
+-- Filtros para la tabla `controllers`
 --
 ALTER TABLE `controllers`
-  ADD PRIMARY KEY (`ID`), ADD KEY `idx_ctrl` (`active`);
+  ADD CONSTRAINT `fk_controller_operational` FOREIGN KEY (`active`) REFERENCES `operational_status` (`ID`);
 
 --
--- Indexes for table `event`
---
-ALTER TABLE `event`
-  ADD PRIMARY KEY (`eventName`);
-
---
--- Indexes for table `gamification_rules`
+-- Filtros para la tabla `gamification_rules`
 --
 ALTER TABLE `gamification_rules`
-  ADD PRIMARY KEY (`ID`), ADD KEY `fk_gamification_rules_2_idx` (`ID_Badge`), ADD KEY `fk_gamification_rules_1_idx` (`eventName`);
+  ADD CONSTRAINT `fk_gamification_media` FOREIGN KEY (`ID_Badge`) REFERENCES `media` (`ID`),
+  ADD CONSTRAINT `fk_gamification_rules_1` FOREIGN KEY (`eventName`) REFERENCES `event` (`eventName`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Indexes for table `links`
+-- Filtros para la tabla `links`
 --
 ALTER TABLE `links`
-  ADD PRIMARY KEY (`ID`), ADD KEY `fk_link_user_idx` (`ID_User`), ADD KEY `fk_links_operational` (`ID_Status`);
+  ADD CONSTRAINT `fk_link_user` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_links_operational` FOREIGN KEY (`ID_Status`) REFERENCES `operational_status` (`ID`);
 
 --
--- Indexes for table `link_log`
+-- Filtros para la tabla `link_log`
 --
 ALTER TABLE `link_log`
-  ADD PRIMARY KEY (`ID`), ADD KEY `fk_linklog_link_idx` (`ID_Link`), ADD KEY `fk_linklog_user_idx` (`ID_User`), ADD KEY `fk_linklog_event_idx` (`event`);
+  ADD CONSTRAINT `fk_linklog_event` FOREIGN KEY (`event`) REFERENCES `event` (`eventName`),
+  ADD CONSTRAINT `fk_linklog_link` FOREIGN KEY (`ID_Link`) REFERENCES `links` (`ID`),
+  ADD CONSTRAINT `fk_linklog_user` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`);
 
 --
--- Indexes for table `lista_favoritos_snippets`
+-- Filtros para la tabla `lista_favoritos_snippets`
 --
 ALTER TABLE `lista_favoritos_snippets`
-  ADD PRIMARY KEY (`ID`), ADD KEY `fk_lista_favoritos_snippets_1_idx` (`ID_Snippets`), ADD KEY `fk_lista_favoritos_snippets_2_idx` (`ID_User`);
+  ADD CONSTRAINT `fk_lista_favoritos_snippets_1` FOREIGN KEY (`ID_Snippets`) REFERENCES `snippets` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_lista_favoritos_snippets_2` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Indexes for table `lista_tag_snippet`
+-- Filtros para la tabla `lista_tag_snippet`
 --
 ALTER TABLE `lista_tag_snippet`
-  ADD PRIMARY KEY (`ID`), ADD KEY `fk_Lista_Tag_Snippet_1_idx` (`ID_Tag`), ADD KEY `fk_Lista_Tag_Snippet_2_idx` (`ID_Snippets`);
+  ADD CONSTRAINT `fk_Lista_Tag_Snippet_1` FOREIGN KEY (`ID_Tag`) REFERENCES `tags` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_Lista_Tag_Snippet_2` FOREIGN KEY (`ID_Snippets`) REFERENCES `snippets` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Indexes for table `list_favorites_links`
+-- Filtros para la tabla `list_favorites_links`
 --
 ALTER TABLE `list_favorites_links`
-  ADD PRIMARY KEY (`ID`), ADD KEY `fk_favorites_links1_idx` (`ID_Links`), ADD KEY `fk_favorites_links2_idx` (`ID_Users`);
+  ADD CONSTRAINT `fk_favorites_links1` FOREIGN KEY (`ID_Links`) REFERENCES `links` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_favorites_links2` FOREIGN KEY (`ID_Users`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Indexes for table `list_favorite_page`
+-- Filtros para la tabla `list_favorite_page`
 --
 ALTER TABLE `list_favorite_page`
-  ADD PRIMARY KEY (`ID`), ADD KEY `fk_favorite_page_1_idx` (`ID_Page`), ADD KEY `fk_favorite_page_2_idx` (`ID_User`);
+  ADD CONSTRAINT `fk_favorite_page_1` FOREIGN KEY (`ID_Page`) REFERENCES `page` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_favorite_page_2` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Indexes for table `list_media_tags`
+-- Filtros para la tabla `list_media_tags`
 --
 ALTER TABLE `list_media_tags`
-  ADD PRIMARY KEY (`ID`), ADD KEY `FK_list_tags_idx` (`ID_tag`), ADD KEY `FK_listmedia_media_idx` (`ID_media`);
+  ADD CONSTRAINT `FK_listmedia_media` FOREIGN KEY (`ID_media`) REFERENCES `media` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_listmedia_tags` FOREIGN KEY (`ID_tag`) REFERENCES `tags` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Indexes for table `list_tags_links`
+-- Filtros para la tabla `list_tags_links`
 --
 ALTER TABLE `list_tags_links`
-  ADD PRIMARY KEY (`ID`), ADD KEY `fk_list_tags_links1_idx` (`ID_Tags`), ADD KEY `fk_list_tags_links2_idx` (`ID_Links`);
+  ADD CONSTRAINT `fk_list_tags_links1` FOREIGN KEY (`ID_Tags`) REFERENCES `tags` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_list_tags_links2` FOREIGN KEY (`ID_Links`) REFERENCES `links` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Indexes for table `list_tag_page`
+-- Filtros para la tabla `list_tag_page`
 --
 ALTER TABLE `list_tag_page`
-  ADD PRIMARY KEY (`ID`), ADD KEY `fk_tag_page_1_idx` (`ID_Page`), ADD KEY `fk_tag_page_2_idx` (`ID_Tag`);
+  ADD CONSTRAINT `fk_tag_page_1` FOREIGN KEY (`ID_Page`) REFERENCES `page` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tag_page_2` FOREIGN KEY (`ID_Tag`) REFERENCES `tags` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Indexes for table `logger`
---
-ALTER TABLE `logger`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `media`
---
-ALTER TABLE `media`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `notification`
+-- Filtros para la tabla `notification`
 --
 ALTER TABLE `notification`
-  ADD PRIMARY KEY (`ID`), ADD KEY `fk_notifications_1_idx` (`ID_User`), ADD KEY `fk_notification_eventtype_idx` (`notification`), ADD KEY `idx_userfrom` (`ID_User_From`);
+  ADD CONSTRAINT `fk_notification_eventtype` FOREIGN KEY (`notification`) REFERENCES `event` (`eventName`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_notifications_1` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_notifications_2` FOREIGN KEY (`ID_User_From`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Indexes for table `operational_status`
---
-ALTER TABLE `operational_status`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `page`
+-- Filtros para la tabla `page`
 --
 ALTER TABLE `page`
-  ADD PRIMARY KEY (`ID`), ADD KEY `fk_page_type_idx` (`type`), ADD KEY `fk_page_category_idx` (`category`), ADD KEY `fk_page_pagelevel_idx` (`level`);
+  ADD CONSTRAINT `fk_page_category` FOREIGN KEY (`category`) REFERENCES `category` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_page_pagelevel` FOREIGN KEY (`level`) REFERENCES `page_level` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_page_type` FOREIGN KEY (`type`) REFERENCES `page_type` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Indexes for table `page_level`
---
-ALTER TABLE `page_level`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `page_type`
---
-ALTER TABLE `page_type`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `rating_links`
+-- Filtros para la tabla `rating_links`
 --
 ALTER TABLE `rating_links`
-  ADD PRIMARY KEY (`ID`), ADD KEY `fk_rating_links1_idx` (`ID_Links`), ADD KEY `fk_rating_links2_idx` (`ID_Users`);
+  ADD CONSTRAINT `fk_rating_links1` FOREIGN KEY (`ID_Links`) REFERENCES `links` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_rating_links2` FOREIGN KEY (`ID_Users`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Indexes for table `rating_snippet`
+-- Filtros para la tabla `rating_snippet`
 --
 ALTER TABLE `rating_snippet`
-  ADD PRIMARY KEY (`ID`), ADD KEY `FK_rating_snippet1` (`ID_Snippet`), ADD KEY `FK_rating_snippet2` (`ID_User`);
+  ADD CONSTRAINT `FK_rating_snippet1` FOREIGN KEY (`ID_Snippet`) REFERENCES `snippets` (`ID`),
+  ADD CONSTRAINT `FK_rating_snippet2` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`);
 
 --
--- Indexes for table `search_stat`
+-- Filtros para la tabla `search_stat`
 --
 ALTER TABLE `search_stat`
-  ADD PRIMARY KEY (`search_date`), ADD KEY `fk_stat_term_idx` (`search_term_id`);
+  ADD CONSTRAINT `fk_stat_term` FOREIGN KEY (`search_term_id`) REFERENCES `search_term` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Indexes for table `search_term`
---
-ALTER TABLE `search_term`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `settings`
---
-ALTER TABLE `settings`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `snippets`
+-- Filtros para la tabla `snippets`
 --
 ALTER TABLE `snippets`
-  ADD PRIMARY KEY (`ID`,`ID_Category`,`ID_USER`), ADD KEY `fk_snippets_2` (`ID_Category`), ADD KEY `fk_snippets_3` (`ID_USER`), ADD KEY `ID_Status` (`ID_Status`), ADD KEY `ID_Status_2` (`ID_Status`);
+  ADD CONSTRAINT `fk_snippets_2` FOREIGN KEY (`ID_Category`) REFERENCES `category` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_snippets_3` FOREIGN KEY (`ID_USER`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_snippets_operational` FOREIGN KEY (`ID_Status`) REFERENCES `operational_status` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Indexes for table `snippet_log`
+-- Filtros para la tabla `snippet_log`
 --
 ALTER TABLE `snippet_log`
-  ADD PRIMARY KEY (`ID`), ADD KEY `fk_snippetlog_snippet_idx` (`ID_Snippet`), ADD KEY `fk_snippetlog_user_idx` (`ID_User`), ADD KEY `fk_snippetlog_event_idx` (`event`);
+  ADD CONSTRAINT `fk_snippetlog_event` FOREIGN KEY (`event`) REFERENCES `event` (`eventName`),
+  ADD CONSTRAINT `fk_snippetlog_snippet` FOREIGN KEY (`ID_Snippet`) REFERENCES `snippets` (`ID`),
+  ADD CONSTRAINT `fk_snippetlog_user` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`);
 
 --
--- Indexes for table `tags`
---
-ALTER TABLE `tags`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `users`
+-- Filtros para la tabla `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`ID`), ADD KEY `user_status_idx` (`user_status`);
+  ADD CONSTRAINT `fk_operational_user` FOREIGN KEY (`user_status`) REFERENCES `operational_status` (`ID`);
 
 --
--- Indexes for table `user_event`
+-- Filtros para la tabla `user_event`
 --
 ALTER TABLE `user_event`
-  ADD PRIMARY KEY (`ID`), ADD KEY `fk2_idx` (`ID_User`), ADD KEY `fk_user_event_1_idx` (`eventName`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `badges`
---
-ALTER TABLE `badges`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT for table `badges_achieved`
---
-ALTER TABLE `badges_achieved`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=44;
---
--- AUTO_INCREMENT for table `category`
---
-ALTER TABLE `category`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Tabla que almacena las categorias',AUTO_INCREMENT=29;
---
--- AUTO_INCREMENT for table `comments_links`
---
-ALTER TABLE `comments_links`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=20;
---
--- AUTO_INCREMENT for table `comment_snippet`
---
-ALTER TABLE `comment_snippet`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Identificador del Comentario',AUTO_INCREMENT=127;
---
--- AUTO_INCREMENT for table `controllers`
---
-ALTER TABLE `controllers`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=32;
---
--- AUTO_INCREMENT for table `gamification_rules`
---
-ALTER TABLE `gamification_rules`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
---
--- AUTO_INCREMENT for table `links`
---
-ALTER TABLE `links`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=25;
---
--- AUTO_INCREMENT for table `link_log`
---
-ALTER TABLE `link_log`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=47;
---
--- AUTO_INCREMENT for table `lista_favoritos_snippets`
---
-ALTER TABLE `lista_favoritos_snippets`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=142;
---
--- AUTO_INCREMENT for table `lista_tag_snippet`
---
-ALTER TABLE `lista_tag_snippet`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=157;
---
--- AUTO_INCREMENT for table `list_favorites_links`
---
-ALTER TABLE `list_favorites_links`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=30;
---
--- AUTO_INCREMENT for table `list_favorite_page`
---
-ALTER TABLE `list_favorite_page`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `list_media_tags`
---
-ALTER TABLE `list_media_tags`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=39;
---
--- AUTO_INCREMENT for table `list_tags_links`
---
-ALTER TABLE `list_tags_links`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=26;
---
--- AUTO_INCREMENT for table `list_tag_page`
---
-ALTER TABLE `list_tag_page`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=34;
---
--- AUTO_INCREMENT for table `logger`
---
-ALTER TABLE `logger`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12017;
---
--- AUTO_INCREMENT for table `media`
---
-ALTER TABLE `media`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=29;
---
--- AUTO_INCREMENT for table `notification`
---
-ALTER TABLE `notification`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=215;
---
--- AUTO_INCREMENT for table `operational_status`
---
-ALTER TABLE `operational_status`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT for table `page`
---
-ALTER TABLE `page`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=30;
---
--- AUTO_INCREMENT for table `page_level`
---
-ALTER TABLE `page_level`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
---
--- AUTO_INCREMENT for table `page_type`
---
-ALTER TABLE `page_type`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
---
--- AUTO_INCREMENT for table `rating_links`
---
-ALTER TABLE `rating_links`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
---
--- AUTO_INCREMENT for table `rating_snippet`
---
-ALTER TABLE `rating_snippet`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=37;
---
--- AUTO_INCREMENT for table `search_term`
---
-ALTER TABLE `search_term`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `settings`
---
-ALTER TABLE `settings`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=18;
---
--- AUTO_INCREMENT for table `snippets`
---
-ALTER TABLE `snippets`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=88;
---
--- AUTO_INCREMENT for table `snippet_log`
---
-ALTER TABLE `snippet_log`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=262;
---
--- AUTO_INCREMENT for table `tags`
---
-ALTER TABLE `tags`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=176;
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Tabla que almacena toda la información referente al usuario',AUTO_INCREMENT=20;
---
--- AUTO_INCREMENT for table `user_event`
---
-ALTER TABLE `user_event`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Son las acciones que determinado usuario puede realizar, estas acciones se van añadiendo a medida que el usuario avance de niveles\n',AUTO_INCREMENT=1714;
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `badges`
---
-ALTER TABLE `badges`
-ADD CONSTRAINT `fk_media_badge` FOREIGN KEY (`media_id`) REFERENCES `media` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `badges_achieved`
---
-ALTER TABLE `badges_achieved`
-ADD CONSTRAINT `fk1` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `fk2` FOREIGN KEY (`ID_Badge`) REFERENCES `badges` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `category`
---
-ALTER TABLE `category`
-ADD CONSTRAINT `FK_media_imgcat` FOREIGN KEY (`image_category`) REFERENCES `media` (`ID`);
-
---
--- Constraints for table `comments_links`
---
-ALTER TABLE `comments_links`
-ADD CONSTRAINT `fk_commentlinks_operational` FOREIGN KEY (`approved`) REFERENCES `operational_status` (`ID`),
-ADD CONSTRAINT `fk_comments_links1` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `fk_comments_links2` FOREIGN KEY (`ID_Link`) REFERENCES `links` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `comment_snippet`
---
-ALTER TABLE `comment_snippet`
-ADD CONSTRAINT `FK_comment_snippet1` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`),
-ADD CONSTRAINT `FK_comment_snippet2` FOREIGN KEY (`ID_Snippet`) REFERENCES `snippets` (`ID`),
-ADD CONSTRAINT `FK_commentsnippet_operational` FOREIGN KEY (`approved`) REFERENCES `operational_status` (`ID`);
-
---
--- Constraints for table `controllers`
---
-ALTER TABLE `controllers`
-ADD CONSTRAINT `fk_controller_operational` FOREIGN KEY (`active`) REFERENCES `operational_status` (`ID`);
-
---
--- Constraints for table `gamification_rules`
---
-ALTER TABLE `gamification_rules`
-ADD CONSTRAINT `fk_gamification_media` FOREIGN KEY (`ID_Badge`) REFERENCES `media` (`ID`),
-ADD CONSTRAINT `fk_gamification_rules_1` FOREIGN KEY (`eventName`) REFERENCES `event` (`eventName`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `links`
---
-ALTER TABLE `links`
-ADD CONSTRAINT `fk_link_user` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `fk_links_operational` FOREIGN KEY (`ID_Status`) REFERENCES `operational_status` (`ID`);
-
---
--- Constraints for table `link_log`
---
-ALTER TABLE `link_log`
-ADD CONSTRAINT `fk_linklog_event` FOREIGN KEY (`event`) REFERENCES `event` (`eventName`),
-ADD CONSTRAINT `fk_linklog_link` FOREIGN KEY (`ID_Link`) REFERENCES `links` (`ID`),
-ADD CONSTRAINT `fk_linklog_user` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`);
-
---
--- Constraints for table `lista_favoritos_snippets`
---
-ALTER TABLE `lista_favoritos_snippets`
-ADD CONSTRAINT `fk_lista_favoritos_snippets_1` FOREIGN KEY (`ID_Snippets`) REFERENCES `snippets` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `fk_lista_favoritos_snippets_2` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `lista_tag_snippet`
---
-ALTER TABLE `lista_tag_snippet`
-ADD CONSTRAINT `fk_Lista_Tag_Snippet_1` FOREIGN KEY (`ID_Tag`) REFERENCES `tags` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `fk_Lista_Tag_Snippet_2` FOREIGN KEY (`ID_Snippets`) REFERENCES `snippets` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `list_favorites_links`
---
-ALTER TABLE `list_favorites_links`
-ADD CONSTRAINT `fk_favorites_links1` FOREIGN KEY (`ID_Links`) REFERENCES `links` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `fk_favorites_links2` FOREIGN KEY (`ID_Users`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `list_favorite_page`
---
-ALTER TABLE `list_favorite_page`
-ADD CONSTRAINT `fk_favorite_page_1` FOREIGN KEY (`ID_Page`) REFERENCES `page` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `fk_favorite_page_2` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `list_media_tags`
---
-ALTER TABLE `list_media_tags`
-ADD CONSTRAINT `FK_listmedia_media` FOREIGN KEY (`ID_media`) REFERENCES `media` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `FK_listmedia_tags` FOREIGN KEY (`ID_tag`) REFERENCES `tags` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `list_tags_links`
---
-ALTER TABLE `list_tags_links`
-ADD CONSTRAINT `fk_list_tags_links1` FOREIGN KEY (`ID_Tags`) REFERENCES `tags` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `fk_list_tags_links2` FOREIGN KEY (`ID_Links`) REFERENCES `links` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `list_tag_page`
---
-ALTER TABLE `list_tag_page`
-ADD CONSTRAINT `fk_tag_page_1` FOREIGN KEY (`ID_Page`) REFERENCES `page` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `fk_tag_page_2` FOREIGN KEY (`ID_Tag`) REFERENCES `tags` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `notification`
---
-ALTER TABLE `notification`
-ADD CONSTRAINT `fk_notification_eventtype` FOREIGN KEY (`notification`) REFERENCES `event` (`eventName`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `fk_notifications_1` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `fk_notifications_2` FOREIGN KEY (`ID_User_From`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `page`
---
-ALTER TABLE `page`
-ADD CONSTRAINT `fk_page_category` FOREIGN KEY (`category`) REFERENCES `category` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `fk_page_pagelevel` FOREIGN KEY (`level`) REFERENCES `page_level` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `fk_page_type` FOREIGN KEY (`type`) REFERENCES `page_type` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `rating_links`
---
-ALTER TABLE `rating_links`
-ADD CONSTRAINT `fk_rating_links1` FOREIGN KEY (`ID_Links`) REFERENCES `links` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `fk_rating_links2` FOREIGN KEY (`ID_Users`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `rating_snippet`
---
-ALTER TABLE `rating_snippet`
-ADD CONSTRAINT `FK_rating_snippet1` FOREIGN KEY (`ID_Snippet`) REFERENCES `snippets` (`ID`),
-ADD CONSTRAINT `FK_rating_snippet2` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`);
-
---
--- Constraints for table `search_stat`
---
-ALTER TABLE `search_stat`
-ADD CONSTRAINT `fk_stat_term` FOREIGN KEY (`search_term_id`) REFERENCES `search_term` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `snippets`
---
-ALTER TABLE `snippets`
-ADD CONSTRAINT `fk_snippets_2` FOREIGN KEY (`ID_Category`) REFERENCES `category` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `fk_snippets_3` FOREIGN KEY (`ID_USER`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `fk_snippets_operational` FOREIGN KEY (`ID_Status`) REFERENCES `operational_status` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `snippet_log`
---
-ALTER TABLE `snippet_log`
-ADD CONSTRAINT `fk_snippetlog_event` FOREIGN KEY (`event`) REFERENCES `event` (`eventName`),
-ADD CONSTRAINT `fk_snippetlog_snippet` FOREIGN KEY (`ID_Snippet`) REFERENCES `snippets` (`ID`),
-ADD CONSTRAINT `fk_snippetlog_user` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`);
-
---
--- Constraints for table `users`
---
-ALTER TABLE `users`
-ADD CONSTRAINT `fk_operational_user` FOREIGN KEY (`user_status`) REFERENCES `operational_status` (`ID`);
-
---
--- Constraints for table `user_event`
---
-ALTER TABLE `user_event`
-ADD CONSTRAINT `fk_user_event_1` FOREIGN KEY (`eventName`) REFERENCES `event` (`eventName`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `fk_user_event_2` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_user_event_1` FOREIGN KEY (`eventName`) REFERENCES `event` (`eventName`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_user_event_2` FOREIGN KEY (`ID_User`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

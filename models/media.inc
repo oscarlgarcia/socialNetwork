@@ -14,6 +14,47 @@ class Media extends Object{
   private $limit = 1000; //TODO poner en configs
   private $saveable_fields = array( 'name', 'url', 'size');
 	
+
+  /*
+  * Carga un objeto media
+  */
+  public function getMedia($mediaID){
+    $query = "SELECT * FROM media where ID =".$mediaID ;
+    $this->registry->getObject('db')->executeQuery( $query );
+    if( $this->registry->getObject('db')->numRows() > 0 )
+    {
+      $data = $this->registry->getObject('db')->getRows();
+      $this->setID($data['ID']);
+      $this->setName($data['name']);
+      $this->setURL($data['url']);
+      $this->setSize($data['size']);
+      return true;
+    }
+    return false;
+  }
+
+
+ /**
+  * Obtiene todos los media
+  * Se llama desde Admin_media
+  * @return Object 
+  * Id del media
+  * Nombre del media
+  */
+  public function getAllMedia()
+  {
+    $this->paginatedResult->setLimit(1000000000); // TODO sin limite
+    $this->paginatedResult->setOffset(0);
+    $query = "SELECT ID as mediaID , name as mediaName FROM media" ;
+    $this->paginatedResult->setQuery( $query );
+    $this->paginatedResult->setMethod( 'cache' );
+    $this->paginatedResult->generatePagination();
+    return $this->paginatedResult;
+  }
+
+
+
+
   /**
    * Genera lista de imagenes paginadas
    * @param int $criteria
@@ -43,8 +84,8 @@ class Media extends Object{
   {
     $this->paginatedResult->setLimit(10);
     $this->paginatedResult->setOffset($offset - 1);
-    $query=" SELECT tbl.*, GROUP_CONCAT(DISTINCT tagName SEPARATOR ',') 
-    As all_tags FROM(SELECT m.ID as ID, m.name as name, m.url as url, m.size as size, t.tag_name as tagName from media m inner join list_media_tags l on l.ID_media = m.ID inner join tags t on t.ID = l.ID_tag where name like '%".$criteria."%') tbl GROUP BY tbl.id ";
+    $query=" SELECT tbl.*, GROUP_CONCAT(DISTINCT tagName SEPARATOR ' ') 
+    As all_tags FROM(SELECT m.ID as ID, m.name as name, m.url as url, m.size as size, CONCAT('<a href=\"admin_tags/view/',t.tag_name,'\" class=\"label label-info\">',t.tag_name,'</a> ') as tagName from media m inner join list_media_tags l on l.ID_media = m.ID inner join tags t on t.ID = l.ID_tag where name like '%".$criteria."%') tbl GROUP BY tbl.id ";
     $this->paginatedResult->setQuery( $query );
     $this->paginatedResult->setMethod( 'cache' );
     $this->paginatedResult->generatePagination();
@@ -64,8 +105,6 @@ class Media extends Object{
       $this->setUrl($data['url']);
     }
     return false;
-
-
   }
 	
     /**
@@ -130,6 +169,10 @@ class Media extends Object{
   */
   public function getID(){
     $this->ID;
+  }
+
+  public function setID($value){
+    $this->ID = $value;
   }
    
   public function setName($name){

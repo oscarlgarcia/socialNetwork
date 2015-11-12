@@ -41,13 +41,13 @@
                 <button type="button" class="btn btn-info">{ID}</button>
                 <button type="button" data-toggle="dropdown" class="btn btn-info dropdown-toggle"> <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li class="deleteButton"><a id="delete" data-deleteurl="admin_category/delete/{ID}" data-toggle="modal" data-target="#delete_modal"><span class="fa fa-trash"></span> Eliminar</a></li>
+                  <li class="deleteButton"><a id="delete" data-deleteurl="admin_media/delete/{ID}" data-toggle="modal" data-target="#delete_modal"><span class="fa fa-trash"></span> Eliminar</a></li>
                 </ul>
               </div>
             </td>
-		  	    <td class="col-md-2">{name}</td>
+		  	    <td class="col-md-2"><a href="admin_media/view/{ID}">{name}</a></td>
             <td class="col-md-2">{url}</td>
-            <td class="col-md-2"><img src="{url}" class="img-thumbnail" width="30%" height="30%" /></td>
+            <td class="col-md-2"><img src="{url}" class="img-thumbnail" data-url="{url}" data-title="{name}" width="30%" height="30%" /></td>
             <td class="col-md-2">{size}</td>
             <td class="col-md-2">{all_tags}</td>
           </tr>
@@ -61,26 +61,43 @@
         </div>
         </div>
     </div>
-    <!-- MODAL delete -->
-    <div id="delete_modal" class="modal fade">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Se va a eliminar esta Categor&iacute;a</h4>
-          </div>
-          <div class="modal-body">
-            <p class="text-warning">Est&aacute;s seguro? Esta operaci&oacute;n no podr&aacute; deshacerse</p>
-            <p class="text-warning">Realizar esta acci&oacute;n puede producir efectos en el Site; te aconsejo no realizarla</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-            <a id="delete_link" type="button" class="btn btn-danger">Confirmar eliminaci&oacute;n</a>
-          </div>
+
+<!-- MODAL delete -->
+  <div id="delete_modal" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Se va a eliminar esta Categor&iacute;a</h4>
+        </div>
+        <div class="modal-body">
+          <p class="text-warning">Est&aacute;s seguro? Esta operaci&oacute;n no podr&aacute; deshacerse</p>
+          <p class="text-warning">Realizar esta acci&oacute;n puede producir efectos en el Site; te aconsejo no realizarla</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+          <a id="delete_link" type="button" class="btn btn-danger">Confirmar eliminaci&oacute;n</a>
         </div>
       </div>
     </div>
+  </div>
 <!-- fin MODAL -->
+
+<!-- MODAL viewer -->
+  <div id="viewerModal" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title"></h4>
+        </div>
+        <div class="modal-body">
+          <img id="imageViewer" width="100%" height="100%" class="img-thumbnail"/>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- fin viewer -->
 
 <!-- Modal MEDIA -->
 <div id="mediaModal" class="modal fade">
@@ -130,3 +147,4 @@
 <script type="text/javascript" src="lib/imageUpload/imageUpload.js"></script>
 <script type="text/javascript" src="lib/menuOps/delete_confirm.js"></script>
 <script type="text/javascript" src="lib/search/search_animation.js"></script>
+<script type="text/javascript" src="lib/imageViewer/imageViewer.js"></script>

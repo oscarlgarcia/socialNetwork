@@ -65,6 +65,10 @@ class Admin_mediacontroller{
                   case 'image_upload':
 			        $this->upload();
 			        break;
+
+			      case 'view':
+				    $this->view($this->parameter1);
+					break;
 				}
 			}
 		}else 
@@ -143,6 +147,56 @@ class Admin_mediacontroller{
   }
 
 	
+/*
+  * Metodo que redirecciona a la plantilla de ver
+  *
+  **/
+  private function view($mediaID)
+  {
+  	require_once( FRAMEWORK_PATH . 'models/media.inc');
+	$media = new Media( $this->registry );
+	// Si no encontramos el media
+    if(!$media->getMedia($mediaID))
+	{
+	  //pantalla de error
+	  $this->registry->getObject('template')->buildFromTemplates(
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'media/'.$this->registry->getObject('constants')->getInvalidTpl(),
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+	  	);
+	}
+	else
+	{ 
+	  $this->registry->getObject('template')->buildFromTemplates(
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'media/'.$this->registry->getObject('constants')->getViewTpl(),
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+	  	);
+		
+	  // Cargamos los datos
+	  $this->registry->getObject('template')->getPage()->addTag('error_msg','error-msg'); 
+      $this->registry->getObject('template')->getPage()->addTag('error_text',''); 
+	  $this->registry->getObject('template')->getPage()->addTag('name',$media->getName());
+	  $this->registry->getObject('template')->getPage()->addTag('id',$media->getID());
+
+	  // Cargamos los media 
+	  $list = $media->getAllMedia();
+	  $this->registry->getObject('template')->getPage()->addTag('media',array('SQL',$list->getCache()));
+
+	  //Cargamos los Snippets
+	   //$this->registry->getObject('template')->getPage()->addTag('snippets',array('SQL', $tag->getAllSnippets()->getCache()));
+      
+      //Cargamos los links
+	   //$this->registry->getObject('template')->getPage()->addTag('links',array('SQL', $tag->getAllLinks()->getCache()));
+	   //Cargamos los pages
+	   //$this->registry->getObject('template')->getPage()->addTag('pages',array('SQL', $tag->getAllPages()->getCache()));
+       //Cargamos las imagenes
+	   //$this->registry->getObject('template')->getPage()->addTag('media',array('SQL', $tag->getAllImages()->getCache()));
+    }
+  }
+
+
+
   /*
   * Metodo AJAX para subir imagenes
   * TODO poner en lib

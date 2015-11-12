@@ -1,32 +1,32 @@
 <div class="panel panel-primary">
   <div class="panel-heading">
-    <h3 class="panel-title">Tags</h3>
+    <h3 class="panel-title">Im&aacute;genes</h3>
 	</div>
 	<div class="panel-body">
     <!-- START errors -->
     <div class="alert alert-danger" id="{error_msg}">{error_text}</div>
     <!-- END errors -->
     <div class="col-md-6">
-      <form  method="post" action="admin_tags/update/{id}" id="update_tag_form">
+      <form  method="post" action="admin_media/update/{id}" id="update_tag_form">
         <div class="form-group">
-          <label for="tag_name" class="control-label" >Cambia el nombre del Tag</label>
-          <input class="form-control"  value="{tag_name}" name="tag_name" id="tag_name" type="text"  maxlength="400" autofocus="" tabindex="1">
+          <label for="name" class="control-label" >Cambia el nombre del Media</label>
+          <input class="form-control"  value="{name}" name="name" id="name" type="text"  maxlength="400" autofocus="" tabindex="1">
         </div> 
         <div class="form-group">
-        <input value="{tag_name}" name="name_hidden" id="name_hidden" type="hidden">
+        <input value="{name}" name="name_hidden" id="name_hidden" type="hidden">
         <input type="submit" value="Actualizar Tag" name="btn" id="btn-updateTag" class="pull-right btn btn-primary" tabindex="2"> 
         </div> 
       </form>
     </div>
     <div class="col-md-6">
-      <form  method="post" action="admin_tags/reasig/{id}" id="reasig_tag_form">
+      <form  method="post" action="admin_media/reasig/{id}" id="reasig_tag_form">
         <div class="form-group">
-          <label for="tag_select" class="control-label" >O Asignalo a otro Tag</label>
+          <label for="tag_select" class="control-label" >O Asignalo a otro Media</label>
           <select class="form-control" id="tag_select" name="tag_select" tabindex="3" >
-            <option value="-1" selected="true">Selecciona un Tag</option>
-            <!-- START tag -->
-              <option value="{tagID}">{tagName}</option>
-            <!-- END tag -->
+            <option value="-1" selected="true">Selecciona un Media</option>
+            <!-- START media -->
+              <option value="{mediaID}">{mediaName}</option>
+            <!-- END media -->
           </select>
         </div> 
         <div class="form-group">
