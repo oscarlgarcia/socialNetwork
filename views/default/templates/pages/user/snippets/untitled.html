@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Clipboard.js Demo</title>
+    <script src="node_modules/clipboard/dist/clipboard.min.js"></script>
+    <style>
+        .container{margin: 30px;}
+        button{margin-left: 160px;}
+    </style>
+</head>
+<body>
+<h2>textarea1 > Copy > Clipboard > textarea2</h2>
+<div style="display: flex">
+    <div class="container">
+        <h4 for="textarea1">Text Area 1:</h4>
+        <textarea id="textarea1">
+        </textarea>
+    </div>
+    <div class="container">
+        <h4 for="textarea1">Text Area 2:</h4>
+        <textarea id="textarea2">
+        </textarea>
+    </div>
+</div>
+<button id="button1"
+        data-clipboard-action="copy"
+        data-clipboard-target="#textarea1">
+        Move Content
+</button>
+</body>
+<script>
+    var clipboard = new Clipboard('#button1'),
+        texarea2 = document.getElementById('textarea2');
+    clipboard.on('success', function(event) {
+        textarea2.value=event.text;
+    });
+</script>
+</html>

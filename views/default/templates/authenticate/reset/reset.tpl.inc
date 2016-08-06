@@ -10,7 +10,7 @@
           <fieldset>
             <span class="help-block">Enviaremos a tu correo electrónico las instrucciones de como obtener tu nuevo password.</span>
             <div class="form-group input-group">
-              <span class="input-group-addon">@</span>
+              <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
               <input class="form-control" placeholder="Email" name="sn_email" id="email" type="email" required="" autofocus="">
             </div>
             <button type="submit" class="btn btn-primary btn-block" id="btn-olvidado">Recuperar Password</button>

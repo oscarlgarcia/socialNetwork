@@ -57,15 +57,15 @@
   	      </div>	
   	      <div class="row">
   	        <div class="col-md-12">
-  		      <div class="form-group">
-  		        <textarea disabled id="code" name="code" >{code}</textarea>
+              <div class="btn-group pull-right form-group">
+                <button type="button" id="btn-fullscreen" class="btn btn-default">
+                  <span class="fa fa-expand"></span>
+                </button>
               </div>
-  		    </div>
-          </div>
-  	      <div class="row">
-  	        <div class="col-md-12 pull-right">
-  		      <div class="alert alert-info">
-                <i class="fa fa-info-circle"></i> Presiona (F11) en el editor para cambiar a pantalla completa.
+            </div>
+            <div class="col-md-12">
+  		      <div class="form-group">
+  		        <textarea id="code" name="code">{code}</textarea>
               </div>
   		    </div>
           </div>
@@ -130,6 +130,7 @@
 	</div>
   <!-- comments feedback panel -->
 </div>
+
 <script type="text/javascript"  src="lib/snippets/view_snippets.js"></script>
 <script type="text/javascript"  src="lib/rating/rate_it.js"></script>
 <script type="text/javascript"  src="lib/comments/comments.js"></script>

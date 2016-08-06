@@ -87,7 +87,7 @@ class Registrationcontroller{
 			
 			// registramos en el log y gamificamos
 			$data['snippet_name']=$snippet->getTitle();
-	        $this->registry->getObject('event')->notify('user.snippet.add',$user,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data));
+	        $this->registry->getObject('event')->notify('user.snippet.add',$user,$_SERVER['REMOTE_ADDR'],$this->registry->getObject('util')->prepareData($data),$user);
 			
          	require_once FRAMEWORK_PATH . 'models/snippet_log.inc';
          	$log = new Snippet_Log($this->registry,$user,$idSnippet,'user.snippet.add');

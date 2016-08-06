@@ -21,7 +21,7 @@ class Upload {
   /*
   * Constructor explicito para este objeto
   */
-  public function __construct( Registry $registry, $uploadDirectoryPath = '/wamp/www/socialNetwork/static/resources/images/', $relativePath = 'static/resources/images/', $errorImagePath = 'views/default/images/site/img_error.png')
+  public function __construct( Registry $registry, $uploadDirectoryPath = '/Library/WebServer/Documents/socialNetwork/static/resources/images/', $relativePath = 'static/resources/images/', $errorImagePath = 'views/default/images/site/img_error.png')
   {
 
     $this->registry = $registry;

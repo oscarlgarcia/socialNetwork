@@ -67,7 +67,7 @@ class EventListener extends AbstractSubject{
   	$this->data = $data;
     $this->userFrom = $from;
     $this->message = $message;
-    $this->timestamp = $timestamp;
+    $this->timestamp = date("Y-m-d H:i:s");
     $this->showed = $showed;
 
   	foreach($this->observers as $obs) 

@@ -387,6 +387,7 @@ class Snippetscontroller{
 	*/
   private function categorySearch($categoryName,$offset=1){
     
+   
 	$offset=($offset<=0)?1:$offset;
     require_once( FRAMEWORK_PATH . 'models/snippets.inc');
     $snippets = new Snippets( $this->registry );

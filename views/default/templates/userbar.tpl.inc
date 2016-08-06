@@ -32,7 +32,7 @@
 						<input type="hidden" id="referer" name="referer" value="{referer}" />
                       </div>
                       <p class="help-block">
-                        <a href="authenticate/getpass"><small>He olvidado el password</small></a>
+                        <a href="authenticate/getpass"><small>He olvidado mi password</small></a>
                       </p>
                      <div class="form-group">
                         <button type="submit" class="btn btn-primary btn-block">Sign in</button>
@@ -40,6 +40,18 @@
                     </form>
                   </div>
                 </div>
+                <div class="login-or">
+                  <hr class="hr-or">
+                    <span class="span-or">o si lo prefieres</span>
+                </div>
+                <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6">
+                  <a href="#" class="btn btn-primary btn-block">Facebook</a>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6">
+                  <a href="#" class="btn btn-default btn-block"><i class="fa fa-github"></i> Github</a>
+                </div>
+              </div>
               </li>
             </ul>   
           </li>
