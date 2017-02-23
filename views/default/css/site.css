@@ -23,6 +23,8 @@ html,body { height: 100%;}
 .ecpAlpha0-bg{ background-color: transparent; }
 
 /*---- Color link de footer ----*/
+
+
 .footer-link , .footer-link:hover , .footer-link:visited{ color:#c4c4c4;}
 
 /*---- mensaje de error ----*/
