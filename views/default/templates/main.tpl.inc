@@ -1,11 +1,14 @@
 <!-- Main content of the splash screen -->
-<div class="jumbotron ecpsplash-bg ecpsplash-margin">
+<div class="section ecpsplash-bg">
+  
   <div class="container white" >
-      <h2>Learn, Code, Share</h2>
+      <h3 class="text-center">Aprende, programa, comparte</h3>
       <p>In today's world internet is the most popular way of connecting with the people. At <a href="http://www.tutorialrepublic.com" target="_blank">tutorialrepublic.com</a> you will learn the essential of web development technologies along with real life practice example, so that you can create your own website to connect with the people around the world.</p>
       <p><a href="authenticate/signup" class="btn btn-success btn-lg">Registrarme</a></p>
   </div>
+
 </div> 
+
 <div class="container">
 <div class="row">
             <div class="col-xs-4">

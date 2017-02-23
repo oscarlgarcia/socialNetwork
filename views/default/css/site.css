@@ -12,19 +12,18 @@ html,body { height: 100%;}
 
 /*---- Jumbotron ----*/
 .ecpsplash-bg {background: url('../images/site/splash.jpg') no-repeat scroll 40% bottom / cover rgba(0, 0, 0, 0); !important; }
-.ecpsplash-margin{ padding-top: 80px; }
+
 
 /*---------Size Icon----------*/
 .icon-48{ font-size: 48px;}
 /*---- Colores ----*/
 .white{ color:#FFF;}
 .grey{ background-color:#EBE8E9; }
+
 /*---- transparente ----*/
 .ecpAlpha0-bg{ background-color: transparent; }
 
 /*---- Color link de footer ----*/
-
-
 .footer-link , .footer-link:hover , .footer-link:visited{ color:#c4c4c4;}
 
 /*---- mensaje de error ----*/
@@ -174,6 +173,9 @@ filter: progid:DXImageTransform.Microsoft.gradient(enabled = false); cursor: not
     margin-bottom: 0px !important;
   }
 
-
-
+/* Section  */
+.section {
+    padding-top: 60px;
+    padding-bottom: 45px;
+}
 
