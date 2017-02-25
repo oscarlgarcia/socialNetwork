@@ -1,5 +1,5 @@
 <div id="wrap" class="ecpGlobal-bg">
-  <div role="navigation" class="navbar navbar-inverse navbar-fixed-top ecpnavbar-bg">
+  <div role="navigation" class="navbar navbar-inverse ecpnavbar-bg">
     <div class="container-fluid">
       <!-- Toggle for mobile -->
       <div class="navbar-header">

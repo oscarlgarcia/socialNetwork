@@ -12,7 +12,9 @@ html,body { height: 100%;}
 
 /*---- Jumbotron ----*/
 .ecpsplash-bg {background: url('../images/site/splash.jpg') no-repeat scroll 40% bottom / cover rgba(0, 0, 0, 0); !important; }
-
+.ecpmainsearchlength{
+  width: 400px!important;
+}
 
 /*---------Size Icon----------*/
 .icon-48{ font-size: 48px;}
@@ -175,7 +177,12 @@ filter: progid:DXImageTransform.Microsoft.gradient(enabled = false); cursor: not
 
 /* Section  */
 .section {
-    padding-top: 60px;
-    padding-bottom: 45px;
+    padding-top:0px;
+    padding-bottom: 100px;
 }
 
+/* override navbar*/
+.navbar {
+    margin-bottom: 0 !important;
+    border-radius: 0 !important;
+}
