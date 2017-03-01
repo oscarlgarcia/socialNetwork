@@ -24,7 +24,7 @@
         <div class="panel panel-default grey">
           <div class="panel-body">
             <div class="text-center">
-              <a href="snippets/category/{categoryName}">
+              <a class="blackLink" href="snippets/category/{categoryName}">
               {categoryName}
               </a>
             </div>

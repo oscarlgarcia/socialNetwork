@@ -22,6 +22,10 @@ html,body { height: 100%;}
 .white{ color:#FFF;}
 .grey{ background-color:#EBE8E9; }
 
+.blackLink{
+  color:black;
+}
+
 /*---- transparente ----*/
 .ecpAlpha0-bg{ background-color: transparent; }
 
