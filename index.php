@@ -110,15 +110,20 @@ if( $registry->getObject('authenticate')->isLoggedIn() )
 }
 else  //-- Si no lo estamos ----/
 {
-   $registry->getObject('template')->buildFromTemplates(
-    $registry->getObject('constants')->getHeaderTpl(),
-    $registry->getObject('constants')->getMainTpl(), 
-    $registry->getObject('constants')->getFooterTpl()
-    );
-   //--------------- mostramos la barra de usuario no loggeado -------
-   $registry->getObject('template')->addTemplateBit('userbar', $registry->getObject('constants')->getUserbarTpl());
-   $registry->getObject('template')->getPage()->addTag('referer','home');
+  $registry->getObject('template')->buildFromTemplates(
+   $registry->getObject('constants')->getHeaderTpl(),
+   $registry->getObject('constants')->getMainTpl(), 
+   $registry->getObject('constants')->getFooterTpl()
+  );
+  //--------------- mostramos la barra de usuario no loggeado -------
+  $registry->getObject('template')->addTemplateBit('userbar', $registry->getObject('constants')->getUserbarTpl());
+  $registry->getObject('template')->getPage()->addTag('referer','home');
 	
+  
+  require_once( FRAMEWORK_PATH . 'models/category.inc');
+  $categories = new Category( $registry );
+  $pagination = $categories->listCategory();
+  $registry->getObject('template')->getPage()->addTag( 'langs', array( 'SQL', $pagination->getCache() ) ); 
    // Si la peticion es por Ajax debemos retornar un mensaje de error
    if (isset($_POST['ajaxRequest'])){
      echo NOT_LOGGED;
