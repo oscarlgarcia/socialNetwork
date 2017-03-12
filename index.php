@@ -80,58 +80,11 @@ while( $controller = $registry->getObject('db')->getRows() )
 //--------------- Leemos la URL -----------------------------------------
 $controller = $registry->getObject('url')->getURLBit(0);
 
-//----------------  si estamos loggeados --------------------------------
-if( $registry->getObject('authenticate')->isLoggedIn() )
-{
-  //Si es Admin
-  if($registry->getObject('authenticate')->getUser()->isAdmin())
-  {
-    $registry->getObject('template')->buildFromTemplates(
-      $registry->getSetting($registry->getObject('constants')->getConstant('pages_admin_base')).$registry->getObject('constants')->getHeaderTpl(),
-      $registry->getSetting($registry->getObject('constants')->getConstant('pages_admin_base')).$registry->getObject('constants')->getDashboardTpl(),
-      $registry->getSetting($registry->getObject('constants')->getConstant('pages_admin_base')).$registry->getObject('constants')->getFooterTpl()
-      );
-  }else
-  { //Si es usuario normal
-    $registry->getObject('template')->buildFromTemplates(
-      $registry->getObject('constants')->getHeaderTpl(), 
-      $registry->getSetting($registry->getObject('constants')->getConstant('pages_logged_base')).$registry->getObject('constants')->getDashboardTpl(), 
-      $registry->getObject('constants')->getFooterTpl()
-      );
-	  //---------------------- mostramos la barra de usuario logeado ---------
-	  $registry->getObject('template')->addTemplateBit(
-      'userbar', 
-      $registry->getSetting($registry->getObject('constants')->getConstant('pages_logged_base')).$registry->getObject('constants')->getLoggedUserbarTpl()
-      );
-    $registry->getObject('template')->getPage()->addTag( 'referer', ( isset( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER']  : '' ) );
-    $registry->getObject('template')->getPage()->addTag( 'username', $registry->getObject('authenticate')->getUser()->getUserLogin());	
-  }	
-  
-}
-else  //-- Si no lo estamos ----/
-{
-  $registry->getObject('template')->buildFromTemplates(
-   $registry->getObject('constants')->getHeaderTpl(),
-   $registry->getObject('constants')->getMainTpl(), 
-   $registry->getObject('constants')->getFooterTpl()
-  );
-  //--------------- mostramos la barra de usuario no loggeado -------
-  $registry->getObject('template')->addTemplateBit('userbar', $registry->getObject('constants')->getUserbarTpl());
-  $registry->getObject('template')->getPage()->addTag('referer','home');
-	
-  
-  require_once( FRAMEWORK_PATH . 'models/category.inc');
-  $categories = new Category( $registry );
-  $pagination = $categories->listCategory();
-  $registry->getObject('template')->getPage()->addTag( 'langs', array( 'SQL', $pagination->getCache() ) ); 
-   // Si la peticion es por Ajax debemos retornar un mensaje de error
-   if (isset($_POST['ajaxRequest'])){
-     echo NOT_LOGGED;
-	 exit();
-   }
-	
-}
-
+// Si la peticion es por Ajax debemos retornar un mensaje de error
+  if (isset($_POST['ajaxRequest'])){
+    echo NOT_LOGGED;
+	  exit();
+  }
 
 //----------- si el controller que llamamos en la url esta registrado lo redirigimos a ese controlador ------
 if( in_array( $controller, $controllers ) )
@@ -142,10 +95,38 @@ if( in_array( $controller, $controllers ) )
 }
 else
 {
-	 //sino vamos al controler por defecto
-	// default controller, or pass control to CMS type system?
+	 //sino vamos al controler por defecto "home"
+  $registry->getObject('template')->buildFromTemplates(
+    $registry->getObject('constants')->getHeaderTpl(),
+    $registry->getObject('constants')->getMainTpl(), 
+    $registry->getObject('constants')->getFooterTpl()
+  );
+  
+  //--------------- mostramos las categorias ------
+	require_once( FRAMEWORK_PATH . 'models/category.inc');
+  $categories = new Category( $registry );
+  $pagination = $categories->listCategory();
+  $registry->getObject('template')->getPage()->addTag( 'langs', array( 'SQL', $pagination->getCache() ) ); 
 }
 
+//------------------ DETERMINAMOS QUE BARRA MOSTRAR --------
+if( $registry->getObject('authenticate')->isLoggedIn() )
+{
+
+  //---------------------- mostramos la barra de usuario logeado ---------
+  $registry->getObject('template')->addTemplateBit(
+      'userbar', 
+       $registry->getSetting($registry->getObject('constants')->getConstant('pages_logged_base')).$registry->getObject('constants')->getLoggedUserbarTpl()
+    );
+  $registry->getObject('template')->getPage()->addTag( 'referer', ( isset( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER']  : '' ) );
+  $registry->getObject('template')->getPage()->addTag( 'username', $registry->getObject('authenticate')->getUser()->getUserLogin());
+
+}else{ 
+  //--------------- mostramos la barra de usuario no loggeado -------
+  $registry->getObject('template')->addTemplateBit('userbar', $registry->getObject('constants')->getUserbarTpl());
+  $registry->getObject('template')->getPage()->addTag('referer','dashboard');
+
+}
 // -----------------  Generamos la salida -------------------------------
 $registry->getObject('template')->parseOutput();
 print $registry->getObject('template')->getPage()->getContentToPrint();

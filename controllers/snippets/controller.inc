@@ -126,13 +126,8 @@ class Snippetscontroller{
 		}else 
 		{
 	       // sino esta logeado redirecciona
-	       $this->registry->getObject('template')->buildFromTemplates(
-	       	$this->registry->getObject('constants')->getHeaderTpl(), 
-	       	$this->registry->getObject('constants')->getMainTpl(), 
-	       	$this->registry->getObject('constants')->getFooterTpl()
-	       	);   	
-      }
-      
+	        header('Location: home');  
+	    }
 	}
 	
 	/*
@@ -256,7 +251,7 @@ class Snippetscontroller{
 	 require_once( FRAMEWORK_PATH . 'models/category.inc');
 	 $category = new Category( $this->registry );
 	 $pagination =$category->countSnippetByCategory();
-	 $this->registry->getObject('template')->getPage()->addTag( 'langs', array( 'SQL', $pagination->getCache() ) ); 	
+	 $this->registry->getObject('template')->getPage()->addTag( 'langs', array( 'SQL', $pagination->getCache() ) );
   }	
   
      /*
@@ -854,9 +849,7 @@ class Snippetscontroller{
 	   //TODO poner en consatante
 	   echo "ok";
   	   exit();
-	}	
-	
-
+	}
 	
 }
 			

@@ -9,7 +9,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a href="home" class="navbar-brand"><img src="views/default/images/site/titulo.png"></a>
+        <a href="{site_url}" class="navbar-brand"><img src="views/default/images/site/titulo.png"></a>
       </div>
       <!-- nav links -->
       <div id="navbarCollapse" class="collapse navbar-collapse">
@@ -29,7 +29,7 @@
   			    	    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                         <label for="password" class="sr-only"></label>
   			    	    <input type="password" class="form-control" name="sn_auth_pass" id="pass" placeholder="Password" required>
-						<input type="hidden" id="referer" name="referer" value="{referer}" />
+						      <input type="hidden" id="referer" name="referer" value="{referer}" />
                       </div>
                       <p class="help-block">
                         <a href="authenticate/getpass"><small>He olvidado mi password</small></a>

@@ -288,7 +288,7 @@ class Authenticatecontroller{
 	 */
 	private function login()
 	{
-		
+
 		if( $this->registry->getObject('authenticate')->isJustProcessed() )
 		{
 			if( isset( $_POST['sn_auth_user'] ) && $this->registry->getObject('authenticate')->isLoggedIn() == false )
@@ -320,12 +320,13 @@ class Authenticatecontroller{
 				}
 				else
 				{
-				  $ref=$_POST['referer'];
-				  if($this->registry->getObject('authenticate')->getUser()->isAdmin())
-                    $ref="#";
+				  $ref = $this->registry->getSetting($this->registry->getObject('constants')->getConstant('site_url')).$_POST['referer'];
+				  //if($this->registry->getObject('authenticate')->getUser()->isAdmin())
+                  // $ref="#";
 				  
-				  if($_SERVER['HTTP_REFERER']==$this->registry->getSetting($this->registry->getObject('constants')->getConstant('site_url'))."authenticate/logout")
-                    $ref="#";
+				  //if($_SERVER['HTTP_REFERER']== $this->registry->getSetting($this->registry->getObject('constants')->getConstant('site_url'))."authenticate/logout")
+                   // $ref="#";
+
 	              	$date = date("Y-m-d H:i:s");
 					// registramos en el log y gamificamos
 					$this->registry->getObject('event')->notify('user.login',$_SESSION['sn_auth_session_uid'],$_SERVER['REMOTE_ADDR'],'',$_SESSION['sn_auth_session_uid'],'Has iniciado sesion',$date,3);
@@ -367,15 +368,18 @@ class Authenticatecontroller{
 		}
 		
 		$this->registry->getObject('authenticate')->logout();
-		$this->registry->getObject('template')->addTemplateBit(
-			'userbar', 
-			$this->registry->getObject('constants')->getUserbarTpl()
-			);
+		$this->registry->getObject('template')->addTemplateBit('userbar',$this->registry->getObject('constants')->getUserbarTpl());
+		$this->registry->getObject('template')->getPage()->addTag('referer','dashboard');
 		$this->registry->getObject('template')->buildFromTemplates(
 			$this->registry->getObject('constants')->getHeaderTpl(), 
 			$this->registry->getObject('constants')->getMainTpl(), 
 			$this->registry->getObject('constants')->getFooterTpl()
-			);
+		);
+		//sino vamos al controler por defecto
+	    require_once( FRAMEWORK_PATH . 'models/category.inc');
+        $categories = new Category( $this->registry );
+        $pagination = $categories->listCategory();
+        $this->registry->getObject('template')->getPage()->addTag('langs', array('SQL',$pagination->getCache())); 
 	}
 	
 	/**

@@ -272,6 +272,7 @@ class Registrationcontroller{
 		{
 			$this->registry->getObject('template')->getPage()->addTag( 'error', '' );
 			$this->registry->getObject('template')->getPage()->addTag('error_msg','error-msg');
+			$this->registry->getObject('template')->getPage()->addTag('captcha','captcha/'.urlencode(microtime()));
 		}
 		else
 		{
@@ -284,11 +285,8 @@ class Registrationcontroller{
 			}
 			$errorsCache = $this->registry->getObject('db')->cacheData( $errorsData );
 			$this->registry->getObject('template')->getPage()->addTag('error_msg','simple-msg');
-			$this->registry->getObject('template')->getPage()->addTag( 'errors', array( 'DATA', $errorsCache ) );
-			$this->registry->getObject('template')->getPage()->addTag(
-			'captcha',
-			'captcha/'.urlencode(microtime())
-			);
+			$this->registry->getObject('template')->getPage()->addTag('errors', array( 'DATA', $errorsCache ) );
+			$this->registry->getObject('template')->getPage()->addTag('captcha','captcha/'.urlencode(microtime()));
 
 			$toFill = array_merge( $this->submittedValues,$this->registrationErrorLabels );
 			foreach( $toFill as $tag => $value )

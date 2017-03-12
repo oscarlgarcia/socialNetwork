@@ -25,7 +25,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a href="home" class="navbar-brand"><img src="views/default/images/site/titulo.png"></a>
+        <a href="{site_url}" class="navbar-brand"><img src="views/default/images/site/titulo.png"></a>
       </div>
     </div>
 </div>
