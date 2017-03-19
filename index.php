@@ -80,11 +80,6 @@ while( $controller = $registry->getObject('db')->getRows() )
 //--------------- Leemos la URL -----------------------------------------
 $controller = $registry->getObject('url')->getURLBit(0);
 
-// Si la peticion es por Ajax debemos retornar un mensaje de error
-  if (isset($_POST['ajaxRequest'])){
-    echo NOT_LOGGED;
-	  exit();
-  }
 
 //----------- si el controller que llamamos en la url esta registrado lo redirigimos a ese controlador ------
 if( in_array( $controller, $controllers ) )
@@ -122,6 +117,13 @@ if( $registry->getObject('authenticate')->isLoggedIn() )
   $registry->getObject('template')->getPage()->addTag( 'username', $registry->getObject('authenticate')->getUser()->getUserLogin());
 
 }else{ 
+
+  // Si la peticion es por Ajax debemos retornar un mensaje de error
+  if (isset($_POST['ajaxRequest'])){
+    echo NOT_LOGGED;
+    exit();
+  }
+  
   //--------------- mostramos la barra de usuario no loggeado -------
   $registry->getObject('template')->addTemplateBit('userbar', $registry->getObject('constants')->getUserbarTpl());
   $registry->getObject('template')->getPage()->addTag('referer','dashboard');

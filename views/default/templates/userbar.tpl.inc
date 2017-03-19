@@ -14,6 +14,9 @@
       <!-- nav links -->
       <div id="navbarCollapse" class="collapse navbar-collapse">
         <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a href="authenticate/register"> Registrate</a>
+          </li>
           <li class="dropdown">
             <a href="#" data-toggle="dropdown" class="dropdown-toggle">Login <b class="caret"></b></a>
             <ul class="dropdown-menu loginform-custom-padding">
@@ -46,7 +49,7 @@
                 </div>
                 <div class="row">
                 <div class="col-xs-6 col-sm-6 col-md-6">
-                  <a href="#" class="btn btn-primary btn-block">Facebook</a>
+                  <a href="#" class="btn btn-primary btn-block"><i class="fa fa-facebook"></i>acebook</a>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6">
                   <a href="#" class="btn btn-default btn-block"><i class="fa fa-github"></i> Github</a>
