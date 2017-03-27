@@ -50,6 +50,7 @@ class Registrationcontroller{
 			$controller = new Controller( $this->registry);
 			$controller->setControllerName( htmlentities($this->registry->getObject('db')->sanitizeData( $_POST['controller_name'] ),ENT_COMPAT,'UTF-8') );
 			$controller->setDescription( htmlspecialchars($this->registry->getObject('db')->sanitizeData($_POST['controller_description']),ENT_IGNORE));
+			$controller->setAuthRequired(htmlspecialchars($this->registry->getObject('db')->sanitizeData($_POST['required']),ENT_IGNORE));
 			$controller->setActive(3); // Pendiente de aprobar		
 			$controller->setCreated(date("Y-m-d H:i:s")); // fecha de ahora	
 			$idController = $controller->save();		

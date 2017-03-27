@@ -119,7 +119,7 @@ class Category extends Object
   {
     $this->paginatedResult->setLimit($this->limit);
 	  $this->paginatedResult->setOffset( $offset );
-	  $query = "SELECT s.ID as categoryID,s.name as categoryName FROM  category s order by s.name ASC" ;
+	  $query = "SELECT s.ID as categoryID,s.name as categoryName FROM  category s where category_type=1 order by s.name ASC" ;
 	  $this->paginatedResult->setQuery( $query );
 	  $this->paginatedResult->setMethod( 'cache' );
 	  $this->paginatedResult->generatePagination();

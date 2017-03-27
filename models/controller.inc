@@ -13,7 +13,8 @@ class Controller extends Object
   private $active;
   private $description;
   private $created;
-  private $saveable_fields = array( 'controller', 'active','description','created'); 
+  private $auth_required;
+  private $saveable_fields = array( 'controller', 'active','description','created','auth_required'); 
   private $limit = 10; //poner en config
   
   /*
@@ -162,6 +163,13 @@ class Controller extends Object
   public function getDescription(){
   	return $this->description;
   }
-
+  
+  public function setAuthRequired($req){ 
+    $this->auth_required = $req; 
+  }
+  
+  public function getAuthRequired(){
+    return $this->auth_required;
+  }
 }
 ?>
