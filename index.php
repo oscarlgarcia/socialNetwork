@@ -90,18 +90,22 @@ if( in_array( $controller, $controllers ) )
 }
 else
 {
-	 //sino vamos al controler por defecto "home"
-  $registry->getObject('template')->buildFromTemplates(
-    $registry->getObject('constants')->getHeaderTpl(),
-    $registry->getObject('constants')->getMainTpl(), 
-    $registry->getObject('constants')->getFooterTpl()
-  );
-  
-  //--------------- mostramos las categorias ------
-	require_once( FRAMEWORK_PATH . 'models/category.inc');
-  $categories = new Category( $registry );
-  $pagination = $categories->listCategory();
-  $registry->getObject('template')->getPage()->addTag( 'langs', array( 'SQL', $pagination->getCache() ) ); 
+  if($registry->getObject('authenticate')->isLoggedIn() )
+  { 
+      header('Location: dashboard'); 
+  }
+      //si es usuario normal vamos al "home" de un usuario normal
+      $registry->getObject('template')->buildFromTemplates(
+       $registry->getObject('constants')->getHeaderTpl(),
+       $registry->getObject('constants')->getMainTpl(), 
+       $registry->getObject('constants')->getFooterTpl()
+      );
+      //--------------- mostramos las categorias ------
+      require_once( FRAMEWORK_PATH . 'models/category.inc');
+      $categories = new Category( $registry );
+      $pagination = $categories->listCategory();
+      $registry->getObject('template')->getPage()->addTag( 'langs', array( 'SQL', $pagination->getCache() ) ); 
+
 }
 
 //------------------ DETERMINAMOS QUE BARRA MOSTRAR --------
