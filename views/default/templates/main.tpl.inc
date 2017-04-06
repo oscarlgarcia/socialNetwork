@@ -33,7 +33,7 @@
         <div class="panel panel-default grey">
           <div class="panel-body">
             <div class="text-center">
-              <a class="blackLink" href="snippets/category/{categoryName}">
+              <a class="blackLink" href="category/{categoryName}">
               {categoryName}
               </a>
             </div>

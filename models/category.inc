@@ -111,15 +111,16 @@ class Category extends Object
   }
 	
   /**
-   * Genera lista de categorias
+   * Genera lista de categorias pasando el tipo
+   * Mostrara aquella aprobadas
    * @param int $offset 
    * @return Object pagination object
    */
-  public function listCategory( $offset=0 )
+  public function listCategory( $offset=0, $type= 1)
   {
     $this->paginatedResult->setLimit($this->limit);
 	  $this->paginatedResult->setOffset( $offset );
-	  $query = "SELECT s.ID as categoryID,s.name as categoryName FROM  category s where category_type=1 order by s.name ASC" ;
+	  $query = "SELECT s.ID as categoryID,s.name as categoryName FROM  category s where category_type=".$type." and enable = 4 order by s.name ASC" ;
 	  $this->paginatedResult->setQuery( $query );
 	  $this->paginatedResult->setMethod( 'cache' );
 	  $this->paginatedResult->generatePagination();
@@ -142,7 +143,8 @@ class Category extends Object
   {
     $this->paginatedResult->setLimit(10);
     $this->paginatedResult->setOffset($offset - 1);
-    $query="SELECT c.ID as ID, c.name as categoryName, md.url as categoryImage, c.description as categoryDescripition from category c inner join media md on md.ID = c.image_category where c.name like '%".$criteria."%' or c.image_category  like '%".$criteria."%' or c.description like '%".$criteria."%'";
+    $query="SELECT c.ID as ID, c.name as categoryName, md.url as categoryImage, c.description as categoryDescripition, t.name as categoryType, s.status_class as class FROM category c inner join media md on md.ID = c.image_category inner join operational_status s  on c.enable = s.ID  inner join category_type t  on c.category_type = t.ID  where c.name like '%".$criteria."%' or c.image_category  like '%".$criteria."%' or c.description like '%".$criteria."%'";
+
     $this->paginatedResult->setQuery( $query );
     $this->paginatedResult->setMethod( 'cache' );
     $this->paginatedResult->generatePagination();

@@ -21,25 +21,30 @@
 		      <tr>
 			      <th><span class="fa fa-tasks"></span> ID</th>
 				    <th>Nombre</th>
+            <th>Tipo</th>
             <th>Imagen asociada</th>
             <th>Descripci&oacute;n</th>
 			    </tr>
 		    </thead>
 		    <tbody>
 		    <!-- START category -->
-		      <tr>
+		      <tr class="{class}">
 		        <td class="col-md-2">
               <div class="btn-group">
-                <button type="button" class="btn btn-info">{ID}</button>
-                <button type="button" data-toggle="dropdown" class="btn btn-info dropdown-toggle"> <span class="caret"></span></button>
+                <button type="button" class="btn btn-{class}">{ID}</button>
+                <button type="button" data-toggle="dropdown" class="btn btn-{class} dropdown-toggle"> <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li class="deleteButton"><a id="delete" data-deleteurl="admin_category/delete/{ID}" data-toggle="modal" data-target="#delete_modal"><span class="fa fa-trash"></span> Eliminar</a></li>
+                <li><a href="admin_category/publish/{ID}"><span class="fa fa-check"></span> Habilitar</a></li>
+                <li><a href="admin_category/ban/{ID}"><span class="fa fa-ban"></span> Deshabilitar</a></li>
+                <li class="divider"></li>
+                <li class="deleteButton"><a id="delete" data-deleteurl="admin_category/delete/{ID}" data-toggle="modal" data-target="#delete_modal"><span class="fa fa-trash"></span> Eliminar</a></li>
                 </ul>
               </div>
             </td>
 		  	    <td class="col-md-2">{categoryName}</td>
+            <td class="col-md-2">{categoryType}</td>
             <td class="col-md-3"><img src="{categoryImage}" class="img-thumbnail" width="30%" height="30%" /></td>
-            <td class="col-md-5">{categoryDescripition}</td>
+            <td class="col-md-3">{categoryDescripition}</td>
           </tr>
         <!-- END category -->
 		    </tbody>
