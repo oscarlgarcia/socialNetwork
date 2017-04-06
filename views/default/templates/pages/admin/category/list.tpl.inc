@@ -34,6 +34,7 @@
                 <button type="button" class="btn btn-{class}">{ID}</button>
                 <button type="button" data-toggle="dropdown" class="btn btn-{class} dropdown-toggle"> <span class="caret"></span></button>
                 <ul class="dropdown-menu">
+                <li><a href="admin_category/edit/{ID}"><span class="fa fa-edit"></span> Editar</a></li>
                 <li><a href="admin_category/publish/{ID}"><span class="fa fa-check"></span> Habilitar</a></li>
                 <li><a href="admin_category/ban/{ID}"><span class="fa fa-ban"></span> Deshabilitar</a></li>
                 <li class="divider"></li>

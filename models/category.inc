@@ -59,6 +59,19 @@ class Category extends Object
     return $uid;  
   }
 
+  /**
+  * actualiza el estatus de la categoria a partir de su ID
+  * @param int $categoryID 
+  */
+  public function updateStatus($categoryID, $status)
+  {
+    $changes = array();
+    $changes['enable'] = $status;
+    $this->registry->getObject('db')->updateRecords('category', $changes," id = ".$categoryID );
+    $uid = $this->registry->getObject('db')->lastInsertID();
+    return $uid;  
+  }
+  
 
 
   /**
@@ -143,7 +156,7 @@ class Category extends Object
   {
     $this->paginatedResult->setLimit(10);
     $this->paginatedResult->setOffset($offset - 1);
-    $query="SELECT c.ID as ID, c.name as categoryName, md.url as categoryImage, c.description as categoryDescripition, t.name as categoryType, s.status_class as class FROM category c inner join media md on md.ID = c.image_category inner join operational_status s  on c.enable = s.ID  inner join category_type t  on c.category_type = t.ID  where c.name like '%".$criteria."%' or c.image_category  like '%".$criteria."%' or c.description like '%".$criteria."%'";
+    $query="SELECT c.ID as ID, c.name as categoryName, md.url as categoryImage, c.description as categoryDescripition, t.name as categoryType, s.status_class as class FROM category c inner join media md on md.ID = c.image_category inner join operational_status s  on c.enable = s.ID  inner join category_type t  on c.category_type = t.ID  where c.name like '%".$criteria."%' or c.image_category  like '%".$criteria."%' or c.description like '%".$criteria."%' order by c.name ASC";
 
     $this->paginatedResult->setQuery( $query );
     $this->paginatedResult->setMethod( 'cache' );

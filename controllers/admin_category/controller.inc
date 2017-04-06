@@ -69,6 +69,14 @@ class Admin_categorycontroller{
 				  	$this->register();
 					  break;
 
+				 case 'ban':
+				    $this->ban(intval($this->parameter1));
+				    break;
+
+				  case 'publish':
+				    $this->publish(intval($this->parameter1));
+				    break;
+
 				  case 'delete':
 				    $this->delete(intval($this->parameter1));
 				    break;
@@ -86,6 +94,32 @@ class Admin_categorycontroller{
     }  
 	}
 	
+
+  /*
+  * Metodo que inhabilita la categoria
+  *
+  **/
+  private function ban($categoryID)
+  {
+    require_once( FRAMEWORK_PATH . 'models/category.inc');
+	$category = new Category( $this->registry );
+	$data = $category->updateStatus( $categoryID, 5);
+	header('Location: /socialNetwork/admin_category/search'); 	
+  } 
+
+ /*
+  * Metodo que habilita la categoria
+  *
+  **/
+  private function publish($categoryID)
+  {
+    require_once( FRAMEWORK_PATH . 'models/category.inc');
+	$category = new Category( $this->registry );
+	$data = $category->updateStatus( $categoryID, 4);
+	header('Location: /socialNetwork/admin_category/search'); 	
+  } 
+
+
 	/*
 	* Metodo para buscar las categorias desde la pantalla de admin
 	*/
