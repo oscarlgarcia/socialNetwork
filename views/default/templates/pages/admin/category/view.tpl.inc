@@ -3,7 +3,7 @@
 <script type="text/javascript" src="lib/tagging/jquery.tagsinput.js"></script>
 <div class="panel panel-primary">
   <div class="panel-heading">
-    <h3 class="panel-title">Nueva Categor&iacute;a</h3>
+    <h3 class="panel-title">Ver Categor&iacute;a</h3>
 	</div>
 	<div class="panel-body">
     <!-- START errors -->
@@ -23,7 +23,7 @@
         <label  class="control-label" for="categoryDescription">Tipo de categor&iacute;a: </label>
         <select id="type" name="type" class="form-control">
         <!-- START category_type -->
-          <option value="{category_type_ID}">{category_type_Name}</option>
+          <option value="{category_type_ID}" {category_type_Selected}>{category_type_Name}</option>
         <!-- END category_type -->
         </select>
       </div>
@@ -38,7 +38,8 @@
       </div>
       
       <div class="pull-right">
-        <input type="submit" value="Guardar Categor&iacute;a" name="btn" id="btn-addCat" data-loading-text="Guardando ..." class="btn btn-primary" tabindex="10"> 
+        <input type="submit" value="Actualizar Categor&iacute;a" name="btn" id="btn-addCat" data-loading-text="Actualizando ..." class="btn btn-primary" tabindex="10"> 
+        <a href="admin_category/search" class="btn btn-primary" tabindex="11" >Volver</a> 
       </div>
     </form>
   </div>

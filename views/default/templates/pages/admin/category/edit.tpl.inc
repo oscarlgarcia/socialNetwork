@@ -22,9 +22,9 @@
       <div class="form-group">
         <label  class="control-label" for="categoryDescription">Tipo de categor&iacute;a: </label>
         <select id="type" name="type" class="form-control">
-        <!-- START category_type -->
-          <option value="{category_type_ID}">{category_type_Name}</option>
-        <!-- END category_type -->
+        <!-- START type -->
+          <option value="{type_id}">{type_name}</option>
+        <!-- END type -->
         </select>
       </div>
 

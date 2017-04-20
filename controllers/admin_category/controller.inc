@@ -64,6 +64,10 @@ class Admin_categorycontroller{
 				  case 'add':
 				    $this->add();
 					  break;	
+                  
+                  case 'edit':
+				    $this->edit(intval($this->parameter1));
+					  break;	
 
 				  case 'register':
 				  	$this->register();
@@ -196,11 +200,46 @@ class Admin_categorycontroller{
 	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
 	  	);
     
-      $this->registry->getObject('template')->getPage()->addTag('error_msg','error-msg'); 
-      $this->registry->getObject('template')->getPage()->addTag('error_text',''); 
-      $this->registry->getObject('template')->getPage()->addTag('categoryName','');	
-	  $this->registry->getObject('template')->getPage()->addTag('categoryDescription','');
-	  $this->registry->getObject('template')->getPage()->addTag('image','');
+    require_once( FRAMEWORK_PATH . 'models/category_type.inc');
+    $catType = new Category_Type( $this->registry );
+    $pagination = $catType->listCategoryType();
+    $this->registry->getObject('template')->getPage()->addTag('error_msg','error-msg'); 
+    $this->registry->getObject('template')->getPage()->addTag('error_text',''); 
+    $this->registry->getObject('template')->getPage()->addTag('categoryName','');	
+	$this->registry->getObject('template')->getPage()->addTag('categoryDescription','');
+	$this->registry->getObject('template')->getPage()->addTag('category_type',array('SQL',$pagination->getCache()));
+	$this->registry->getObject('template')->getPage()->addTag('image','');
+  }
+
+   /*
+  * Metodo que redirecciona a la plantilla de edit
+  *
+  **/
+  private function edit($categoryID)
+  {
+    $this->registry->getObject('template')->buildFromTemplates(
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'category/'.$this->registry->getObject('constants')->getViewTpl(),
+	  	$this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+	  	);
+   
+    require_once FRAMEWORK_PATH . 'controllers/admin_category/registrationcontroller.inc';
+    require_once( FRAMEWORK_PATH . 'models/category.inc');
+    require_once( FRAMEWORK_PATH . 'models/category_type.inc');
+    
+    $category = new Category( $this->registry );
+    $category->getCategory($categoryID);
+    
+    $catType = new Category_Type( $this->registry );
+    $pagination = $catType->listCategoryTypeSelected($category->getCategoryType());
+
+
+    $this->registry->getObject('template')->getPage()->addTag('error_msg','error-msg'); 
+    $this->registry->getObject('template')->getPage()->addTag('error_text',''); 
+    $this->registry->getObject('template')->getPage()->addTag('categoryName',$category->getName());	
+	$this->registry->getObject('template')->getPage()->addTag('categoryDescription',$category->getDescription());
+	$this->registry->getObject('template')->getPage()->addTag('image',$category->getImageName());
+	$this->registry->getObject('template')->getPage()->addTag('category_type',array('SQL',$pagination->getCache()));
   }
 
  /*

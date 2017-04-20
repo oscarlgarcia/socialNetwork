@@ -12,6 +12,7 @@ class Category extends Object
   private $name;
   private $image_category;
   private $description;
+  private $category_type;
   private $saveable_fields = array( 'name', 'image_category','description'); 
   private $limit = 500; //poner en config
   
@@ -109,7 +110,7 @@ class Category extends Object
   */
   public function getCategory($categoryID)
   {
-    $query = "SELECT c.ID, c.name as name_category, md.url as image_category , c.description as description FROM category c inner join media md on md.ID = c.image_category where c.name = '".$categoryID . "'" ;
+    $query = "SELECT c.ID, c.name as name_category, md.url as image_category ,md.ID as image_id, c.description as description, c.category_type as type FROM category c inner join media md on md.ID = c.image_category where c.id = '".$categoryID . "'" ;
 	  $this->registry->getObject('db')->executeQuery( $query );
     if( $this->registry->getObject('db')->numRows() > 0 )
     {
@@ -117,7 +118,8 @@ class Category extends Object
       $this->setID($data['ID']);
       $this->setName($data['name_category']);
       $this->setDescription($data['description']);
-      $this->setImageName($data['image_category']);
+      $this->setImageName($data['image_id']);
+      $this->setCategoryType($data['type']);
       return true;
     }
     return false;
@@ -286,5 +288,12 @@ class Category extends Object
   	return $this->description;
   }
 
+  public function setCategoryType($type){ 
+    $this->category_type = $type; 
+  }
+  
+  public function getCategoryType(){
+    return $this->category_type;
+  }
 }
 ?>
