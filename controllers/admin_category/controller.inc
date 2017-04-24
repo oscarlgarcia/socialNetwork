@@ -69,6 +69,10 @@ class Admin_categorycontroller{
 				    $this->edit(intval($this->parameter1));
 					  break;	
 
+				case 'update':
+				    $this->update(intval($this->parameter1));
+					  break;	
+
 				  case 'register':
 				  	$this->register();
 					  break;
@@ -211,7 +215,7 @@ class Admin_categorycontroller{
 	$this->registry->getObject('template')->getPage()->addTag('image','');
   }
 
-   /*
+  /*
   * Metodo que redirecciona a la plantilla de edit
   *
   **/
@@ -236,11 +240,27 @@ class Admin_categorycontroller{
 
     $this->registry->getObject('template')->getPage()->addTag('error_msg','error-msg'); 
     $this->registry->getObject('template')->getPage()->addTag('error_text',''); 
+    $this->registry->getObject('template')->getPage()->addTag('categoryID',$category->getID());	
     $this->registry->getObject('template')->getPage()->addTag('categoryName',$category->getName());	
 	$this->registry->getObject('template')->getPage()->addTag('categoryDescription',$category->getDescription());
 	$this->registry->getObject('template')->getPage()->addTag('image',$category->getImageName());
 	$this->registry->getObject('template')->getPage()->addTag('category_type',array('SQL',$pagination->getCache()));
   }
+
+
+/*
+  * Metodo que actualiza la categoria 
+  * 
+  */
+  private function update($catID)
+  {
+    require_once( FRAMEWORK_PATH . 'models/category.inc');
+    $category = new Category( $this->registry );
+    $category->update($catID,$_POST['categoryName'],$_POST['categoryDescription'],$_POST['type'],$_POST['image']);
+	header('Location: ../search'); 
+  }
+
+
 
  /*
   * Metodo que guarda el seeting en BBDD 

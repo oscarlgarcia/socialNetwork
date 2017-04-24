@@ -9,7 +9,7 @@
     <!-- START errors -->
     <div class="alert alert-danger" id="{error_msg}">{error_text}</div>
     <!-- END errors -->
-    <form  method="post" action="admin_category/register" name="categoryForm" id="categoryForm">
+    <form  method="post" action="admin_category/update/{categoryID}" name="categoryForm" id="categoryForm">
       <div class="form-group upload_group">
         <label  class="control-label" for="categoryName">Nombre de la Categoria</label>
         <input name="categoryName" maxlength="400" id="categoryName" value="{categoryName}" type="text" class="form-control" />
@@ -38,7 +38,7 @@
       </div>
       
       <div class="pull-right">
-        <input type="submit" value="Actualizar Categor&iacute;a" name="btn" id="btn-addCat" data-loading-text="Actualizando ..." class="btn btn-primary" tabindex="10"> 
+        <input type="submit" value="Actualizar Categor&iacute;a" name="btn" id="btn-addCat" data-loading-text="Guardando ..." class="btn btn-primary" tabindex="10"> 
         <a href="admin_category/search" class="btn btn-primary" tabindex="11" >Volver</a> 
       </div>
     </form>
@@ -95,7 +95,7 @@
                 </div>
               </div>
             </form>
-            <div id="image_box"></div>             
+            <div id="image_box" class="image-search-div"></div>             
           </div>
         </div>
       </div>

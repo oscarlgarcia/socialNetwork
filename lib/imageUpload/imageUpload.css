@@ -56,3 +56,11 @@
 #uploadErrorMsg{
 	display: none;
 }
+
+
+
+.image-search-div{
+	overflow-y: auto; 
+	height:350px;
+}
+

@@ -13,7 +13,8 @@ class Category extends Object
   private $image_category;
   private $description;
   private $category_type;
-  private $saveable_fields = array( 'name', 'image_category','description'); 
+  private $enable;
+  private $saveable_fields = array( 'name', 'image_category','description','category_type','enable'); 
   private $limit = 500; //poner en config
   
 
@@ -73,6 +74,22 @@ class Category extends Object
     return $uid;  
   }
   
+
+  /**
+  * actualiza los datos  de la categoria a partir de su ID
+  * @param int $categoryID 
+  */
+  public function update($categoryID,$name, $description,$type,$image)
+  {
+    $changes = array();
+    $changes['name'] = $name;
+    $changes['description'] = $description;
+    $changes['image_category'] = $image;
+    $changes['category_type'] = $type;
+    $this->registry->getObject('db')->updateRecords('category', $changes," id = ".$categoryID );
+    $uid = $this->registry->getObject('db')->lastInsertID();
+    return $uid;  
+  }
 
 
   /**
@@ -270,6 +287,14 @@ class Category extends Object
   
   public function getName(){
   	return $this->name;
+  }
+
+  public function setEnable($enable){ 
+    $this->enable = $enable; 
+  }
+  
+  public function isEnable(){
+    return $this->enable;
   }
 
   public function setImageName($image){ 

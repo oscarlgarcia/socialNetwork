@@ -62,7 +62,7 @@ class Media extends Object{
    */
   public function browse($criteria)
   {
-	  $this->paginatedResult->setLimit(5); //TODO poner no limit
+	  $this->paginatedResult->setLimit(1000000); //TODO poner no limit
 	  $this->paginatedResult->setOffset(0);
 	  $query = "SELECT id, url, name, size from media where name like '%".$criteria."%' " ; // poner un indice
 	  $this->paginatedResult->setQuery( $query );
