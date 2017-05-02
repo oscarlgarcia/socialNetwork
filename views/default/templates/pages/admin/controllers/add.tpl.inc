@@ -23,7 +23,7 @@
               <a class="btn btn-default btn-sm active" data-toggle="required" data-title="1">SI</a>
               <a class="btn btn-default btn-sm notActive" data-toggle="required" data-title="0">No</a>
             </div>
-            <input type="hidden" name="required" id="required">
+            <input type="hidden" value="1" name="required" id="required">
           </div>
       </div>
 

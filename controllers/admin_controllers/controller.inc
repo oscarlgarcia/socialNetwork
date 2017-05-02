@@ -95,12 +95,8 @@ class Admin_controllerscontroller{
 		   
 		}else 
 		{
-	       // sino esta logeado redirecciona
-	       $this->registry->getObject('template')->buildFromTemplates(
-	       	$this->registry->getObject('constants')->getHeaderTpl(), 
-	       	$this->registry->getObject('constants')->getMainTpl(),
-	       	$this->registry->getObject('constants')->getFooterTpl()
-	       	);   	
+	         // sino esta logeado redirecciona
+	      header('Location: ../home');   	
       }
       
 	}
