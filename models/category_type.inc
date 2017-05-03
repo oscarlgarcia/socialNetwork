@@ -138,12 +138,12 @@ class Category_Type extends Object
   {
     $this->paginatedResult->setLimit(10);
     $this->paginatedResult->setOffset($offset - 1);
-    $query="SELECT c.ID as ID, c.name as categoryName, md.url as categoryImage, c.description as categoryDescripition, t.name as categoryType, s.status_class as class FROM category c inner join media md on md.ID = c.image_category inner join operational_status s  on c.enable = s.ID  inner join category_type t  on c.category_type = t.ID  where c.name like '%".$criteria."%' or c.image_category  like '%".$criteria."%' or c.description like '%".$criteria."%' order by c.name ASC";
-
+    $query="SELECT ct.ID as ID, ct.name as name, 'success' as class, IFNULL(count(c.id),0) as total  FROM category_type ct left join category c on ct.ID = c.category_type where ct.name like '%".$criteria."%'  group by ct.name order by ct.name ASC";
     $this->paginatedResult->setQuery( $query );
     $this->paginatedResult->setMethod( 'cache' );
     $this->paginatedResult->generatePagination();
     return $this->paginatedResult;
+
   }
 
 
