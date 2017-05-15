@@ -13,7 +13,7 @@
              </div>
            </div>
            <div class="col-md-6">
-             <a class="btn btn-info pull-right" href="admin_category/add"><i class="fa fa-plus"></i> Agregar Tipo de Categor&iacute;a</a>
+             <a class="btn btn-info pull-right" href="admin_category_type/add"><i class="fa fa-plus"></i> Agregar Tipo de Categor&iacute;a</a>
            </div>
          </form>        
         <table class="table table-hover " id="dev-table">
@@ -32,9 +32,9 @@
                 <button type="button" class="btn btn-{class}">{ID}</button>
                 <button type="button" data-toggle="dropdown" class="btn btn-{class} dropdown-toggle"> <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                <li><a href="admin_category/edit/{ID}"><span class="fa fa-edit"></span> Editar</a></li>
+                <li><a href="admin_category_type/edit/{ID}"><span class="fa fa-edit"></span> Editar</a></li>
                 <li class="divider"></li>
-                <li class="deleteButton"><a id="delete" data-deleteurl="admin_category/delete/{ID}" data-toggle="modal" data-target="#delete_modal"><span class="fa fa-trash"></span> Eliminar</a></li>
+                <li class="deleteButton"><a id="delete" data-deleteurl="admin_category_type/delete/{ID}" data-toggle="modal" data-target="#delete_modal"><span class="fa fa-trash"></span> Eliminar</a></li>
                 </ul>
               </div>
             </td>

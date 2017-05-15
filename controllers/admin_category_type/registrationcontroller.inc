@@ -46,14 +46,10 @@ class Registrationcontroller{
 		{
 		    $idCategoria = "";
 			// Guardamos la categoria
-			require_once FRAMEWORK_PATH . 'models/category.inc';
-			$category = new Category( $this->registry);
-			$category->setName( htmlentities($this->registry->getObject('db')->sanitizeData( $_POST['categoryName'] ),ENT_COMPAT,'UTF-8') );
-			$category->setDescription( htmlspecialchars($this->registry->getObject('db')->sanitizeData($_POST['categoryDescription']),ENT_IGNORE));
-			$category->setImageName( htmlspecialchars($this->registry->getObject('db')->sanitizeData($_POST['image']),ENT_IGNORE)); 		
-            $category->setCategoryType( htmlspecialchars($this->registry->getObject('db')->sanitizeData($_POST['type']),ENT_IGNORE)); 		
-            $category->setEnable(3); 		
-			$idCategoria = $category->save();		
+			require_once FRAMEWORK_PATH . 'models/category_type.inc';
+			$categoryType = new Category_Type( $this->registry);
+			$categoryType->setName( htmlentities($this->registry->getObject('db')->sanitizeData( $_POST['categoryName'] ),ENT_COMPAT,'UTF-8') );	
+			$idCategoria = $categoryType->save();		
 		
 		    // TODO poner el log de administracion
          	//require_once FRAMEWORK_PATH . 'models/admin_log.inc';

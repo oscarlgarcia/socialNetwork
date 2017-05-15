@@ -35,8 +35,8 @@ class Category_Type extends Object
   * @param $categoryName, nombre del controlador
   * @return true, si el nombre puede guardarse, false si no
   */
-  public function canSave($categoryName){
-    $query = "SELECT ID FROM category_type where name = '".$categoryName."'";
+  public function canSave($categoryTypeName){
+    $query = "SELECT ID FROM category_type where name = '".$categoryTypeName."'";
     $this->registry->getObject('db')->executeQuery( $query );
     if( $this->registry->getObject('db')->numRows() > 0 )
       return false;
@@ -45,12 +45,12 @@ class Category_Type extends Object
   }
 
   /**
-  * borra una categoria a partir de su ID
+  * borra un tipo de categoria a partir de su ID
   * @param int $categoryID 
   */
-  public function delete($categoryID)
+  public function delete($categoryTypeID)
   {
-    $this->registry->getObject('db')->deleteRecords( 'category_type',' id = '.$categoryID,'1');
+    $this->registry->getObject('db')->deleteRecords( 'category_type',' id = '.$categoryTypeID,'1');
     $uid = $this->registry->getObject('db')->lastInsertID();
     return $uid;  
   }
@@ -58,7 +58,7 @@ class Category_Type extends Object
 
 
   /**
-  * Metodo que comprueba si esa categoria tiene algun recurso asignado
+  * Metodo que comprueba si ese tipo de categoria tiene algun recurso asignado
   * La idea es que no deje borrar la misma si hay algun recurso que lo contenga
   * @param $catID
   * @return True si no hay resurso asignado ( puede ser borrado),
@@ -66,18 +66,13 @@ class Category_Type extends Object
   */
   public function canErase($catID)
   {
-    $query = "SELECT count(DISTINCT cs.ID) as snippets, count(DISTINCT cp.ID) as pages FROM category c left join snippets cs on cs.ID_Category = c.id left join page cp on cp.Category = c.ID WHERE c.ID =".$catID;
+    $query = "SELECT c.ID  from category c inner join category_type ct on c.category_type=ct.id WHERE ct.ID =".$catID;
     $this->paginatedResult->setQuery( $query );
     $this->paginatedResult->setMethod( 'cache' );
     $this->paginatedResult->generatePagination();
-    if ($this->paginatedResult->getTotalRows()==1)
+    if ($this->paginatedResult->getTotalRows()==0)
     {  
-      $tag = $this->registry->getObject('db')->resultsFromCache($this->paginatedResult->getCache());
-      $temp['snippets'] = intval($tag["snippets"]);
-      $temp['pages'] = intval($tag["pages"]);
-      if ( $temp['snippets'] == 0 && $temp['pages'] == 0 )
-        return true;
-      return false;
+      return true;
     }
     return false;
   }
