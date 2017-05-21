@@ -55,7 +55,7 @@
           <div class="form-group">
             <div class="btn-group" data-toggle="buttons">
               <label class="btn btn-default active">
-                <input type="radio" name="publish" value="0" />No
+                <input type="radio" name="publish" value="0" checked />No
               </label> 
               <label class="btn btn-default">
                 <input type="radio" name="publish" value="1" />Si

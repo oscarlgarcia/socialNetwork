@@ -58,13 +58,14 @@ class Registrationcontroller{
 		  $pages->setCategory($this->registry->getObject('db')->sanitizeData($_POST['category']));
 		  $pages->setId($idPage);
 
+          $pages->setUrl( $pages->checkAvailability($pages->create_slug(htmlentities($this->registry->getObject('db')->sanitizeData( $_POST['title']),ENT_COMPAT,'UTF-8'))) );
+
           if($idPage == -1){
           	$pages->setCreated(date("Y-m-d H:i:s")); // fecha de ahora
-            $pages->setUrl( $pages->checkAvailability(htmlentities($this->registry->getObject('db')->sanitizeData( $_POST['url']),ENT_COMPAT,'UTF-8')) );
             $pages->setId($pages->save());	
           }else{
+          	$pages->setCreated($pages->getPageDateCreated($idPage)); // fecha de ahora
           	$pages->setId($idPage);
-          	$pages->setUrl( $pages->checkAvailability(htmlentities($this->registry->getObject('db')->sanitizeData( $_POST['url']),ENT_COMPAT,'UTF-8')) );
             $pages->update();
             // y borramos relacion de tags anteriores
             $pages->deleteTags();
@@ -92,7 +93,7 @@ class Registrationcontroller{
 
           // registramos en el log y gamificamos
 		  $data['page_title']=$pages->getTitle();
-	      $this->registry->getObject('event')->notify('user.page.add' , $user,$_SERVER['REMOTE_ADDR'] , $this->registry->getObject('util')->prepareData($data));
+	      $this->registry->getObject('event')->notify('user.page.add',$user,$_SERVER['REMOTE_ADDR'] , $this->registry->getObject('util')->prepareData($data),$user);
 		
 		}
 	}	

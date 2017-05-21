@@ -156,29 +156,6 @@ class Admin_cmscontroller{
   *
   */
   function update($id_page){
-  
-
-      require_once( FRAMEWORK_PATH . 'models/page.inc'); 
-      $page = new Pages( $this->registry );
-      $page->setId($id_page);
-      $page->setTitle( htmlentities($this->registry->getObject('db')->sanitizeData( $_POST['title'] ),ENT_COMPAT,'UTF-8') );
-      $page->setUrl( htmlentities($this->registry->getObject('db')->sanitizeData( $_POST['url']),ENT_COMPAT,'UTF-8'));
-      $page->setBody( $this->registry->getObject('db')->sanitizeData( $_POST['editor'] ) ); 
-      $page->setParent( $this->registry->getObject('db')->sanitizeData($_POST['parent']));
-      $page->setPublished($this->registry->getObject('db')->sanitizeData($_POST['publish']));
-      $page->setOrdenation(0);     
-      $page->setCreated(date("Y-m-d H:i:s")); // fecha de ahora  
-      $page->setUpdated(date("Y-m-d H:i:s")); // fecha de ahora
-      $page->setLevel($this->registry->getObject('db')->sanitizeData($_POST['level']));
-      $page->setType($this->registry->getObject('db')->sanitizeData($_POST['type']));
-      $page->setKeywordsSEO( $this->registry->getObject('db')->sanitizeData($_POST['keywords']));
-      $page->setDescriptionSEO( $this->registry->getObject('db')->sanitizeData($_POST['description']));
-      $page->setCategory($this->registry->getObject('db')->sanitizeData($_POST['category']));
-      $page->update();
-
-      
-
-
     require_once FRAMEWORK_PATH . 'controllers/admin_cms/registrationcontroller.inc';
     $rc = new Registrationcontroller( $this->registry,$this->registry->getObject('authenticate')->getUser()->getUserID(),$id_page);
     $this->browse();

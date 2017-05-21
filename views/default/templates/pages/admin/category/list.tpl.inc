@@ -21,7 +21,6 @@
 		      <tr>
 			      <th><span class="fa fa-tasks"></span> ID</th>
 				    <th>Nombre</th>
-            <th>Tipo</th>
             <th>Imagen asociada</th>
             <th>Descripci&oacute;n</th>
 			    </tr>
@@ -43,7 +42,6 @@
               </div>
             </td>
 		  	    <td class="col-md-2">{categoryName}</td>
-            <td class="col-md-2">{categoryType}</td>
             <td class="col-md-3"><img src="{categoryImage}" class="img-thumbnail" width="30%" height="30%" /></td>
             <td class="col-md-3">{categoryDescripition}</td>
           </tr>

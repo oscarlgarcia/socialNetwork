@@ -12,9 +12,8 @@ class Category extends Object
   private $name;
   private $image_category;
   private $description;
-  private $category_type;
   private $enable;
-  private $saveable_fields = array( 'name', 'image_category','description','category_type','enable'); 
+  private $saveable_fields = array( 'name', 'image_category','description','enable'); 
   private $limit = 500; //poner en config
   
 
@@ -85,7 +84,6 @@ class Category extends Object
     $changes['name'] = $name;
     $changes['description'] = $description;
     $changes['image_category'] = $image;
-    $changes['category_type'] = $type;
     $this->registry->getObject('db')->updateRecords('category', $changes," id = ".$categoryID );
     $uid = $this->registry->getObject('db')->lastInsertID();
     return $uid;  
@@ -127,7 +125,7 @@ class Category extends Object
   */
   public function getCategory($categoryID)
   {
-    $query = "SELECT c.ID, c.name as name_category, md.url as image_category ,md.ID as image_id, c.description as description, c.category_type as type FROM category c inner join media md on md.ID = c.image_category where c.id = '".$categoryID . "'" ;
+    $query = "SELECT c.ID, c.name as name_category, md.url as image_category ,md.ID as image_id, c.description as description FROM category c inner join media md on md.ID = c.image_category where c.id = '".$categoryID . "'" ;
 	  $this->registry->getObject('db')->executeQuery( $query );
     if( $this->registry->getObject('db')->numRows() > 0 )
     {
@@ -136,7 +134,6 @@ class Category extends Object
       $this->setName($data['name_category']);
       $this->setDescription($data['description']);
       $this->setImageName($data['image_id']);
-      $this->setCategoryType($data['type']);
       return true;
     }
     return false;
@@ -148,11 +145,11 @@ class Category extends Object
    * @param int $offset 
    * @return Object pagination object
    */
-  public function listCategory( $offset=0, $type= 1)
+  public function listCategory( $offset=0)
   {
     $this->paginatedResult->setLimit($this->limit);
 	  $this->paginatedResult->setOffset( $offset );
-	  $query = "SELECT s.ID as categoryID,s.name as categoryName FROM  category s where category_type=".$type." and enable = 4 order by s.name ASC" ;
+	  $query = "SELECT s.ID as categoryID,s.name as categoryName FROM category s where enable = 4 order by s.name ASC";
 	  $this->paginatedResult->setQuery( $query );
 	  $this->paginatedResult->setMethod( 'cache' );
 	  $this->paginatedResult->generatePagination();
@@ -175,7 +172,7 @@ class Category extends Object
   {
     $this->paginatedResult->setLimit(10);
     $this->paginatedResult->setOffset($offset - 1);
-    $query="SELECT c.ID as ID, c.name as categoryName, md.url as categoryImage, c.description as categoryDescripition, t.name as categoryType, s.status_class as class FROM category c inner join media md on md.ID = c.image_category inner join operational_status s  on c.enable = s.ID  inner join category_type t  on c.category_type = t.ID  where c.name like '%".$criteria."%' or c.image_category  like '%".$criteria."%' or c.description like '%".$criteria."%' order by c.name ASC";
+    $query="SELECT c.ID as ID, c.name as categoryName, md.url as categoryImage, c.description as categoryDescripition, s.status_class as class FROM category c inner join media md on md.ID = c.image_category inner join operational_status s  on c.enable = s.ID where c.name like '%".$criteria."%' or c.image_category  like '%".$criteria."%' or c.description like '%".$criteria."%' order by c.name ASC";
 
     $this->paginatedResult->setQuery( $query );
     $this->paginatedResult->setMethod( 'cache' );
@@ -313,12 +310,5 @@ class Category extends Object
   	return $this->description;
   }
 
-  public function setCategoryType($type){ 
-    $this->category_type = $type; 
-  }
-  
-  public function getCategoryType(){
-    return $this->category_type;
-  }
 }
 ?>

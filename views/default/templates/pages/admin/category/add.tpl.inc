@@ -18,16 +18,6 @@
         <label  class="control-label" for="categoryDescription">Descripci&oacute;n de la categor&iacute;a</label>
         <textarea name="categoryDescription" id="categoryDescription"  class="form-control" />{categoryDescription}</textarea>
       </div>
-            
-      <div class="form-group">
-        <label  class="control-label" for="categoryDescription">Tipo de categor&iacute;a: </label>
-        <select id="type" name="type" class="form-control">
-        <!-- START category_type -->
-          <option value="{category_type_ID}">{category_type_Name}</option>
-        <!-- END category_type -->
-        </select>
-      </div>
-
       <div class="form-group">
         <label  class="control-label" for="categoryDescription">Imagen de la categor&iacute;a: </label>
         <input id="image" name="image"  value="{image}" placeholder="Selecciona una imagen" type="number" class="filefilter"/>

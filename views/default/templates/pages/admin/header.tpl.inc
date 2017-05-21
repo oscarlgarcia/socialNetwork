@@ -58,7 +58,6 @@
                   <tr><td><a href="admin_event/search">Eventos</a></td></tr>
                   <tr><td><a href="admin_gamification/search">Gamificaci&oacute;n</a></td></tr>
                   <tr><td><a href="admin_category/search">Categor&iacute;as</a></td></tr>
-                  <tr><td><a href="admin_category_type/search">Tipos de Categor&iacute;as</a></td></tr>
                   <tr><td><a href="admin_media/search">Media</a></td></tr>
 
                 </table>

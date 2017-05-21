@@ -91,6 +91,24 @@ class Pages extends Object{
 
 
   /**
+   * Obtiene la fecha de creacion de la pagina a partir de su ID
+   * @param int $pageId 
+   * @return Object 
+   */
+  public function getPageDateCreated($pageId)
+  {
+    $query = "SELECT p.created as created FROM page p where p.ID=".$pageId ;
+    $this->registry->getObject('db')->executeQuery( $query );
+    if( $this->registry->getObject('db')->numRows() > 0 )
+    {
+      $data = $this->registry->getObject('db')->getRows();
+       return $data['created'];
+    }
+       return date("Y-m-d H:i:s");
+  }
+
+
+  /**
    * Obtiene una pagina a partir de su URL
    * @param String $URL 
    * @return Object 
@@ -189,6 +207,13 @@ class Pages extends Object{
     return $uid;  
   }
 	
+  public function create_slug($string){
+   
+   $string = strtolower($string);
+   $slug = preg_replace('/[^A-Za-z0-9-]+/', '-', $string);
+   $slug = preg_replace( '/[«»“”!?,.]+/', '', $slug );
+   return $slug;
+}
   	
   // Setter and Getter
   public function setTitle($title){ 
