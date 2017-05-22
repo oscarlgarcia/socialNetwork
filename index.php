@@ -92,7 +92,7 @@ else
 {
   if($registry->getObject('authenticate')->isLoggedIn() )
   { 
-      header('Location: ../dashboard');   // Revisar los redirect
+      header('Location: dashboard');   // Revisar los redirect
   }
       //si es usuario normal vamos al "home" de un usuario normal
       $registry->getObject('template')->buildFromTemplates(
