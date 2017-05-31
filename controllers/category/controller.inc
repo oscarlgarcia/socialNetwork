@@ -52,7 +52,7 @@ class Categorycontroller{
   		 	  $this->parameter2= $urlBits[3];	
   		  }
 			 
-       $this->showFeatures(intval($this->parameter1));
+          $this->showFeatures($this->action);
           
 			}
 		
@@ -64,64 +64,17 @@ class Categorycontroller{
 	/*
 	* Metodo para buscar las categorias desde la pantalla de admin
 	*/
-    private function showFeatures($offset)
+    private function showFeatures($cat)
     {   
-      $offset = ($offset<=0)?1:$offset;
-      
-      if (!isset($_SESSION['category_criteria'])){
-      	$this->registry->getObject('util')->storeToSession('category_criteria',"");
-      }
-
-      if (isset($_POST['search'])){
-      	$this->registry->getObject('util')->storeToSession('category_criteria',$_POST['search']);
-      }
-
-      require_once( FRAMEWORK_PATH . 'models/category.inc');
-	    $category = new Category( $this->registry );
-	    $pagination = $category->search($offset,$_SESSION['category_criteria']);
-	 
-      if( $pagination->getTotalRows() == 0 )
-      {
-      	// no hay 
+     
         $this->registry->getObject('template')->buildFromTemplates(
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'category/'.$this->registry->getObject('constants')->getNoResultsTpl(),
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
+          $this->registry->getObject('constants')->getHeaderTpl(), 
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_logged_base') ).'category/'.$this->registry->getObject('constants')->getListTpl(),
+          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_logged_base') ).$this->registry->getObject('constants')->getFooterTpl()
         );
         
-        //Cargamos la busqueda
-	    $this->registry->getObject('template')->getPage()->addTag('category.search',$_SESSION['category_criteria']);	
-        // cargamos el total de settings
-		$this->registry->getObject('template')->getPage()->addTag( 'category_count', $pagination->getTotalRows() );
-      }else
-      {
-         if(!$pagination->checkOffset($offset))
-         {
-         	// invalid
-            $this->registry->getObject('template')->buildFromTemplates(
-              $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-              $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'category/'.$this->registry->getObject('constants')->getInvalidTpl(),
-              $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-            );
-         }else
-	     { 
-           $this->registry->getObject('template')->buildFromTemplates(
-	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getHeaderTpl(), 
-	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).'category/'.$this->registry->getObject('constants')->getListTpl(),
-	        $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_admin_base') ).$this->registry->getObject('constants')->getFooterTpl()
-	       );
-		
-		  //cargamos la info de cada snippet
-		  $this->registry->getObject('template')->getPage()->addTag( 'category', array( 'SQL', $pagination->getCache() ) );
-
-         $this->registry->getObject('template')->getPage()->addTag( 'category_image_path', $this->registry->getSetting('language_path') );
-		  //Cargamos la busqueda
-	      $this->registry->getObject('template')->getPage()->addTag( 'category.search',$_SESSION['category_criteria']);	
-          // cargamos el total de settings
-		  $this->registry->getObject('template')->getPage()->addTag( 'category_count', $pagination->getTotalRows() );		
-		  $pagination->showPagination($this->controller,$this->action,$this->parameter1,$this->parameter2);
-	    }		
-      }
+        $this->registry->getObject('template')->getPage()->addTag('cat',$cat);
+      
     }
 
 
