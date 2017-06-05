@@ -16,6 +16,7 @@ html,body { height: 100%;}
   width: 400px!important;
 }
 
+.category-bg {background: url('../images/site/category.jpg') no-repeat scroll 30% bottom / cover rgba(0, 0, 0, 0); !important;}
 /*---------Size Icon----------*/
 .icon-48{ font-size: 48px;}
 /*---- Colores ----*/
@@ -184,6 +185,14 @@ filter: progid:DXImageTransform.Microsoft.gradient(enabled = false); cursor: not
     padding-top:0px;
     padding-bottom: 120px;
 }
+
+
+/* Section  */
+.category-section {
+    padding-top:0px;
+    padding-bottom: 30px;
+}
+
 
 /* override navbar*/
 .navbar {

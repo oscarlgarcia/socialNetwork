@@ -139,6 +139,28 @@ class Category extends Object
     return false;
   }
 	
+
+ /**
+  * Obtiene una categoria a partir de su nombre
+  * @param int $categoryName
+  * @return Object 
+  */
+  public function getCategoryByName($categoryName)
+  {
+    $query = "SELECT c.ID, c.name as name_category, md.url as image_category ,md.ID as image_id, c.description as description FROM category c inner join media md on md.ID = c.image_category where c.name = '".$categoryName . "'" ;
+    $this->registry->getObject('db')->executeQuery( $query );
+    if( $this->registry->getObject('db')->numRows() > 0 )
+    {
+      $data = $this->registry->getObject('db')->getRows();
+      $this->setID($data['ID']);
+      $this->setName($data['name_category']);
+      $this->setDescription($data['description']);
+      $this->setImageName($data['image_category']);
+      return true;
+    }
+    return false;
+  }
+
   /**
    * Genera lista de categorias pasando el tipo
    * Mostrara aquella aprobadas

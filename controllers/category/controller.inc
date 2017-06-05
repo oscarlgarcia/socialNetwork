@@ -64,16 +64,26 @@ class Categorycontroller{
 	/*
 	* Metodo para buscar las categorias desde la pantalla de admin
 	*/
-    private function showFeatures($cat)
+    private function showFeatures($categoryName)
     {   
      
-        $this->registry->getObject('template')->buildFromTemplates(
-          $this->registry->getObject('constants')->getHeaderTpl(), 
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_logged_base') ).'category/'.$this->registry->getObject('constants')->getListTpl(),
-          $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_logged_base') ).$this->registry->getObject('constants')->getFooterTpl()
-        );
+       require_once( FRAMEWORK_PATH . 'models/category.inc');
+       $category = new Category( $this->registry );
+       
+       if ($category->getCategoryByName($categoryName))
+       {
+         $this->registry->getObject('template')->buildFromTemplates(
+           $this->registry->getObject('constants')->getHeaderTpl(), 
+           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_logged_base') ).'category/'.$this->registry->getObject('constants')->getListTpl(),
+           $this->registry->getSetting($this->registry->getObject('constants')->getConstant('pages_logged_base') ).$this->registry->getObject('constants')->getFooterTpl()
+          );
         
-        $this->registry->getObject('template')->getPage()->addTag('cat',$cat);
+        $this->registry->getObject('template')->getPage()->addTag('category_name',$category->getName());
+        $this->registry->getObject('template')->getPage()->addTag('category_description',$category->getDescription());
+        $this->registry->getObject('template')->getPage()->addTag('category_image',$category->getImageName());
+
+       }
+        
       
     }
 
