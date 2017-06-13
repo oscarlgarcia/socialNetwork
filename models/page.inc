@@ -90,6 +90,26 @@ class Pages extends Object{
   }
 
 
+/**
+   * Obtiene la paginas por categoria y tipo y que esten publicadas
+   * @param int $pageId 
+   * @return Object 
+   */
+  public function getListPageByCategoryType($category,$type,$offset=1)
+  {
+    $this->paginatedResult->setLimit($this->limit);
+    $this->paginatedResult->setOffset( $offset-1);
+    //TODO poner el link a busqueda por  tags
+    $query="SELECT p.id as id, p.url as url, p.title as title, p.description_se as descripcion from page p where p.category=".$category." and p.published=1 and p.type=".$type;
+    $this->paginatedResult->setQuery( $query );
+    $this->paginatedResult->setMethod( 'cache' );
+    $this->paginatedResult->generatePagination();
+    return $this->paginatedResult;
+  }
+
+
+
+
   /**
    * Obtiene la fecha de creacion de la pagina a partir de su ID
    * @param int $pageId 

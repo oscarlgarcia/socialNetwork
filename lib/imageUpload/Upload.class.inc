@@ -68,7 +68,7 @@ class Upload {
 		      $myTag_media->setIDMedia($id);
 		      $idTags_snippet[]=$myTag_media->save();
 		    }
-	      echo "<img id='imageUploaded' src='".$this->relative.$this->newFileName."'  style='border:1px;' class='img-thumbnail' />";
+	      echo "<img id='imageUploaded' data-media='".$id."' src='".$this->relative.$this->newFileName."'  style='border:1px;' class='img-thumbnail' />";
         exit();
         
       }else{

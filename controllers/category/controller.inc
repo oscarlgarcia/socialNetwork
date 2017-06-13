@@ -68,7 +68,9 @@ class Categorycontroller{
     {   
      
        require_once( FRAMEWORK_PATH . 'models/category.inc');
+       require_once( FRAMEWORK_PATH . 'models/page.inc');
        $category = new Category( $this->registry );
+       $page= new Pages($this->registry);
        
        if ($category->getCategoryByName($categoryName))
        {
@@ -81,6 +83,10 @@ class Categorycontroller{
         $this->registry->getObject('template')->getPage()->addTag('category_name',$category->getName());
         $this->registry->getObject('template')->getPage()->addTag('category_description',$category->getDescription());
         $this->registry->getObject('template')->getPage()->addTag('category_image',$category->getImageName());
+
+        //buscamos tutoriales
+        $pagination = $page->getListPageByCategoryType($category->getId(),1);
+     $this->registry->getObject('template')->getPage()->addTag('category_tuts',array( 'SQL', $pagination->getCache()));
 
        }
         

@@ -187,11 +187,13 @@ filter: progid:DXImageTransform.Microsoft.gradient(enabled = false); cursor: not
 }
 
 
-/* Section  */
+/* Category  */
 .category-section {
     padding-top:0px;
-    padding-bottom: 30px;
+    padding-bottom: 0px;
 }
+#img-category{ width:100px; height:100px;}
+
 
 
 /* override navbar*/
