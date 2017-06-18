@@ -26,6 +26,15 @@
         <input name="categoryImageBtn" id="categoryImageBtn" class="upload" data-toggle="modal" data-target="#mediaModal" />
       </div>
       </div>
+
+        <div class="form-group">
+        <label  class="control-label" for="categoryDescription">Imagen Frontal de la categor&iacute;a: </label>
+        <input id="image_front" name="image_front"  value="{image_front}" placeholder="Selecciona una imagen" type="number" class="filefilter"/>
+        <div class="upload_div btn btn-primary">
+        <span class="fa fa-cloud-download"></span>
+        <input name="categoryImageFrontBtn" id="categoryImageFrontBtn" class="upload" data-toggle="modal" data-target="#mediaModal" />
+      </div>
+      </div>
       
       <div class="pull-right">
         <input type="submit" value="Guardar Categor&iacute;a" name="btn" id="btn-addCat" data-loading-text="Guardando ..." class="btn btn-primary" tabindex="10"> 

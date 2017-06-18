@@ -51,6 +51,7 @@ class Registrationcontroller{
 			$category->setName( htmlentities($this->registry->getObject('db')->sanitizeData( $_POST['categoryName'] ),ENT_COMPAT,'UTF-8') );
 			$category->setDescription( htmlspecialchars($this->registry->getObject('db')->sanitizeData($_POST['categoryDescription']),ENT_IGNORE));
 			$category->setImageName( htmlspecialchars($this->registry->getObject('db')->sanitizeData($_POST['image']),ENT_IGNORE));	
+			$category->setImageNameFront( htmlspecialchars($this->registry->getObject('db')->sanitizeData($_POST['image_front']),ENT_IGNORE));	
             $category->setEnable(3); 		
 			$idCategoria = $category->save();		
 		

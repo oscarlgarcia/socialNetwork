@@ -83,6 +83,7 @@ class Categorycontroller{
         $this->registry->getObject('template')->getPage()->addTag('category_name',$category->getName());
         $this->registry->getObject('template')->getPage()->addTag('category_description',$category->getDescription());
         $this->registry->getObject('template')->getPage()->addTag('category_image',$category->getImageName());
+        $this->registry->getObject('template')->getPage()->addTag('category_image_front',$category->getImageNameFront());
 
         //buscamos tutoriales
         $pagination = $page->getListPageByCategoryType($category->getId(),1);

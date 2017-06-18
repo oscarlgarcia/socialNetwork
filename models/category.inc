@@ -11,9 +11,10 @@ class Category extends Object
   private $ID;
   private $name;
   private $image_category;
+  private $image_category_front;
   private $description;
   private $enable;
-  private $saveable_fields = array( 'name', 'image_category','description','enable'); 
+  private $saveable_fields = array( 'name', 'image_category','image_category_front','description','enable'); 
   private $limit = 500; //poner en config
   
 
@@ -78,12 +79,13 @@ class Category extends Object
   * actualiza los datos  de la categoria a partir de su ID
   * @param int $categoryID 
   */
-  public function update($categoryID,$name, $description,$type,$image)
+  public function update($categoryID,$name, $description,$type,$image,$front)
   {
     $changes = array();
     $changes['name'] = $name;
     $changes['description'] = $description;
     $changes['image_category'] = $image;
+    $changes['image_category_front'] = $front;
     $this->registry->getObject('db')->updateRecords('category', $changes," id = ".$categoryID );
     $uid = $this->registry->getObject('db')->lastInsertID();
     return $uid;  
@@ -125,7 +127,7 @@ class Category extends Object
   */
   public function getCategory($categoryID)
   {
-    $query = "SELECT c.ID, c.name as name_category, md.url as image_category ,md.ID as image_id, c.description as description FROM category c inner join media md on md.ID = c.image_category where c.id = '".$categoryID . "'" ;
+    $query = "SELECT c.ID, c.name as name_category, md.url as image_category ,md.ID as image_id, md1.ID as image_front_id, c.description as description FROM category c inner join media md on md.ID = c.image_category inner join media md1 on md1.ID = c.image_category_front where c.id = '".$categoryID . "'" ;
 	  $this->registry->getObject('db')->executeQuery( $query );
     if( $this->registry->getObject('db')->numRows() > 0 )
     {
@@ -134,6 +136,7 @@ class Category extends Object
       $this->setName($data['name_category']);
       $this->setDescription($data['description']);
       $this->setImageName($data['image_id']);
+      $this->setImageNameFront($data['image_front_id']);
       return true;
     }
     return false;
@@ -147,7 +150,7 @@ class Category extends Object
   */
   public function getCategoryByName($categoryName)
   {
-    $query = "SELECT c.ID, c.name as name_category, md.url as image_category ,md.ID as image_id, c.description as description FROM category c inner join media md on md.ID = c.image_category where c.name = '".$categoryName . "'" ;
+    $query = "SELECT c.ID, c.name as name_category, md.url as image_category ,md1.url as image_category_front , c.description as description FROM category c inner join media md on md.ID = c.image_category inner join media md1 on md1.ID= c.image_category_front where c.name = '".$categoryName . "'" ;
     $this->registry->getObject('db')->executeQuery( $query );
     if( $this->registry->getObject('db')->numRows() > 0 )
     {
@@ -156,6 +159,7 @@ class Category extends Object
       $this->setName($data['name_category']);
       $this->setDescription($data['description']);
       $this->setImageName($data['image_category']);
+      $this->setImageNameFront($data['image_category_front']);
       return true;
     }
     return false;
@@ -322,6 +326,14 @@ class Category extends Object
   
   public function getImageName(){
  	return $this->image_category;
+  }
+
+  public function setImageNameFront($image){ 
+    $this->image_category_front = $image; 
+  }
+  
+  public function getImageNameFront(){
+  return $this->image_category_front;
   }
 
   public function setDescription($description){ 

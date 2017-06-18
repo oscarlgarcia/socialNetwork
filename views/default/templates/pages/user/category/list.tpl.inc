@@ -1,5 +1,5 @@
 <!-- Main content of the splash screen -->
-<div class="category-section category-bg">
+<div class="category-section" style="background-image: url({category_image_front});">
   <div class="container white" >
    <div class="row snippet-content">
      <div class="col-xs-2">

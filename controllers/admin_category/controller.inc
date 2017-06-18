@@ -65,7 +65,7 @@ class Admin_categorycontroller{
 				    $this->add();
 					  break;	
                   
-                  case 'edit':
+        case 'edit':
 				    $this->edit(intval($this->parameter1));
 					  break;	
 
@@ -231,6 +231,7 @@ class Admin_categorycontroller{
     $this->registry->getObject('template')->getPage()->addTag('categoryName',$category->getName());	
 	  $this->registry->getObject('template')->getPage()->addTag('categoryDescription',$category->getDescription());
 	  $this->registry->getObject('template')->getPage()->addTag('image',$category->getImageName());
+    $this->registry->getObject('template')->getPage()->addTag('image_front',$category->getImageNameFront());
 
   }
 
@@ -243,7 +244,7 @@ class Admin_categorycontroller{
   {
     require_once( FRAMEWORK_PATH . 'models/category.inc');
     $category = new Category( $this->registry );
-    $category->update($catID,$_POST['categoryName'],$_POST['categoryDescription'],$_POST['type'],$_POST['image']);
+    $category->update($catID,$_POST['categoryName'],$_POST['categoryDescription'],$_POST['type'],$_POST['image'],$_POST['image_front']);
 	header('Location: ../search'); 
   }
 
